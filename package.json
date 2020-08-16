@@ -4,5 +4,8 @@
   "main": "index.js",
   "repository": "https://github.com/AndresZourelli/AnimeScheduler.git",
   "author": "Andres <azourelli@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "react-router-dom": "^5.2.0"
+  }
 }
