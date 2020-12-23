@@ -7,7 +7,7 @@ export default function Navbar() {
 				My Anime Site
 			</a>
 			<button
-				class="navbar-toggler"
+				className="navbar-toggler"
 				type="button"
 				data-toggle="collapse"
 				data-target="#navbarNav"
@@ -15,7 +15,7 @@ export default function Navbar() {
 				aria-expanded="false"
 				aria-label="Toggle navigation"
 			>
-				<span class="navbar-toggler-icon" />
+				<span className="navbar-toggler-icon" />
 			</button>
 			<div className="collapse navbar-collapse w-100 d-flex " id="navbarNav">
 				<ul className="navbar-nav w-100">

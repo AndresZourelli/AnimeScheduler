@@ -17,7 +17,7 @@ class bcolors:
 
 
 def write_json(data, filename='anime.json'):
-    with open(filename, 'w') as f:
+    with open(filename, 'w+') as f:
         json.dump(data, f, indent=4)
 
 
@@ -28,7 +28,7 @@ def searchAnimePage(URL):
     score = soup.find("div", {"class": "score-label"}).text
     information["score"] = score
     try:
-        description = soup.find("span", {"itemprop": "description"}).text
+        description = soup.find("p", {"itemprop": "description"}).text
         description = description
     except Exception as identifier:
         description = "None"
@@ -47,6 +47,11 @@ def searchAnimePage(URL):
         name = item.text.replace("\n", "").replace("\r", "").strip()
         altNames[titleVersion] = name.replace("\n", "").strip()
     information["names"] = altNames
+
+    find_image = soup.find('td', {"class": "borderClass"}).find("img")[
+        'data-src']
+
+    information["image_url"] = find_image
 
     html = u""
     count = 0
@@ -76,7 +81,7 @@ def searchAnimePage(URL):
     return information
 
 
-def searchAllAnime(URLLink):
+def searchSeasonalAnime(URLLink):
     page = requests.get(URLLink)
     soup = BeautifulSoup(page.content, 'html.parser')
 
@@ -106,11 +111,16 @@ def searchTopAnime(URLLink):
     table = soup.find("table", {"class": "top-ranking-table"})
     rows = table.findAll("tr", {"class": "ranking-list"})
     for i in range(len(rows)):
+        # image_link_container = rows[i].find(
+        #     "a", {"class": "hoverinfo_trigger"})
+        # image = image_link_container.find("img")["data-src"]
+
         title_container = rows[i].find("div", {"class": "di-ib"})
-        title = title_container.find("a", {"class": "hoverinfo_trigger"}).text
+        title = title_container.find("a").text
         href = rows[i].find("a")["href"]
         information = searchAnimePage(href)
         information["title"] = title
+        # information["image_url"] = image
         with open('anime.json') as json_file:
             data = json.load(json_file)
             # temp = data["anime"]
@@ -156,7 +166,7 @@ def main():
 
 def getTopAnime():
     baseURL = "https://myanimelist.net/topanime.php"
-    limit = 0
+    limit = 3000
     while limit <= 3000:
         now = datetime.datetime.now()
         timeString = now.strftime("%Y-%m-%d %H:%M:%S")

@@ -1,2 +1,3 @@
 /node_modules
-anime.json
+anime*.json
+pg-data
