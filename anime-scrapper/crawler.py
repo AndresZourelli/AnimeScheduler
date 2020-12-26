@@ -76,7 +76,7 @@ def searchAnimePage(URL):
 
             elementInfo = element.text.replace(
                 "\n", "").replace("\r", "").strip()
-            if elementTitle in ["producers", "licensors", "genres"]:
+            if elementTitle in ["producers", "licensors", "genres", "studios"]:
                 elementInfo = elementInfo.split(",")
                 for i in range(len(elementInfo)):
                     elementInfo[i] = elementInfo[i].strip()

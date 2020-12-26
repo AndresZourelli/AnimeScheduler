@@ -25,9 +25,9 @@ with open("anime.json") as f:
 count = 0
 for key in data:
 
-    # print(data[key])
+    print(data[key])
     if count == 5:
-        convertJSON(data[key])
+        # convertJSON(data[key])
         break
     count += 1
 
