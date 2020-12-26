@@ -72,9 +72,15 @@ def searchAnimePage(URL):
             elementTitle = element.find(
                 'span', {"class": "dark_text"}).text.replace(":", "").lower()
             [tag.extract() for tag in element.findAll(
-                'span', {"class": "dark_text"})]
+                'span')]
+
             elementInfo = element.text.replace(
                 "\n", "").replace("\r", "").strip()
+            if elementTitle in ["producers", "licensors", "genres"]:
+                elementInfo = elementInfo.split(",")
+                for i in range(len(elementInfo)):
+                    elementInfo[i] = elementInfo[i].strip()
+
             information[elementTitle] = elementInfo
         except Exception as NavigableString:
             pass
@@ -166,7 +172,7 @@ def main():
 
 def getTopAnime():
     baseURL = "https://myanimelist.net/topanime.php"
-    limit = 3000
+    limit = 0
     while limit <= 3000:
         now = datetime.datetime.now()
         timeString = now.strftime("%Y-%m-%d %H:%M:%S")
