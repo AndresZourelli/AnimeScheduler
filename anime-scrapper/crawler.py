@@ -103,7 +103,7 @@ def searchSeasonalAnime(URLLink):
         information = searchAnimePage(link)
         information['title'] = title.text
         # print(bcolors.OKBLUE, information, bcolors.ENDC)
-        with open('anime.json') as json_file:
+        with open('anime.json', "w") as json_file:
             data = json.load(json_file)
             temp = data["anime"]
             if title.text not in data:
@@ -172,7 +172,7 @@ def main():
 
 def getTopAnime():
     baseURL = "https://myanimelist.net/topanime.php"
-    limit = 0
+    limit = 2850
     while limit <= 3000:
         now = datetime.datetime.now()
         timeString = now.strftime("%Y-%m-%d %H:%M:%S")

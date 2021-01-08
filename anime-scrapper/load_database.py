@@ -69,6 +69,7 @@ sql_create_table_anime = """
         FOREIGN KEY (fk_source) REFERENCES sources (source_id) ON UPDATE CASCADE ON DELETE CASCADE,
         FOREIGN KEY (fk_status) REFERENCES statuses (status_id) ON UPDATE CASCADE ON DELETE CASCADE,
         FOREIGN KEY (fk_rating) REFERENCES ratings (rating_id) ON UPDATE CASCADE ON DELETE CASCADE
+    
     )
 """
 
@@ -170,8 +171,11 @@ def parse_data(data):
         get_episodes = [int(s)
                         for s in data["episodes"].split() if s.isdigit()]
 
-        get_duration = [int(s)
-                        for s in data["duration"].split() if s.isdigit()][0]
+        if data["duration"] == "Unknown":
+            get_duration = None
+        else:
+            get_duration = [int(s)
+                            for s in data["duration"].split() if s.isdigit()][0]
 
         get_aired_start = data["aired"].split("to")[0].strip()
 
@@ -196,9 +200,18 @@ def parse_data(data):
         # add anime info that doesnt need other tables
         # print((float(data["score"]), data["description"], data["image_url"], get_episodes[0],
         #        get_duration, get_aired_start, get_aired_end, get_broadcast_day, get_broadcast_time))
+        if len(get_episodes) == 0:
+            get_episodes = None
+        else:
+            get_episodes = get_episodes[0]
+
+        if get_broadcast_time == "Unknown":
+            get_broadcast_time = None
+
         curr.execute(
-            "INSERT INTO animes (score, description, image_url, episodes, title, duration, aired_start, aired_end, broadcast_day, broadcast_time ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s) RETURNING anime_id", (float(data["score"]), data["description"], data["image_url"], get_episodes[0], data["title"], get_duration, get_aired_start, get_aired_end, get_broadcast_day, get_broadcast_time))
-        anime_id = curr.fetchone()[0]
+            "INSERT INTO animes (score, description, image_url, episodes, title, duration, aired_start, aired_end, broadcast_day, broadcast_time ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s) RETURNING anime_id", (float(data["score"]), data["description"], data["image_url"], get_episodes, data["title"], get_duration, get_aired_start, get_aired_end, get_broadcast_day, get_broadcast_time))
+        anime_id = curr.fetchone()
+        anime_id = anime_id[0]
 
         # add type
         curr.execute(
@@ -296,8 +309,6 @@ def parse_data(data):
                 "SELECT rating_id FROM ratings WHERE rating_name = (%s)", (data["rating"],))
             rating_id = curr.fetchone()[0]
 
-            print((type_id, premiered_id, source_id,
-                   status_id, rating_id, anime_id))
             curr.execute("UPDATE animes SET fk_type=%s, fk_season=%s, fk_source=%s, fk_status=%s, fk_rating=%s WHERE anime_id=%s",
                          (type_id, premiered_id, source_id, status_id, rating_id, anime_id))
 
