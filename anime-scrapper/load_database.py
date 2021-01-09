@@ -243,74 +243,75 @@ def parse_data(data):
                 curr.execute(
                     "INSERT INTO alt_names (fk_anime_id, alt_name) VALUES (%s,%s)", (anime_id, name))
 
-            # add producers
-            for producer in data["producers"]:
-                curr.execute(
-                    "INSERT INTO producers (producer_name) VALUES ( %s)  ON CONFLICT (producer_name) DO NOTHING RETURNING producer_id", (producer,))
-                curr.execute(
-                    "SELECT producer_id FROM producers WHERE producer_name = (%s)", (producer,))
-                producer_id = curr.fetchone()[0]
-                curr.execute(
-                    "INSERT INTO producers_animes (fk_anime_id, fk_producer_id) VALUES (%s, %s)", (anime_id, producer_id))
-
-            # add licensors
-            for licensor in data["licensors"]:
-                curr.execute(
-                    "INSERT INTO licensors (licensor_name) VALUES (%s)  ON CONFLICT (licensor_name) DO NOTHING RETURNING licensor_id",  (licensor,))
-                curr.execute(
-                    "SELECT licensor_id FROM licensors WHERE licensor_name = (%s)", (licensor,))
-                licensor_id = curr.fetchone()[0]
-                curr.execute(
-                    "INSERT INTO licensors_animes (fk_anime_id, fk_licensor_id) VALUES (%s, %s)", (anime_id, licensor_id))
-
-            # add studios
-            for studio in data["studios"]:
-                curr.execute(
-                    "INSERT INTO studios (studio_name) VALUES ( %s) ON CONFLICT (studio_name) DO NOTHING RETURNING studio_id ", (
-                        studio,))
-                curr.execute(
-                    "SELECT studio_id FROM studios WHERE studio_name = (%s)", (studio,))
-                studio_id = curr.fetchone()[0]
-                curr.execute(
-                    "INSERT INTO studios_animes (fk_anime_id, fk_studios_id) VALUES (%s, %s)", (anime_id, studio_id))
-
-            # add genres
-            for genre in data["genres"]:
-                curr.execute(
-                    "INSERT INTO genres ( genre_name) VALUES ( %s)  ON CONFLICT (genre_name) DO NOTHING",  (genre,))
-                curr.execute(
-                    "SELECT genre_id FROM genres WHERE genre_name = (%s)", (genre,))
-                genre_id = curr.fetchone()[0]
-                curr.execute(
-                    "INSERT INTO genres_animes (fk_anime_id, fk_genre_id) VALUES (%s, %s)", (anime_id, genre_id))
-
-            # add rest of anime info
+        # add producers
+        for producer in data["producers"]:
             curr.execute(
-                "SELECT type_id FROM types WHERE type_name = (%s)", (data["type"],))
-            type_id = curr.fetchone()[0]
-
+                "INSERT INTO producers (producer_name) VALUES ( %s)  ON CONFLICT (producer_name) DO NOTHING RETURNING producer_id", (producer,))
             curr.execute(
-                "SELECT season_id FROM seasons WHERE season_date = (%s)", (premiered,))
-            premiered_id = curr.fetchone()
-            if premiered_id and len(premiered_id) >= 1:
-                premiered_id = premiered_id[0]
-            else:
-                premiered_id = None
-
+                "SELECT producer_id FROM producers WHERE producer_name = (%s)", (producer,))
+            producer_id = curr.fetchone()[0]
             curr.execute(
-                "SELECT source_id FROM sources WHERE source_name = (%s)", (data["source"],))
-            source_id = curr.fetchone()[0]
+                "INSERT INTO producers_animes (fk_anime_id, fk_producer_id) VALUES (%s, %s)", (anime_id, producer_id))
 
+        # add licensors
+        for licensor in data["licensors"]:
             curr.execute(
-                "SELECT status_id FROM statuses WHERE status_name = (%s)", (data["status"],))
-            status_id = curr.fetchone()[0]
-
+                "INSERT INTO licensors (licensor_name) VALUES (%s)  ON CONFLICT (licensor_name) DO NOTHING RETURNING licensor_id",  (licensor,))
             curr.execute(
-                "SELECT rating_id FROM ratings WHERE rating_name = (%s)", (data["rating"],))
-            rating_id = curr.fetchone()[0]
+                "SELECT licensor_id FROM licensors WHERE licensor_name = (%s)", (licensor,))
+            licensor_id = curr.fetchone()[0]
+            curr.execute(
+                "INSERT INTO licensors_animes (fk_anime_id, fk_licensor_id) VALUES (%s, %s)", (anime_id, licensor_id))
 
-            curr.execute("UPDATE animes SET fk_type=%s, fk_season=%s, fk_source=%s, fk_status=%s, fk_rating=%s WHERE anime_id=%s",
-                         (type_id, premiered_id, source_id, status_id, rating_id, anime_id))
+        # add studios
+        for studio in data["studios"]:
+            curr.execute(
+                "INSERT INTO studios (studio_name) VALUES ( %s) ON CONFLICT (studio_name) DO NOTHING RETURNING studio_id ", (
+                    studio,))
+            curr.execute(
+                "SELECT studio_id FROM studios WHERE studio_name = (%s)", (studio,))
+            studio_id = curr.fetchone()[0]
+            curr.execute(
+                "INSERT INTO studios_animes (fk_anime_id, fk_studios_id) VALUES (%s, %s)", (anime_id, studio_id))
+
+        # add genres
+
+        for genre in data["genres"]:
+            curr.execute(
+                "INSERT INTO genres ( genre_name) VALUES ( %s)  ON CONFLICT (genre_name) DO NOTHING",  (genre,))
+            curr.execute(
+                "SELECT genre_id FROM genres WHERE genre_name = (%s)", (genre,))
+            genre_id = curr.fetchone()[0]
+            curr.execute(
+                "INSERT INTO genres_animes (fk_anime_id, fk_genre_id) VALUES (%s, %s)", (anime_id, genre_id))
+
+        # add rest of anime info
+        curr.execute(
+            "SELECT type_id FROM types WHERE type_name = (%s)", (data["type"],))
+        type_id = curr.fetchone()[0]
+
+        curr.execute(
+            "SELECT season_id FROM seasons WHERE season_date = (%s)", (premiered,))
+        premiered_id = curr.fetchone()
+        if premiered_id and len(premiered_id) >= 1:
+            premiered_id = premiered_id[0]
+        else:
+            premiered_id = None
+
+        curr.execute(
+            "SELECT source_id FROM sources WHERE source_name = (%s)", (data["source"],))
+        source_id = curr.fetchone()[0]
+
+        curr.execute(
+            "SELECT status_id FROM statuses WHERE status_name = (%s)", (data["status"],))
+        status_id = curr.fetchone()[0]
+
+        curr.execute(
+            "SELECT rating_id FROM ratings WHERE rating_name = (%s)", (data["rating"],))
+        rating_id = curr.fetchone()[0]
+
+        curr.execute("UPDATE animes SET fk_type=%s, fk_season=%s, fk_source=%s, fk_status=%s, fk_rating=%s WHERE anime_id=%s",
+                     (type_id, premiered_id, source_id, status_id, rating_id, anime_id))
 
 
 def load_data(curr):

@@ -3,7 +3,7 @@ const { gql } = require('apollo-server');
 const anime_typeDefs = gql`
 	type Anime {
 		id: ID!
-		name: String!
+		title: String
 		score: Float
 		description: String!
 		image_url: String
@@ -18,56 +18,61 @@ const anime_typeDefs = gql`
 		source: Source
 		status: Status
 		rating: Rating
-		genre: [Genre]
+		genres: [Genre]
 		licensors: [Licensor]
 		producers: [Producer]
-		studio: [Studio]
+		studios: [Studio]
 	}
 
 	type Genre {
-		id: ID!
-		name: String!
+		genre_id: ID!
+		genre_name: String!
 	}
 
 	type Licensor {
-		id: ID!
-		name: String!
+		licensor_id: ID!
+		licensor_name: String!
 	}
 
 	type Producer {
-		id: ID!
-		name: String!
+		producer_id: ID!
+		producer_name: String!
 	}
 
 	type Rating {
-		id: ID!
-		name: String!
+		rating_id: ID!
+		rating_name: String!
 	}
 
 	type Season {
-		id: ID!
+		season_id: ID!
 		season_date: String!
 	}
 
 	type Source {
-		id: ID!
+		source_id: ID!
 		source_name: String!
 	}
 
 	type Status {
-		id: ID!
+		status_id: ID!
 		status_name: String!
 	}
 
 	type Studio {
-		id: ID!
+		studio_id: ID!
 		studio_name: String!
 	}
 
 	type Type {
-		id: ID!
+		type_id: ID!
 		type_name: String!
+	}
+
+	type Query {
+		animes: [Anime]
+		anime(id: Int!): Anime
 	}
 `;
 
-module.exports = anime_typeDefs;
+module.exports = { anime_typeDefs };
