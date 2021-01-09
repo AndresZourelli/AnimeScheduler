@@ -6,6 +6,7 @@ const resolverAnime = {
 			const { rows } = await pool.query(
 				'select * from animes as a left join "types" t on a.fk_type=t.type_id left join seasons s on s.season_id=a.fk_season left join sources s2 on s2.source_id=a.fk_source left join statuses s3 on s3.status_id=a.fk_status left join ratings r on r.rating_id=a.fk_rating limit 5'
 			);
+
 			let complete_data = rows.map(async (row) => {
 				let anime_id = row.anime_id;
 
@@ -51,6 +52,7 @@ const resolverAnime = {
 				'select * from (select * from animes where anime_id=$1) as a left join "types" t on a.fk_type=t.type_id left join seasons s on s.season_id=a.fk_season left join sources s2 on s2.source_id=a.fk_source left join statuses s3 on s3.status_id=a.fk_status left join ratings r on r.rating_id=a.fk_rating',
 				[ args.id ]
 			);
+
 			let complete_data = rows.map(async (row) => {
 				let anime_id = row.anime_id;
 

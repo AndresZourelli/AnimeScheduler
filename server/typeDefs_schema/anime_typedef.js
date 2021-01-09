@@ -17,11 +17,17 @@ const anime_typeDefs = gql`
 		season: Season
 		source: Source
 		status: Status
-		rating: Rating
+		rating_name: String
+		rating_id: Int
 		genres: [Genre]
 		licensors: [Licensor]
 		producers: [Producer]
 		studios: [Studio]
+		fk_type: Int
+		fk_season: Int
+		fk_source: Int
+		fk_status: Int
+		fk_rating: Int
 	}
 
 	type Genre {
