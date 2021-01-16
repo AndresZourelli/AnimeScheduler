@@ -75,9 +75,10 @@ sql_create_table_anime = """
 
 sql_create_table_genre_anime = """
     CREATE TABLE IF NOT EXISTS genres_animes (
-        genre_id serial PRIMARY KEY,
+        genre_id serial,
         fk_genre_id integer,
         fk_anime_id integer,
+        PRIMARY KEY (fk_genre_id, fk_anime_id),
         FOREIGN KEY (fk_genre_id) REFERENCES genres (genre_id) ON UPDATE CASCADE ON DELETE CASCADE,
         FOREIGN KEY (fk_anime_id) REFERENCES animes (anime_id) ON UPDATE CASCADE ON DELETE CASCADE
     );
@@ -101,9 +102,10 @@ sql_create_table_producers = """
 
 sql_create_table_producers_anime = """
     CREATE TABLE IF NOT EXISTS producers_animes (
-        producer_anime_id serial PRIMARY KEY,
+        producer_anime_id serial,
         fk_anime_id integer,
         fk_producer_id integer,
+        PRIMARY KEY (fk_producer_id, fk_anime_id),
         FOREIGN KEY (fk_anime_id) REFERENCES animes (anime_id) ON UPDATE CASCADE ON DELETE CASCADE,
         FOREIGN KEY (fk_producer_id) REFERENCES producers (producer_id) ON UPDATE CASCADE ON DELETE CASCADE
     );
@@ -118,9 +120,10 @@ sql_create_table_licensors = """
 
 sql_create_table_licensors_anime = """
     CREATE TABLE IF NOT EXISTS licensors_animes (
-        licensor_anime_id serial PRIMARY KEY,
+        licensor_anime_id serial,
         fk_licensor_id integer,
         fk_anime_id integer,
+        PRIMARY KEY (fk_licensor_id, fk_anime_id),
         FOREIGN KEY (fk_licensor_id) REFERENCES licensors (licensor_id) ON UPDATE CASCADE ON DELETE CASCADE,
         FOREIGN KEY (fk_anime_id) REFERENCES animes (anime_id) ON UPDATE CASCADE ON DELETE CASCADE
     );
@@ -135,11 +138,12 @@ sql_create_table_studios = """
 
 sql_create_table_studios_anime = """
     CREATE TABLE IF NOT EXISTS studios_animes (
-        studios_anime_id serial PRIMARY KEY,
+        studios_anime_id serial,
         fk_anime_id integer,
-        fk_studios_id integer,
+        fk_studio_id integer,
+        PRIMARY KEY (fk_studio_id, fk_anime_id),
         FOREIGN KEY (fk_anime_id) REFERENCES animes (anime_id) ON UPDATE CASCADE ON DELETE CASCADE,
-        FOREIGN KEY (fk_studios_id) REFERENCES studios (studio_id) ON UPDATE CASCADE ON DELETE CASCADE
+        FOREIGN KEY (fk_studio_id) REFERENCES studios (studio_id) ON UPDATE CASCADE ON DELETE CASCADE
     );
 """
 
@@ -272,7 +276,7 @@ def parse_data(data):
                 "SELECT studio_id FROM studios WHERE studio_name = (%s)", (studio,))
             studio_id = curr.fetchone()[0]
             curr.execute(
-                "INSERT INTO studios_animes (fk_anime_id, fk_studios_id) VALUES (%s, %s)", (anime_id, studio_id))
+                "INSERT INTO studios_animes (fk_anime_id, fk_studio_id) VALUES (%s, %s)", (anime_id, studio_id))
 
         # add genres
 
