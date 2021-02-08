@@ -141,6 +141,10 @@ const anime_typeDefs = gql`
 	type Query {
 		getAnimes: [Anime]
 		getAnime(anime_id: Int!): Anime
+		getGenres: [Genre]
+		getLicensors: [Licensor]
+		getProducers: [Producer]
+		getStudios: [Studio]
 	}
 
 	type AnimeUpdateResponse {

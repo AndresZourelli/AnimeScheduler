@@ -1,11 +1,17 @@
 {
-  "name": "Anime-website",
-  "version": "1.0.0",
-  "main": "index.js",
-  "repository": "https://github.com/AndresZourelli/AnimeScheduler.git",
-  "author": "Andres <azourelli@gmail.com>",
-  "license": "MIT",
-  "dependencies": {
-    "react-router-dom": "^5.2.0"
-  }
+	"name": "Anime-website",
+	"version": "1.0.0",
+	"main": "index.js",
+	"repository": "https://github.com/AndresZourelli/AnimeScheduler.git",
+	"author": "Andres <azourelli@gmail.com>",
+	"license": "MIT",
+	"dependencies": {
+		"concurrently": "^5.3.0",
+		"react-router-dom": "^5.2.0"
+	},
+	"scripts": {
+		"dev": "concurrently  \"yarn server_dev\" \"yarn graphql_dev\" --kill-others-on-fail",
+		"graphql_dev": "cd server && yarn dev",
+		"server_dev": "cd anime-site && yarn dev"
+	}
 }

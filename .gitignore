@@ -1,3 +1,4 @@
 /node_modules
 anime*.json
 pg-data
+mongodb_data_container
