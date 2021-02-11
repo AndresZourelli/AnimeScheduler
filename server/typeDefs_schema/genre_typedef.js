@@ -2,7 +2,7 @@ const { gql } = require("apollo-server");
 
 const genre_typeDefs = gql`
   type Genre {
-    genre_id: ID!
+    _id: ID!
     genre_name: String!
   }
 
@@ -12,11 +12,7 @@ const genre_typeDefs = gql`
     checked: Boolean!
   }
 
-  extend type Query {
-    getGenres: [Genre]
-  }
-
-  type GenreUpdateResponse {
+  type genreUpdateResponse {
     success: Boolean!
     message: String
     genre_id: ID
@@ -27,10 +23,15 @@ const genre_typeDefs = gql`
     data: genreInput
   }
 
+  extend type Query {
+    getGenres: [Genre]
+    getGenre(genre_id: ID): Genre
+  }
+
   extend type Mutation {
-    createGenre(input: genreInput): GenreUpdateResponse!
-    editGenre(input: genreInputRequest): GenreUpdateResponse!
-    deletGgenre(genre_id: ID!): GenreUpdateResponse!
+    createGenre(input: genreInput): genreUpdateResponse!
+    editGenre(input: genreInputRequest): genreUpdateResponse!
+    deletGgenre(genre_id: ID!): genreUpdateResponse!
   }
 `;
 

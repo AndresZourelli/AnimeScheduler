@@ -6,6 +6,10 @@ const genreResolver = {
       const result = await Genres.find({});
       return result;
     },
+    getGenre: async (_, args) => {
+      const result = await Genres.find({ _id: args.genre_id });
+      return result[0];
+    },
   },
 };
 
