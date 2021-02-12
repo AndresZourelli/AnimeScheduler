@@ -6,13 +6,32 @@ const studio_typeDefs = gql`
     studio_name: String!
   }
 
-  input InputStudio {
-    studio_id: ID!
+  input studioInput {
+    studio_id: ID
     studio_name: String
-    checked: Boolean!
+    checked: Boolean
   }
+
+  input studioInputRequest {
+    studio_id: ID!
+    data: studioInput
+  }
+
+  type studioUpdateResponse {
+    success: Boolean!
+    message: String
+    studio_id: ID
+  }
+
   extend type Query {
     getStudios: [Studio]
+    getStudio(studio_id: ID!): Studio
+  }
+
+  extend type Mutation {
+    createStudio(input: studioInput): studioUpdateResponse!
+    editStudio(input: studioInputRequest): studioUpdateResponse!
+    deleteStudio(studio_id: ID!): studioUpdateResponse!
   }
 `;
 

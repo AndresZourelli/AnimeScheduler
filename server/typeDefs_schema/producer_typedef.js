@@ -6,14 +6,32 @@ const producer_typeDefs = gql`
     producer_name: String!
   }
 
-  input InputProducer {
-    producer_id: ID!
+  input producerInput {
+    producer_id: ID
     producer_name: String
-    checked: Boolean!
+    checked: Boolean
+  }
+
+  input producerInputRequest {
+    producer_id: ID!
+    data: producerInput
+  }
+
+  type producerUpdateResponse {
+    success: Boolean!
+    message: String
+    producer_id: ID
   }
 
   extend type Query {
     getProducers: [Producer]
+    getProducer(producer_id: ID!): Producer
+  }
+
+  extend type Mutation {
+    createProducer(input: producerInput): producerUpdateResponse!
+    editProducer(input: producerInputRequest): producerUpdateResponse!
+    deleteProducer(producer_id: ID!): producerUpdateResponse!
   }
 `;
 

@@ -7,9 +7,9 @@ const genre_typeDefs = gql`
   }
 
   input genreInput {
-    genre_id: ID!
+    genre_id: ID
     genre_name: String
-    checked: Boolean!
+    checked: Boolean
   }
 
   type genreUpdateResponse {
@@ -25,13 +25,13 @@ const genre_typeDefs = gql`
 
   extend type Query {
     getGenres: [Genre]
-    getGenre(genre_id: ID): Genre
+    getGenre(genre_id: ID!): Genre
   }
 
   extend type Mutation {
     createGenre(input: genreInput): genreUpdateResponse!
     editGenre(input: genreInputRequest): genreUpdateResponse!
-    deletGgenre(genre_id: ID!): genreUpdateResponse!
+    deleteGenre(genre_id: ID!): genreUpdateResponse!
   }
 `;
 
