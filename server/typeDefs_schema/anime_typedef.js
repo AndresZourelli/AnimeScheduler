@@ -1,4 +1,4 @@
-const { gql } = require("apollo-server");
+const { gql } = require("apollo-server-express");
 
 const anime_typeDefs = gql`
   type Anime {
@@ -62,8 +62,14 @@ const anime_typeDefs = gql`
     Japanese: String
   }
 
+  type AnimeResult {
+    animes: [Anime]
+    currentPage: Int
+    totalPages: Int
+  }
+
   type Query {
-    getAnimes: [Anime]
+    getAnimes(search: String, page: Int, limit: Int): AnimeResult
     getAnime(anime_id: ID!): Anime
   }
 

@@ -3,8 +3,37 @@ const Anime = require("../mongoDB/models/anime");
 const animeResolver = {
   Query: {
     getAnimes: async (_, args) => {
-      const result = await Anime.find({});
-      return result;
+      console.log(args);
+      const { search = null, page = 1, limit = 20 } = args;
+      let searchQuery = {};
+
+      if (search) {
+        searchQuery = {
+          $or: [
+            { title: { $regex: search, $options: "i" } },
+            { alt_names: { $regex: search, $options: "i" } },
+            { genres: { $regex: search, $options: "i" } },
+            { licensors: { $regex: search, $options: "i" } },
+            { producers: { $regex: search, $options: "i" } },
+            { studios: { $regex: search, $options: "i" } },
+            { season: { $regex: search, $options: "i" } },
+            { source: { $regex: search, $options: "i" } },
+            { status: { $regex: search, $options: "i" } },
+            { type: { $regex: search, $options: "i" } },
+            { score_avg: { $regex: search, $options: "i" } },
+          ],
+        };
+      }
+      const animes = await Anime.find(searchQuery)
+        .limit(limit)
+        .skip((page - 1) * limit)
+        .lean();
+      const count = await Anime.countDocuments(searchQuery);
+      return {
+        animes,
+        totalPages: Math.ceil(count / limit),
+        currentPage: page,
+      };
     },
     getAnime: async (_, args) => {
       const result = await Anime.find({ _id: args.anime_id });
