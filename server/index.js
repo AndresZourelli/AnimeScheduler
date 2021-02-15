@@ -4,6 +4,8 @@ const { resolvers } = require("./resolvers");
 const { typeDefs } = require("./typeDefs");
 require("dotenv").config();
 const mongoose = require("mongoose");
+const cors = require("cors");
+
 mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -11,6 +13,8 @@ mongoose.connect(process.env.MONGODB_URI, {
 });
 
 const app = express();
+
+app.use(cors());
 
 const server = new ApolloServer({
   typeDefs,
