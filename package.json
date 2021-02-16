@@ -6,8 +6,7 @@
 	"author": "Andres <azourelli@gmail.com>",
 	"license": "MIT",
 	"dependencies": {
-		"concurrently": "^5.3.0",
-		"react-router-dom": "^5.2.0"
+		"concurrently": "^5.3.0"
 	},
 	"scripts": {
 		"dev": "concurrently  \"yarn server_dev\" \"yarn graphql_dev\" --kill-others-on-fail",

@@ -1,13 +1,13 @@
-import "../styles/globals.css";
 import { ApolloProvider } from "@apollo/client";
-import { useApollo } from "../lib/apolloClient";
+import { useApollo } from "@/lib/apolloClient";
 import { ChakraProvider } from "@chakra-ui/react";
+import customTheme from "@/styles/theme";
 
 function MyApp({ Component, pageProps }) {
   const client = useApollo(pageProps);
   return (
     <ApolloProvider client={client}>
-      <ChakraProvider>
+      <ChakraProvider resetCSS theme={customTheme}>
         <Component {...pageProps} />
       </ChakraProvider>
     </ApolloProvider>
