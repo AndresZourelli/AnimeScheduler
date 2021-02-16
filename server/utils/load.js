@@ -10,13 +10,6 @@ const Producer = require("../mongoDB/models/producer");
 const Licensor = require("../mongoDB/models/licensor");
 const Studio = require("../mongoDB/models/studio");
 
-const genre_anime = require("../mongoDB/models/genre_anime");
-const licensor_anime = require("../mongoDB/models/licensor_anime");
-const producer_anime = require("../mongoDB/models/producer_anime");
-const studio_anime = require("../mongoDB/models/studio_anime");
-
-const momenttz = require("moment-timezone");
-
 require("dotenv").config({ path: "../" });
 const mongoose = require("mongoose");
 mongoose.connect("mongodb://localhost:27017/animeDB", {
@@ -40,6 +33,7 @@ const func = async () => {
           description: data[key].description,
           image_url: data[key].image_url,
           episodes: parseInt(data[key].episodes) || null,
+          avg_score: parseFloat(data[key].score),
           status: data[key].status,
           aired_start: data[key].aired?.split("to")[0]?.trim() ?? "Unknown",
           aired_end: data[key].aired?.split("to")[1]?.trim() ?? "Unknown",

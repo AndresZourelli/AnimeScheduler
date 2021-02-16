@@ -11,7 +11,7 @@ const animeSchema = new Schema(
       required: true,
     },
     avg_score: {
-      type: Schema.Types.Decimal128,
+      type: Number,
       default: 0,
     },
     score: [{ user_id: Schema.Types.ObjectId, user_score: Number }],

@@ -4,7 +4,7 @@ const anime_typeDefs = gql`
   type Anime {
     _id: ID!
     title: String
-    score_avg: Float
+    avg_score: Float
     description: String!
     image_url: String
     episodes: Int

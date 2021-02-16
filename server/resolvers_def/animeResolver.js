@@ -3,7 +3,6 @@ const Anime = require("../mongoDB/models/anime");
 const animeResolver = {
   Query: {
     getAnimes: async (_, args) => {
-      console.log(args);
       const { search = null, page = 1, limit = 20 } = args;
       let searchQuery = {};
 
