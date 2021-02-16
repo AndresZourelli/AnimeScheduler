@@ -19,7 +19,6 @@ export default function Home() {
   return (
     <>
       <Nav />
-      <div>Hello</div>
     </>
   );
 }
