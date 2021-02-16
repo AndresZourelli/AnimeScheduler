@@ -10,7 +10,6 @@ const AnimeCard = ({ title, image_url, score }) => {
       flexDirection="column"
       h="325px"
       w="200px"
-      justifyContent="center"
       position="relative">
       <Badge
         position="absolute"
