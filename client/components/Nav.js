@@ -4,22 +4,37 @@ import {
   Link,
   useColorMode,
   IconButton,
-  Text,
+  Button,
   Box,
   Heading,
-  Center
+  Center,
 } from "@chakra-ui/react";
 import { MoonIcon, SunIcon } from "@chakra-ui/icons";
-import { Image } from "@chakra-ui/react"
+import { Image } from "@chakra-ui/react";
 import NextLink from "next/link";
 
 const Nav = () => {
   const { colorMode, toggleColorMode } = useColorMode();
+  const isSignedIn = false;
+  const buttons = isSignedIn ? (
+    <Button mr="3">Sign out</Button>
+  ) : (
+    <>
+      <Button mr="3">Login</Button> <Button mr="3">Sign Up</Button>
+    </>
+  );
   return (
     <nav>
-      <Flex m="2" p="2" layerStyle={colorMode === "light" ? "header_light" : "header_dark"}>
+      <Flex
+        m="2"
+        p="2"
+        layerStyle={colorMode === "light" ? "header_light" : "header_dark"}>
         <Box mr="4">
-          <Image boxSize="40px" src="/coffee_jelly3.svg" alt="Coffee Jelly Logo" />
+          <Image
+            boxSize="40px"
+            src="/coffee_jelly3.svg"
+            alt="Coffee Jelly Logo"
+          />
         </Box>
         <Box>
           <Heading size="md" mr="4" textStyle="h2">
@@ -28,6 +43,7 @@ const Nav = () => {
         </Box>
         <Spacer />
         <Box>
+          {buttons}
           <IconButton
             onClick={toggleColorMode}
             icon={colorMode === "light" ? <MoonIcon /> : <SunIcon />}
@@ -35,7 +51,8 @@ const Nav = () => {
         </Box>
       </Flex>
       <Flex>
-        <Center layerStyle={colorMode === "light" ? "navbar_light" : "navbar_dark"}>
+        <Center
+          layerStyle={colorMode === "light" ? "navbar_light" : "navbar_dark"}>
           <NextLink href="/">
             <Link mr="4">Home</Link>
           </NextLink>
