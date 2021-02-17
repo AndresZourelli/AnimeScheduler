@@ -3,6 +3,7 @@ const { genre_typeDefs } = require("./typeDefs_schema/genre_typedef");
 const { licensor_typeDefs } = require("./typeDefs_schema/licensor_typedef");
 const { producer_typeDefs } = require("./typeDefs_schema/producer_typedef");
 const { studio_typeDefs } = require("./typeDefs_schema/studio_typedef.js");
+const { user_typeDefs } = require("./typeDefs_schema/user_typedef");
 
 const typeDefs = [
   anime_typeDefs,
@@ -10,6 +11,7 @@ const typeDefs = [
   licensor_typeDefs,
   producer_typeDefs,
   studio_typeDefs,
+  user_typeDefs,
 ];
 
 module.exports = { typeDefs };

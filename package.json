@@ -9,7 +9,7 @@
 		"concurrently": "^5.3.0"
 	},
 	"scripts": {
-		"dev": "concurrently  \"yarn clientr_dev\" \"yarn graphql_dev\" --kill-others-on-fail",
+		"dev": "concurrently  \"yarn client_dev\" \"yarn graphql_dev\" --kill-others-on-fail",
 		"graphql_dev": "cd server && yarn dev",
 		"client_dev": "cd client && yarn dev"
 	}

@@ -5,6 +5,7 @@ const { typeDefs } = require("./typeDefs");
 require("dotenv").config();
 const mongoose = require("mongoose");
 const cors = require("cors");
+const jwt = require("jsonwebtoken");
 
 mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
@@ -16,9 +17,24 @@ const app = express();
 
 app.use(cors());
 
+const getUser = (token) => {
+  try {
+    if (token) {
+      return jwt.verify(token, process.env.JWT_SECRET);
+    }
+    return null;
+  } catch (error) {
+    return null;
+  }
+};
+
 const server = new ApolloServer({
   typeDefs,
   resolvers,
+  context: ({ req }) => {
+    const token = req.get("Authorization") || "";
+    return { user: getUser(token.replace("Bearer", "")) };
+  },
 });
 
 server.applyMiddleware({ app });
