@@ -8,6 +8,7 @@ const AnimeCard = ({ title, image_url, score }) => {
       d="flex"
       alignItems="center"
       flexDirection="column"
+      minW="200px"
       h="325px"
       w="200px"
       position="relative">
