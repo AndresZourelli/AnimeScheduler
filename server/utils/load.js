@@ -55,6 +55,7 @@ const func = async () => {
           studios: data[key].studios,
           producers: data[key].producers,
           licensors: data[key].licensors,
+          minutes_watched: 0,
         },
         { upsert: true }
       );

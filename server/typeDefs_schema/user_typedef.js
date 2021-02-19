@@ -9,38 +9,29 @@ const user_typeDefs = gql`
     message: String
   }
 
-  input CreateUserInput {
-    username: String!
-    password: String!
-    email: String!
-  }
-
-  type CreateUserResponse {
+  type UserResponse {
     success: Boolean!
-    message: String
-    user_id: ID
-    token: String!
-  }
-
-  type UserLoginResponse {
-    user: User
-    success: Boolean!
-    errorMessage: String
+    errors: [UserError!]
     token: String
+    user: User
   }
 
-  input UserLogin {
-    password: String!
-    email: String!
+  type UserError {
+    type: String!
+    message: String!
   }
 
   extend type Query {
-    userLogin(input: UserLogin): UserLoginResponse!
-    getUser(id: ID!): User!
+    userLogin(password: String!, email: String!): UserResponse!
+    getUser(id: ID!): UserResponse!
   }
 
   extend type Mutation {
-    createUser(input: CreateUserInput): CreateUserResponse!
+    createUser(
+      username: String!
+      password: String!
+      email: String!
+    ): UserResponse!
   }
 `;
 

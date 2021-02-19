@@ -52,6 +52,7 @@ const animeSchema = new Schema(
       type: String,
     },
     alt_names: { type: Schema.Types.Mixed },
+    minutes_watched: { type: Number },
     genres: [],
     studios: [],
     producers: [],

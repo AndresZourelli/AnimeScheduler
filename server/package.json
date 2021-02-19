@@ -25,6 +25,7 @@
 		"graphql-tools": "^7.0.2",
 		"jsonwebtoken": "^8.5.1",
 		"lodash": "^4.17.20",
-		"mongoose": "^5.11.13"
+		"mongoose": "^5.11.13",
+		"validator": "^13.5.2"
 	}
 }

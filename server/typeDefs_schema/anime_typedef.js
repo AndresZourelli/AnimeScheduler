@@ -24,6 +24,7 @@ const anime_typeDefs = gql`
     producers: [String]
     studios: [String]
     alt_names: Names
+    minutes_watched: Int
   }
 
   input AnimeInput {
@@ -48,6 +49,7 @@ const anime_typeDefs = gql`
     producers: [String]
     studios: [String]
     alt_names: InputNames
+    minutes_watched: Int
   }
 
   type Names {
@@ -69,24 +71,27 @@ const anime_typeDefs = gql`
   }
 
   type Query {
-    getAnimes(search: String, page: Int, limit: Int): AnimeResult
+    getAnimes(search: String, page: Int, limit: Int): AnimeResult!
     getAnime(anime_id: ID!): Anime
+    getAnimeHighestRated(page: Int, limit: Int): AnimeResult!
+    getAnimeMostWatched(page: Int, limit: Int): AnimeResult!
   }
 
   type AnimeUpdateResponse {
     success: Boolean!
     message: String
     anime_id: ID
+    error: [Error!]
   }
 
-  input AnimeInputRequest {
-    anime_id: ID!
-    data: AnimeInput
+  type Error {
+    type: String!
+    message: String!
   }
 
   type Mutation {
-    createAnime(input: AnimeInput): AnimeUpdateResponse!
-    editAnime(input: AnimeInputRequest): AnimeUpdateResponse!
+    createAnime(data: AnimeInput!): AnimeUpdateResponse!
+    editAnime(anime_id: ID!, data: AnimeInput!): AnimeUpdateResponse!
     deleteAnime(anime_id: ID!): AnimeUpdateResponse!
   }
 `;

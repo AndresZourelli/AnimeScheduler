@@ -1,4 +1,5 @@
 const Anime = require("../mongoDB/models/anime");
+const { formatErrors } = require("../utils/FormatError");
 
 const animeResolver = {
   Query: {
@@ -19,7 +20,7 @@ const animeResolver = {
             { source: { $regex: search, $options: "i" } },
             { status: { $regex: search, $options: "i" } },
             { type: { $regex: search, $options: "i" } },
-            { score_avg: { $regex: search, $options: "i" } },
+            { avg_score: { $regex: search, $options: "i" } },
           ],
         };
       }
@@ -38,11 +39,43 @@ const animeResolver = {
       const result = await Anime.find({ _id: args.anime_id });
       return result[0];
     },
+    getAnimeHighestRated: async (_, { page = 1, limit = 20 }) => {
+      const animes = await Anime.find({
+        $query: {},
+        $orderby: { avg_score: -1 },
+      })
+        .limit(limit)
+        .skip((page - 1) * limit)
+        .lean();
+
+      const count = await Anime.countDocuments({});
+      return {
+        animes,
+        totalPages: Math.ceil(count / limit),
+        currentPage: page,
+      };
+    },
+    getAnimeMostWatched: async (_, { page = 1, limit = 20 }) => {
+      const animes = await Anime.find({
+        $query: {},
+        $orderby: { minutes_watched: -1 },
+      })
+        .limit(limit)
+        .skip((page - 1) * limit)
+        .lean();
+
+      const count = await Anime.countDocuments({});
+      return {
+        animes,
+        totalPages: Math.ceil(count / limit),
+        currentPage: page,
+      };
+    },
   },
 
   Mutation: {
     createAnime: async (_, args) => {
-      const raw_data = args.input;
+      const raw_data = args.data;
       const new_anime = new Anime(raw_data);
       let response = {
         success: true,
@@ -54,26 +87,22 @@ const animeResolver = {
         return response;
       } catch (e) {
         response.success = false;
-        response.message = e;
+        response.error = formatErrors(e);
         return response;
       }
     },
-    editAnime: async (_, args) => {
-      const raw_data = args.input;
+    editAnime: async (_, { anime_id, data }) => {
       let response = {
         success: true,
         message: "Anime sucessfully Updated!",
-        anime_id: args.input.anime_id,
+        anime_id: anime_id,
       };
       try {
-        const update = await Anime.updateOne(
-          { _id: raw_data.anime_id },
-          raw_data.data
-        );
+        const update = await Anime.updateOne({ _id: anime_id }, data);
         return response;
       } catch (e) {
         response.success = false;
-        response.message = e;
+        response.error = formatErrors(e);
         return response;
       }
     },
@@ -88,7 +117,7 @@ const animeResolver = {
         return response;
       } catch (error) {
         response.success = false;
-        response.message = e;
+        response.error = formatErrors(e);
         return response;
       }
     },

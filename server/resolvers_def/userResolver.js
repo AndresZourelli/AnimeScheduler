@@ -1,6 +1,8 @@
 const User = require("../mongoDB/models/user");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const ValidationError = require("../lib/CustomErrors");
+const { formatErrors } = require("../utils/FormatError");
 require("dotenv").config();
 
 const userResolver = {
@@ -8,17 +10,20 @@ const userResolver = {
     getUser: async (_, args, { user }) => {
       try {
         if (!user) {
-          throw "Not Authenticated";
+          const new_error = new ValidationError(
+            "authentication",
+            "Authentication Error"
+          );
+
+          throw new_error;
         }
         return await User.findById(user.id);
       } catch (error) {
-        return { message: error };
+        return { message: formatErrors(error), success: false };
       }
     },
-    userLogin: async (_, args) => {
+    userLogin: async (_, { email, password }) => {
       try {
-        const { email, password } = args.input;
-
         const findUser = await User.findOne({ email });
         const pwMatch = await bcrypt.compare(password, findUser.password);
 
@@ -34,24 +39,25 @@ const userResolver = {
             token,
           };
         } else {
-          throw "Incorrect Password";
+          const new_error = new ValidationError(
+            "password",
+            "Incorrect password"
+          );
+          throw new_error;
         }
-      } catch (error) {
+      } catch (e) {
         return {
           success: false,
-          errorMessage: error,
+          errors: formatErrors(e),
         };
       }
     },
   },
   Mutation: {
-    createUser: async (_, args) => {
+    createUser: async (_, { username, email, password }) => {
       try {
-        let new_user = args.input;
+        const create_user = new User({ username, email, password });
 
-        const hash = await bcrypt.hash(new_user.password, 10);
-        new_user.password = hash;
-        const create_user = new User(new_user);
         await create_user.save();
 
         const token = jwt.sign(
@@ -63,13 +69,13 @@ const userResolver = {
         return {
           success: true,
           message: "New User Created!",
-          user_id: create_user._id,
+          user: { user_id: create_user._id },
           token,
         };
-      } catch (error) {
+      } catch (e) {
         return {
           success: false,
-          message: error,
+          errors: formatErrors(e),
         };
       }
     },
