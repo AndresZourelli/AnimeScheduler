@@ -2,14 +2,14 @@ import { gql, useQuery } from "@apollo/client";
 import HorizontalScroll from "@/components/HorizontalScroll";
 import { Heading, Box } from "@chakra-ui/react";
 
-const POPULAR_ANIME_QUERY = gql`
-  query GetPopularAnimes($page: Int, $limit: Int) {
-    getAnimeHighestRated(page: $page, limit: $limit) {
+const MOST_WATCHED_ANIME_QUERY = gql`
+  query GetMostWatchedAnimes($page: Int, $limit: Int) {
+    getAnimeMostWatched(page: $page, limit: $limit) {
       animes {
         title
         description
         image_url
-        avg_score
+        minutes_watched
       }
       totalPages
       currentPage
@@ -17,17 +17,17 @@ const POPULAR_ANIME_QUERY = gql`
   }
 `;
 
-const PopularRow = () => {
-  const { loading, error, data } = useQuery(POPULAR_ANIME_QUERY);
-  const animes = data?.getAnimeHighestRated?.animes;
+const MostWatchedRow = () => {
+  const { loading, error, data } = useQuery(MOST_WATCHED_ANIME_QUERY);
+  const animes = data?.getAnimeMostWatched?.animes;
   return (
     <Box>
       <Heading mt="25px" ml="50px">
-        Popular Animes
+        Most Watched Animes
       </Heading>
       <HorizontalScroll animes={animes} />
     </Box>
   );
 };
 
-export default PopularRow;
+export default MostWatchedRow;

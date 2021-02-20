@@ -8,10 +8,12 @@ const AnimeCard = ({ title, image_url, score }) => {
       d="flex"
       alignItems="center"
       flexDirection="column"
-      minW="200px"
-      h="325px"
+      position="relative"
+      overflow="hidden"
+      height="100%"
+      minH="350px"
       w="200px"
-      position="relative">
+      flex="0 0 auto">
       <Badge
         position="absolute"
         zIndex="100"
@@ -22,14 +24,21 @@ const AnimeCard = ({ title, image_url, score }) => {
         opacity="1">
         {score}
       </Badge>
-      <NextImage src={image_url} alt={title} height={275} width={175} />
+      <Box width="100%" height="80%" position="relative" display="block">
+        <NextImage src={image_url} alt={title} layout="fill" top="0" />
+      </Box>
       <Heading
+        height="20%"
+        display="inline-block"
+        width="calc(100%)"
         pt="3"
         size="xs"
-        overflow="hidden"
         wordBreak="normal"
         textAlign="center"
-        justifySelf="center">
+        justifySelf="center"
+        overflow="hidden"
+        whiteSpace="nowrap"
+        textOverflow="ellipsis">
         {title}
       </Heading>
     </Box>

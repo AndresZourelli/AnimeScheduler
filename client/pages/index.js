@@ -4,6 +4,7 @@ import AnimeCard from "@/components/AnimeCard";
 import { Flex, SimpleGrid, Spinner, Wrap, WrapItem } from "@chakra-ui/react";
 import { v4 as uuidv4 } from "uuid";
 import PopularRow from "@/components/PopularRow";
+import MostWatchedRow from "@/components/MostWatchedRow";
 
 const ALL_ANIME_QUERY = gql`
   query {
@@ -42,6 +43,7 @@ export default function Home() {
     <>
       <Nav />
       <PopularRow />
+      <MostWatchedRow />
       <SimpleGrid
         minChildWidth="200px"
         spacing="5px"
