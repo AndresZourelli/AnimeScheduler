@@ -1,20 +1,9 @@
 const { gql } = require("apollo-server-express");
 
-const producer_typeDefs = gql`
+const producerDef = gql`
   type Producer {
     producer_id: ID!
     producer_name: String!
-  }
-
-  input producerInput {
-    producer_id: ID
-    producer_name: String
-    checked: Boolean
-  }
-
-  input producerInputRequest {
-    producer_id: ID!
-    data: producerInput
   }
 
   type producerUpdateResponse {
@@ -29,10 +18,13 @@ const producer_typeDefs = gql`
   }
 
   extend type Mutation {
-    createProducer(input: producerInput): producerUpdateResponse!
-    editProducer(input: producerInputRequest): producerUpdateResponse!
+    createProducer(producer_name: String): producerUpdateResponse!
+    editProducer(
+      producer_id: ID
+      producer_name: String
+    ): producerUpdateResponse!
     deleteProducer(producer_id: ID!): producerUpdateResponse!
   }
 `;
 
-module.exports = { producer_typeDefs };
+module.exports = { producerDef };

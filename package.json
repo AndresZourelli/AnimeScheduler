@@ -12,5 +12,6 @@
 		"dev": "concurrently  \"yarn client_dev\" \"yarn graphql_dev\" --kill-others-on-fail",
 		"graphql_dev": "cd server && yarn dev",
 		"client_dev": "cd client && yarn dev"
-	}
+	},
+	"devDependencies": {}
 }

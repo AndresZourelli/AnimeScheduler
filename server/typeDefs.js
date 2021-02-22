@@ -1,17 +1,19 @@
-const { anime_typeDefs } = require("./typeDefs_schema/anime_typedef.js");
-const { genre_typeDefs } = require("./typeDefs_schema/genre_typedef");
-const { licensor_typeDefs } = require("./typeDefs_schema/licensor_typedef");
-const { producer_typeDefs } = require("./typeDefs_schema/producer_typedef");
-const { studio_typeDefs } = require("./typeDefs_schema/studio_typedef.js");
-const { user_typeDefs } = require("./typeDefs_schema/user_typedef");
+const { animeDef } = require("./typeDefs/animeDef.js");
+const { genreDef } = require("./typeDefs/genreDef");
+const { licensorDef } = require("./typeDefs/licensorDef");
+const { producerDef } = require("./typeDefs/producerDef");
+const { studioDef } = require("./typeDefs/studioDef.js");
+const { userDef } = require("./typeDefs/userDef");
+const { authDef } = require("./typeDefs/authDef");
 
 const typeDefs = [
-  anime_typeDefs,
-  genre_typeDefs,
-  licensor_typeDefs,
-  producer_typeDefs,
-  studio_typeDefs,
-  user_typeDefs,
+  animeDef,
+  genreDef,
+  licensorDef,
+  producerDef,
+  studioDef,
+  userDef,
+  authDef,
 ];
 
 module.exports = { typeDefs };

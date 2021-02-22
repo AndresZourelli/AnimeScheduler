@@ -1,19 +1,21 @@
-const { animeResolver } = require("./resolvers_def/animeResolver");
-const { genreResolver } = require("./resolvers_def/genreResolver");
-const { licensorResolver } = require("./resolvers_def/licensorResolver");
-const { producerResolver } = require("./resolvers_def/producerResolver");
-const { studioResolver } = require("./resolvers_def/studioResolver");
-const { userResolver } = require("./resolvers_def/userResolver");
-const { merge, _ } = require("lodash");
+const { merge } = require("lodash");
+const { animeResolver } = require("./resolvers/animeRes");
+const { genreResolver } = require("./resolvers/genreRes");
+const { licensorResolver } = require("./resolvers/licensorRes");
+const { producerResolver } = require("./resolvers/producerRes");
+const { studioResolver } = require("./resolvers/studioRes");
+const { userResolver } = require("./resolvers/userRes");
+const { authResolver } = require("./resolvers/authRes");
 
-const resolvers = _.merge(
+const resolvers = merge(
   {},
   animeResolver,
   genreResolver,
   licensorResolver,
   producerResolver,
   studioResolver,
-  userResolver
+  userResolver,
+  authResolver
 );
 
 module.exports = { resolvers };

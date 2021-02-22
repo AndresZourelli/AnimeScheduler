@@ -1,20 +1,9 @@
 const { gql } = require("apollo-server-express");
 
-const studio_typeDefs = gql`
+const studioDef = gql`
   type Studio {
     studio_id: ID!
     studio_name: String!
-  }
-
-  input studioInput {
-    studio_id: ID
-    studio_name: String
-    checked: Boolean
-  }
-
-  input studioInputRequest {
-    studio_id: ID!
-    data: studioInput
   }
 
   type studioUpdateResponse {
@@ -29,10 +18,10 @@ const studio_typeDefs = gql`
   }
 
   extend type Mutation {
-    createStudio(input: studioInput): studioUpdateResponse!
-    editStudio(input: studioInputRequest): studioUpdateResponse!
+    createStudio(studio_name: String): studioUpdateResponse!
+    editStudio(studio_id: ID!, studio_name: String!): studioUpdateResponse!
     deleteStudio(studio_id: ID!): studioUpdateResponse!
   }
 `;
 
-module.exports = { studio_typeDefs };
+module.exports = { studioDef };

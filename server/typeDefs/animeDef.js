@@ -1,6 +1,6 @@
 const { gql } = require("apollo-server-express");
 
-const anime_typeDefs = gql`
+const animeDef = gql`
   type Anime {
     _id: ID!
     title: String
@@ -91,9 +91,9 @@ const anime_typeDefs = gql`
 
   type Mutation {
     createAnime(data: AnimeInput!): AnimeUpdateResponse!
-    editAnime(anime_id: ID!, data: AnimeInput!): AnimeUpdateResponse!
-    deleteAnime(anime_id: ID!): AnimeUpdateResponse!
+    editAnime(animeId: ID!, data: AnimeInput!): AnimeUpdateResponse!
+    deleteAnime(animeId: ID!): AnimeUpdateResponse!
   }
 `;
 
-module.exports = { anime_typeDefs };
+module.exports = { animeDef };

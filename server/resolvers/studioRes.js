@@ -6,22 +6,21 @@ const studioResolver = {
       const result = await Studio.find({ _id: args.studio_id });
       return result[0];
     },
-    getStudios: async (_, args) => {
+    getStudios: async () => {
       const result = await Studio.find({});
       return result;
     },
   },
   Mutation: {
-    createStudio: async (_, args) => {
-      const data = args.input;
-      const new_studio = new Studio(data);
-      let response = {
+    createStudio: async (_, { studio_name }) => {
+      const newStudio = new Studio({ studio_name });
+      const response = {
         success: true,
         message: "Studio sucessfully added!",
-        studio_id: new_studio._id,
+        studio_id: newStudio._id,
       };
       try {
-        await new_studio.save();
+        await newStudio.save();
         return response;
       } catch (error) {
         response.success = false;
@@ -29,16 +28,14 @@ const studioResolver = {
         return response;
       }
     },
-    editStudio: async (_, args) => {
-      const { studio_id } = args.input;
-      const { data } = args.input;
-      let response = {
+    editStudio: async (_, { studio_id, studio_name }) => {
+      const response = {
         success: true,
         message: "Studio sucessfully updated!",
-        studio_id: studio_id,
+        studio_id,
       };
       try {
-        await Studio.updateOne({ _id: studio_id }, data);
+        await Studio.updateOne({ _id: studio_id }, { studio_name });
         return response;
       } catch (error) {
         response.success = false;
@@ -46,12 +43,11 @@ const studioResolver = {
         return response;
       }
     },
-    deleteStudio: async (_, args) => {
-      const { studio_id } = args;
-      let response = {
+    deleteStudio: async (_, { studio_id }) => {
+      const response = {
         success: true,
         message: "Studio sucessfully deleted!",
-        studio_id: studio_id,
+        studio_id,
       };
       try {
         await Studio.deleteOne({ _id: studio_id });

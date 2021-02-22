@@ -5,9 +5,8 @@ const formatErrors = (e) => {
       errors.push({ type: key, message: e.errors[key].message });
     });
     return errors;
-  } else {
-    return [{ type: "Uknown", message: "Something went wrong" }];
   }
+  return [{ type: "Unknown", message: "Something went wrong" }];
 };
 
 module.exports = { formatErrors };

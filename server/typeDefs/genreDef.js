@@ -1,15 +1,9 @@
 const { gql } = require("apollo-server-express");
 
-const genre_typeDefs = gql`
+const genreDef = gql`
   type Genre {
     _id: ID!
     genre_name: String!
-  }
-
-  input genreInput {
-    genre_id: ID
-    genre_name: String
-    checked: Boolean
   }
 
   type genreUpdateResponse {
@@ -18,21 +12,16 @@ const genre_typeDefs = gql`
     genre_id: ID
   }
 
-  input genreInputRequest {
-    genre_id: ID!
-    data: genreInput
-  }
-
   extend type Query {
     getGenres: [Genre]
     getGenre(genre_id: ID!): Genre
   }
 
   extend type Mutation {
-    createGenre(input: genreInput): genreUpdateResponse!
-    editGenre(input: genreInputRequest): genreUpdateResponse!
+    createGenre(genre_name: String): genreUpdateResponse!
+    editGenre(genre_id: ID, genre_name: String): genreUpdateResponse!
     deleteGenre(genre_id: ID!): genreUpdateResponse!
   }
 `;
 
-module.exports = { genre_typeDefs };
+module.exports = { genreDef };

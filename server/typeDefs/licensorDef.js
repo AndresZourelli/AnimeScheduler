@@ -1,20 +1,9 @@
 const { gql } = require("apollo-server-express");
 
-const licensor_typeDefs = gql`
+const licensorDef = gql`
   type Licensor {
     licensor_id: ID!
     licensor_name: String!
-  }
-
-  input licensorInput {
-    licensor_id: ID
-    licensor_name: String
-    checked: Boolean
-  }
-
-  input licensorInputRequest {
-    licensor_id: ID!
-    data: licensorInput
   }
 
   type licensorUpdateResponse {
@@ -29,10 +18,13 @@ const licensor_typeDefs = gql`
   }
 
   extend type Mutation {
-    createLicensor(input: licensorInput): licensorUpdateResponse!
-    editLicensor(input: licensorInputRequest): licensorUpdateResponse!
+    createLicensor(licensor_name: String): licensorUpdateResponse!
+    editLicensor(
+      licensor_id: ID
+      licensor_name: String
+    ): licensorUpdateResponse!
     deleteLicensor(licensor_id: ID!): licensorUpdateResponse!
   }
 `;
 
-module.exports = { licensor_typeDefs };
+module.exports = { licensorDef };

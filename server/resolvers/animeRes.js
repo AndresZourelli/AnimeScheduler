@@ -75,15 +75,15 @@ const animeResolver = {
 
   Mutation: {
     createAnime: async (_, args) => {
-      const raw_data = args.data;
-      const new_anime = new Anime(raw_data);
-      let response = {
+      const rawData = args.data;
+      const newAnime = new Anime(rawData);
+      const response = {
         success: true,
         message: "Anime sucessfully added!",
-        anime_id: new_anime._id,
+        anime_id: newAnime._id,
       };
       try {
-        await new_anime.save();
+        await newAnime.save();
         return response;
       } catch (e) {
         response.success = false;
@@ -91,14 +91,14 @@ const animeResolver = {
         return response;
       }
     },
-    editAnime: async (_, { anime_id, data }) => {
-      let response = {
+    editAnime: async (_, { anime_id: animeId, data }) => {
+      const response = {
         success: true,
         message: "Anime sucessfully Updated!",
-        anime_id: anime_id,
+        anime_id: animeId,
       };
       try {
-        const update = await Anime.updateOne({ _id: anime_id }, data);
+        await Anime.updateOne({ _id: animeId }, data);
         return response;
       } catch (e) {
         response.success = false;
@@ -107,7 +107,7 @@ const animeResolver = {
       }
     },
     deleteAnime: async (_, args) => {
-      let response = {
+      const response = {
         success: true,
         message: "Anime sucessfully Deleted!",
         anime_id: args.anime_id,
@@ -117,7 +117,7 @@ const animeResolver = {
         return response;
       } catch (error) {
         response.success = false;
-        response.error = formatErrors(e);
+        response.error = formatErrors(error);
         return response;
       }
     },
