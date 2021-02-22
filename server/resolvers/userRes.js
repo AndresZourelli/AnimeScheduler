@@ -1,4 +1,5 @@
-const jwt = require("jsonwebtoken");
+const { v4: uuidv4 } = require("uuid");
+const bcrypt = require("bcryptjs");
 const User = require("../mongoDB/models/user");
 const CustomError = require("../lib/CustomErrors");
 const { formatErrors } = require("../utils/FormatError");
@@ -24,21 +25,20 @@ const userResolver = {
   Mutation: {
     createUser: async (_, { username, email, password }) => {
       try {
-        const createUser = new User({ username, email, password });
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const createUser = new User({
+          username,
+          email,
+          password: hashedPassword,
+          refreshVerify: uuidv4(),
+        });
 
         await createUser.save();
-
-        const token = jwt.sign(
-          { user_id: createUser._id },
-          process.env.JWT_SECRET,
-          { expiresIn: "1d" }
-        );
 
         return {
           success: true,
           message: "New User Created!",
           user: { user_id: createUser._id },
-          token,
         };
       } catch (e) {
         return {

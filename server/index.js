@@ -1,8 +1,8 @@
 const express = require("express");
 const { ApolloServer } = require("apollo-server-express");
 const mongoose = require("mongoose");
+const cookieParser = require("cookie-parser");
 const cors = require("cors");
-const jwt = require("jsonwebtoken");
 const { resolvers } = require("./resolvers");
 const { typeDefs } = require("./typeDefs");
 require("dotenv").config();
@@ -16,6 +16,7 @@ mongoose.connect(process.env.MONGODB_URI, {
 
 const app = express();
 
+app.use(cookieParser());
 app.use(cors());
 app.use(isAuth);
 

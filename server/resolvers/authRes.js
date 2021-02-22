@@ -1,8 +1,9 @@
-const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+const { v4: uuidv4 } = require("uuid");
 const User = require("../mongoDB/models/user");
 const CustomError = require("../lib/CustomErrors");
 const { formatErrors } = require("../utils/FormatError");
+const { createTokens } = require("../utils/CreateTokens");
 require("dotenv").config();
 
 const authResolver = {
@@ -16,22 +17,17 @@ const authResolver = {
         const pwMatch = await bcrypt.compare(password, findUser.password);
 
         if (pwMatch) {
-          const refreshToken = jwt.sign(
-            { id: findUser._id },
-            process.env.JWT_SECRET,
-            { expiresIn: "7d" }
-          );
-          const accessToken = jwt.sign(
-            { id: findUser._id },
-            process.env.JWT_SECRET,
-            { expiresIn: "15min" }
-          );
+          const { refreshToken, accessToken } = createTokens(findUser);
 
           res.cookie("refresh-token", refreshToken, {
             maxAge: 1000 * 60 * 60 * 24 * 7,
+            httpOnly: true,
           });
 
-          res.cookie("access-token", accessToken, { maxAge: 1000 * 60 * 15 });
+          res.cookie("access-token", accessToken, {
+            maxAge: 1000 * 60 * 15,
+            httpOnly: true,
+          });
 
           return {
             userId: findUser._id,
@@ -47,10 +43,15 @@ const authResolver = {
         };
       }
     },
-    refreshToken: async (_, __, { res }) => {
-      res.cookie("test", "Asdfasdf", {
-        httpOnly: true,
-      });
+  },
+  Mutation: {
+    invalidateTokens: async (_, __, { req }) => {
+      if (!req.userId) {
+        return false;
+      }
+      const user = await User.findById(req.userId);
+      user.refreshVerify = uuidv4();
+      await user.save();
       return true;
     },
   },

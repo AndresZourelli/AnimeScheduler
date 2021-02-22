@@ -6,6 +6,19 @@ const formatErrors = (e) => {
     });
     return errors;
   }
+
+  if (e.name === "MongoError") {
+    const key = Object.keys(e.keyPattern)[0];
+    let error;
+    if (key === "username") {
+      error = [{ type: key, message: "Username already taken" }];
+      return error;
+    }
+    if (key === "email") {
+      error = [{ type: key, message: "Email already registered" }];
+      return error;
+    }
+  }
   return [{ type: "Unknown", message: "Something went wrong" }];
 };
 

@@ -1,6 +1,5 @@
 const { Schema, model } = require("mongoose");
 const { isEmail, isStrongPassword } = require("validator");
-const bcrypt = require("bcryptjs");
 
 const userSchema = new Schema(
   {
@@ -26,16 +25,13 @@ const userSchema = new Schema(
       ],
     },
     myAnimes: [],
+    refreshVerify: {
+      type: String,
+      required: true,
+    },
   },
   { timestamps: true }
 );
-
-userSchema.pre("save", async () => {
-  if (this.isNew) {
-    const hash = await bcrypt.hash(new_user.password, 10);
-    this.password = hash;
-  }
-});
 
 const user = model("User", userSchema);
 

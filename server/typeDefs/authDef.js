@@ -14,7 +14,10 @@ const authDef = gql`
 
   extend type Query {
     login(email: String!, password: String!): AuthData!
-    refreshToken(token: String!): Boolean!
+  }
+
+  extend type Mutation {
+    invalidateTokens: Boolean!
   }
 `;
 
