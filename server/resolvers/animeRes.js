@@ -71,6 +71,22 @@ const animeResolver = {
         currentPage: page,
       };
     },
+    getCurrentAiring: async (_, { page = 1, limit = 20 }) => {
+      const animes = await Anime.find({
+        $query: { status: "Currently Airing" },
+        $orderby: { avg_score: -1 },
+      })
+        .limit(limit)
+        .skip((page - 1) * limit)
+        .lean();
+
+      const count = await Anime.countDocuments({ status: "Currently Airing" });
+      return {
+        animes,
+        totalPages: Math.ceil(count / limit),
+        currentPage: page,
+      };
+    },
   },
 
   Mutation: {

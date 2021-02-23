@@ -28,6 +28,7 @@ const HorizontalScroll = ({ animes }) => {
         title={anime.title}
         image_url={anime.image_url}
         score={anime.avg_score}
+        id={anime.id}
         key={uuidv4()}
       />
     );
@@ -63,7 +64,6 @@ const HorizontalScroll = ({ animes }) => {
           w={45}
         />
         <HStack
-          cursor="grabbing"
           height="100%"
           width="100%"
           spacing="15px"

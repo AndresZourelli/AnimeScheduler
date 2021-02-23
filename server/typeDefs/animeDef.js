@@ -12,13 +12,12 @@ const animeDef = gql`
     aired_end: String
     broadcast_day: String
     broadcast_time: String
-    duration: Int
+    duration: String
     type: String
     season: String
     source: String
     status: String
-    rating_name: String
-    rating_id: Int
+    rating: String
     genres: [String]
     licensors: [String]
     producers: [String]
@@ -37,13 +36,12 @@ const animeDef = gql`
     aired_end: String
     broadcast_day: String
     broadcast_time: String
-    duration: Int
+    duration: String
     type: String
     season: String
     source: String
     status: String
-    rating_name: String
-    rating_id: Int
+    rating: String
     genres: [String]
     licensors: [String]
     producers: [String]
@@ -75,6 +73,7 @@ const animeDef = gql`
     getAnime(anime_id: ID!): Anime
     getAnimeHighestRated(page: Int, limit: Int): AnimeResult!
     getAnimeMostWatched(page: Int, limit: Int): AnimeResult!
+    getCurrentAiring(page: Int, limit: Int): AnimeResult!
   }
 
   type AnimeUpdateResponse {

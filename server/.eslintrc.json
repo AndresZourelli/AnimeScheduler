@@ -2,7 +2,14 @@
     "extends": ["airbnb","prettier"],
     "rules":{
         
-        "no-underscore-dangle": "off"
+        "no-underscore-dangle": "off",
+        "react/self-closing-comp": [
+            "error",
+            {
+              "component": true,
+              "html": true
+            }
+          ]
     },
     "env": {
         "node": true,

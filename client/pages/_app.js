@@ -4,7 +4,7 @@ import { ChakraProvider } from "@chakra-ui/react";
 import customTheme from "@/styles/theme";
 
 function MyApp({ Component, pageProps }) {
-  const client = useApollo(pageProps);
+  const client = useApollo(pageProps.initialApolloState);
   return (
     <ApolloProvider client={client}>
       <ChakraProvider resetCSS theme={customTheme}>
