@@ -97,7 +97,6 @@ def searchSeasonalAnime(URLLink):
         cells = row.findAll('td')
         img = cells[0].find('img')
         title = cells[1].find('strong')
-        print(title)
         description = cells[1].find("div", {"class": "pt4"})
         link = cells[1].find("a")["href"]
         information = searchAnimePage(link)
@@ -172,7 +171,7 @@ def main():
 
 def getTopAnime():
     baseURL = "https://myanimelist.net/topanime.php"
-    limit = 2850
+    limit = 0
     while limit <= 3000:
         now = datetime.datetime.now()
         timeString = now.strftime("%Y-%m-%d %H:%M:%S")
