@@ -1,13 +1,15 @@
 import Nav from "@/components/Nav";
 import PopularRow from "@/components/PopularRow";
 import MostWatchedRow from "@/components/MostWatchedRow";
-import CurrentlyAiring from "@/components/CurrentlyAiring";
+import CurrentlyAiringThisSeason from "@/components/CurrentlyAiringThisSeason";
+import CurrentlyAiringOutOfSeason from "@/components/CurrentlyAiringOutOfSeason";
 
 export default function Home() {
   return (
     <>
       <Nav />
-      <CurrentlyAiring />
+      <CurrentlyAiringThisSeason />
+      <CurrentlyAiringOutOfSeason />
       <PopularRow />
       <MostWatchedRow />
     </>

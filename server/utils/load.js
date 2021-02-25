@@ -1,4 +1,5 @@
 const fs = require("fs");
+const moment = require("moment");
 
 const Anime = require("../mongoDB/models/anime");
 const Genre = require("../mongoDB/models/genre");
@@ -35,15 +36,17 @@ const func = async () => {
           episodes: parseInt(data[key].episodes) || null,
           avg_score: parseFloat(data[key].score),
           status: data[key].status,
-          aired_start: data[key].aired?.split("to")[0]?.trim() ?? "Unknown",
-          aired_end: data[key].aired?.split("to")[1]?.trim() ?? "Unknown",
+          aired_start:
+            getDate(data[key].aired?.split("to")[0]?.trim()) ?? "Unknown",
+          aired_end:
+            getDate(data[key].aired?.split("to")[1]?.trim()) ?? "Unknown",
           broadcast_day:
             data[key].broadcast?.split("at")[0]?.trim() ?? "Unknown",
           broadcast_time:
             data[key].broadcast?.split("at")[1]?.trim() ?? "Unknown",
           duration: data[key].duration,
           type: data[key].type,
-          season: data[key].season,
+          season: data[key].premiered,
           source: data[key].source,
           rating: data[key].rating,
           alt_names: {
@@ -124,13 +127,16 @@ const func = async () => {
         { upsert: true }
       );
     }
-
-    // if (i == 5) {
-    //   break;
-    // }
-    i++;
   }
   console.log("Done");
+};
+
+const getDate = (dateString) => {
+  const convertedDate = moment(dateString, "MMM DD, YYYY");
+  if (convertedDate.isValid()) {
+    return convertedDate;
+  }
+  return moment("Jan 1, 1900", "MMM DD, YYYY");
 };
 
 func();

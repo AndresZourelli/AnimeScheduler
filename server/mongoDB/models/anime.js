@@ -22,10 +22,10 @@ const animeSchema = new Schema(
       type: Number,
     },
     aired_start: {
-      type: String,
+      type: Date,
     },
     aired_end: {
-      type: String,
+      type: Date,
     },
     broadcast_day: {
       type: String,

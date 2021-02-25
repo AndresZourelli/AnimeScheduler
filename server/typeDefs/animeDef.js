@@ -73,7 +73,8 @@ const animeDef = gql`
     getAnime(anime_id: ID!): Anime
     getAnimeHighestRated(page: Int, limit: Int): AnimeResult!
     getAnimeMostWatched(page: Int, limit: Int): AnimeResult!
-    getCurrentAiring(page: Int, limit: Int): AnimeResult!
+    getCurrentAiringThisSeason(page: Int, limit: Int): AnimeResult!
+    getCurrentAiringOutOfSeason(page: Int, limit: Int): AnimeResult!
   }
 
   type AnimeUpdateResponse {

@@ -1,3 +1,4 @@
+const moment = require("moment");
 const Anime = require("../mongoDB/models/anime");
 const { formatErrors } = require("../utils/FormatError");
 
@@ -71,14 +72,81 @@ const animeResolver = {
         currentPage: page,
       };
     },
-    getCurrentAiring: async (_, { page = 1, limit = 20 }) => {
+    getCurrentAiringThisSeason: async (_, { page = 1, limit = 30 }) => {
+      const seasons = {
+        1: { start: 1, end: 3 },
+        2: { start: 1, end: 3 },
+        3: { start: 1, end: 3 },
+        4: { start: 4, end: 6 },
+        5: { start: 4, end: 6 },
+        6: { start: 4, end: 6 },
+        7: { start: 7, end: 9 },
+        8: { start: 7, end: 9 },
+        9: { start: 7, end: 9 },
+        10: { start: 10, end: 12 },
+        11: { start: 10, end: 12 },
+        12: { start: 10, end: 12 },
+      };
+      const today = moment().utc(true);
+      const dateMonth = seasons[today.month() + 1];
+      const startDate = moment(
+        `${today.year()}-${dateMonth.start}-01`,
+        "YYYY-MM-DD"
+      );
+      const endDate = moment(
+        `${today.year()}-${dateMonth.end}-01`,
+        "YYYY-MM-DD"
+      );
       const animes = await Anime.find({
-        $query: { status: "Currently Airing" },
-        $orderby: { avg_score: -1 },
+        status: "Currently Airing",
+        aired_start: {
+          $gte: startDate,
+          $lte: endDate,
+        },
       })
-        .limit(limit)
-        .skip((page - 1) * limit)
+        .sort({ avg_score: -1 })
         .lean();
+      // .limit(limit)
+      // .skip((page - 1) * limit)
+
+      const count = await Anime.countDocuments({ status: "Currently Airing" });
+      return {
+        animes,
+        totalPages: Math.ceil(count / limit),
+        currentPage: page,
+      };
+    },
+    getCurrentAiringOutOfSeason: async (_, { page = 1, limit = 30 }) => {
+      const seasons = {
+        1: { start: 1, end: 3 },
+        2: { start: 1, end: 3 },
+        3: { start: 1, end: 3 },
+        4: { start: 4, end: 6 },
+        5: { start: 4, end: 6 },
+        6: { start: 4, end: 6 },
+        7: { start: 7, end: 9 },
+        8: { start: 7, end: 9 },
+        9: { start: 7, end: 9 },
+        10: { start: 10, end: 12 },
+        11: { start: 10, end: 12 },
+        12: { start: 10, end: 12 },
+      };
+      const today = moment().utc(true);
+      const dateMonth = seasons[today.month() + 1];
+      const startDate = moment(
+        `${today.year()}-${dateMonth.start}-01`,
+        "YYYY-MM-DD"
+      );
+      const animes = await Anime.find({
+        status: "Currently Airing",
+        aired_start: {
+          $lt: startDate,
+        },
+      })
+        .sort({ avg_score: -1 })
+        .lean();
+      // .limit(limit)
+      // .skip((page - 1) * limit)
 
       const count = await Anime.countDocuments({ status: "Currently Airing" });
       return {
