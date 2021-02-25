@@ -74,35 +74,25 @@ const animeResolver = {
     },
     getCurrentAiringThisSeason: async (_, { page = 1, limit = 30 }) => {
       const seasons = {
-        1: { start: 1, end: 3 },
-        2: { start: 1, end: 3 },
-        3: { start: 1, end: 3 },
-        4: { start: 4, end: 6 },
-        5: { start: 4, end: 6 },
-        6: { start: 4, end: 6 },
-        7: { start: 7, end: 9 },
-        8: { start: 7, end: 9 },
-        9: { start: 7, end: 9 },
-        10: { start: 10, end: 12 },
-        11: { start: 10, end: 12 },
-        12: { start: 10, end: 12 },
+        1: "Winter",
+        2: "Winter",
+        3: "Winter",
+        4: "Spring",
+        5: "Spring",
+        6: "Spring",
+        7: "Summer",
+        8: "Summer",
+        9: "Summer",
+        10: "Fall",
+        11: "Fall",
+        12: "Fall",
       };
-      const today = moment().utc(true);
+      const today = moment();
       const dateMonth = seasons[today.month() + 1];
-      const startDate = moment(
-        `${today.year()}-${dateMonth.start}-01`,
-        "YYYY-MM-DD"
-      );
-      const endDate = moment(
-        `${today.year()}-${dateMonth.end}-01`,
-        "YYYY-MM-DD"
-      );
+
       const animes = await Anime.find({
         status: "Currently Airing",
-        aired_start: {
-          $gte: startDate,
-          $lte: endDate,
-        },
+        season: { $regex: `${dateMonth} ${today.year()}`, $options: "i" },
       })
         .sort({ avg_score: -1 })
         .lean();
@@ -116,31 +106,28 @@ const animeResolver = {
         currentPage: page,
       };
     },
-    getCurrentAiringOutOfSeason: async (_, { page = 1, limit = 30 }) => {
+    getCurrentAiringContinue: async (_, { page = 1, limit = 30 }) => {
       const seasons = {
-        1: { start: 1, end: 3 },
-        2: { start: 1, end: 3 },
-        3: { start: 1, end: 3 },
-        4: { start: 4, end: 6 },
-        5: { start: 4, end: 6 },
-        6: { start: 4, end: 6 },
-        7: { start: 7, end: 9 },
-        8: { start: 7, end: 9 },
-        9: { start: 7, end: 9 },
-        10: { start: 10, end: 12 },
-        11: { start: 10, end: 12 },
-        12: { start: 10, end: 12 },
+        1: "Winter",
+        2: "Winter",
+        3: "Winter",
+        4: "Spring",
+        5: "Spring",
+        6: "Spring",
+        7: "Summer",
+        8: "Summer",
+        9: "Summer",
+        10: "Fall",
+        11: "Fall",
+        12: "Fall",
       };
-      const today = moment().utc(true);
+      const today = moment();
       const dateMonth = seasons[today.month() + 1];
-      const startDate = moment(
-        `${today.year()}-${dateMonth.start}-01`,
-        "YYYY-MM-DD"
-      );
+
       const animes = await Anime.find({
         status: "Currently Airing",
-        aired_start: {
-          $lt: startDate,
+        season: {
+          $regex: `^((?!${dateMonth} ${today.year()}).)*$`,
         },
       })
         .sort({ avg_score: -1 })

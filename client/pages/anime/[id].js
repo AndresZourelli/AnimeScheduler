@@ -8,6 +8,7 @@ import {
   Tag,
   TagLabel,
   TagLeftIcon,
+  Flex,
 } from "@chakra-ui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGripfire } from "@fortawesome/free-brands-svg-icons";
@@ -70,29 +71,27 @@ const animePage = () => {
   return (
     <Box position="relative">
       <Nav />
-      <Box height="300px" position="relative" overflow="hidden">
-        <NextImage
-          width="100%"
-          height="100%"
-          layout="responsive"
-          src={anime.image_url}
-        />
-      </Box>
-      <Box position="relative" height="125px" bg="pink.900" pt="5" pl="56">
-        <Box>
-          <Tag position="relative" mr="2">
-            <FontAwesomeIcon icon={faGripfire} color="orange" />
-            <TagLabel ml="1">#12 Top Rated</TagLabel>
-          </Tag>
-          <Tag position="relative">
-            <FontAwesomeIcon icon={faEye} color="grey" />
-            <TagLabel ml="1">#3 Most Viewed</TagLabel>
-          </Tag>
+      <Flex position="relative">
+        <Box height="300px" width="225px" position="relative" m="8">
+          <NextImage layout="fill" src={anime.image_url} />
         </Box>
-        <Box my="3">
-          <Heading>{anime.title}</Heading>
+        <Box position="relative" justifySelf="end" mt="8">
+          <Box>
+            <Tag position="relative" mr="2">
+              <FontAwesomeIcon icon={faGripfire} color="orange" />
+              <TagLabel ml="1">#12 Top Rated</TagLabel>
+            </Tag>
+            <Tag position="relative">
+              <FontAwesomeIcon icon={faEye} color="grey" />
+              <TagLabel ml="1">#3 Most Viewed</TagLabel>
+            </Tag>
+          </Box>
+          <Box my="3">
+            <Heading>{anime.title}</Heading>
+          </Box>
         </Box>
-      </Box>
+      </Flex>
+
       <Box></Box>
     </Box>
   );

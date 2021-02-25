@@ -2,9 +2,9 @@ import { gql, useQuery } from "@apollo/client";
 import HorizontalScroll from "@/components/HorizontalScroll";
 import { Heading, Box } from "@chakra-ui/react";
 
-const CURRENTLY_AIRING_OUT_OF_SEASON_ANIME_QUERY = gql`
-  query GetCurrentlyAiringOutOfSeason($page: Int, $limit: Int) {
-    getCurrentAiringOutOfSeason(page: $page, limit: $limit) {
+const CURRENTLY_AIRING_CONTINUE_ANIME_QUERY = gql`
+  query GetCurrentlyAiringContinue($page: Int, $limit: Int) {
+    getCurrentAiringContinue(page: $page, limit: $limit) {
       animes {
         title
         description
@@ -18,7 +18,7 @@ const CURRENTLY_AIRING_OUT_OF_SEASON_ANIME_QUERY = gql`
   }
 `;
 
-const CurrentlyAiringOutOfSeason = (props) => {
+const CurrentlyAiringContinue = (props) => {
   const seasons = {
     1: "Winter",
     2: "Winter",
@@ -34,18 +34,18 @@ const CurrentlyAiringOutOfSeason = (props) => {
     12: "Fall",
   };
   const { loading, error, data } = useQuery(
-    CURRENTLY_AIRING_OUT_OF_SEASON_ANIME_QUERY
+    CURRENTLY_AIRING_CONTINUE_ANIME_QUERY
   );
 
-  const animes = data?.getCurrentAiringOutOfSeason?.animes;
+  const animes = data?.getCurrentAiringContinue?.animes;
   return (
     <Box>
       <Heading mt="25px" ml="50px">
-        Airing Out Of Season
+        Continuing This Season
       </Heading>
       <HorizontalScroll animes={animes} />
     </Box>
   );
 };
 
-export default CurrentlyAiringOutOfSeason;
+export default CurrentlyAiringContinue;
