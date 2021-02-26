@@ -1,5 +1,6 @@
 const fs = require("fs");
 const moment = require("moment");
+const momenttz = require("moment-timezone");
 
 const Anime = require("../mongoDB/models/anime");
 const Genre = require("../mongoDB/models/genre");
@@ -37,9 +38,15 @@ const func = async () => {
           avg_score: parseFloat(data[key].score),
           status: data[key].status,
           aired_start:
-            getDate(data[key].aired?.split("to")[0]?.trim()) ?? "Unknown",
+            getDate(
+              data[key].aired?.split("to")[0]?.trim(),
+              data[key].broadcast?.split("at")[1]?.trim()
+            ) ?? "Unknown",
           aired_end:
-            getDate(data[key].aired?.split("to")[1]?.trim()) ?? "Unknown",
+            getDate(
+              data[key].aired?.split("to")[1]?.trim(),
+              data[key].broadcast?.split("at")[1]?.trim()
+            ) ?? "Unknown",
           broadcast_day:
             data[key].broadcast?.split("at")[0]?.trim() ?? "Unknown",
           broadcast_time:
@@ -131,8 +138,12 @@ const func = async () => {
   console.log("Done");
 };
 
-const getDate = (dateString) => {
-  const convertedDate = moment(dateString, "MMM DD, YYYY");
+const getDate = (dateString, time) => {
+  const convertedDate = momenttz.tz(
+    `${dateString} ${time?.replace("(JST)", "")}`,
+    "MMM DD, YYYY HH:mm",
+    "Asia/Tokyo"
+  );
   if (convertedDate.isValid()) {
     return convertedDate;
   }
