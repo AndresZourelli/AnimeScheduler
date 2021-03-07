@@ -21,6 +21,7 @@ import {
   StatLabel,
   StatNumber,
   StatHelpText,
+  Divider,
 } from "@chakra-ui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGripfire } from "@fortawesome/free-brands-svg-icons";
@@ -138,6 +139,15 @@ const animePage = () => {
     }
   }, [loading, anime]);
 
+  const momentObj = anime?.aired_start
+    ? moment.utc(parseInt(anime.aired_start)).local()
+    : "???";
+  const air_date = anime?.aired_start
+    ? new Date(parseInt(anime.aired_start)).toLocaleDateString()
+    : "???";
+  const end_date = anime?.aired_end
+    ? new Date(parseInt(anime.aired_end)).toLocaleDateString()
+    : "???";
   if (!id || loading) {
     return (
       <Box>
@@ -175,13 +185,96 @@ const animePage = () => {
           <Box>
             {anime.status === "Currently Airing" ? (
               <Stat>
-                <StatLabel>Next Episode</StatLabel>
-                <StatNumber>{`${timerDays}:${timerHours}:${timerMinutes}:${timerSeconds}`}</StatNumber>
+                <Heading size="sm">Next Episode</Heading>
+                <StatNumber fontSize="md">{`${timerDays}:${timerHours}:${timerMinutes}:${timerSeconds}`}</StatNumber>
                 <StatHelpText></StatHelpText>
               </Stat>
             ) : null}
           </Box>
+          <Divider my="3" />
+          <Box>
+            <Heading size="sm">Broadcast Time</Heading>
+            <Text>
+              {anime.broadcast_day} {anime.broadcast_time}
+            </Text>
+            <Heading size="sm" mt="3">
+              Broadcast Time (Local Time)
+            </Heading>
+            <Text>{momentObj.format("dddd, h:mm a")}</Text>
+          </Box>
+          <Divider my="3" />
+          <Box>
+            <Heading size="sm">Number of Episodes</Heading>
+            <Text>{anime.episodes}</Text>
+          </Box>
+          <Divider my="3" />
+          <Box>
+            <Heading size="sm">First Episode</Heading>
+            <Text>{air_date}</Text>
+          </Box>
+          <Divider my="3" />
+          <Box>
+            <Heading size="sm">Last Episode</Heading>
+            <Text>{end_date}</Text>
+          </Box>
+          <Divider my="3" />
+          <Box>
+            <Heading size="sm">Average Episode Length</Heading>
+            <Text>{anime?.duration}</Text>
+          </Box>
+          <Divider my="3" />
+          <Box>
+            <Heading size="sm">Broadcast Media</Heading>
+            <Text>{anime?.type}</Text>
+          </Box>
+          <Divider my="3" />
+          <Box>
+            <Heading size="sm">Release Season</Heading>
+            <Text>{anime?.season}</Text>
+          </Box>
+          <Divider my="3" />
+          <Box>
+            <Heading size="sm">Source Material</Heading>
+            <Text>{anime?.source}</Text>
+          </Box>
+          <Divider my="3" />
+          <Box>
+            <Heading size="sm">Airing Status</Heading>
+            <Text>{anime?.status}</Text>
+          </Box>
+          <Divider my="3" />
+          <Box>
+            <Heading size="sm">Age Rating</Heading>
+            <Text>{anime?.rating}</Text>
+          </Box>
+          <Divider my="3" />
+          <Box>
+            <Heading size="sm">Licensors</Heading>
+            {anime?.licensors.map((licensor) => (
+              <Text key={uuidv4()}>{licensor}</Text>
+            ))}
+          </Box>
+          <Divider my="3" />
+          <Box>
+            <Heading size="sm">Producers</Heading>
+            {anime?.producers.map((producer) => (
+              <Text key={uuidv4()}>{producer}</Text>
+            ))}
+          </Box>
+          <Divider my="3" />
+          <Box>
+            <Heading size="sm">Studios</Heading>
+            {anime?.studios.map((studio) => (
+              <Text key={uuidv4()}>{studio}</Text>
+            ))}
+          </Box>
+          <Divider my="3" />
+          <Box>
+            <Heading size="sm">Alternate Names</Heading>
+            {showAltNames(anime?.alt_names)}
+          </Box>
         </Box>
+
         <Box position="relative" justifySelf="end" mt="8">
           <Box>
             <Tag position="relative" mr="2">
@@ -217,3 +310,21 @@ const animePage = () => {
 };
 
 export default animePage;
+
+const showAltNames = (obj) => {
+  if (obj === undefined || obj === null) {
+    return null;
+  }
+  let names = [];
+  for (let key of Object.keys(obj)) {
+    if (key === "__typename") {
+      continue;
+    }
+    names.push(
+      <Text key={uuidv4()}>
+        <b>{key}:</b> {obj[key]}
+      </Text>
+    );
+  }
+  return names;
+};
