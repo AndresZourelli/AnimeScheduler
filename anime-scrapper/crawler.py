@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup, NavigableString
 import json
 import time
 import datetime
-
+import os
 
 class bcolors:
     HEADER = '\033[95m'
@@ -126,6 +126,10 @@ def searchTopAnime(URLLink):
         information = searchAnimePage(href)
         information["title"] = title
         # information["image_url"] = image
+        with open('anime.json',"w") as json_file:
+            if not os.path.exists("./anime.json"):
+                json.dump({},json_file)
+
         with open('anime.json') as json_file:
             data = json.load(json_file)
             # temp = data["anime"]

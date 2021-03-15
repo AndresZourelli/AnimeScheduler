@@ -57,6 +57,9 @@ const animeSchema = new Schema(
     studios: [],
     producers: [],
     licensors: [],
+    actors: [],
+    characters: [],
+    staff: [],
   },
   { timestamps: true }
 );
