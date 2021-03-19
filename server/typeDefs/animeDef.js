@@ -24,6 +24,37 @@ const animeDef = gql`
     studios: [String]
     alt_names: Names
     minutes_watched: Int
+    actors: [AnimeActor]
+    characters: [AnimeCharacter]
+    staff: [AnimeStaff]
+  }
+
+  type AnimeStaff {
+    id: ID!
+    name: String
+    image_url: String
+    role: String
+  }
+
+  type AnimeCharacter {
+    id: ID!
+    name: String
+    image_url: String
+    role: String
+    actor: String
+  }
+
+  type AnimeActor {
+    id: ID!
+    name: String
+    image_url: String
+    actor_language: String
+  }
+
+  type Names {
+    English: String
+    Synonyms: String
+    Japanese: String
   }
 
   input AnimeInput {
@@ -48,12 +79,6 @@ const animeDef = gql`
     studios: [String]
     alt_names: InputNames
     minutes_watched: Int
-  }
-
-  type Names {
-    English: String
-    Synonyms: String
-    Japanese: String
   }
 
   input InputNames {

@@ -5,6 +5,9 @@ const { producerDef } = require("./typeDefs/producerDef");
 const { studioDef } = require("./typeDefs/studioDef.js");
 const { userDef } = require("./typeDefs/userDef");
 const { authDef } = require("./typeDefs/authDef");
+const { actorDef } = require("./typeDefs/actorDef");
+const { characterDef } = require("./typeDefs/characterDef");
+const { staffDef } = require("./typeDefs/staffDef");
 
 const typeDefs = [
   animeDef,
@@ -14,6 +17,9 @@ const typeDefs = [
   studioDef,
   userDef,
   authDef,
+  actorDef,
+  characterDef,
+  staffDef,
 ];
 
 module.exports = { typeDefs };

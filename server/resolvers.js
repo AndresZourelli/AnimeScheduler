@@ -6,6 +6,9 @@ const { producerResolver } = require("./resolvers/producerRes");
 const { studioResolver } = require("./resolvers/studioRes");
 const { userResolver } = require("./resolvers/userRes");
 const { authResolver } = require("./resolvers/authRes");
+const { actorResolver } = require("./resolvers/actorRes");
+const { characterResolver } = require("./resolvers/characterRes");
+const { staffResolver } = require("./resolvers/staffRes");
 
 const resolvers = merge(
   {},
@@ -15,7 +18,10 @@ const resolvers = merge(
   producerResolver,
   studioResolver,
   userResolver,
-  authResolver
+  authResolver,
+  actorResolver,
+  characterResolver,
+  staffResolver
 );
 
 module.exports = { resolvers };
