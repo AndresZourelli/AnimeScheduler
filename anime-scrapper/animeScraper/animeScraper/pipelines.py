@@ -85,7 +85,7 @@ class StaffPipeline:
         return item
     
     def insert_mongo(self, data):
-        staff_collection = db["staff"]
+        staff_collection = db["staffs"]
         anime_collection = db["animes"]
         staff_db_data = staff_collection.find_one({"name": data['name']})
         if staff_db_data:
