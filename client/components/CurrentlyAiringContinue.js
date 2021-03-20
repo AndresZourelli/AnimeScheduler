@@ -1,24 +1,7 @@
-import { gql, useQuery } from "@apollo/client";
 import HorizontalScroll from "@/components/HorizontalScroll";
 import { Heading, Box } from "@chakra-ui/react";
 
-const CURRENTLY_AIRING_CONTINUE_ANIME_QUERY = gql`
-  query GetCurrentlyAiringContinue($page: Int, $limit: Int) {
-    getCurrentAiringContinue(page: $page, limit: $limit) {
-      animes {
-        title
-        description
-        image_url
-        status
-        id: _id
-      }
-      totalPages
-      currentPage
-    }
-  }
-`;
-
-const CurrentlyAiringContinue = (props) => {
+const CurrentlyAiringContinue = ({ animes }) => {
   const seasons = {
     1: "Winter",
     2: "Winter",
@@ -33,11 +16,7 @@ const CurrentlyAiringContinue = (props) => {
     11: "Fall",
     12: "Fall",
   };
-  const { loading, error, data } = useQuery(
-    CURRENTLY_AIRING_CONTINUE_ANIME_QUERY
-  );
 
-  const animes = data?.getCurrentAiringContinue?.animes;
   return (
     <Box>
       <Heading mt="25px" ml="50px">
