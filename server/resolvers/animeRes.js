@@ -142,6 +142,10 @@ const animeResolver = {
         currentPage: page,
       };
     },
+    getAnimePaths: async () => {
+      const result = await Anime.find({}, { _id: 1 });
+      return result;
+    },
   },
 
   Mutation: {

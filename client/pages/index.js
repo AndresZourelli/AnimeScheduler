@@ -14,6 +14,7 @@ const ANIME_QUERIES = gql`
         description
         image_url
         minutes_watched
+        id: _id
       }
       totalPages
       currentPage
@@ -25,6 +26,7 @@ const ANIME_QUERIES = gql`
         description
         image_url
         avg_score
+        id: _id
       }
       totalPages
       currentPage
@@ -76,7 +78,6 @@ const Home = ({
 export const getStaticProps = async () => {
   const client = initializeApollo();
   const { data } = await client.query({ query: ANIME_QUERIES });
-  console.log(data);
   if (!data) {
     return {
       notFound: true,

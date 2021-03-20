@@ -4,6 +4,7 @@ import { gql, useQuery } from "@apollo/client";
 import { Spinner, Box, Flex } from "@chakra-ui/react";
 import AnimePageInfoCol from "@/components/AnimePageInfoCol";
 import AnimePageMain from "@/components/AnimePageMain";
+import { initializeApollo } from "@/lib/apolloClient";
 
 const GET_ANIME = gql`
   query GetAnime($anime_id: ID!) {
@@ -57,17 +58,19 @@ const GET_ANIME = gql`
   }
 `;
 
-const animePage = () => {
+const GET_PATHS = gql`
+  query GetPaths {
+    getAnimePaths {
+      id
+    }
+  }
+`;
+
+const animePage = ({ anime }) => {
   const router = useRouter();
   const { id } = router.query;
-  const { loading, error, data } = useQuery(GET_ANIME, {
-    variables: { anime_id: id },
-    skip: !id,
-  });
 
-  const anime = data?.getAnime;
-
-  if (!id || !anime || loading) {
+  if (!id || !anime) {
     return (
       <Box>
         <Nav />
@@ -80,11 +83,40 @@ const animePage = () => {
     <Box position="relative">
       <Nav />
       <Flex position="relative">
-        <AnimePageInfoCol {...anime} loading={loading} />
-        <AnimePageMain {...anime} loading={loading} />
+        <AnimePageInfoCol {...anime} />
+        <AnimePageMain {...anime} />
       </Flex>
     </Box>
   );
+};
+
+export const getStaticPaths = async () => {
+  const client = initializeApollo();
+  const { data } = await client.query({ query: GET_PATHS });
+  let formatedData = data?.getAnimePaths?.map((item) => ({
+    params: {
+      id: item.id,
+    },
+  }));
+
+  return {
+    paths: formatedData,
+    fallback: false,
+  };
+};
+
+export const getStaticProps = async (context) => {
+  const { id } = context.params;
+  const client = initializeApollo();
+  const { data } = await client.query({
+    query: GET_ANIME,
+    variables: { anime_id: id },
+  });
+  return {
+    props: {
+      anime: data.getAnime,
+    },
+  };
 };
 
 export default animePage;

@@ -93,6 +93,10 @@ const animeDef = gql`
     totalPages: Int
   }
 
+  type AnimePath {
+    id: ID
+  }
+
   type Query {
     getAnimes(search: String, page: Int, limit: Int): AnimeResult!
     getAnime(anime_id: ID!): Anime
@@ -100,6 +104,7 @@ const animeDef = gql`
     getAnimeMostWatched(page: Int, limit: Int): AnimeResult!
     getCurrentAiringThisSeason(page: Int, limit: Int): AnimeResult!
     getCurrentAiringContinue(page: Int, limit: Int): AnimeResult!
+    getAnimePaths: [AnimePath]
   }
 
   type AnimeUpdateResponse {
