@@ -1,9 +1,10 @@
 import Nav from "@/components/Nav";
 import { useRouter } from "next/router";
-import { gql, useQuery } from "@apollo/client";
+import { gql } from "@apollo/client";
 import { Spinner, Box, Flex, Heading, Text } from "@chakra-ui/react";
 import NextImage from "next/image";
 import { v4 as uuidv4 } from "uuid";
+import { initializeApollo } from "@/lib/apolloClient";
 
 const GET_CHARACTER = gql`
   query GetCharacter($character_id: ID!) {
@@ -17,18 +18,18 @@ const GET_CHARACTER = gql`
   }
 `;
 
-const staffPage = () => {
+const GET_PATHS = gql`
+  query GetPaths {
+    getCharacterPaths {
+      id
+    }
+  }
+`;
+const characterPage = ({ character }) => {
   const router = useRouter();
   const { id } = router.query;
-  const { loading, error, data } = useQuery(GET_CHARACTER, {
-    variables: { character_id: id },
-    skip: !id,
-  });
 
-  const character = data?.getCharacter;
-  console.log(character);
-
-  if (!id || !character || loading) {
+  if (!id || !character) {
     return (
       <Box>
         <Nav />
@@ -56,7 +57,7 @@ const staffPage = () => {
           <Text as="div">
             Appears In:
             <Box mx="2">
-              {character.animes.map((anime) => (
+              {character.animes?.map((anime) => (
                 <Text key={uuidv4()} mb="2" fontSize="sm">
                   {anime}
                 </Text>
@@ -69,4 +70,33 @@ const staffPage = () => {
   );
 };
 
-export default staffPage;
+export const getStaticPaths = async () => {
+  const client = initializeApollo();
+  const { data } = await client.query({ query: GET_PATHS });
+  let formatedData = data?.getCharacterPaths?.map((item) => ({
+    params: {
+      id: item.id,
+    },
+  }));
+
+  return {
+    paths: formatedData,
+    fallback: false,
+  };
+};
+
+export const getStaticProps = async (context) => {
+  const { id } = context.params;
+  const client = initializeApollo();
+  const { data } = await client.query({
+    query: GET_CHARACTER,
+    variables: { character_id: id },
+  });
+  return {
+    props: {
+      character: data.getCharacter,
+    },
+  };
+};
+
+export default characterPage;

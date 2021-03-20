@@ -10,6 +10,10 @@ const characterResolver = {
       const result = await Character.find({ _id: args.character_id });
       return result[0];
     },
+    getCharacterPaths: async () => {
+      const result = await Character.find({}, { _id: 1 });
+      return result;
+    },
   },
   Mutation: {
     createCharacter: async (_, args) => {

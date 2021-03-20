@@ -1,6 +1,6 @@
 import Nav from "@/components/Nav";
 import { useRouter } from "next/router";
-import { gql, useQuery } from "@apollo/client";
+import { gql } from "@apollo/client";
 import { Spinner, Box, Flex } from "@chakra-ui/react";
 import AnimePageInfoCol from "@/components/AnimePageInfoCol";
 import AnimePageMain from "@/components/AnimePageMain";

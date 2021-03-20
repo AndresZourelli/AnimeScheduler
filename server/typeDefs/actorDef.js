@@ -25,9 +25,14 @@ const actorDef = gql`
     character: String!
   }
 
+  type ActorPath {
+    id: ID
+  }
+
   extend type Query {
     getActors: [Actor]
     getActor(actor_id: ID!): Actor
+    getActorPaths: [ActorPath]
   }
 
   extend type Mutation {

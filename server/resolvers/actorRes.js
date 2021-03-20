@@ -10,6 +10,10 @@ const actorResolver = {
       const result = await Actor.find({ _id: args.actor_id });
       return result[0];
     },
+    getActorPaths: async () => {
+      const result = Actor.find({}, { _id: 1 });
+      return result;
+    },
   },
   Mutation: {
     createActor: async (_, args) => {

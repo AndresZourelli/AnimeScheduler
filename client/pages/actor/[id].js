@@ -1,38 +1,39 @@
 import Nav from "@/components/Nav";
 import { useRouter } from "next/router";
-import { gql, useQuery } from "@apollo/client";
+import { gql } from "@apollo/client";
 import { Spinner, Box, Flex, Heading, Text } from "@chakra-ui/react";
 import NextImage from "next/image";
 import { v4 as uuidv4 } from "uuid";
+import { initializeApollo } from "@/lib/apolloClient";
 
 const GET_ACTOR = gql`
   query GetActor($actor_id: ID!) {
     getActor(actor_id: $actor_id) {
-        id
-    name
-    image_url
-    animes{
-      anime
-      character
-    }
-    actor_language
-  }
+      id
+      name
+      image_url
+      animes {
+        anime
+        character
+      }
+      actor_language
     }
   }
 `;
 
-const staffPage = () => {
+const GET_PATHS = gql`
+  query GetPaths {
+    getActorPaths {
+      id
+    }
+  }
+`;
+
+const actorPage = ({ actor }) => {
   const router = useRouter();
   const { id } = router.query;
-  const { loading, error, data } = useQuery(GET_ACTOR, {
-    variables: { character_id: id },
-    skip: !id,
-  });
 
-  const actor = data?.getActor;
-  console.log(actor);
-
-  if (!id || !actor || loading) {
+  if (!id || !actor) {
     return (
       <Box>
         <Nav />
@@ -55,15 +56,19 @@ const staffPage = () => {
         </Box>
         <Box ml="6" position="relative">
           <Heading>{actor.name}</Heading>
-          <Text>Role: {actor.role}</Text>
-          <Text>Voice Actor: {actor.actor}</Text>
+          <Text>Actor Language: {actor.actor_language}</Text>
           <Text as="div">
             Appears In:
             <Box mx="2">
-              {actor.animes.map((anime) => (
-                <Text key={uuidv4()} mb="2" fontSize="sm">
-                  {anime}
-                </Text>
+              {actor?.animes?.map((anime) => (
+                <Box key={uuidv4()}>
+                  <Text as="span" key={uuidv4()} mb="2" fontSize="sm">
+                    Character: {anime.character}
+                  </Text>{" "}
+                  <Text as="span" key={uuidv4()} mb="2" fontSize="sm">
+                    Anime: {anime.anime}
+                  </Text>
+                </Box>
               ))}
             </Box>
           </Text>
@@ -73,4 +78,33 @@ const staffPage = () => {
   );
 };
 
-export default staffPage;
+export const getStaticPaths = async () => {
+  const client = initializeApollo();
+  const { data } = await client.query({ query: GET_PATHS });
+  let formatedData = data?.getActorPaths?.map((item) => ({
+    params: {
+      id: item.id,
+    },
+  }));
+
+  return {
+    paths: formatedData,
+    fallback: false,
+  };
+};
+
+export const getStaticProps = async (context) => {
+  const { id } = context.params;
+  const client = initializeApollo();
+  const { data } = await client.query({
+    query: GET_ACTOR,
+    variables: { actor_id: id },
+  });
+  return {
+    props: {
+      actor: data.getActor,
+    },
+  };
+};
+
+export default actorPage;

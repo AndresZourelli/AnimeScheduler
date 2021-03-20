@@ -16,9 +16,14 @@ const characterDef = gql`
     character_id: ID
   }
 
+  type CharacterPath {
+    id: ID
+  }
+
   extend type Query {
     getCharacters: [Character]
     getCharacter(character_id: ID!): Character
+    getCharacterPaths: [CharacterPath]
   }
 
   extend type Mutation {
