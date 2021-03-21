@@ -13,10 +13,6 @@ from pymongo import MongoClient
 from dotenv import load_dotenv
 import os
 import logging 
-
-from scrapy.item import Item
-
-from scrapy.loader import ItemLoader
 load_dotenv()
 
 MONGO_URI = os.getenv("MONGODB_URI")
@@ -45,25 +41,46 @@ class ActorsPipeline:
     def insert_mongo(self, data): 
         actor_collection = db["actors"]
         anime_collection = db["animes"]
+        character_collection = db["characters"]
         actor_db_data = actor_collection.find_one({"name": data['name']})
+        anime_data = anime_collection.find_one({"title": data['anime']})
+        character_data = character_collection.find_one({"name": data["character"], "animes":{"$elemMatch":{"anime": data['anime'] }}})
         if actor_db_data:
-            updated_actor = actor_collection.find_one_and_update({"name":data["name"]},{"$addToSet": {
-                "animes": {"anime": data["anime"], "character": data["character"]}
+            updated_actor = actor_collection.find_one_and_update({"name":data["name"]},{"$set": {
+                "name":data["name"],
+                "image_url":data["image_url"],
+                "actor_language":data["actor_language"],
+            }})
+            actor_collection.update_one({"name":data["name"]},{"$addToSet": {
+                "animes": {"anime": {"title":data["anime"], "image_url": anime_data["image_url"], "id":anime_data["_id"] }, "character": {"name":data["character"],"image_url":data["character_image_url"], "character_id":character_data["_id"]}}
             }})
             anime_collection.update_one({"title":data["anime"]},{"$addToSet":{
                 "actors": {"id": updated_actor["_id"], "name": data["name"], "image_url": data["image_url"],
                 "actor_language":data["actor_language"]}
             }})
+            character_collection.update_one({"name":data["character"]},{"$addToSet":{
+                "actors": {"id": updated_actor["_id"], "name": data["name"], "image_url": data["image_url"],
+                "actor_language":data["actor_language"]}
+            }}, upsert=True)
+           
         else:   
-            actor_result = actor_collection.insert_one({
+            actor_collection.update_one({"name":data["name"]},{"$set":{
                 "name":data["name"],
                 "image_url":data["image_url"],
                 "actor_language":data["actor_language"],
-                "animes":[{"anime":data["anime"], "character": data["character"]}]
-            })
+                "animes":[{"anime": {"title":data["anime"], "image_url": anime_data["image_url"], "id":anime_data["_id"] }, "character": {"name":data["character"],"image_url":data["character_image_url"], "character_id":character_data["_id"]}}]
+            }}, upsert=True)
+
+            actor_result = actor_collection.find_one({"name":data["name"]})
+
             anime_collection.update_one({"title":data["anime"]},{"$addToSet":{
-                "actors": {"id": actor_result.inserted_id, "name": data["name"], "image_url": data["image_url"], "actor_language":data["actor_language"]}
+                "actors": {"id": actor_result["_id"], "name": data["name"], "image_url": data["image_url"], "actor_language":data["actor_language"]}
             }})
+            character_collection.update_one({"name":data["character"]},{"$addToSet":{
+                "actors": {"id": actor_result["_id"], "name": data["name"], "image_url": data["image_url"],
+                "actor_language":data["actor_language"]}
+            }}, upsert=True)
+            
 
 class StaffPipeline:
     def __init__(self): 
@@ -87,10 +104,15 @@ class StaffPipeline:
     def insert_mongo(self, data):
         staff_collection = db["staffs"]
         anime_collection = db["animes"]
+        anime_data = anime_collection.find_one({"title": data['anime']})
         staff_db_data = staff_collection.find_one({"name": data['name']})
         if staff_db_data:
-            updated_staff = staff_collection.find_one_and_update({"name":data["name"]},{"$addToSet": {
-                "animes": {"anime":data["anime"], "role":data["role"] }
+            updated_staff = staff_collection.find_one_and_update({"name":data["name"]},{"$set": {
+                "name":data["name"],
+                "image_url":data["image_url"],
+            }})
+            staff_collection.update_one({"name":data["name"]},{"$set": {
+                "animes": {"anime": {"title":data["anime"], "image_url": anime_data["image_url"], "id":anime_data["_id"] }, "role":data["role"] }
             }})
             anime_collection.update_one({"title":data["anime"]},{"$addToSet":{
                 "staff": {"id": updated_staff["_id"], "name": data["name"], "image_url": data["image_url"], "role":data["role"]}
@@ -99,10 +121,10 @@ class StaffPipeline:
             staff_result = staff_collection.insert_one({
                 "name":data["name"],
                 "image_url":data["image_url"],
-                "animes":[{"anime":data["anime"], "role":data["role"] }]
+                "animes":[{"anime": {"title":data["anime"], "image_url": anime_data["image_url"], "id":anime_data["_id"] }, "role":data["role"] }]
             })
             anime_collection.update_one({"title":data["anime"]},{"$addToSet":{
-                "staff": {"id": staff_result.inserted_id, "name": data["name"], "image_url": data["image_url"],"role":data["role"]}
+                "staff": {"id": staff_result.inserted_id, "name": data["name"], "image_url": data["image_url"], "role":data["role"]}
             }})
 
 class CharacterPipeline:
@@ -127,26 +149,31 @@ class CharacterPipeline:
         character_collection = db["characters"]
         anime_collection = db["animes"]
 
-        characters_db_data = character_collection.find_one({"name": data['name']})
+
+        characters_db_data = character_collection.find_one({"name": data['name'],"animes":{"$elemMatch":{"anime": data['anime'] }}})
+        anime_data = anime_collection.find_one({"title": data['anime']})
         if characters_db_data:
-            updated_character = character_collection.find_one_and_update({"name":data["name"]},{"$addToSet": {
-                "animes": data["anime"]
+            updated_character = character_collection.find_one_and_update({"name":data["name"]},{"$set":{
+                "name":data["name"],
+                "image_url":data["image_url"],
+                "role":data["role"]
+                }})
+            character_collection.update_one({"name": data["name"]}, {"$addToSet": {
+                "animes": { "anime": data["anime"], "id":anime_data["_id"]}
             }})
             anime_collection.update_one({"title":data["anime"]},{"$addToSet":{
-                "characters": {"id": updated_character["_id"], "name": data["name"], "image_url": data["image_url"], "role":data["role"], "actor":data["actor"]}
+                "characters": {"id": updated_character["_id"], "name": data["name"], "image_url": data["image_url"], "role":data["role"]}
             }})
         else:   
-            if not "actor" in data:
-                data["actor"] = "None"
-            character_result = character_collection.insert_one({
+            character_collection.update_one({"name": data["name"]},{"$set":{
                 "name":data["name"],
                 "image_url":data["image_url"],
                 "role":data["role"],
-                "animes":[data["anime"]], 
-                "actor": data["actor"]
-            })
+                "animes":[{ "anime": data["anime"], "id":anime_data["_id"]}]
+            }}, upsert=True)
+            character_result = character_collection.find_one({"name": data["name"],"animes":{"$elemMatch":{"anime": data['anime'] }}})
             anime_collection.update_one({"title":data["anime"]},{"$addToSet":{
-                "characters": {"id": character_result.inserted_id, "name": data["name"], "image_url": data["image_url"],"role":data["role"], "actor":data["actor"]}
+                "characters": {"id": character_result["_id"], "name": data["name"], "image_url": data["image_url"],"role":data["role"]}
             }})
 
 class AnimePipeline:

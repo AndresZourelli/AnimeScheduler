@@ -25,7 +25,15 @@ class ActorsSpider(scrapy.Spider):
             yield response.follow(next_page, callback=self.parse)
 
     def anime_page_parse(self, response):
-        pass
+        title = response.xpath('//h1[contains(@class,"title-name")]/strong/text()').extract_first()
+        score = response.xpath('//div[contains(@class,"score-label")]/text()').extract_first()
+        description = response.xpath("//p[@itemprop='description']")
+        languages_path = response.xpath('//*[preceding-sibling::h2[.="Alternative Titles"] and following-sibling::h2[. = "Information"]]/..')
+        languages = {}
+        for language in languages_path:
+            key = language.xpath("./span/text()").extract_first().replace(":","")
+            value = "".join(language.xpath("./text()").extract()).strip()
+            languages[key] = value
 
     def character_page_parse(self, response):
         info_containers = response.xpath('//div[@id="content"]//div[@class="js-scrollfix-bottom-rel"]/table[@border="0" and @cellpadding="0" and @cellspacing="0" and @width="100%" ]')
@@ -49,6 +57,12 @@ class ActorsSpider(scrapy.Spider):
                 character_staff_type = "character"
                 all_actors = character_staff[2].xpath(".//tr")
 
+                character_loader.add_value("name", character_staff_name)
+                character_loader.add_value("image_url", character_staff_image_url)
+                character_loader.add_value("role", character_staff_role)
+                character_loader.add_value("anime", anime_title)
+                yield character_loader.load_item() 
+
                 for actor in all_actors:
                     actor_data = actor.xpath(".//td")
                     actor_name = actor_data[0].xpath(".//a/text()").extract_first()
@@ -60,23 +74,13 @@ class ActorsSpider(scrapy.Spider):
                     actor_loader.add_value("actor_language", actor_language)
                     actor_loader.add_value("anime", anime_title)
                     actor_loader.add_value("character", character_staff_name)
+                    actor_loader.add_value("character_image_url", character_staff_image_url)
 
                     yield actor_loader.load_item()
-
-                    if actor_language == "Japanese":
-                        character_loader.add_value("actor", actor_name)
-            
-                character_loader.add_value("name", character_staff_name)
-                character_loader.add_value("image_url", character_staff_image_url)
-                character_loader.add_value("role", character_staff_role)
-                character_loader.add_value("anime", anime_title)
-
-                yield character_loader.load_item() 
 
             else:
                 staff_loader.add_value("name", character_staff_name)
                 staff_loader.add_value("image_url", character_staff_image_url)
                 staff_loader.add_value("role", character_staff_role)
                 staff_loader.add_value("anime", anime_title)
-
                 yield staff_loader.load_item()
