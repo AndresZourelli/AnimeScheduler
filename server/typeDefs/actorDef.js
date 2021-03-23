@@ -16,13 +16,34 @@ const actorDef = gql`
   }
 
   input ActorAnimeInput {
-    anime: String!
-    character: String!
+    anime: ActorAnimeObjInput
+    character: ActorCharacterObjInput
   }
 
+  input ActorAnimeObjInput {
+    title: String
+    image_url: String
+    id: ID
+  }
+  input ActorCharacterObjInput {
+    name: String
+    image_url: String
+    character_id: ID
+  }
+
+  type ActorAnimeObj {
+    title: String
+    image_url: String
+    id: ID
+  }
+  type ActorCharacterObj {
+    name: String
+    image_url: String
+    character_id: ID
+  }
   type ActorAnime {
-    anime: String!
-    character: String!
+    anime: ActorAnimeObj
+    character: ActorCharacterObj
   }
 
   type ActorPath {

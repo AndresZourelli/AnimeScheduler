@@ -6,8 +6,32 @@ const characterDef = gql`
     name: String
     image_url: String
     role: String
-    actor: String
-    animes: [String]
+    actor: [CharacterActor]
+    animes: [CharacterAnimes]
+  }
+
+  type CharacterAnimes {
+    anime: String
+    id: ID
+  }
+
+  input CharacterAnimesInput {
+    anime: String
+    id: ID
+  }
+
+  type CharacterActor {
+    id: ID
+    name: String
+    image_url: String
+    actor_language: String
+  }
+
+  input CharacterActorInput {
+    id: ID
+    name: String
+    image_url: String
+    actor_language: String
   }
 
   type characterUpdateResponse {
@@ -31,16 +55,16 @@ const characterDef = gql`
       character_name: String!
       image_url: String
       role: String!
-      animes: [String!]!
-      actor: String!
+      animes: [CharacterAnimesInput]!
+      actor: [CharacterActorInput]!
     ): characterUpdateResponse!
     editCharacter(
       character_id: ID
       character_name: String
       image_url: String
       role: String
-      animes: [String!]
-      actor: String
+      animes: [CharacterAnimesInput]
+      actor: [CharacterActorInput]!
     ): characterUpdateResponse!
     deleteCharacter(character_id: ID!): characterUpdateResponse!
   }

@@ -5,7 +5,7 @@ const staffDef = gql`
     id: ID!
     name: String
     image_url: String
-    animes: String
+    animes: [StaffAnime]
   }
 
   type staffUpdateResponse {
@@ -14,9 +14,17 @@ const staffDef = gql`
     staff_id: ID
   }
 
-  input StaffAnime {
-    anime: String!
+  input StaffAnimeInput {
+    title: String!
     role: String!
+    image_url: String!
+    id: ID!
+  }
+  type StaffAnime {
+    title: String!
+    role: String!
+    image_url: String!
+    id: ID!
   }
 
   extend type Query {
@@ -28,7 +36,7 @@ const staffDef = gql`
     createStaff(
       staff_name: String!
       image_url: String
-      animes: [StaffAnime]!
+      animes: [StaffAnimeInput]!
       role: String!
     ): staffUpdateResponse!
     editStaff(
@@ -36,7 +44,7 @@ const staffDef = gql`
       staff_name: String
       image_url: String
       role: String
-      animes: [StaffAnime]!
+      animes: [StaffAnimeInput]!
     ): staffUpdateResponse!
     deleteStaff(staff_id: ID!): staffUpdateResponse!
   }

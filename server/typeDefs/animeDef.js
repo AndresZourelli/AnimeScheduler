@@ -34,6 +34,7 @@ const animeDef = gql`
     name: String
     image_url: String
     role: String
+    anime: String
   }
 
   type AnimeCharacter {
@@ -41,7 +42,6 @@ const animeDef = gql`
     name: String
     image_url: String
     role: String
-    actor: String
   }
 
   type AnimeActor {
@@ -49,6 +49,7 @@ const animeDef = gql`
     name: String
     image_url: String
     actor_language: String
+    character: String
   }
 
   type Names {

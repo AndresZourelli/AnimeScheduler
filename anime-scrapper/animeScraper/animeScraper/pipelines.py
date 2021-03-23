@@ -56,7 +56,7 @@ class ActorsPipeline:
             }})
             anime_collection.update_one({"title":data["anime"]},{"$addToSet":{
                 "actors": {"id": updated_actor["_id"], "name": data["name"], "image_url": data["image_url"],
-                "actor_language":data["actor_language"]}
+                "actor_language":data["actor_language"],"character":data["character"]}
             }})
             character_collection.update_one({"name":data["character"]},{"$addToSet":{
                 "actors": {"id": updated_actor["_id"], "name": data["name"], "image_url": data["image_url"],
@@ -74,7 +74,7 @@ class ActorsPipeline:
             actor_result = actor_collection.find_one({"name":data["name"]})
 
             anime_collection.update_one({"title":data["anime"]},{"$addToSet":{
-                "actors": {"id": actor_result["_id"], "name": data["name"], "image_url": data["image_url"], "actor_language":data["actor_language"]}
+                "actors": {"id": actor_result["_id"], "name": data["name"], "image_url": data["image_url"], "actor_language":data["actor_language"], "character":data["character"]}
             }})
             character_collection.update_one({"name":data["character"]},{"$addToSet":{
                 "actors": {"id": actor_result["_id"], "name": data["name"], "image_url": data["image_url"],
