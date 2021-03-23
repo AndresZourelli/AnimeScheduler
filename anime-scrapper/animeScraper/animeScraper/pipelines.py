@@ -111,8 +111,8 @@ class StaffPipeline:
                 "name":data["name"],
                 "image_url":data["image_url"],
             }})
-            staff_collection.update_one({"name":data["name"]},{"$set": {
-                "animes": {"anime": {"title":data["anime"], "image_url": anime_data["image_url"], "id":anime_data["_id"] }, "role":data["role"] }
+            staff_collection.update_one({"name":data["name"]},{"$addToSet": {
+                "animes": {"title":data["anime"], "image_url": anime_data["image_url"], "id":anime_data["_id"] , "role":data["role"] }
             }})
             anime_collection.update_one({"title":data["anime"]},{"$addToSet":{
                 "staff": {"id": updated_staff["_id"], "name": data["name"], "image_url": data["image_url"], "role":data["role"]}
@@ -121,7 +121,7 @@ class StaffPipeline:
             staff_result = staff_collection.insert_one({
                 "name":data["name"],
                 "image_url":data["image_url"],
-                "animes":[{"anime": {"title":data["anime"], "image_url": anime_data["image_url"], "id":anime_data["_id"] }, "role":data["role"] }]
+                "animes":[{"title":data["anime"], "image_url": anime_data["image_url"], "id":anime_data["_id"] , "role":data["role"] }]
             })
             anime_collection.update_one({"title":data["anime"]},{"$addToSet":{
                 "staff": {"id": staff_result.inserted_id, "name": data["name"], "image_url": data["image_url"], "role":data["role"]}

@@ -1,0 +1,140 @@
+2021-03-22 20:24:26 [scrapy.core.scraper] ERROR: Error processing {'anime': 'Umibe no Étranger',
+ 'image_url': 'https://cdn.myanimelist.net/images/questionmark_23.gif',
+ 'name': 'Akiyo Oohashi',
+ 'role': 'Director, Storyboard, Screenplay'}
+Traceback (most recent call last):
+  File "/home/fazzbeast/.local/lib/python3.9/site-packages/twisted/internet/defer.py", line 662, in _runCallbacks
+    current.result = callback(current.result, *args, **kw)
+  File "/home/fazzbeast/.local/lib/python3.9/site-packages/scrapy/utils/defer.py", line 150, in f
+    return deferred_from_coro(coro_f(*coro_args, **coro_kwargs))
+  File "/home/fazzbeast/repos/AnimeScheduler/anime-scrapper/animeScraper/animeScraper/pipelines.py", line 100, in process_item
+    self.insert_mongo(ItemAdapter(item).asdict())
+  File "/home/fazzbeast/repos/AnimeScheduler/anime-scrapper/animeScraper/animeScraper/pipelines.py", line 124, in insert_mongo
+    "animes":[{"title":data["anime"], "image_url": anime_data["image_url"], "id":anime_data["_id"] , "role":data["role"] }]
+TypeError: 'NoneType' object is not subscriptable
+2021-03-22 20:24:26 [scrapy.core.scraper] ERROR: Error processing {'anime': 'Umibe no Étranger',
+ 'image_url': 'https://cdn.myanimelist.net/images/questionmark_23.gif',
+ 'name': 'Akiko Fujita',
+ 'role': 'Sound Director'}
+Traceback (most recent call last):
+  File "/home/fazzbeast/.local/lib/python3.9/site-packages/twisted/internet/defer.py", line 662, in _runCallbacks
+    current.result = callback(current.result, *args, **kw)
+  File "/home/fazzbeast/.local/lib/python3.9/site-packages/scrapy/utils/defer.py", line 150, in f
+    return deferred_from_coro(coro_f(*coro_args, **coro_kwargs))
+  File "/home/fazzbeast/repos/AnimeScheduler/anime-scrapper/animeScraper/animeScraper/pipelines.py", line 100, in process_item
+    self.insert_mongo(ItemAdapter(item).asdict())
+  File "/home/fazzbeast/repos/AnimeScheduler/anime-scrapper/animeScraper/animeScraper/pipelines.py", line 115, in insert_mongo
+    "animes": {"title":data["anime"], "image_url": anime_data["image_url"], "id":anime_data["_id"] , "role":data["role"] }
+TypeError: 'NoneType' object is not subscriptable
+2021-03-22 20:24:26 [scrapy.core.scraper] ERROR: Error processing {'anime': 'Umibe no Étranger',
+ 'image_url': 'https://cdn.myanimelist.net/images/voiceactors/2/47777.jpg',
+ 'name': 'Kanna Kii',
+ 'role': 'Original Creator, Character Design'}
+Traceback (most recent call last):
+  File "/home/fazzbeast/.local/lib/python3.9/site-packages/twisted/internet/defer.py", line 662, in _runCallbacks
+    current.result = callback(current.result, *args, **kw)
+  File "/home/fazzbeast/.local/lib/python3.9/site-packages/scrapy/utils/defer.py", line 150, in f
+    return deferred_from_coro(coro_f(*coro_args, **coro_kwargs))
+  File "/home/fazzbeast/repos/AnimeScheduler/anime-scrapper/animeScraper/animeScraper/pipelines.py", line 100, in process_item
+    self.insert_mongo(ItemAdapter(item).asdict())
+  File "/home/fazzbeast/repos/AnimeScheduler/anime-scrapper/animeScraper/animeScraper/pipelines.py", line 124, in insert_mongo
+    "animes":[{"title":data["anime"], "image_url": anime_data["image_url"], "id":anime_data["_id"] , "role":data["role"] }]
+TypeError: 'NoneType' object is not subscriptable
+2021-03-22 20:24:26 [scrapy.core.scraper] ERROR: Error processing {'anime': 'Umibe no Étranger',
+ 'image_url': 'https://cdn.myanimelist.net/images/voiceactors/2/24049.jpg',
+ 'name': 'Mina Kubota',
+ 'role': 'Music'}
+Traceback (most recent call last):
+  File "/home/fazzbeast/.local/lib/python3.9/site-packages/twisted/internet/defer.py", line 662, in _runCallbacks
+    current.result = callback(current.result, *args, **kw)
+  File "/home/fazzbeast/.local/lib/python3.9/site-packages/scrapy/utils/defer.py", line 150, in f
+    return deferred_from_coro(coro_f(*coro_args, **coro_kwargs))
+  File "/home/fazzbeast/repos/AnimeScheduler/anime-scrapper/animeScraper/animeScraper/pipelines.py", line 100, in process_item
+    self.insert_mongo(ItemAdapter(item).asdict())
+  File "/home/fazzbeast/repos/AnimeScheduler/anime-scrapper/animeScraper/animeScraper/pipelines.py", line 124, in insert_mongo
+    "animes":[{"title":data["anime"], "image_url": anime_data["image_url"], "id":anime_data["_id"] , "role":data["role"] }]
+TypeError: 'NoneType' object is not subscriptable
+2021-03-22 20:24:26 [scrapy.core.scraper] ERROR: Error processing {'anime': 'Umibe no Étranger',
+ 'image_url': 'https://cdn.myanimelist.net/images/questionmark_23.gif',
+ 'name': 'Yumiko Kuga',
+ 'role': 'Art Director'}
+Traceback (most recent call last):
+  File "/home/fazzbeast/.local/lib/python3.9/site-packages/twisted/internet/defer.py", line 662, in _runCallbacks
+    current.result = callback(current.result, *args, **kw)
+  File "/home/fazzbeast/.local/lib/python3.9/site-packages/scrapy/utils/defer.py", line 150, in f
+    return deferred_from_coro(coro_f(*coro_args, **coro_kwargs))
+  File "/home/fazzbeast/repos/AnimeScheduler/anime-scrapper/animeScraper/animeScraper/pipelines.py", line 100, in process_item
+    self.insert_mongo(ItemAdapter(item).asdict())
+  File "/home/fazzbeast/repos/AnimeScheduler/anime-scrapper/animeScraper/animeScraper/pipelines.py", line 124, in insert_mongo
+    "animes":[{"title":data["anime"], "image_url": anime_data["image_url"], "id":anime_data["_id"] , "role":data["role"] }]
+TypeError: 'NoneType' object is not subscriptable
+2021-03-22 20:24:26 [scrapy.core.scraper] ERROR: Error processing {'anime': 'Umibe no Étranger',
+ 'image_url': 'https://cdn.myanimelist.net/images/questionmark_23.gif',
+ 'name': 'Tomoko Minobe',
+ 'role': 'Director of Photography'}
+Traceback (most recent call last):
+  File "/home/fazzbeast/.local/lib/python3.9/site-packages/twisted/internet/defer.py", line 662, in _runCallbacks
+    current.result = callback(current.result, *args, **kw)
+  File "/home/fazzbeast/.local/lib/python3.9/site-packages/scrapy/utils/defer.py", line 150, in f
+    return deferred_from_coro(coro_f(*coro_args, **coro_kwargs))
+  File "/home/fazzbeast/repos/AnimeScheduler/anime-scrapper/animeScraper/animeScraper/pipelines.py", line 100, in process_item
+    self.insert_mongo(ItemAdapter(item).asdict())
+  File "/home/fazzbeast/repos/AnimeScheduler/anime-scrapper/animeScraper/animeScraper/pipelines.py", line 124, in insert_mongo
+    "animes":[{"title":data["anime"], "image_url": anime_data["image_url"], "id":anime_data["_id"] , "role":data["role"] }]
+TypeError: 'NoneType' object is not subscriptable
+2021-03-22 20:24:26 [scrapy.core.scraper] ERROR: Error processing {'anime': 'Umibe no Étranger',
+ 'image_url': 'https://cdn.myanimelist.net/images/questionmark_23.gif',
+ 'name': 'Eiko Morikawa',
+ 'role': 'Sound Effects'}
+Traceback (most recent call last):
+  File "/home/fazzbeast/.local/lib/python3.9/site-packages/twisted/internet/defer.py", line 662, in _runCallbacks
+    current.result = callback(current.result, *args, **kw)
+  File "/home/fazzbeast/.local/lib/python3.9/site-packages/scrapy/utils/defer.py", line 150, in f
+    return deferred_from_coro(coro_f(*coro_args, **coro_kwargs))
+  File "/home/fazzbeast/repos/AnimeScheduler/anime-scrapper/animeScraper/animeScraper/pipelines.py", line 100, in process_item
+    self.insert_mongo(ItemAdapter(item).asdict())
+  File "/home/fazzbeast/repos/AnimeScheduler/anime-scrapper/animeScraper/animeScraper/pipelines.py", line 115, in insert_mongo
+    "animes": {"title":data["anime"], "image_url": anime_data["image_url"], "id":anime_data["_id"] , "role":data["role"] }
+TypeError: 'NoneType' object is not subscriptable
+2021-03-22 20:24:26 [scrapy.core.scraper] ERROR: Error processing {'anime': 'Umibe no Étranger',
+ 'image_url': 'https://cdn.myanimelist.net/images/questionmark_23.gif',
+ 'name': 'Masaki Sakamoto',
+ 'role': 'Editing'}
+Traceback (most recent call last):
+  File "/home/fazzbeast/.local/lib/python3.9/site-packages/twisted/internet/defer.py", line 662, in _runCallbacks
+    current.result = callback(current.result, *args, **kw)
+  File "/home/fazzbeast/.local/lib/python3.9/site-packages/scrapy/utils/defer.py", line 150, in f
+    return deferred_from_coro(coro_f(*coro_args, **coro_kwargs))
+  File "/home/fazzbeast/repos/AnimeScheduler/anime-scrapper/animeScraper/animeScraper/pipelines.py", line 100, in process_item
+    self.insert_mongo(ItemAdapter(item).asdict())
+  File "/home/fazzbeast/repos/AnimeScheduler/anime-scrapper/animeScraper/animeScraper/pipelines.py", line 124, in insert_mongo
+    "animes":[{"title":data["anime"], "image_url": anime_data["image_url"], "id":anime_data["_id"] , "role":data["role"] }]
+TypeError: 'NoneType' object is not subscriptable
+2021-03-22 20:24:26 [scrapy.core.scraper] ERROR: Error processing {'anime': 'Umibe no Étranger',
+ 'image_url': 'https://cdn.myanimelist.net/images/questionmark_23.gif',
+ 'name': 'Mayumi Watanabe',
+ 'role': 'Chief Animation Director'}
+Traceback (most recent call last):
+  File "/home/fazzbeast/.local/lib/python3.9/site-packages/twisted/internet/defer.py", line 662, in _runCallbacks
+    current.result = callback(current.result, *args, **kw)
+  File "/home/fazzbeast/.local/lib/python3.9/site-packages/scrapy/utils/defer.py", line 150, in f
+    return deferred_from_coro(coro_f(*coro_args, **coro_kwargs))
+  File "/home/fazzbeast/repos/AnimeScheduler/anime-scrapper/animeScraper/animeScraper/pipelines.py", line 100, in process_item
+    self.insert_mongo(ItemAdapter(item).asdict())
+  File "/home/fazzbeast/repos/AnimeScheduler/anime-scrapper/animeScraper/animeScraper/pipelines.py", line 124, in insert_mongo
+    "animes":[{"title":data["anime"], "image_url": anime_data["image_url"], "id":anime_data["_id"] , "role":data["role"] }]
+TypeError: 'NoneType' object is not subscriptable
+2021-03-22 20:24:26 [scrapy.core.scraper] ERROR: Error processing {'anime': 'Umibe no Étranger',
+ 'image_url': 'https://cdn.myanimelist.net/images/questionmark_23.gif',
+ 'name': 'Kumiko Yanagizawa',
+ 'role': 'Color Design'}
+Traceback (most recent call last):
+  File "/home/fazzbeast/.local/lib/python3.9/site-packages/twisted/internet/defer.py", line 662, in _runCallbacks
+    current.result = callback(current.result, *args, **kw)
+  File "/home/fazzbeast/.local/lib/python3.9/site-packages/scrapy/utils/defer.py", line 150, in f
+    return deferred_from_coro(coro_f(*coro_args, **coro_kwargs))
+  File "/home/fazzbeast/repos/AnimeScheduler/anime-scrapper/animeScraper/animeScraper/pipelines.py", line 100, in process_item
+    self.insert_mongo(ItemAdapter(item).asdict())
+  File "/home/fazzbeast/repos/AnimeScheduler/anime-scrapper/animeScraper/animeScraper/pipelines.py", line 124, in insert_mongo
+    "animes":[{"title":data["anime"], "image_url": anime_data["image_url"], "id":anime_data["_id"] , "role":data["role"] }]
+TypeError: 'NoneType' object is not subscriptable

@@ -63,10 +63,10 @@ DOWNLOAD_DELAY = 3
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-   'animeScraper.pipelines.ActorsPipeline': 100,
+   # 'animeScraper.pipelines.ActorsPipeline': 100,
    'animeScraper.pipelines.StaffPipeline': 100,
-   'animeScraper.pipelines.CharacterPipeline': 100,
-   'animeScraper.pipelines.AnimePipeline': 100,
+   # 'animeScraper.pipelines.CharacterPipeline': 100,
+   # 'animeScraper.pipelines.AnimePipeline': 100,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
