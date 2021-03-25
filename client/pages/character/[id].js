@@ -9,8 +9,16 @@ import { initializeApollo } from "@/lib/apolloClient";
 const GET_CHARACTER = gql`
   query GetCharacter($character_id: ID!) {
     getCharacter(character_id: $character_id) {
-      actor
-      animes
+      actors {
+        id
+        name
+        image_url
+        actor_language
+      }
+      animes {
+        anime
+        id
+      }
       name
       image_url
       role
@@ -53,13 +61,22 @@ const characterPage = ({ character }) => {
         <Box ml="6" position="relative">
           <Heading>{character.name}</Heading>
           <Text>Role: {character.role}</Text>
-          <Text>Voice Actor: {character.actor}</Text>
+          <Text>
+            Voice Actor:
+            <Box mx="2">
+              {character.actors?.map((anime) => (
+                <Text key={uuidv4()} mb="2" fontSize="sm">
+                  {anime.name}
+                </Text>
+              ))}
+            </Box>
+          </Text>
           <Text as="div">
             Appears In:
             <Box mx="2">
               {character.animes?.map((anime) => (
                 <Text key={uuidv4()} mb="2" fontSize="sm">
-                  {anime}
+                  {anime.anime}
                 </Text>
               ))}
             </Box>
