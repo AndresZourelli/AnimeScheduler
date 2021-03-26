@@ -120,7 +120,7 @@ const AnimePageMain = ({
         <Text>{description}</Text>
         <Divider my="3" />
         <Heading mb="3">Characters</Heading>
-        <Flex wrap="wrap" justifyContent="center">
+        <Flex wrap="wrap" justifyContent="flexStart">
           {characters.slice(0, currentCharactersDisplayed).map((character) => {
             return (
               <CharacterCard
@@ -138,7 +138,7 @@ const AnimePageMain = ({
         </Box>
         <Divider my="3" />
         <Heading>Actors</Heading>
-        <Flex wrap="wrap" justifyContent="center">
+        <Flex wrap="wrap" justifyContent="flexStart">
           {actors.slice(0, currentActorsDisplayed).map((actor) => {
             return <ActorCard key={uuidv4()} actor={actor}></ActorCard>;
           })}
@@ -152,7 +152,7 @@ const AnimePageMain = ({
         </Box>
         <Divider my="3" />
         <Heading>Staff</Heading>
-        <Flex wrap="wrap" justifyContent="center">
+        <Flex wrap="wrap" justifyContent="flexStart">
           {staff.slice(0, currentStaffDisplayed).map((staff) => {
             return <StaffCard key={uuidv4()} staff={staff}></StaffCard>;
           })}

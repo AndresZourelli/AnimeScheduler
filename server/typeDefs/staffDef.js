@@ -27,9 +27,14 @@ const staffDef = gql`
     id: ID!
   }
 
+  type StaffPath {
+    id: ID
+  }
+
   extend type Query {
     getStaffs: [Staff]
     getStaff(staff_id: ID!): Staff
+    getStaffPaths: [StaffPath]
   }
 
   extend type Mutation {

@@ -10,6 +10,10 @@ const staffResolver = {
       const result = await Staff.find({ _id: args.staff_id });
       return result[0];
     },
+    getStaffPaths: async (_, args) => {
+      const result = await Staff.find({}, { _id: 1 });
+      return result;
+    },
   },
   Mutation: {
     createStaff: async (_, args) => {
