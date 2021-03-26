@@ -34,7 +34,6 @@ const animeDef = gql`
     name: String
     image_url: String
     role: String
-    anime: String
   }
 
   type AnimeCharacter {
@@ -106,6 +105,7 @@ const animeDef = gql`
     getCurrentAiringThisSeason(page: Int, limit: Int): AnimeResult!
     getCurrentAiringContinue(page: Int, limit: Int): AnimeResult!
     getAnimePaths: [AnimePath]
+    getAnimesAiringToday: AnimeResult
   }
 
   type AnimeUpdateResponse {

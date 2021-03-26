@@ -6,7 +6,7 @@ const characterSchema = new Schema(
     image_url: String,
     role: String,
     animes: [],
-    actor: String,
+    actors: [],
   },
   { timestamps: true }
 );

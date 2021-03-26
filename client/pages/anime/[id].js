@@ -40,13 +40,13 @@ const GET_ANIME = gql`
         name
         image_url
         actor_language
+        character
       }
       characters {
         id
         name
         image_url
         role
-        actor
       }
       staff {
         id

@@ -118,13 +118,14 @@ class StaffPipeline:
                 "staff": {"id": updated_staff["_id"], "name": data["name"], "image_url": data["image_url"], "role":data["role"]}
             }})
         else:   
-            staff_result = staff_collection.insert_one({
+            staff_result = staff_collection.update_one({"name":data["name"]},{"$set":{
                 "name":data["name"],
                 "image_url":data["image_url"],
                 "animes":[{"title":data["anime"], "image_url": anime_data["image_url"], "id":anime_data["_id"] , "role":data["role"] }]
-            })
+            }}, upsert=True)
+            staff_info = staff_collection.find_one({"name":data["name"]})
             anime_collection.update_one({"title":data["anime"]},{"$addToSet":{
-                "staff": {"id": staff_result.inserted_id, "name": data["name"], "image_url": data["image_url"], "role":data["role"]}
+                "staff": {"id": staff_info["_id"], "name": data["name"], "image_url": data["image_url"], "role":data["role"]}
             }})
 
 class CharacterPipeline:
@@ -150,7 +151,7 @@ class CharacterPipeline:
         anime_collection = db["animes"]
 
 
-        characters_db_data = character_collection.find_one({"name": data['name'],"animes":{"$elemMatch":{"anime": data['anime'] }}})
+        characters_db_data = character_collection.find_one({"name": data['name']})
         anime_data = anime_collection.find_one({"title": data['anime']})
         if characters_db_data:
             updated_character = character_collection.find_one_and_update({"name":data["name"]},{"$set":{
@@ -171,7 +172,7 @@ class CharacterPipeline:
                 "role":data["role"],
                 "animes":[{ "anime": data["anime"], "id":anime_data["_id"]}]
             }}, upsert=True)
-            character_result = character_collection.find_one({"name": data["name"],"animes":{"$elemMatch":{"anime": data['anime'] }}})
+            character_result = character_collection.find_one({"name": data["name"]})
             anime_collection.update_one({"title":data["anime"]},{"$addToSet":{
                 "characters": {"id": character_result["_id"], "name": data["name"], "image_url": data["image_url"],"role":data["role"]}
             }})

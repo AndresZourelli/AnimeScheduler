@@ -3,6 +3,7 @@ import scrapy
 from animeScraper.items import ActorItem, StaffItem, CharacterItem, AnimeItem
 import datetime
 import pytz
+import logging
 class ActorsSpider(scrapy.Spider):
     name = "actors"
 
@@ -15,10 +16,11 @@ class ActorsSpider(scrapy.Spider):
     def parse(self, response):
         for anime in response.css("tr.ranking-list"):
             anime_link = anime.css('a.hoverinfo_trigger').attrib["href"]
-            yield response.follow(anime_link, callback=self.anime_page_parse)
+            # yield response.follow(anime_link, callback=self.anime_page_parse)
 
             character_page_link = anime_link + "/characters"
             yield response.follow(character_page_link, callback=self.character_page_parse)
+            
             self.count += 1
 
         next_page = response.css("a.link-blue-box.next::attr(href)").get()
@@ -35,6 +37,8 @@ class ActorsSpider(scrapy.Spider):
         non_normal_description = response.xpath("//p[@itemprop='description']")
         normalized_description = non_normal_description.xpath("normalize-space(.)").extract_first()
         anime_loader.add_value("description", normalized_description.strip())
+        
+        # logging.critical(f"Anime Number: {self.count + 1}, Anime Title: {title}")
 
         languages_path = response.xpath('//*[preceding-sibling::h2[.="Alternative Titles"] and following-sibling::h2[. = "Information"]]/../div[@class="spaceit_pad"]')
         languages = {}

@@ -1,8 +1,21 @@
 import Nav from "@/components/Nav";
 import { useRouter } from "next/router";
 import { gql } from "@apollo/client";
-import { Spinner, Box, Flex, Heading, Text } from "@chakra-ui/react";
+import {
+  Spinner,
+  Box,
+  Flex,
+  Heading,
+  Text,
+  Table,
+  Thead,
+  Tr,
+  Th,
+  Td,
+  Tbody,
+} from "@chakra-ui/react";
 import NextImage from "next/image";
+import NextLink from "next/link";
 import { v4 as uuidv4 } from "uuid";
 import { initializeApollo } from "@/lib/apolloClient";
 
@@ -13,8 +26,16 @@ const GET_ACTOR = gql`
       name
       image_url
       animes {
-        anime
-        character
+        anime {
+          title
+          image_url
+          id
+        }
+        character {
+          name
+          image_url
+          character_id
+        }
       }
       actor_language
     }
@@ -59,18 +80,34 @@ const actorPage = ({ actor }) => {
           <Text>Actor Language: {actor.actor_language}</Text>
           <Text as="div">
             Appears In:
-            <Box mx="2">
-              {actor?.animes?.map((anime) => (
-                <Box key={uuidv4()}>
-                  <Text as="span" key={uuidv4()} mb="2" fontSize="sm">
-                    Character: {anime.character}
-                  </Text>{" "}
-                  <Text as="span" key={uuidv4()} mb="2" fontSize="sm">
-                    Anime: {anime.anime}
-                  </Text>
-                </Box>
-              ))}
-            </Box>
+            <Table mx="2" variant="simple">
+              <Thead>
+                <Tr>
+                  <Th>Character Name</Th>
+                  <Th>Anime</Th>
+                </Tr>
+              </Thead>
+              <Tbody>
+                {actor?.animes?.map((anime) => (
+                  <Tr key={uuidv4()}>
+                    <Td key={uuidv4()} mb="2" fontSize="sm">
+                      <NextLink
+                        href={`/character/${encodeURIComponent(
+                          anime.character.character_id
+                        )}`}>
+                        {anime.character.name}
+                      </NextLink>
+                    </Td>
+                    <Td key={uuidv4()} mb="2" fontSize="sm">
+                      <NextLink
+                        href={`/anime/${encodeURIComponent(anime.anime.id)}`}>
+                        {anime.anime.title}
+                      </NextLink>
+                    </Td>
+                  </Tr>
+                ))}
+              </Tbody>
+            </Table>
           </Text>
         </Box>
       </Flex>

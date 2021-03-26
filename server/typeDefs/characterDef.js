@@ -6,7 +6,7 @@ const characterDef = gql`
     name: String
     image_url: String
     role: String
-    actor: [CharacterActor]
+    actors: [CharacterActor]
     animes: [CharacterAnimes]
   }
 
@@ -56,7 +56,7 @@ const characterDef = gql`
       image_url: String
       role: String!
       animes: [CharacterAnimesInput]!
-      actor: [CharacterActorInput]!
+      actors: [CharacterActorInput]!
     ): characterUpdateResponse!
     editCharacter(
       character_id: ID
@@ -64,7 +64,7 @@ const characterDef = gql`
       image_url: String
       role: String
       animes: [CharacterAnimesInput]
-      actor: [CharacterActorInput]!
+      actors: [CharacterActorInput]!
     ): characterUpdateResponse!
     deleteCharacter(character_id: ID!): characterUpdateResponse!
   }
