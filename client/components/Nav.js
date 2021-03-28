@@ -10,8 +10,8 @@ import {
   Center,
 } from "@chakra-ui/react";
 import { MoonIcon, SunIcon } from "@chakra-ui/icons";
-import { Image } from "@chakra-ui/react";
 import NextLink from "next/link";
+import ImageLoader from "./ImageLoader";
 
 const Nav = () => {
   const { colorMode, toggleColorMode } = useColorMode();
@@ -29,12 +29,10 @@ const Nav = () => {
         m="2"
         p="2"
         layerStyle={colorMode === "light" ? "header_light" : "header_dark"}>
-        <Box mr="4">
-          <Image
-            boxSize="40px"
-            src="/coffee_jelly3.svg"
-            alt="Coffee Jelly Logo"
-          />
+        <Box mr="4" width="40px" height="40px" position="relative">
+          <ImageLoader
+            image_url="/coffee_jelly3.svg"
+            alt="Coffee Jelly Logo"></ImageLoader>
         </Box>
         <Box>
           <Heading size="md" mr="4" textStyle="h2">

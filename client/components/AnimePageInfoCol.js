@@ -20,6 +20,7 @@ import {
   Divider,
 } from "@chakra-ui/react";
 import { ChevronDownIcon } from "@chakra-ui/icons";
+import ImageLoader from "./ImageLoader";
 
 const AnimePageInfoCol = ({
   image_url,
@@ -39,6 +40,7 @@ const AnimePageInfoCol = ({
   broadcast_day,
   broadcast_time,
   producers,
+  title,
 }) => {
   const [timerDays, setTimerDays] = useState("00");
   const [timerHours, setTimerHours] = useState("00");
@@ -126,7 +128,7 @@ const AnimePageInfoCol = ({
     <Box m="8" w="md">
       <Box width="225px">
         <Box height="300px" width="225px" minWidth="225px" position="relative">
-          <NextImage layout="fill" src={image_url} />
+          <ImageLoader image_url={image_url} alt={title}></ImageLoader>
         </Box>
         <ButtonGroup my="4" isAttached w="100%">
           <Button isFullWidth>Add to List</Button>

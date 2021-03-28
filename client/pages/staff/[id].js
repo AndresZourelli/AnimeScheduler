@@ -13,11 +13,13 @@ import {
   Th,
   Td,
   Tbody,
+  Skeleton,
 } from "@chakra-ui/react";
 import NextImage from "next/image";
 import NextLink from "next/link";
 import { v4 as uuidv4 } from "uuid";
 import { initializeApollo } from "@/lib/apolloClient";
+import ImageLoader from "@/components/ImageLoader";
 
 const GET_STAFF = gql`
   query GetStaff($staff_id: ID!) {
@@ -72,23 +74,37 @@ const staffPage = ({ staff }) => {
           <Heading>{staff.name}</Heading>
           <Text as="div">
             Staff In:
-            <Table mx="2" variant="simple">
+            <Table mx="2" variant="simple" size="lg">
               <Thead>
                 <Tr>
                   <Th>Role</Th>
-                  <Th>Anime</Th>
+                  <Th textAlign="center">Anime</Th>
+                  <Th></Th>
                 </Tr>
               </Thead>
               <Tbody>
                 {staff?.animes?.map((anime) => (
                   <Tr key={uuidv4()}>
-                    <Td key={uuidv4()} mb="2" fontSize="sm">
+                    <Td key={uuidv4()} fontSize="sm">
                       {anime.role}
                     </Td>
-                    <Td key={uuidv4()} mb="2" fontSize="sm">
+                    <Td key={uuidv4()} fontSize="sm" textAlign="center">
                       <NextLink href={`/anime/${encodeURIComponent(anime.id)}`}>
                         {anime.title}
                       </NextLink>
+                    </Td>
+                    <Td>
+                      <Box
+                        w="125px"
+                        h="179px"
+                        position="relative"
+                        ml="2"
+                        display="inline-block">
+                        <ImageLoader
+                          image_url={anime.image_url}
+                          alt={anime.title}
+                        />
+                      </Box>
                     </Td>
                   </Tr>
                 ))}

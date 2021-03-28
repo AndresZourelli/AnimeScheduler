@@ -1,6 +1,7 @@
 import NextImage from "next/image";
 import { Box, Heading, Text } from "@chakra-ui/react";
 import NextLink from "next/link";
+import ImageLoader from "@/components/ImageLoader";
 
 const StaffCard = ({ staff: { id, name, image_url, role } }) => {
   return (
@@ -36,7 +37,7 @@ const StaffCard = ({ staff: { id, name, image_url, role } }) => {
             {name}
           </Heading>
           <Box width="125px" height="194px" position="relative" display="block">
-            <NextImage src={image_url} alt={name} layout="fill" top="0" />
+            <ImageLoader image_url={image_url} alt={name} />
           </Box>
           <Text fontSize="sm">Role: {role} </Text>
         </Box>

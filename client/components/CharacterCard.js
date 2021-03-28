@@ -1,6 +1,6 @@
-import NextImage from "next/image";
 import { Box, Heading, Text } from "@chakra-ui/react";
 import NextLink from "next/link";
+import ImageLoader from "./ImageLoader";
 
 const CharacterCard = ({ character: { id, name, image_url, role, actor } }) => {
   return (
@@ -36,7 +36,7 @@ const CharacterCard = ({ character: { id, name, image_url, role, actor } }) => {
             {name}
           </Heading>
           <Box width="125px" height="194px" position="relative" display="block">
-            <NextImage src={image_url} alt={name} layout="fill" top="0" />
+            <ImageLoader image_url={image_url} alt={name}></ImageLoader>
           </Box>
           <Text fontSize="sm">Role: {role} </Text>
         </Box>

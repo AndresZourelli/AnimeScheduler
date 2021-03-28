@@ -5,6 +5,7 @@ import { Spinner, Box, Flex, Heading, Text } from "@chakra-ui/react";
 import NextImage from "next/image";
 import { v4 as uuidv4 } from "uuid";
 import { initializeApollo } from "@/lib/apolloClient";
+import ImageLoader from "@/components/ImageLoader";
 
 const GET_CHARACTER = gql`
   query GetCharacter($character_id: ID!) {
@@ -51,12 +52,7 @@ const characterPage = ({ character }) => {
       <Nav />
       <Flex justifyContent="flex-start" p="6">
         <Box w="225px" h="350px" position="relative" m="2">
-          <NextImage
-            style={{ position: "relative" }}
-            src={character.image_url}
-            layout="fill"
-            alt={character.name}
-          />
+          <ImageLoader image_url={character.image_url} alt={character.name} />
         </Box>
         <Box ml="6" position="relative">
           <Heading>{character.name}</Heading>
