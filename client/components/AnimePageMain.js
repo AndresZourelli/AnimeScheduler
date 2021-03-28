@@ -78,6 +78,20 @@ const AnimePageMain = ({
   const staffShowMore = () => {
     setStaffDisplayed((prevState) => prevState + 10);
   };
+
+  const tagColors = [
+    "gray",
+    "blue",
+    "cyan",
+    "green",
+    "orange",
+    "pink",
+    "purple",
+    "red",
+    "teal",
+    "yellow",
+  ];
+
   return (
     <Box position="relative" justifySelf="end" mt="8">
       <Box>
@@ -93,9 +107,14 @@ const AnimePageMain = ({
       <Box my="3" mr="16">
         <Heading mb="2">{title}</Heading>
         <Box mb="2">
-          {genres.map((genre) => {
+          {genres.map((genre, idx) => {
             return (
-              <Tag position="relative" mr="2" variant="outline" key={uuidv4()}>
+              <Tag
+                position="relative"
+                mr="2"
+                variant="outline"
+                key={uuidv4()}
+                colorScheme={tagColors[idx % genres.length]}>
                 <TagLabel>{genre}</TagLabel>
               </Tag>
             );

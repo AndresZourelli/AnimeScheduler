@@ -1,11 +1,23 @@
 import Nav from "@/components/Nav";
 import { useRouter } from "next/router";
 import { gql } from "@apollo/client";
-import { Spinner, Box, Flex, Heading, Text } from "@chakra-ui/react";
-import NextImage from "next/image";
+import {
+  Spinner,
+  Box,
+  Flex,
+  Heading,
+  Text,
+  Table,
+  Thead,
+  Tbody,
+  Tr,
+  Th,
+  Td,
+} from "@chakra-ui/react";
 import { v4 as uuidv4 } from "uuid";
 import { initializeApollo } from "@/lib/apolloClient";
 import ImageLoader from "@/components/ImageLoader";
+import NextLink from "next/link";
 
 const GET_CHARACTER = gql`
   query GetCharacter($character_id: ID!) {
@@ -57,26 +69,61 @@ const characterPage = ({ character }) => {
         <Box ml="6" position="relative">
           <Heading>{character.name}</Heading>
           <Text>Role: {character.role}</Text>
-          <Text>
+          <Heading mt="12" as="h3">
             Voice Actor:
-            <Box mx="2">
-              {character.actors?.map((anime) => (
-                <Text key={uuidv4()} mb="2" fontSize="sm">
-                  {anime.name}
-                </Text>
-              ))}
-            </Box>
-          </Text>
-          <Text as="div">
+          </Heading>
+          <Box mx="2">
+            <Table>
+              <Thead>
+                <Tr>
+                  <Th>Actor</Th>
+                  <Th>Language</Th>
+                  <Th></Th>
+                </Tr>
+              </Thead>
+              <Tbody>
+                {character.actors?.map((anime) => (
+                  <Tr key={anime.id} mb="2" fontSize="sm">
+                    <Td>
+                      <NextLink href={`/actor/${anime.id}`}>
+                        {anime.name}
+                      </NextLink>
+                    </Td>
+                    <Td>{anime.actor_language}</Td>
+                    <Td>
+                      <Box w="125px" h="179px" position="relative">
+                        <ImageLoader
+                          image_url={anime.image_url}
+                          alt={anime.name}></ImageLoader>
+                      </Box>
+                    </Td>
+                  </Tr>
+                ))}
+              </Tbody>
+            </Table>
+          </Box>
+
+          <Heading mt="12" as="h3">
             Appears In:
-            <Box mx="2">
-              {character.animes?.map((anime) => (
-                <Text key={uuidv4()} mb="2" fontSize="sm">
-                  {anime.anime}
-                </Text>
-              ))}
-            </Box>
-          </Text>
+          </Heading>
+          <Box mx="2">
+            <Table>
+              <Thead>
+                <Tr>
+                  <Th>Anime</Th>
+                  <Th></Th>
+                </Tr>
+              </Thead>
+              <Tbody>
+                {character.animes?.map((anime) => (
+                  <Tr key={anime.id} mb="2" fontSize="sm">
+                    <Td>{anime.anime}</Td>
+                    <Td></Td>
+                  </Tr>
+                ))}
+              </Tbody>
+            </Table>
+          </Box>
         </Box>
       </Flex>
     </Box>
