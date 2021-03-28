@@ -49,39 +49,23 @@ const AnimePageMain = ({
     } else {
       setHasMoreCharacters(false);
     }
-    if (currentActorsDisplayed < numberOfActors) {
-      setHasMoreActors(true);
-    } else {
-      setHasMoreActors(false);
-    }
-    if (currentStaffDisplayed < numberOfStaff) {
-      setHasMoreStaff(true);
-    } else {
-      setHasMoreStaff(false);
-    }
-  }, []);
+  }, [currentCharactersDisplayed]);
 
   useEffect(() => {
-    if (currentCharactersDisplayed < numberOfCharacters) {
-      setHasMoreCharacters(true);
-    } else {
-      setHasMoreCharacters(false);
-    }
     if (currentActorsDisplayed < numberOfActors) {
       setHasMoreActors(true);
     } else {
       setHasMoreActors(false);
     }
+  }, [currentActorsDisplayed]);
+
+  useEffect(() => {
     if (currentStaffDisplayed < numberOfStaff) {
       setHasMoreStaff(true);
     } else {
       setHasMoreStaff(false);
     }
-  }, [
-    currentCharactersDisplayed,
-    currentActorsDisplayed,
-    currentStaffDisplayed,
-  ]);
+  }, [currentStaffDisplayed]);
 
   const charactersShowMore = () => {
     setCharactersDisplayed((prevState) => prevState + 10);
@@ -124,7 +108,7 @@ const AnimePageMain = ({
           {characters.slice(0, currentCharactersDisplayed).map((character) => {
             return (
               <CharacterCard
-                key={uuidv4()}
+                key={character.id}
                 character={character}></CharacterCard>
             );
           })}
@@ -140,7 +124,7 @@ const AnimePageMain = ({
         <Heading>Actors</Heading>
         <Flex wrap="wrap" justifyContent="flexStart">
           {actors.slice(0, currentActorsDisplayed).map((actor) => {
-            return <ActorCard key={uuidv4()} actor={actor}></ActorCard>;
+            return <ActorCard key={actor.id} actor={actor}></ActorCard>;
           })}
         </Flex>
         <Box display="flex">
@@ -154,7 +138,7 @@ const AnimePageMain = ({
         <Heading>Staff</Heading>
         <Flex wrap="wrap" justifyContent="flexStart">
           {staff.slice(0, currentStaffDisplayed).map((staff) => {
-            return <StaffCard key={uuidv4()} staff={staff}></StaffCard>;
+            return <StaffCard key={staff.id} staff={staff}></StaffCard>;
           })}
         </Flex>
         <Box display="flex">
