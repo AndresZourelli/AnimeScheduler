@@ -16,8 +16,8 @@ import {
 } from "@chakra-ui/react";
 import NextImage from "next/image";
 import NextLink from "next/link";
-import { v4 as uuidv4 } from "uuid";
 import { initializeApollo } from "@/lib/apolloClient";
+import ImageLoader from "@/components/ImageLoader";
 
 const GET_ACTOR = gql`
   query GetActor($actor_id: ID!) {
@@ -84,13 +84,15 @@ const actorPage = ({ actor }) => {
               <Thead>
                 <Tr>
                   <Th>Character Name</Th>
+                  <Th></Th>
                   <Th>Anime</Th>
+                  <Th></Th>
                 </Tr>
               </Thead>
               <Tbody>
                 {actor?.animes?.map((anime) => (
-                  <Tr key={uuidv4()}>
-                    <Td key={uuidv4()} mb="2" fontSize="sm">
+                  <Tr key={anime.anime.id}>
+                    <Td mb="2" fontSize="sm">
                       <NextLink
                         href={`/character/${encodeURIComponent(
                           anime.character.character_id
@@ -98,11 +100,25 @@ const actorPage = ({ actor }) => {
                         {anime.character.name}
                       </NextLink>
                     </Td>
-                    <Td key={uuidv4()} mb="2" fontSize="sm">
+                    <Td>
+                      <Box w="125px" h="179px" position="relative">
+                        <ImageLoader
+                          image_url={anime.character.image_url}
+                          alt={anime.character.name}></ImageLoader>
+                      </Box>
+                    </Td>
+                    <Td mb="2" fontSize="sm">
                       <NextLink
                         href={`/anime/${encodeURIComponent(anime.anime.id)}`}>
                         {anime.anime.title}
                       </NextLink>
+                    </Td>
+                    <Td>
+                      <Box w="125px" h="179px" position="relative">
+                        <ImageLoader
+                          image_url={anime.anime.image_url}
+                          alt={anime.anime.name}></ImageLoader>
+                      </Box>
                     </Td>
                   </Tr>
                 ))}
