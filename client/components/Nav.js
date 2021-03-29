@@ -12,17 +12,28 @@ import {
 import { MoonIcon, SunIcon } from "@chakra-ui/icons";
 import NextLink from "next/link";
 import ImageLoader from "./ImageLoader";
+import { useRouter } from "next/router";
 
 const Nav = () => {
+  const router = useRouter();
   const { colorMode, toggleColorMode } = useColorMode();
   const isSignedIn = false;
+
+  const handleLoginClick = () => {
+    router.push("/login");
+  };
+
   const buttons = isSignedIn ? (
     <Button mr="3">Sign out</Button>
   ) : (
     <>
-      <Button mr="3">Login</Button> <Button mr="3">Sign Up</Button>
+      <Button mr="3" onClick={handleLoginClick}>
+        Login
+      </Button>{" "}
+      <Button mr="3">Sign Up</Button>
     </>
   );
+
   return (
     <nav>
       <Flex

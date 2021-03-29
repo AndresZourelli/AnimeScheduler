@@ -70,6 +70,19 @@ const animePage = ({ anime }) => {
   const router = useRouter();
   const { id } = router.query;
 
+  const tagColors = [
+    "gray",
+    "blue",
+    "cyan",
+    "green",
+    "orange",
+    "pink",
+    "purple",
+    "red",
+    "teal",
+    "yellow",
+  ];
+
   if (!id || !anime) {
     return (
       <Box>
