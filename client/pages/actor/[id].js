@@ -1,4 +1,3 @@
-import Nav from "@/components/Nav";
 import { useRouter } from "next/router";
 import { gql } from "@apollo/client";
 import {
@@ -57,7 +56,6 @@ const actorPage = ({ actor }) => {
   if (!id || !actor) {
     return (
       <Box>
-        <Nav />
         <Spinner size="xl" display="block" m="auto" my="10"></Spinner>
       </Box>
     );
@@ -65,7 +63,6 @@ const actorPage = ({ actor }) => {
 
   return (
     <Box>
-      <Nav />
       <Flex justifyContent="flex-start" p="6">
         <Box w="225px" h="350px" position="relative" m="2">
           <NextImage

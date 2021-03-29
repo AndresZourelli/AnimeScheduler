@@ -1,4 +1,3 @@
-import Nav from "@/components/Nav";
 import { useRouter } from "next/router";
 import { gql } from "@apollo/client";
 import {
@@ -14,7 +13,6 @@ import {
   Th,
   Td,
 } from "@chakra-ui/react";
-import { v4 as uuidv4 } from "uuid";
 import { initializeApollo } from "@/lib/apolloClient";
 import ImageLoader from "@/components/ImageLoader";
 import NextLink from "next/link";
@@ -53,7 +51,6 @@ const characterPage = ({ character }) => {
   if (!id || !character) {
     return (
       <Box>
-        <Nav />
         <Spinner size="xl" display="block" m="auto" my="10"></Spinner>
       </Box>
     );
@@ -61,7 +58,6 @@ const characterPage = ({ character }) => {
 
   return (
     <Box>
-      <Nav />
       <Flex justifyContent="flex-start" p="6">
         <Box w="225px" h="350px" position="relative" m="2">
           <ImageLoader image_url={character.image_url} alt={character.name} />

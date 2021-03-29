@@ -23,6 +23,10 @@ const Nav = () => {
     router.push("/login");
   };
 
+  const handleSignUpClick = () => {
+    router.push("/signup");
+  };
+
   const buttons = isSignedIn ? (
     <Button mr="3">Sign out</Button>
   ) : (
@@ -30,7 +34,9 @@ const Nav = () => {
       <Button mr="3" onClick={handleLoginClick}>
         Login
       </Button>{" "}
-      <Button mr="3">Sign Up</Button>
+      <Button mr="3" onClick={handleSignUpClick}>
+        Sign Up
+      </Button>
     </>
   );
 

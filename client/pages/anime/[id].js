@@ -1,4 +1,3 @@
-import Nav from "@/components/Nav";
 import { useRouter } from "next/router";
 import { gql } from "@apollo/client";
 import { Spinner, Box, Flex } from "@chakra-ui/react";
@@ -86,7 +85,6 @@ const animePage = ({ anime }) => {
   if (!id || !anime) {
     return (
       <Box>
-        <Nav />
         <Spinner size="xl" display="block" m="auto" my="10"></Spinner>
       </Box>
     );
@@ -94,7 +92,6 @@ const animePage = ({ anime }) => {
 
   return (
     <Box position="relative">
-      <Nav />
       <Flex position="relative">
         <AnimePageInfoCol {...anime} />
         <AnimePageMain {...anime} />

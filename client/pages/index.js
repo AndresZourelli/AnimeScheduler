@@ -1,4 +1,3 @@
-import Nav from "@/components/Nav";
 import PopularRow from "@/components/PopularRow";
 import MostWatchedRow from "@/components/MostWatchedRow";
 import CurrentlyAiringThisSeason from "@/components/CurrentlyAiringThisSeason";
@@ -66,7 +65,6 @@ const Home = ({
 }) => {
   return (
     <>
-      <Nav />
       <CurrentlyAiringThisSeason animes={CurrentlyAiringThisSeasonData} />
       <CurrentlyAiringContinue animes={CurrentlyAiringContinueData} />
       <PopularRow animes={PopularRowData} />
