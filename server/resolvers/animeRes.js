@@ -12,7 +12,9 @@ const animeResolver = {
         searchQuery = {
           $or: [
             { title: { $regex: search, $options: "i" } },
-            { alt_names: { $regex: search, $options: "i" } },
+            { "alt_names.English": { $regex: search, $options: "i" } },
+            { "alt_names.Synonyms": { $regex: search, $options: "i" } },
+            { "alt_names.Japanese": { $regex: search, $options: "i" } },
             { genres: { $regex: search, $options: "i" } },
             { licensors: { $regex: search, $options: "i" } },
             { producers: { $regex: search, $options: "i" } },
