@@ -8,13 +8,51 @@ import {
   Box,
   Heading,
   Center,
+  InputGroup,
+  InputLeftElement,
+  Input,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverHeader,
+  PopoverBody,
+  Spinner,
+  Table,
+  Thead,
+  Tbody,
+  Tr,
+  Th,
+  Td,
 } from "@chakra-ui/react";
-import { MoonIcon, SunIcon } from "@chakra-ui/icons";
+import { MoonIcon, SunIcon, Search2Icon } from "@chakra-ui/icons";
 import NextLink from "next/link";
 import ImageLoader from "./ImageLoader";
 import { useRouter } from "next/router";
+import { useState, useEffect, useCallback } from "react";
+import { useLazyQuery, gql } from "@apollo/client";
+import debouce from "lodash";
+
+const SEARCH_FOR_ANIME = gql`
+  query SearchForAnime(
+    $SearchInput: String!
+    $PageInput: Int
+    $LimitInput: Int
+  ) {
+    getAnimes(search: $SearchInput, page: $PageInput, limit: $LimitInput) {
+      animes {
+        title
+        image_url
+        avg_score
+        id: _id
+      }
+    }
+  }
+`;
 
 const Nav = () => {
+  const [search, setSearch] = useState("");
+  const [openPopover, setOpenPopover] = useState(false);
+  const [searchAnimes, { loading, data }] = useLazyQuery(SEARCH_FOR_ANIME);
   const router = useRouter();
   const { colorMode, toggleColorMode } = useColorMode();
   const isSignedIn = false;
@@ -40,6 +78,32 @@ const Nav = () => {
     </>
   );
 
+  const onPopoverClose = () => {
+    setOpenPopover(false);
+    setSearch("");
+  };
+
+  const updateQuery = () => {
+    searchAnimes({
+      variables: { SearchInput: search, PageInput: 1, LimitInput: 6 },
+    });
+    setOpenPopover(true);
+  };
+  const delayedSearch = useCallback(debouce.debounce(updateQuery, 500), [
+    search,
+  ]);
+
+  useEffect(() => {
+    if (search) {
+      delayedSearch();
+    }
+    return delayedSearch.cancel;
+  }, [search, delayedSearch]);
+
+  const onSearchChange = (e) => {
+    setSearch(e.target.value);
+  };
+
   return (
     <nav>
       <Flex
@@ -53,10 +117,78 @@ const Nav = () => {
         </Box>
         <Box>
           <Heading size="md" mr="4" textStyle="h2">
-            animé café
+            <NextLink href="/">animé café</NextLink>
           </Heading>
         </Box>
         <Spacer />
+        <Box w="300px" mr="3">
+          <Popover
+            isOpen={openPopover}
+            onClose={onPopoverClose}
+            placement="bottom"
+            autoFocus={false}
+            gutter="0">
+            <PopoverTrigger>
+              <InputGroup>
+                <InputLeftElement
+                  pointerEvents="none"
+                  children={<Search2Icon />}
+                />
+                <Input
+                  placeholder="Search"
+                  value={search}
+                  onChange={onSearchChange}
+                />
+              </InputGroup>
+            </PopoverTrigger>
+            <PopoverContent>
+              <PopoverHeader>Search Results</PopoverHeader>
+
+              {loading ? (
+                <PopoverBody m="auto">
+                  <Spinner size="xl"></Spinner>
+                </PopoverBody>
+              ) : (
+                <PopoverBody>
+                  <Table>
+                    <Thead>
+                      <Tr>
+                        <Th>Results</Th>
+                        <Th></Th>
+                      </Tr>
+                    </Thead>
+                    <Tbody>
+                      {data?.getAnimes?.animes.map((anime) => {
+                        return (
+                          <Tr
+                            key={anime.id}
+                            _hover={{
+                              background: "blue.600",
+                              color: "blue.50",
+                            }}>
+                            <Td onClick={onPopoverClose}>
+                              <NextLink href={`/anime/${anime.id}`}>
+                                {anime.title}
+                              </NextLink>
+                            </Td>
+                            <Td display="relative">
+                              <Box w="70px" h="100px" position="relative">
+                                <ImageLoader
+                                  image_url={anime.image_url}
+                                  alt={anime.title}
+                                />
+                              </Box>
+                            </Td>
+                          </Tr>
+                        );
+                      })}
+                    </Tbody>
+                  </Table>
+                </PopoverBody>
+              )}
+            </PopoverContent>
+          </Popover>
+        </Box>
         <Box>
           {buttons}
           <IconButton
