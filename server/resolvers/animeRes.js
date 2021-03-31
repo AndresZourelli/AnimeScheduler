@@ -21,7 +21,6 @@ const animeResolver = {
             { source: { $regex: search, $options: "i" } },
             { status: { $regex: search, $options: "i" } },
             { type: { $regex: search, $options: "i" } },
-            { avg_score: { $regex: search, $options: "i" } },
           ],
         };
       }

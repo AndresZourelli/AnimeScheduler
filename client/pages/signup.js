@@ -25,17 +25,17 @@ const signup = () => {
       </Box>
       <Box>
         <Heading mb="5">Sign Up</Heading>
-        <FormControl id="email" isRequired>
+        <FormControl mb="3" id="email" isRequired>
           <FormLabel>Email address</FormLabel>
-          <Input type="email" />
+          <Input type="email" placeholder="Email Address" />
         </FormControl>
-        <FormControl id="password1" isRequired>
+        <FormControl mb="3" id="password1" isRequired>
           <FormLabel>Password</FormLabel>
-          <Input type="password" />
+          <Input type="password" placeholder="Password" />
         </FormControl>
-        <FormControl id="password2" isRequired>
+        <FormControl mb="3" id="password2" isRequired>
           <FormLabel>Re-Enter Password</FormLabel>
-          <Input type="password" />
+          <Input type="password" placeholder="Re-Enter Password" />
         </FormControl>
         <Button mt="7">Sign Up</Button>
       </Box>

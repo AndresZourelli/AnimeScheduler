@@ -25,13 +25,13 @@ const login = () => {
       </Box>
       <Box>
         <Heading mb="5">Login</Heading>
-        <FormControl id="email" isRequired>
+        <FormControl mb="3" id="email" isRequired>
           <FormLabel>Email address</FormLabel>
-          <Input type="email" />
+          <Input type="email" placeholder="Email Address" />
         </FormControl>
-        <FormControl id="password" isRequired>
+        <FormControl mb="3" id="password" isRequired>
           <FormLabel>Password</FormLabel>
-          <Input type="password" />
+          <Input type="password" placeholder="Password" />
         </FormControl>
         <Button mt="7">Login</Button>
       </Box>
