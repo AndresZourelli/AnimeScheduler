@@ -1,6 +1,6 @@
-import NextImage from "next/image";
 import { Box, Heading, Badge } from "@chakra-ui/react";
 import Link from "next/link";
+import LoadImage from "@/components/ImageLoader";
 
 const AnimeCard = ({ title, image_url, score, id }) => {
   return (
@@ -28,7 +28,7 @@ const AnimeCard = ({ title, image_url, score, id }) => {
           {score}
         </Badge>
         <Box width="100%" height="80%" position="relative" display="block">
-          <NextImage src={image_url} alt={title} layout="fill" top="0" />
+          <LoadImage image_url={image_url} alt={title} />
         </Box>
         <Heading
           height="20%"

@@ -14,6 +14,9 @@ const authResolver = {
           throw new CustomError("loginCredentials", "Missing email/password");
         }
         const findUser = await User.findOne({ email });
+        if (!findUser) {
+          throw new CustomError("invalidEmail", "Email not found");
+        }
         const pwMatch = await bcrypt.compare(password, findUser.password);
 
         if (pwMatch) {

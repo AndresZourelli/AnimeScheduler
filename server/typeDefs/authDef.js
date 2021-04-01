@@ -4,7 +4,7 @@ const authDef = gql`
   type AuthData {
     userId: ID
     success: Boolean!
-    errors: [AuthError!]
+    errors: [AuthError]
   }
 
   type AuthError {

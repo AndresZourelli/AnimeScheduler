@@ -149,6 +149,7 @@ const animeResolver = {
     },
     getAnimesAiringToday: async () => {
       const result = await Anime.find({ status: "Currently Airing" });
+      return result[0];
     },
   },
 
