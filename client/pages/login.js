@@ -47,7 +47,6 @@ const login = () => {
 
   const onLoginClick = () => {
     if (email && password) {
-      console.log(email, password);
       loginUser({ variables: { email: email, password: password } });
     }
   };

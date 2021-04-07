@@ -4,6 +4,7 @@ const User = require("../mongoDB/models/user");
 const CustomError = require("../lib/CustomErrors");
 const { formatErrors } = require("../utils/FormatError");
 const { createTokens } = require("../utils/CreateTokens");
+const { sendResetEmail } = require("../utils/SendEmails");
 require("dotenv").config();
 
 const authResolver = {
@@ -46,6 +47,20 @@ const authResolver = {
         };
       }
     },
+    verifyResetToken: async (_, { token }) => {
+      const user = await User.findOne({
+        resetToken: token,
+        resetTokenExpires: {
+          $gt: Date.now(),
+        },
+      });
+
+      if (user === null) {
+        return false;
+      }
+
+      return true;
+    },
   },
   Mutation: {
     invalidateTokens: async (_, __, { req }) => {
@@ -56,6 +71,57 @@ const authResolver = {
       user.refreshVerify = uuidv4();
       await user.save();
       return true;
+    },
+    generateResetToken: async (_, { user_id }) => {
+      try {
+        const user = await User.findById(user_id);
+        if (user === null) {
+          return false;
+        }
+        user.resetToken = uuidv4();
+        user.resetTokenExpires = Date.now() + 60 * 1000 * 30;
+        await user.save();
+        await sendResetEmail(user.resetToken, user.email);
+        return true;
+      } catch (e) {
+        return false;
+      }
+    },
+
+    changePassword: async (_, { password, verifyPassword, token }) => {
+      try {
+        const user = await User.findOne({
+          resetToken: token,
+          resetTokenExpires: {
+            $gt: Date.now(),
+          },
+        });
+
+        if (user === null) {
+          return {
+            success: false,
+            message: "Token Expired or Missing",
+          };
+        }
+
+        if (password === verifyPassword) {
+          const hashedPassword = await bcrypt.hash(password, 10);
+          user.password = hashedPassword;
+          return {
+            success: true,
+            message: "Password Successfully Changed",
+          };
+        }
+      } catch (error) {
+        return {
+          success: false,
+          message: "Token Expired or Missing",
+        };
+      }
+      return {
+        success: false,
+        message: "Token Expired or Missing",
+      };
     },
   },
 };

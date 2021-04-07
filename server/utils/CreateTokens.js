@@ -16,4 +16,11 @@ const createTokens = (user) => {
   return { refreshToken, accessToken };
 };
 
-module.exports = { createTokens };
+const createEmailResetToken = (user) => {
+  const resetToken = jwt.sign({ userId: user._id }, process.env.REFRESH_TOKEN, {
+    expiresIn: "30min",
+  });
+
+  return resetToken;
+};
+module.exports = { createTokens, createEmailResetToken };

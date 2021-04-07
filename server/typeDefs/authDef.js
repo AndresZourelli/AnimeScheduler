@@ -12,12 +12,24 @@ const authDef = gql`
     message: String!
   }
 
+  type ResetTokenResponse {
+    success: Boolean!
+    message: String!
+  }
+
   extend type Query {
     login(email: String!, password: String!): AuthData!
+    verifyResetToken(token: String!): Boolean!
   }
 
   extend type Mutation {
     invalidateTokens: Boolean!
+    generateResetToken(user_id: ID!): Boolean!
+    changePassword(
+      password: String!
+      verifyPassword: String!
+      token: String!
+    ): ResetTokenResponse!
   }
 `;
 
