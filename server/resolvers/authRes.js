@@ -72,9 +72,9 @@ const authResolver = {
       await user.save();
       return true;
     },
-    generateResetToken: async (_, { user_id }) => {
+    generateResetToken: async (_, { email }) => {
       try {
-        const user = await User.findById(user_id);
+        const user = await User.findOne({ email });
         if (user === null) {
           return false;
         }
@@ -107,6 +107,7 @@ const authResolver = {
         if (password === verifyPassword) {
           const hashedPassword = await bcrypt.hash(password, 10);
           user.password = hashedPassword;
+          await user.save();
           return {
             success: true,
             message: "Password Successfully Changed",

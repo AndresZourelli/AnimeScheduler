@@ -42,19 +42,31 @@ const reset_password = () => {
     verifyPassword: "",
     token: "",
   });
+  const [getError, setGetError] = useState(false);
   const router = useRouter();
   const { token } = router.query;
   const { loading, error, data } = useQuery(VERIFY_TOKEN, {
     variables: { token },
     skip: !token,
   });
-  const [updatePassword, { passwordResult }] = useMutation(UPDATE_PASSWORD, {
-    variables: passwordData,
-  });
+  const [updatePassword, { data: passwordResult }] = useMutation(
+    UPDATE_PASSWORD,
+    {
+      variables: passwordData,
+    }
+  );
 
   useEffect(() => {
     setPasswordData((prevState) => ({ ...prevState, token }));
   }, [token]);
+
+  useEffect(() => {
+    if (passwordData.password !== passwordData.verifyPassword) {
+      setGetError(true);
+    } else {
+      setGetError(false);
+    }
+  }, [passwordData]);
 
   if (loading) {
     return <Spinner size="xl"></Spinner>;
@@ -72,6 +84,10 @@ const reset_password = () => {
       verifyPassword: e.target.value,
     }));
   };
+
+  const onPasswordSubmit = () => {
+    updatePassword();
+  };
   return (
     <Box>
       <Box m="8">
@@ -87,7 +103,7 @@ const reset_password = () => {
                 placeholder="New Password"
               />
             </FormControl>
-            <FormControl mb="6" id="password1" isRequired>
+            <FormControl mb="6" id="password1" isRequired isInvalid={getError}>
               <FormLabel>Re-Enter Password</FormLabel>
               <Input
                 onChange={onVerifyPasswordChange}
@@ -95,8 +111,11 @@ const reset_password = () => {
                 type="password"
                 placeholder="Re-Enter Password"
               />
+              <FormErrorMessage>Passwords Must Match</FormErrorMessage>
             </FormControl>
-            <Button>Submit</Button>
+            <Button isDisabled={getError} onClick={onPasswordSubmit}>
+              Submit
+            </Button>
           </Box>
         ) : (
           <Heading margin="auto">Error</Heading>

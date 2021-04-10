@@ -2,8 +2,6 @@ const nodemailer = require("nodemailer");
 
 exports.sendResetEmail = async (token, email) => {
   try {
-    const testAccount = await nodemailer.createTestAccount();
-
     const transporter = nodemailer.createTransport({
       host: "smtp.ethereal.email",
       port: 587,
@@ -13,7 +11,7 @@ exports.sendResetEmail = async (token, email) => {
       },
     });
 
-    const emailTransport = await transporter.sendMail(
+    await transporter.sendMail(
       {
         from: '"Anime Website" <anime@website.com>',
         to: email,
