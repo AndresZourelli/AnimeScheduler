@@ -3,7 +3,7 @@ require("dotenv").config();
 
 const createTokens = (user) => {
   const refreshToken = jwt.sign(
-    { userId: user._id, resfreshVerify: user.resfreshVerify },
+    { userId: user._id, refreshVerify: user.refreshVerify },
     process.env.REFRESH_TOKEN,
     {
       expiresIn: "7d",

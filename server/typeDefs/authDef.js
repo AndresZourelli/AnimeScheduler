@@ -2,7 +2,8 @@ const { gql } = require("apollo-server-express");
 
 const authDef = gql`
   type AuthData {
-    userId: ID
+    userId: ID!
+    token: String!
     success: Boolean!
     errors: [AuthError]
   }
@@ -17,6 +18,11 @@ const authDef = gql`
     message: String!
   }
 
+  type TokenResponse {
+    success: Boolean!
+    token: String
+  }
+
   extend type Query {
     login(email: String!, password: String!): AuthData!
     verifyResetToken(token: String!): Boolean!
@@ -25,6 +31,7 @@ const authDef = gql`
   extend type Mutation {
     invalidateTokens: Boolean!
     generateResetToken(email: String!): Boolean!
+    getAccessToken: TokenResponse!
     changePassword(
       password: String!
       verifyPassword: String!

@@ -33,10 +33,6 @@ module.exports = (req, res, next) => {
   if (!user || user.refreshVerify !== data.refreshVerify) {
     return next();
   }
-
-  const tokens = createTokens(user);
-  res.cookie("refresh-token", tokens.refreshToken);
-  res.cookie("access-token", tokens.accessToken);
   req.userId = user._id;
   return next();
 };
