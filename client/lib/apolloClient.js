@@ -1,16 +1,41 @@
 import { useMemo } from "react";
-import { ApolloClient, HttpLink, InMemoryCache } from "@apollo/client";
+import {
+  ApolloClient,
+  HttpLink,
+  InMemoryCache,
+  ApolloLink,
+  from,
+} from "@apollo/client";
+import { getAccessToken, fetchAccessToken, TokenRefresh } from "./accessToken";
 
 export const APOLLO_STATE_PROP_NAME = "__APOLLO_STATE__";
 
 let apolloClient;
 
+const authMiddleware = new ApolloLink(async (operation, forward) => {
+  const accessToken = await TokenRefresh();
+  console.log(accessToken);
+  if (accessToken) {
+    operation.setContext(({ headers = {} }) => ({
+      headers: {
+        ...headers,
+        authorization: `bearer ${accessToken}`,
+      },
+    }));
+  }
+
+  return forward(operation);
+});
+
+const httpLink = new HttpLink({
+  uri: "http://localhost:4000/graphql",
+  credentials: "include",
+});
+
 const createApolloClient = () => {
   return new ApolloClient({
     ssrMode: typeof window === "undefined",
-    link: new HttpLink({
-      uri: "http://localhost:4000/graphql",
-    }),
+    link: from([authMiddleware, httpLink]),
     cache: new InMemoryCache(),
   });
 };

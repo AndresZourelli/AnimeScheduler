@@ -24,10 +24,10 @@ const userSchema = new Schema(
         "Password must be at least 8 characters long, have at least 1 lowercase letter, 1 uppercase letter, and 1 symbol",
       ],
     },
-    resetToken: {
+    resetEmailToken: {
       type: String,
     },
-    resetTokenExpires: {
+    resetEmailTokenExpires: {
       type: Number,
     },
     myAnimes: [],

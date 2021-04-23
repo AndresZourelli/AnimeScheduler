@@ -4,7 +4,11 @@ const { v4: uuidv4 } = require("uuid");
 const User = require("../mongoDB/models/user");
 const CustomError = require("../lib/CustomErrors");
 const { formatErrors } = require("../utils/FormatError");
-const { createTokens } = require("../utils/CreateTokens");
+const {
+  createAccessToken,
+  createRefreshToken,
+} = require("../utils/CreateTokens");
+const { invalidateTokens } = require("../utils/AuthHelpers");
 const { sendResetEmail } = require("../utils/SendEmails");
 require("dotenv").config();
 
@@ -23,7 +27,9 @@ const authResolver = {
 
         if (pwMatch) {
           findUser.refreshVerify = uuidv4();
-          const { refreshToken, accessToken } = createTokens(findUser);
+
+          const refreshToken = createRefreshToken(findUser);
+          const accessToken = createAccessToken(findUser);
 
           await User.findByIdAndUpdate(findUser._id, {
             refreshVerify: findUser.refreshVerify,
@@ -52,8 +58,8 @@ const authResolver = {
     },
     verifyResetToken: async (_, { token }) => {
       const user = await User.findOne({
-        resetToken: token,
-        resetTokenExpires: {
+        resetEmailToken: token,
+        resetEmailTokenExpires: {
           $gt: Date.now(),
         },
       });
@@ -92,7 +98,8 @@ const authResolver = {
 
       try {
         findUser.refreshVerify = uuidv4();
-        const { refreshToken, accessToken } = createTokens(findUser);
+        const refreshToken = createRefreshToken(findUser);
+        const accessToken = createAccessToken(findUser);
 
         res.cookie("refresh-token", refreshToken, {
           maxAge: 1000 * 60 * 60 * 24 * 7,
@@ -107,25 +114,17 @@ const authResolver = {
         return { success: false };
       }
     },
-    invalidateTokens: async (_, __, { req }) => {
-      if (!req.userId) {
-        return false;
-      }
-      const user = await User.findById(req.userId);
-      user.refreshVerify = uuidv4();
-      await user.save();
-      return true;
-    },
     generateResetToken: async (_, { email }) => {
       try {
         const user = await User.findOne({ email });
         if (user === null) {
           return false;
         }
-        user.resetToken = uuidv4();
-        user.resetTokenExpires = Date.now() + 60 * 1000 * 30;
+        user.resetEmailToken = uuidv4();
+        user.resetEmailTokenExpires = Date.now() + 60 * 1000 * 30;
         await user.save();
-        await sendResetEmail(user.resetToken, user.email);
+        await sendResetEmail(user.resetEmailToken, user.email);
+        await invalidateTokens(user._id);
         return true;
       } catch (e) {
         return false;

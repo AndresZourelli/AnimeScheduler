@@ -3,6 +3,10 @@ const bcrypt = require("bcryptjs");
 const User = require("../mongoDB/models/user");
 const CustomError = require("../lib/CustomErrors");
 const { formatErrors } = require("../utils/FormatError");
+const {
+  createAccessToken,
+  createRefreshToken,
+} = require("../utils/CreateTokens");
 require("dotenv").config();
 
 const userResolver = {
@@ -23,7 +27,17 @@ const userResolver = {
     },
   },
   Mutation: {
-    createUser: async (_, { username, email, password }) => {
+    createUser: async (
+      _,
+      { username, email, password, verifyPassword },
+      { res }
+    ) => {
+      if (password !== verifyPassword) {
+        return {
+          success: false,
+          errors: { type: "Password", message: "Passwords did not match" },
+        };
+      }
       try {
         const hashedPassword = await bcrypt.hash(password, 10);
         const createUser = new User({
@@ -35,10 +49,20 @@ const userResolver = {
 
         await createUser.save();
 
+        const accessToken = createAccessToken(createUser);
+        const refreshToken = createRefreshToken(createUser);
+
+        res.cookie("refresh-token", refreshToken, {
+          maxAge: 1000 * 60 * 60 * 24 * 7,
+          httpOnly: true,
+          overwrite: true,
+        });
+
         return {
           success: true,
           message: "New User Created!",
           user: { user_id: createUser._id },
+          token: accessToken,
         };
       } catch (e) {
         return {

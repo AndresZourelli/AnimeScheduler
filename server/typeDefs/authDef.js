@@ -29,7 +29,6 @@ const authDef = gql`
   }
 
   extend type Mutation {
-    invalidateTokens: Boolean!
     generateResetToken(email: String!): Boolean!
     getAccessToken: TokenResponse!
     changePassword(

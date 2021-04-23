@@ -1,8 +1,21 @@
-import { createContex, useState, useEffect, useContext } from "react";
-import { gql, useQuery, useLazyQuery } from "@apollo/client";
+import { createContext, useState, useEffect, useContext } from "react";
+import { gql, useQuery, useLazyQuery, useMutation } from "@apollo/client";
 import jwt_decode from "jwt-decode";
 
-const AuthContext = createContex();
+const GET_ACCESS_TOKEN = gql`
+  mutation GetAccessToken {
+    getAccessToken {
+      success
+      token
+    }
+  }
+`;
+
+const AuthContext = createContext();
+
+export const useAuth = () => {
+  return useContext(AuthContext);
+};
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState({
@@ -11,28 +24,23 @@ export const AuthProvider = ({ children }) => {
     loading: false,
     user: false,
   });
+  const [requestToken, { data: requestTokenResponse }] = useMutation(
+    GET_ACCESS_TOKEN
+  );
 
-  const getRefreshToken = () => {};
-
-  const getAccessToken = () => {};
+  const getToken = async () => {
+    if (user.token) {
+      if (isTokenValid(user.token)) {
+        return user.token;
+      } else {
+        await requestToken();
+        console.log(requestTokenResponse);
+      }
+    }
+  };
 
   const setAccessToken = (accessToken) => {
     setUser((prevState) => ({ ...prevState, token: accessToken }));
-  };
-
-  const isTokenValid = () => {
-    if (!user.token) {
-      return false;
-    }
-    try {
-      const { exp } = jwt_decode(user.token);
-      if (Date.now() >= exp * 1000) {
-        return false;
-      }
-      return true;
-    } catch (error) {
-      return false;
-    }
   };
 
   const logoutUser = () => {
@@ -40,12 +48,6 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem("refresh-token");
   };
 
-  useEffect(() => {}, []);
-
-  const value = { loginUser, logoutUser, user };
+  const value = { logoutUser, getToken, setAccessToken };
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
-};
-
-export const useAuth = () => {
-  return useContext(AuthContext);
 };

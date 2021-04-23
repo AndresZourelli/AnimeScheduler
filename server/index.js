@@ -17,7 +17,12 @@ mongoose.connect(process.env.MONGODB_URI, {
 const app = express();
 
 app.use(cookieParser());
-app.use(cors());
+app.use(
+  cors({
+    credentials: true,
+    origin: "http://localhost:3000",
+  })
+);
 app.use(isAuth);
 
 const server = new ApolloServer({
@@ -26,7 +31,7 @@ const server = new ApolloServer({
   context: ({ req, res, next }) => ({ req, res, next }),
 });
 
-server.applyMiddleware({ app });
+server.applyMiddleware({ app, cors: false });
 
 app.listen({ port: 4000 }, () => {
   /* eslint-disable-next-line no-console */

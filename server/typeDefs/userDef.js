@@ -29,6 +29,7 @@ const userDef = gql`
     createUser(
       username: String!
       password: String!
+      verifyPassword: String!
       email: String!
     ): UserResponse!
   }

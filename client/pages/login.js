@@ -13,12 +13,14 @@ import { ArrowLeftIcon } from "@chakra-ui/icons";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import { gql, useLazyQuery, useMutation } from "@apollo/client";
+import { setAccessToken } from "@/lib/accessToken";
 
 const USER_LOGIN = gql`
   query UserLogin($email: String!, $password: String!) {
     login(email: $email, password: $password) {
       userId
       success
+      token
       errors {
         type
         message
@@ -69,6 +71,7 @@ const login = () => {
 
   useEffect(() => {
     if (data && data?.login?.success) {
+      setAccessToken(data.login.success);
       router.push("/");
     } else if (data && !data?.login?.success) {
       setIsError(true);
