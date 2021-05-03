@@ -71,7 +71,7 @@ const login = () => {
 
   useEffect(() => {
     if (data && data?.login?.success) {
-      setAccessToken(data.login.success);
+      setAccessToken(data.login.token);
       router.push("/");
     } else if (data && !data?.login?.success) {
       setIsError(true);

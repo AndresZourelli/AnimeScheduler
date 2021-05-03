@@ -40,9 +40,8 @@ export const fetchAccessToken = async () => {
         `,
     },
 
-    { withCredentials: true, credentials: "include" }
+    { withCredentials: true }
   );
-  console.log(token?.data?.data);
   if (
     token?.data?.data?.getAccessToken?.token &&
     token?.data?.data?.getAccessToken?.success

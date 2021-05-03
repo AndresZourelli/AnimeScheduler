@@ -34,7 +34,6 @@ export const AuthProvider = ({ children }) => {
         return user.token;
       } else {
         await requestToken();
-        console.log(requestTokenResponse);
       }
     }
   };

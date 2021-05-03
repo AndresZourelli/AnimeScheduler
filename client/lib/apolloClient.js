@@ -14,7 +14,6 @@ let apolloClient;
 
 const authMiddleware = new ApolloLink(async (operation, forward) => {
   const accessToken = await TokenRefresh();
-  console.log(accessToken);
   if (accessToken) {
     operation.setContext(({ headers = {} }) => ({
       headers: {

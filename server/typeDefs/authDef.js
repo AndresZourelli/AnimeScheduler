@@ -3,7 +3,7 @@ const { gql } = require("apollo-server-express");
 const authDef = gql`
   type AuthData {
     userId: ID!
-    token: String!
+    token: String
     success: Boolean!
     errors: [AuthError]
   }
