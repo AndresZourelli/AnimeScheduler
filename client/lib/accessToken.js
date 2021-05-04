@@ -27,26 +27,11 @@ export const isTokenValid = () => {
 };
 
 export const fetchAccessToken = async () => {
-  const token = await axios.post(
-    "http://localhost:4000/graphql",
-    {
-      query: `
-        mutation GetAccessToken {
-            getAccessToken {
-              success
-              token
-            }
-          }
-        `,
-    },
-
-    { withCredentials: true }
-  );
-  if (
-    token?.data?.data?.getAccessToken?.token &&
-    token?.data?.data?.getAccessToken?.success
-  ) {
-    setAccessToken(token.data.data.getAccessToken.token);
+  const token = await axios.get("http://localhost:4000/refresh_token", {
+    withCredentials: true,
+  });
+  if (token?.data?.success && token?.data?.accessToken) {
+    setAccessToken(token?.data?.accessToken);
   }
 };
 

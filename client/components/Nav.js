@@ -17,6 +17,7 @@ import {
   PopoverHeader,
   PopoverBody,
   Spinner,
+  Text,
   Table,
   Thead,
   Tbody,
@@ -31,6 +32,7 @@ import { useRouter } from "next/router";
 import { useState, useEffect, useCallback } from "react";
 import { useLazyQuery, gql } from "@apollo/client";
 import debouce from "lodash";
+import { useAuth } from "@/lib/authClient";
 
 const SEARCH_FOR_ANIME = gql`
   query SearchForAnime(
@@ -55,7 +57,8 @@ const Nav = () => {
   const [searchAnimes, { loading, data }] = useLazyQuery(SEARCH_FOR_ANIME);
   const router = useRouter();
   const { colorMode, toggleColorMode } = useColorMode();
-  const isSignedIn = false;
+  const { user } = useAuth();
+  const [signedIn, setSignedIn] = useState(false);
 
   const handleLoginClick = () => {
     router.push("/login");
@@ -65,8 +68,13 @@ const Nav = () => {
     router.push("/signup");
   };
 
-  const buttons = isSignedIn ? (
-    <Button mr="3">Sign out</Button>
+  const buttons = signedIn ? (
+    <>
+      <Text display="inline-flex" mr="3">
+        Welcome, {user.username}
+      </Text>
+      <Button mr="3">Sign out</Button>
+    </>
   ) : (
     <>
       <Button mr="3" onClick={handleLoginClick}>
@@ -100,12 +108,19 @@ const Nav = () => {
     return delayedSearch.cancel;
   }, [search, delayedSearch]);
 
+  useEffect(() => {
+    if (user.userId) {
+      console.log(user);
+      setSignedIn(true);
+    }
+  }, [user]);
+
   const onSearchChange = (e) => {
     setSearch(e.target.value);
   };
 
   return (
-    <nav>
+    <Box>
       <Flex
         m="2"
         p="2"
@@ -197,9 +212,10 @@ const Nav = () => {
           />
         </Box>
       </Flex>
-      <Flex>
-        <Center
-          layerStyle={colorMode === "light" ? "navbar_light" : "navbar_dark"}>
+      <Flex
+        layerStyle={colorMode === "light" ? "navbar_light" : "navbar_dark"}
+        justifyContent="center">
+        <Center>
           <NextLink href="/">
             <Link mr="4">Home</Link>
           </NextLink>
@@ -208,7 +224,7 @@ const Nav = () => {
           </NextLink>
         </Center>
       </Flex>
-    </nav>
+    </Box>
   );
 };
 

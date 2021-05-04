@@ -1,5 +1,5 @@
 const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
+
 const { v4: uuidv4 } = require("uuid");
 const User = require("../mongoDB/models/user");
 const CustomError = require("../lib/CustomErrors");
@@ -72,48 +72,6 @@ const authResolver = {
     },
   },
   Mutation: {
-    getAccessToken: async (_, __, { req, res }) => {
-      if (!req.cookies["refresh-token"]) {
-        return { success: false };
-      }
-      let decodedToken;
-      try {
-        decodedToken = jwt.verify(
-          req.cookies["refresh-token"],
-          process.env.REFRESH_TOKEN
-        );
-      } catch (e) {
-        return { success: false };
-      }
-
-      const findUser = await User.findById(decodedToken.userId);
-
-      if (!findUser) {
-        return { success: false };
-      }
-
-      if (findUser.refreshVerify !== decodedToken.refreshVerify) {
-        return { success: false };
-      }
-
-      try {
-        findUser.refreshVerify = uuidv4();
-        const refreshToken = createRefreshToken(findUser);
-        const accessToken = createAccessToken(findUser);
-
-        res.cookie("refresh-token", refreshToken, {
-          maxAge: 1000 * 60 * 60 * 24 * 7,
-          httpOnly: true,
-          overwrite: true,
-        });
-        await User.findByIdAndUpdate(findUser._id, {
-          refreshVerify: findUser.refreshVerify,
-        });
-        return { token: accessToken, success: true };
-      } catch (e) {
-        return { success: false };
-      }
-    },
     generateResetToken: async (_, { email }) => {
       try {
         const user = await User.findOne({ email });

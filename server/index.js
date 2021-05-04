@@ -1,8 +1,16 @@
 const express = require("express");
 const { ApolloServer } = require("apollo-server-express");
 const mongoose = require("mongoose");
+
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
+const jwt = require("jsonwebtoken");
+const { v4: uuidv4 } = require("uuid");
+const User = require("./mongoDB/models/user");
+const {
+  createAccessToken,
+  createRefreshToken,
+} = require("./utils/CreateTokens");
 const { resolvers } = require("./resolvers");
 const { typeDefs } = require("./typeDefs");
 require("dotenv").config();
@@ -24,6 +32,46 @@ app.use(
   })
 );
 app.use(isAuth);
+
+app.get("/refresh_token", async (req, res) => {
+  const token = req.cookies["refresh-token"];
+  if (!token) {
+    return res.send({ success: false, accessToken: "" });
+  }
+  let decodedToken;
+  try {
+    decodedToken = jwt.verify(token, process.env.REFRESH_TOKEN);
+  } catch (e) {
+    return { success: false };
+  }
+
+  const findUser = await User.findById(decodedToken.userId);
+
+  if (!findUser) {
+    return { success: false };
+  }
+
+  if (findUser.refreshVerify !== decodedToken.refreshVerify) {
+    return { success: false };
+  }
+
+  try {
+    findUser.refreshVerify = uuidv4();
+    const refreshToken = createRefreshToken(findUser);
+    const accessToken = createAccessToken(findUser);
+
+    res.cookie("refresh-token", refreshToken, {
+      maxAge: 1000 * 60 * 60 * 24 * 7,
+      httpOnly: true,
+    });
+    await User.findByIdAndUpdate(findUser._id, {
+      refreshVerify: findUser.refreshVerify,
+    });
+    return res.send({ success: true, accessToken });
+  } catch (e) {
+    return res.send({ success: false, accessToken: "" });
+  }
+});
 
 const server = new ApolloServer({
   typeDefs,
