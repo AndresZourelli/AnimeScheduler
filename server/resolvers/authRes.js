@@ -38,7 +38,7 @@ const authResolver = {
           res.cookie("refresh-token", refreshToken, {
             maxAge: 1000 * 60 * 60 * 24 * 7,
             httpOnly: true,
-            overwrite: true,
+            path: "/refresh_token",
           });
 
           return {
@@ -124,6 +124,14 @@ const authResolver = {
         success: false,
         message: "Token Expired or Missing",
       };
+    },
+    logout: (_, __, { res }) => {
+      res.cookie("refresh-token", "", {
+        maxAge: 1000 * 60 * 60 * 24 * 7,
+        httpOnly: true,
+        path: "/refresh_token",
+      });
+      return true;
     },
   },
 };

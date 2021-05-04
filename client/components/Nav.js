@@ -57,7 +57,7 @@ const Nav = () => {
   const [searchAnimes, { loading, data }] = useLazyQuery(SEARCH_FOR_ANIME);
   const router = useRouter();
   const { colorMode, toggleColorMode } = useColorMode();
-  const { user } = useAuth();
+  const { user, logoutUser } = useAuth();
   const [signedIn, setSignedIn] = useState(false);
 
   const handleLoginClick = () => {
@@ -68,12 +68,18 @@ const Nav = () => {
     router.push("/signup");
   };
 
+  const hangleSignOutClick = () => {
+    logoutUser();
+  };
+
   const buttons = signedIn ? (
     <>
       <Text display="inline-flex" mr="3">
         Welcome, {user.username}
       </Text>
-      <Button mr="3">Sign out</Button>
+      <Button onClick={hangleSignOutClick} mr="3">
+        Sign out
+      </Button>
     </>
   ) : (
     <>
@@ -112,6 +118,8 @@ const Nav = () => {
     if (user.userId) {
       console.log(user);
       setSignedIn(true);
+    } else {
+      setSignedIn(false);
     }
   }, [user]);
 
@@ -219,9 +227,19 @@ const Nav = () => {
           <NextLink href="/">
             <Link mr="4">Home</Link>
           </NextLink>
-          <NextLink href="/Anime">
-            <Link>Animé</Link>
+          <NextLink Link href="/Anime">
+            <Link mr="4">Animé</Link>
           </NextLink>
+          {signedIn ? (
+            <>
+              <NextLink href="/My_Animes">
+                <Link mr="4">My Animes</Link>
+              </NextLink>
+              <NextLink href="/Account">
+                <Link>My Account</Link>
+              </NextLink>
+            </>
+          ) : null}
         </Center>
       </Flex>
     </Box>

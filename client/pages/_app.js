@@ -18,6 +18,7 @@ function MyApp({ Component, pageProps }) {
     //   setAccessToken(result.data.token);
     // }
     await TokenRefresh();
+    console.log(loading);
     setLoading(false);
   }, []);
   const client = useApollo(pageProps.initialApolloState);

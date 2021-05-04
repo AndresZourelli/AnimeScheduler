@@ -1,6 +1,13 @@
 import { useEffect, useState, createContext, useContext } from "react";
 import jwt_decode from "jwt-decode";
+import { gql, useMutation } from "@apollo/client";
 import { getAccessToken, setAccessToken } from "@/lib/accessToken";
+
+const LOGOUT = gql`
+  mutation Logout {
+    logout
+  }
+`;
 
 const AuthContext = createContext();
 
@@ -9,6 +16,7 @@ export function useAuth() {
 }
 
 export function AuthProvider({ children }) {
+  const [logoutRequest, { data: logoutResponse }] = useMutation(LOGOUT);
   const [user, setUser] = useState({
     userId: null,
     username: null,
@@ -20,14 +28,7 @@ export function AuthProvider({ children }) {
     const token = getAccessToken();
     if (token) {
       try {
-        const decoded = jwt_decode(token);
-        setUser((prevState) => ({
-          ...prevState,
-          token,
-          userId: decoded.userId,
-          isAuthenticated: true,
-          username: decoded.username,
-        }));
+        setUserData(token);
       } catch (e) {
         console.log("Token Error");
       }
@@ -41,9 +42,26 @@ export function AuthProvider({ children }) {
       isAuthenticated: false,
     });
     setAccessToken("");
+    logoutRequest();
   };
 
-  const value = { user, logoutUser };
+  const loginUser = (token) => {
+    setUserData(token);
+    setAccessToken(token);
+  };
+
+  const setUserData = (token) => {
+    const decoded = jwt_decode(token);
+    setUser((prevState) => ({
+      ...prevState,
+      token,
+      userId: decoded.userId,
+      isAuthenticated: true,
+      username: decoded.username,
+    }));
+  };
+
+  const value = { user, logoutUser, loginUser };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

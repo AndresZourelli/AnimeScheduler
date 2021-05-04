@@ -33,6 +33,7 @@ export const fetchAccessToken = async () => {
   if (token?.data?.success && token?.data?.accessToken) {
     setAccessToken(token?.data?.accessToken);
   }
+  return;
 };
 
 export const TokenRefresh = async () => {
@@ -40,5 +41,6 @@ export const TokenRefresh = async () => {
     return getAccessToken();
   } else {
     await fetchAccessToken();
+    return;
   }
 };

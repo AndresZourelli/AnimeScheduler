@@ -63,6 +63,7 @@ app.get("/refresh_token", async (req, res) => {
     res.cookie("refresh-token", refreshToken, {
       maxAge: 1000 * 60 * 60 * 24 * 7,
       httpOnly: true,
+      path: "/refresh_token",
     });
     await User.findByIdAndUpdate(findUser._id, {
       refreshVerify: findUser.refreshVerify,

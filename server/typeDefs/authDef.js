@@ -30,6 +30,7 @@ const authDef = gql`
 
   extend type Mutation {
     generateResetToken(email: String!): Boolean!
+    logout: Boolean!
     changePassword(
       password: String!
       verifyPassword: String!
