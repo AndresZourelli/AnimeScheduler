@@ -116,7 +116,6 @@ const Nav = () => {
 
   useEffect(() => {
     if (user.userId) {
-      console.log(user);
       setSignedIn(true);
     } else {
       setSignedIn(false);
@@ -232,10 +231,10 @@ const Nav = () => {
           </NextLink>
           {signedIn ? (
             <>
-              <NextLink href="/My_Animes">
+              <NextLink href="/anime/myanimes">
                 <Link mr="4">My Animes</Link>
               </NextLink>
-              <NextLink href="/Account">
+              <NextLink href="/user/account">
                 <Link>My Account</Link>
               </NextLink>
             </>

@@ -11,14 +11,7 @@ import { AuthProvider } from "@/lib/authClient";
 function MyApp({ Component, pageProps }) {
   const [loading, setLoading] = useState(true);
   useEffect(async () => {
-    // const result = await axios.get("http://localhost:4000/refresh_token", {
-    //   withCredentials: true,
-    // });
-    // if (result && result.data && result.data.success && result.data.token) {
-    //   setAccessToken(result.data.token);
-    // }
     await TokenRefresh();
-    console.log(loading);
     setLoading(false);
   }, []);
   const client = useApollo(pageProps.initialApolloState);
