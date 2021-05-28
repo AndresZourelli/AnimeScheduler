@@ -13,6 +13,7 @@ const ANIME_QUERIES = gql`
         description
         image_url
         minutes_watched
+        avg_score
         id: _id
       }
       totalPages
@@ -37,6 +38,7 @@ const ANIME_QUERIES = gql`
         description
         image_url
         status
+        avg_score
         id: _id
       }
       totalPages
@@ -49,6 +51,7 @@ const ANIME_QUERIES = gql`
         description
         image_url
         status
+        avg_score
         id: _id
       }
       totalPages

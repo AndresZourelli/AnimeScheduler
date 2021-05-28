@@ -6,7 +6,7 @@ const createAccessToken = (user) => {
     { userId: user._id, username: user.username },
     process.env.ACCESS_TOKEN,
     {
-      expiresIn: "15s",
+      expiresIn: "15m",
     }
   );
   return accessToken;

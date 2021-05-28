@@ -4,6 +4,7 @@ import moment from "moment";
 import { useState, useEffect } from "react";
 
 const WeeklyGrid = () => {
+  //TODO: add api call
   const animes = [
     {
       id: "6020b9c92b08da8ba5aa755e",
@@ -53,7 +54,6 @@ const WeeklyGrid = () => {
     const newObj = obj.map((el) => {
       const timeObj = moment.utc(parseInt(el.aired_start));
       timeObj.local();
-      console.log(timeObj.format(), timeObj.toObject());
       el.weekday = timeObj.format("e");
       el.formattedAirTime = timeObj.format("LLLL");
       el.timeAsObject = timeObj.toObject();

@@ -30,7 +30,7 @@ const userSchema = new Schema(
     resetEmailTokenExpires: {
       type: Number,
     },
-    myAnimes: [],
+    myAnimes: [{ type: Schema.Types.ObjectId, ref: "Anime", unique: true }],
     refreshVerify: {
       type: String,
       required: true,

@@ -35,6 +35,7 @@ app.use(isAuth);
 
 app.get("/refresh_token", async (req, res) => {
   const token = req.cookies["refresh-token"];
+
   if (!token) {
     return res.send({ success: false, accessToken: "" });
   }
@@ -42,32 +43,29 @@ app.get("/refresh_token", async (req, res) => {
   try {
     decodedToken = jwt.verify(token, process.env.REFRESH_TOKEN);
   } catch (e) {
-    return { success: false };
+    return res.send({ success: false });
   }
 
   const findUser = await User.findById(decodedToken.userId);
 
   if (!findUser) {
-    return { success: false };
+    return res.send({ success: false });
   }
 
   if (findUser.refreshVerify !== decodedToken.refreshVerify) {
-    return { success: false };
+    return res.send({ success: false });
   }
 
   try {
-    findUser.refreshVerify = uuidv4();
     const refreshToken = createRefreshToken(findUser);
     const accessToken = createAccessToken(findUser);
 
     res.cookie("refresh-token", refreshToken, {
       maxAge: 1000 * 60 * 60 * 24 * 7,
       httpOnly: true,
-      path: "/refresh_token",
+      // path: "/refresh_token",
     });
-    await User.findByIdAndUpdate(findUser._id, {
-      refreshVerify: findUser.refreshVerify,
-    });
+
     return res.send({ success: true, accessToken });
   } catch (e) {
     return res.send({ success: false, accessToken: "" });

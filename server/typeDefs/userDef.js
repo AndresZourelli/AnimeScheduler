@@ -21,8 +21,20 @@ const userDef = gql`
     message: String!
   }
 
+  type AddAnimeToUserResponse {
+    success: Boolean!
+    errors: [UserError!]
+  }
+
+  type GetUserAnimeResponse {
+    success: Boolean!
+    errors: [UserError!]
+    animes: [Anime!]
+  }
+
   extend type Query {
     getUser(id: ID!): UserResponse!
+    getUserAnimes: GetUserAnimeResponse!
   }
 
   extend type Mutation {
@@ -32,6 +44,8 @@ const userDef = gql`
       verifyPassword: String!
       email: String!
     ): UserResponse!
+
+    addAnimeToUser(animeId: ID!): AddAnimeToUserResponse!
   }
 `;
 

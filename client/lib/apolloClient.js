@@ -6,19 +6,25 @@ import {
   ApolloLink,
   from,
 } from "@apollo/client";
-import { getAccessToken, fetchAccessToken, TokenRefresh } from "./accessToken";
+import { TokenRefresh } from "./accessToken";
 
 export const APOLLO_STATE_PROP_NAME = "__APOLLO_STATE__";
 
 let apolloClient;
 
+let token;
+
+const isServer = () => {
+  return typeof window === "undefined";
+};
+
 const authMiddleware = new ApolloLink(async (operation, forward) => {
-  const accessToken = await TokenRefresh();
+  const accessToken = isServer() ? token : await TokenRefresh();
   if (accessToken) {
     operation.setContext(({ headers = {} }) => ({
       headers: {
         ...headers,
-        authorization: `bearer ${accessToken}`,
+        authorization: accessToken ? `bearer ${accessToken}` : "",
       },
     }));
   }
@@ -39,7 +45,8 @@ const createApolloClient = () => {
   });
 };
 
-export const initializeApollo = (initialState = null) => {
+export const initializeApollo = (initialState = null, accessToken = null) => {
+  token = accessToken;
   const _apolloClient = apolloClient ?? createApolloClient();
 
   if (initialState) {

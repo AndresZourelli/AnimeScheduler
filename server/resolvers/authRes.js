@@ -26,19 +26,13 @@ const authResolver = {
         const pwMatch = await bcrypt.compare(password, findUser.password);
 
         if (pwMatch) {
-          findUser.refreshVerify = uuidv4();
-
           const refreshToken = createRefreshToken(findUser);
           const accessToken = createAccessToken(findUser);
-
-          await User.findByIdAndUpdate(findUser._id, {
-            refreshVerify: findUser.refreshVerify,
-          });
 
           res.cookie("refresh-token", refreshToken, {
             maxAge: 1000 * 60 * 60 * 24 * 7,
             httpOnly: true,
-            path: "/refresh_token",
+            // path: "/refresh_token",
           });
 
           return {
@@ -129,7 +123,7 @@ const authResolver = {
       res.cookie("refresh-token", "", {
         maxAge: 1000 * 60 * 60 * 24 * 7,
         httpOnly: true,
-        path: "/refresh_token",
+        // path: "/refresh_token",
       });
       return true;
     },

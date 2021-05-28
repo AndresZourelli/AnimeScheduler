@@ -25,6 +25,25 @@ const userResolver = {
         return { errors: formatErrors(error), success: false };
       }
     },
+    getUserAnimes: async (_, __, { req: { userId } }) => {
+      if (!userId || userId === "undefined") {
+        throw new CustomError("authentication", "Authentication Error");
+      }
+
+      try {
+        const data = await User.findById(userId, "myAnimes").populate(
+          "myAnimes",
+          {
+            title: 1,
+            image_url: 1,
+            _id: 1,
+          }
+        );
+        return { success: true, animes: data.myAnimes };
+      } catch (error) {
+        return { errors: formatErrors(error), success: false };
+      }
+    },
   },
   Mutation: {
     createUser: async (
@@ -69,6 +88,26 @@ const userResolver = {
           success: false,
           errors: formatErrors(e),
         };
+      }
+    },
+    addAnimeToUser: async (_, { animeId }, { req: { userId } }) => {
+      try {
+        if (!animeId) {
+          throw new CustomError("userId", "Missing User Id");
+        }
+        if (!userId || userId === "undefined") {
+          throw new CustomError("authentication", "Authentication Error");
+        }
+        const userInfo = await User.updateOne(
+          { _id: userId, myAnimes: { $nin: [animeId] } },
+          { $push: { myAnimes: [animeId] } }
+        );
+        if (userInfo.nModified === 0) {
+          throw new CustomError("animeId", "Anime already added");
+        }
+        return { success: true };
+      } catch (error) {
+        return { errors: formatErrors(error), success: false };
       }
     },
   },
