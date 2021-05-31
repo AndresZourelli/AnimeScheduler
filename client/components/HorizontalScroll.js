@@ -51,6 +51,7 @@ const HorizontalScroll = ({ animes }) => {
           h={45}
           w={45}
           left="0"
+          visibility={display.length == 0 ? "hidden": "visible"}
         />
         <ChevronRightIcon
           onClick={nextSlide}
@@ -62,6 +63,7 @@ const HorizontalScroll = ({ animes }) => {
           top="45%"
           h={45}
           w={45}
+          visibility={display.length == 0 ? "hidden": "visible"}
         />
         <HStack
           height="100%"
@@ -70,7 +72,7 @@ const HorizontalScroll = ({ animes }) => {
           ref={currentRef}
           overflow="hidden"
           sx={{ scrollBehavior: "smooth" }}>
-          {display}
+          {display.length === 0 ? ("No Animes Found"):display }
         </HStack>
       </Box>
     </>
