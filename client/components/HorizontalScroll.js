@@ -1,4 +1,4 @@
-import { HStack, Box, Slider } from "@chakra-ui/react";
+import { HStack, Box, Heading } from "@chakra-ui/react";
 import AnimeCard from "@/components/AnimeCard";
 import { v4 as uuidv4 } from "uuid";
 import { useRef } from "react";
@@ -72,7 +72,7 @@ const HorizontalScroll = ({ animes }) => {
           ref={currentRef}
           overflow="hidden"
           sx={{ scrollBehavior: "smooth" }}>
-          {display.length === 0 ? ("No Animes Found"):display }
+          {display.length == 0 ? (<Heading size="sm">No Animes Found</Heading> ):display }
         </HStack>
       </Box>
     </>
