@@ -1,6 +1,13 @@
 {
-    "prettier.jsxBracketSameLine": true,
-    "python.linting.pylintEnabled": false,
-    "python.linting.enabled": false,
-    "python.linting.flake8Enabled": true
+  "editor.formatOnPaste": true,
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true,
+    "source.fixAll.format": true
+  },
+  "eslint.debug": true,
+  "eslint.format.enable": true,
+  "eslint.alwaysShowStatus": true,
+  "eslint.packageManager": "yarn",
+  "eslint.workingDirectories": ["./client","./server"]
 }

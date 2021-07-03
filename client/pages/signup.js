@@ -86,7 +86,8 @@ const signup = () => {
           id="username"
           isRequired
           onChange={onFormChange}
-          value={signupData.username}>
+          value={signupData.username}
+        >
           <FormLabel>Username</FormLabel>
           <Input
             name="username"
@@ -112,7 +113,8 @@ const signup = () => {
           isRequired
           onChange={onFormChange}
           value={signupData.password}
-          isInvalid={buttonDisabled}>
+          isInvalid={buttonDisabled}
+        >
           <FormLabel>Password</FormLabel>
           <Input type="password" placeholder="Password" />
           <FormErrorMessage>Passwords do not match!</FormErrorMessage>
@@ -123,7 +125,8 @@ const signup = () => {
           isRequired
           onChange={onFormChange}
           value={signupData.verifyPassword}
-          isInvalid={buttonDisabled}>
+          isInvalid={buttonDisabled}
+        >
           <FormLabel>Re-Enter Password</FormLabel>
           <Input type="password" placeholder="Re-Enter Password" />
           <FormErrorMessage>Passwords do not match!</FormErrorMessage>

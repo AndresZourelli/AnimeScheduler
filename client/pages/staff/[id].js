@@ -50,7 +50,7 @@ const staffPage = ({ staff }) => {
   if (!id || !staff) {
     return (
       <Box>
-        <Spinner size="xl" display="block" m="auto" my="10"></Spinner>
+        <Spinner size="xl" display="block" m="auto" my="10" />
       </Box>
     );
   }
@@ -75,7 +75,7 @@ const staffPage = ({ staff }) => {
                 <Tr>
                   <Th>Role</Th>
                   <Th textAlign="center">Anime</Th>
-                  <Th></Th>
+                  <Th />
                 </Tr>
               </Thead>
               <Tbody>
@@ -95,7 +95,8 @@ const staffPage = ({ staff }) => {
                         h="179px"
                         position="relative"
                         ml="2"
-                        display="inline-block">
+                        display="inline-block"
+                      >
                         <ImageLoader
                           image_url={anime.image_url}
                           alt={anime.title}

@@ -73,7 +73,8 @@ const AnimeCard = ({ title, image_url, score, id }) => {
         height="100%"
         minH="350px"
         w="200px"
-        flex="0 0 auto">
+        flex="0 0 auto"
+      >
         <Badge
           position="absolute"
           zIndex="100"
@@ -81,7 +82,8 @@ const AnimeCard = ({ title, image_url, score, id }) => {
           top="5"
           variant="solid"
           colorScheme="green"
-          opacity="1">
+          opacity="1"
+        >
           {score}
         </Badge>
         <Box width="100%" height="80%" position="relative" display="block">
@@ -109,7 +111,8 @@ const AnimeCard = ({ title, image_url, score, id }) => {
           justifySelf="center"
           overflow="hidden"
           whiteSpace="nowrap"
-          textOverflow="ellipsis">
+          textOverflow="ellipsis"
+        >
           {title}
         </Heading>
       </Box>

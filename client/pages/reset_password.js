@@ -69,7 +69,7 @@ const reset_password = () => {
   }, [passwordData]);
 
   if (loading) {
-    return <Spinner size="xl"></Spinner>;
+    return <Spinner size="xl" />;
   }
 
   const onPasswordChange = (e) => {

@@ -114,7 +114,8 @@ const AnimePageMain = ({
                 mr="2"
                 variant="outline"
                 key={uuidv4()}
-                colorScheme={tagColors[idx % genres.length]}>
+                colorScheme={tagColors[idx % genres.length]}
+              >
                 <TagLabel>{genre}</TagLabel>
               </Tag>
             );
@@ -128,7 +129,8 @@ const AnimePageMain = ({
             return (
               <CharacterCard
                 key={character.id}
-                character={character}></CharacterCard>
+                character={character}
+               />
             );
           })}
         </Flex>
@@ -143,7 +145,7 @@ const AnimePageMain = ({
         <Heading>Actors</Heading>
         <Flex wrap="wrap" justifyContent="flexStart">
           {actors.slice(0, currentActorsDisplayed).map((actor) => {
-            return <ActorCard key={actor.id} actor={actor}></ActorCard>;
+            return <ActorCard key={actor.id} actor={actor} />;
           })}
         </Flex>
         <Box display="flex">
@@ -157,7 +159,7 @@ const AnimePageMain = ({
         <Heading>Staff</Heading>
         <Flex wrap="wrap" justifyContent="flexStart">
           {staff.slice(0, currentStaffDisplayed).map((staff) => {
-            return <StaffCard key={staff.id} staff={staff}></StaffCard>;
+            return <StaffCard key={staff.id} staff={staff} />;
           })}
         </Flex>
         <Box display="flex">

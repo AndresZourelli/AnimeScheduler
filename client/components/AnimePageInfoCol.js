@@ -59,7 +59,7 @@ const AnimePageInfoCol = ({
   if (!type || loading) {
     return (
       <Box>
-        <Spinner size="xl" display="block" m="auto" my="10"></Spinner>
+        <Spinner size="xl" display="block" m="auto" my="10" />
       </Box>
     );
   }
@@ -128,12 +128,12 @@ const AnimePageInfoCol = ({
     <Box m="8" w="md">
       <Box width="225px">
         <Box height="300px" width="225px" minWidth="225px" position="relative">
-          <ImageLoader image_url={image_url} alt={title}></ImageLoader>
+          <ImageLoader image_url={image_url} alt={title} />
         </Box>
         <ButtonGroup my="4" isAttached w="100%">
           <Button isFullWidth>Add to List</Button>
           <Menu>
-            <MenuButton as={IconButton} icon={<ChevronDownIcon />}></MenuButton>
+            <MenuButton as={IconButton} icon={<ChevronDownIcon />} />
             <MenuList>
               <MenuItem as={Button}>Hi</MenuItem>
             </MenuList>
@@ -145,7 +145,7 @@ const AnimePageInfoCol = ({
           <Stat>
             <Heading size="sm">Next Episode</Heading>
             <StatNumber fontSize="md">{`${timerDays}:${timerHours}:${timerMinutes}:${timerSeconds}`}</StatNumber>
-            <StatHelpText></StatHelpText>
+            <StatHelpText />
           </Stat>
         ) : null}
       </Box>

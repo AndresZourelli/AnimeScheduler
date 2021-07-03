@@ -85,7 +85,7 @@ const animePage = ({ anime }) => {
   if (!id || !anime) {
     return (
       <Box>
-        <Spinner size="xl" display="block" m="auto" my="10"></Spinner>
+        <Spinner size="xl" display="block" m="auto" my="10" />
       </Box>
     );
   }

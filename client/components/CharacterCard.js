@@ -14,7 +14,8 @@ const CharacterCard = ({ character: { id, name, image_url, role, actor } }) => {
       overflow="hidden"
       minH="150px"
       w="200px"
-      flex="0 0 auto">
+      flex="0 0 auto"
+    >
       <NextLink href={`/character/${id}`}>
         <Box
           m="auto"
@@ -22,7 +23,8 @@ const CharacterCard = ({ character: { id, name, image_url, role, actor } }) => {
           d="flex"
           flexDirection="column"
           alignItems="center"
-          cursor="pointer">
+          cursor="pointer"
+        >
           <Heading
             display="block"
             size="md"
@@ -32,11 +34,12 @@ const CharacterCard = ({ character: { id, name, image_url, role, actor } }) => {
             overflow="hidden"
             whiteSpace="nowrap"
             textOverflow="ellipsis"
-            mb="0">
+            mb="0"
+          >
             {name}
           </Heading>
           <Box width="125px" height="194px" position="relative" display="block">
-            <ImageLoader image_url={image_url} alt={name}></ImageLoader>
+            <ImageLoader image_url={image_url} alt={name} />
           </Box>
           <Text fontSize="sm">Role: {role} </Text>
         </Box>

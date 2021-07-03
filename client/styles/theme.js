@@ -12,14 +12,14 @@ const customTheme = extendTheme({
       },
       body: {
         fontWeight: "400",
-        fontSize: "14pt"
+        fontSize: "14pt",
       },
       "#__next": {
         display: "flex",
         flexDirection: "column",
         minHeight: "100vh",
         bg: mode("light_grey", "darkish_grey")(props),
-        color: mode("desaturated_rose", "baby_pink")(props)
+        color: mode("desaturated_rose", "baby_pink")(props),
       },
     }),
   },
@@ -32,18 +32,18 @@ const customTheme = extendTheme({
     mid_dark_grey: "#51363C",
     light_grey: "#F2F0F2",
     lightish_grey: "#CDC4C4",
-    mid_light_grey: "#DEDADA"
+    mid_light_grey: "#DEDADA",
   },
   fonts: {
     body: "'Source Sans Pro'",
-    heading: "'Balsamiq Sans'"
+    heading: "'Balsamiq Sans'",
   },
   textStyles: {
     h2: {
-      fontSize: "24pt"
+      fontSize: "24pt",
     },
   },
-  ...header
+  ...header,
 });
 
 export default customTheme;

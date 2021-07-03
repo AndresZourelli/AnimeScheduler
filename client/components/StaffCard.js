@@ -15,7 +15,8 @@ const StaffCard = ({ staff: { id, name, image_url, role } }) => {
       minH="150px"
       w="200px"
       flex="0 0 auto"
-      mb="4">
+      mb="4"
+    >
       <NextLink href={`/staff/${id}`}>
         <Box
           m="auto"
@@ -23,7 +24,8 @@ const StaffCard = ({ staff: { id, name, image_url, role } }) => {
           d="flex"
           flexDirection="column"
           alignItems="center"
-          cursor="pointer">
+          cursor="pointer"
+        >
           <Heading
             display="block"
             size="md"
@@ -33,7 +35,8 @@ const StaffCard = ({ staff: { id, name, image_url, role } }) => {
             overflow="hidden"
             whiteSpace="nowrap"
             textOverflow="ellipsis"
-            mb="0">
+            mb="0"
+          >
             {name}
           </Heading>
           <Box width="125px" height="194px" position="relative" display="block">

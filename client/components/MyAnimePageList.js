@@ -27,7 +27,7 @@ const MyAnimePageList = ({ animes }) => {
         <Heading mb="3">My Animes</Heading>
         <Flex wrap="wrap" justifyContent="flexStart">
           {animes.slice(0, currentAnimesDisplayed).map((anime) => {
-            return <AnimeCard key={anime.id} {...anime}></AnimeCard>;
+            return <AnimeCard key={anime.id} {...anime} />;
           })}
         </Flex>
         <Box display="flex">

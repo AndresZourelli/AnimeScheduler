@@ -131,11 +131,13 @@ const Nav = () => {
       <Flex
         m="2"
         p="2"
-        layerStyle={colorMode === "light" ? "header_light" : "header_dark"}>
+        layerStyle={colorMode === "light" ? "header_light" : "header_dark"}
+      >
         <Box mr="4" width="40px" height="40px" position="relative">
           <ImageLoader
             image_url="/coffee_jelly3.svg"
-            alt="Coffee Jelly Logo"></ImageLoader>
+            alt="Coffee Jelly Logo"
+           />
         </Box>
         <Box>
           <Heading size="md" mr="4" textStyle="h2">
@@ -149,7 +151,8 @@ const Nav = () => {
             onClose={onPopoverClose}
             placement="bottom"
             autoFocus={false}
-            gutter="0">
+            gutter="0"
+          >
             <PopoverTrigger>
               <InputGroup>
                 <InputLeftElement
@@ -168,7 +171,7 @@ const Nav = () => {
 
               {loading ? (
                 <PopoverBody m="auto">
-                  <Spinner size="xl"></Spinner>
+                  <Spinner size="xl" />
                 </PopoverBody>
               ) : (
                 <PopoverBody>
@@ -176,7 +179,7 @@ const Nav = () => {
                     <Thead>
                       <Tr>
                         <Th>Results</Th>
-                        <Th></Th>
+                        <Th />
                       </Tr>
                     </Thead>
                     <Tbody>
@@ -187,7 +190,8 @@ const Nav = () => {
                             _hover={{
                               background: "blue.600",
                               color: "blue.50",
-                            }}>
+                            }}
+                          >
                             <Td onClick={onPopoverClose}>
                               <NextLink href={`/anime/${anime.id}`}>
                                 {anime.title}
@@ -221,7 +225,8 @@ const Nav = () => {
       </Flex>
       <Flex
         layerStyle={colorMode === "light" ? "navbar_light" : "navbar_dark"}
-        justifyContent="center">
+        justifyContent="center"
+      >
         <Center>
           <NextLink href="/">
             <Link mr="4">Home</Link>

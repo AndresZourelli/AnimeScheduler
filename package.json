@@ -1,17 +1,20 @@
 {
-	"name": "Anime-website",
-	"version": "1.0.0",
-	"main": "index.js",
-	"repository": "https://github.com/AndresZourelli/AnimeScheduler.git",
-	"author": "Andres <azourelli@gmail.com>",
-	"license": "MIT",
-	"dependencies": {
-		"concurrently": "^5.3.0"
-	},
-	"scripts": {
-		"dev": "concurrently  \"yarn client_dev\" \"yarn graphql_dev\" --kill-others-on-fail",
-		"graphql_dev": "cd server && yarn dev",
-		"client_dev": "cd client && yarn dev"
-	},
-	"devDependencies": {}
+  "name": "Anime-website",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/AndresZourelli/AnimeScheduler.git",
+  "author": "Andres <azourelli@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "concurrently": "^5.3.0"
+  },
+  "scripts": {
+    "dev": "concurrently  \"yarn client_dev\" \"yarn graphql_dev\" --kill-others-on-fail",
+    "graphql_dev": "cd server && yarn dev",
+    "client_dev": "cd client && yarn dev"
+  },
+  "devDependencies": {
+    "eslint": "^7.29.0",
+    "eslint-config-prettier": "^8.3.0"
+  }
 }

@@ -73,19 +73,21 @@ const WeeklyGrid = () => {
 
   return (
     <Box>
-      <Box></Box>
+      <Box />
       <Grid
         templateColumns="repeat(auto-fill, minmax(375px, 1fr))"
         gridAutoRows="minmax(250px, 1fr)"
         gap={2}
-        m={3}>
+        m={3}
+      >
         {WEEK.map((weekday, i) => {
           return (
             <WeeklyGridColumn
               key={i}
               index={i}
               anime={animeWeekday.filter((animeInfo) => i == animeInfo.weekday)}
-              deleteAnime={deleteAnime}></WeeklyGridColumn>
+              deleteAnime={deleteAnime}
+             />
           );
         })}
       </Grid>

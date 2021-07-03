@@ -1,12 +1,33 @@
 {
-    "rules": {
-        "react/self-closing-comp": [
-            "error",
-            {
-              "component": true,
-              "html": true
-            }
-          ]
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "extends": ["plugin:react/recommended", "next", "prettier"],
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": 12,
+    "sourceType": "module"
+  },
+  "plugins": ["react"],
+  "rules": {
+    "react/self-closing-comp": "error",
+    "no-restricted-imports": "warn",
+    "no-restricted-modules": "warn",
+    "react/no-children-prop":"off"
+  },
+  "settings": {
+    "react": { "version": "latest" },
+    "import/resolver": {
+      "alias": {
+        "map": [
+          ["@/components/*", "components/*"],
+          ["@/lib/*", "lib/*"],
+          ["@/styles/*", "styles/*"]
+        ]
+      }
     }
-    
+  }
 }

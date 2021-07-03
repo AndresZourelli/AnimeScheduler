@@ -31,7 +31,8 @@ const WeeklyGridCard = ({
       bg="blue.300"
       borderRadius="xl"
       overflow="hidden"
-      opacity={opacity ? ".6" : "1"}>
+      opacity={opacity ? ".6" : "1"}
+    >
       <Flex>
         <NextLink href={`/anime/${id}`}>
           <>
@@ -40,8 +41,9 @@ const WeeklyGridCard = ({
               h="144px"
               mr="2"
               position="relative"
-              borderRadius="lg">
-              <ImageLoader image_url={image_url} alt={title}></ImageLoader>
+              borderRadius="lg"
+            >
+              <ImageLoader image_url={image_url} alt={title} />
             </Box>
             <Box textAlign="center" width="100%" borderRadius="lg" p="3">
               <Heading size="sm">{title}</Heading>

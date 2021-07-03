@@ -56,7 +56,7 @@ const actorPage = ({ actor }) => {
   if (!id || !actor) {
     return (
       <Box>
-        <Spinner size="xl" display="block" m="auto" my="10"></Spinner>
+        <Spinner size="xl" display="block" m="auto" my="10" />
       </Box>
     );
   }
@@ -81,9 +81,9 @@ const actorPage = ({ actor }) => {
               <Thead>
                 <Tr>
                   <Th>Character Name</Th>
-                  <Th></Th>
+                  <Th />
                   <Th>Anime</Th>
-                  <Th></Th>
+                  <Th />
                 </Tr>
               </Thead>
               <Tbody>
@@ -93,7 +93,8 @@ const actorPage = ({ actor }) => {
                       <NextLink
                         href={`/character/${encodeURIComponent(
                           anime.character.character_id
-                        )}`}>
+                        )}`}
+                      >
                         {anime.character.name}
                       </NextLink>
                     </Td>
@@ -101,12 +102,14 @@ const actorPage = ({ actor }) => {
                       <Box w="125px" h="179px" position="relative">
                         <ImageLoader
                           image_url={anime.character.image_url}
-                          alt={anime.character.name}></ImageLoader>
+                          alt={anime.character.name}
+                         />
                       </Box>
                     </Td>
                     <Td mb="2" fontSize="sm">
                       <NextLink
-                        href={`/anime/${encodeURIComponent(anime.anime.id)}`}>
+                        href={`/anime/${encodeURIComponent(anime.anime.id)}`}
+                      >
                         {anime.anime.title}
                       </NextLink>
                     </Td>
@@ -114,7 +117,8 @@ const actorPage = ({ actor }) => {
                       <Box w="125px" h="179px" position="relative">
                         <ImageLoader
                           image_url={anime.anime.image_url}
-                          alt={anime.anime.name}></ImageLoader>
+                          alt={anime.anime.name}
+                         />
                       </Box>
                     </Td>
                   </Tr>

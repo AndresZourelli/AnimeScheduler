@@ -112,7 +112,8 @@ const login = () => {
                 onClick={() => {
                   setShowForgotPassword(false);
                 }}
-                mt="7">
+                mt="7"
+              >
                 Cancel
               </Button>
             </>
@@ -148,7 +149,8 @@ const login = () => {
               mt="7"
               onClick={() => {
                 setShowForgotPassword(true);
-              }}>
+              }}
+            >
               Forgot Password
             </Button>
           </>

@@ -51,7 +51,7 @@ const characterPage = ({ character }) => {
   if (!id || !character) {
     return (
       <Box>
-        <Spinner size="xl" display="block" m="auto" my="10"></Spinner>
+        <Spinner size="xl" display="block" m="auto" my="10" />
       </Box>
     );
   }
@@ -74,7 +74,7 @@ const characterPage = ({ character }) => {
                 <Tr>
                   <Th>Actor</Th>
                   <Th>Language</Th>
-                  <Th></Th>
+                  <Th />
                 </Tr>
               </Thead>
               <Tbody>
@@ -90,7 +90,8 @@ const characterPage = ({ character }) => {
                       <Box w="125px" h="179px" position="relative">
                         <ImageLoader
                           image_url={anime.image_url}
-                          alt={anime.name}></ImageLoader>
+                          alt={anime.name}
+                         />
                       </Box>
                     </Td>
                   </Tr>
@@ -107,14 +108,14 @@ const characterPage = ({ character }) => {
               <Thead>
                 <Tr>
                   <Th>Anime</Th>
-                  <Th></Th>
+                  <Th />
                 </Tr>
               </Thead>
               <Tbody>
                 {character.animes?.map((anime) => (
                   <Tr key={anime.id} mb="2" fontSize="sm">
                     <Td>{anime.anime}</Td>
-                    <Td></Td>
+                    <Td />
                   </Tr>
                 ))}
               </Tbody>
