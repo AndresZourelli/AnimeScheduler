@@ -58,7 +58,7 @@ const GeneralInfoTab = ({
                 placeholder="English Title"
                 value={values.titles.english}
                 onChange={handleChange}
-               />
+              />
               <FormErrorMessage>
                 {getIn(errors.titles, "english")}
               </FormErrorMessage>
@@ -81,7 +81,7 @@ const GeneralInfoTab = ({
                 placeholder="Japanese Title"
                 value={values.titles.japanese}
                 onChange={handleChange}
-               />
+              />
               <FormErrorMessage>
                 {getIn(errors.titles, "japanese")}
               </FormErrorMessage>
@@ -104,16 +104,16 @@ const GeneralInfoTab = ({
                 placeholder="Romaji Title"
                 value={values.titles.romaji}
                 onChange={handleChange}
-               />
+              />
               <FormErrorMessage>
                 {getIn(errors.titles, "romaji")}
               </FormErrorMessage>
             </FormControl>
           </Flex>
         </Box>
-        <Heading size="sm" mb={inputSpacingCommon.marginBottom}>
+        <Text fontSize="md" mb={inputSpacingCommon.marginBottom}>
           Other Names
-        </Heading>
+        </Text>
         <FieldArray name="otherNames">
           {({ push, remove }) => (
             <>
@@ -132,7 +132,7 @@ const GeneralInfoTab = ({
                       name={`otherNames[${nameIndex}].name`}
                       placeholder="Other Names"
                       onChange={handleChange}
-                     />
+                    />
                     {values.otherNames.length > 1 ? (
                       <InputRightElement
                         children={
@@ -141,7 +141,7 @@ const GeneralInfoTab = ({
                             onClick={() => remove(nameIndex)}
                           />
                         }
-                       />
+                      />
                     ) : null}
                   </InputGroup>
                   <FormErrorMessage>{errors.otherNames}</FormErrorMessage>

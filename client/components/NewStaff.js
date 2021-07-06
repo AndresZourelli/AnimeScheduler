@@ -1,41 +1,26 @@
+import { AddIcon } from "@chakra-ui/icons";
 import {
   Box,
+  Button,
+  CloseButton,
   Flex,
   FormControl,
   FormLabel,
-  FormErrorMessage,
-  FormHelperText,
+  Image,
   Input,
-  Button,
-  Heading,
-  Select,
   InputRightElement,
-  InputGroup,
-  CloseButton,
-  Spacer,
-  InputLeftElement,
   Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
   ModalBody,
   ModalCloseButton,
-  useDisclosure,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
   Text,
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  PopoverHeader,
-  PopoverBody,
-  PopoverFooter,
-  PopoverArrow,
-  PopoverCloseButton,
   Textarea,
-  Image,
+  useDisclosure,
 } from "@chakra-ui/react";
-import { Search2Icon, AddIcon } from "@chakra-ui/icons";
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 
 const NewStaff = ({ values, setFieldValue }) => {
@@ -170,7 +155,7 @@ const NewStaff = ({ values, setFieldValue }) => {
       }
       setAltName((prev) => ({
         ...prev,
-        image: file,
+        image: Object.assign(file, image),
       }));
     };
     if (acceptedFiles) {
@@ -233,7 +218,9 @@ const NewStaff = ({ values, setFieldValue }) => {
                 />
               </FormControl>
               <Box w="full">
-                <Text fontSize="md">Alternative Names</Text>
+                <Text fontSize="md" mb={2}>
+                  Alternative Names
+                </Text>
                 {altName.altNamesSearchBar.map((name, altNameIndex) => (
                   <FormControl key={altNameIndex} mb={3}>
                     <Input
@@ -287,9 +274,14 @@ const NewStaff = ({ values, setFieldValue }) => {
                   </Text>
                 </Box>
                 {fileRejections.length == 0 && file && error.message == "" ? (
-                  <Box d="flex" justifyContent="center" flexDirection="column">
+                  <Box d="flex" alignItems="center" flexDirection="column">
                     <Text p={3}>{file.name}</Text>
-                    <Image src={file.preview} alt={file.name} />
+                    <Image
+                      src={file.preview}
+                      alt={file.name}
+                      w={file.width}
+                      h={file.height}
+                    />
                   </Box>
                 ) : (
                   <Text>{error.message}</Text>

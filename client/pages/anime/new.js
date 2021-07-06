@@ -29,6 +29,9 @@ import { Formik, FieldArray, Field, getIn, Form } from "formik";
 import GeneralInfoTab from "@/components/GeneralInfoTab";
 import CharacterTab from "@/components/CharacterTab";
 import StaffTab from "@/components/StaffTab";
+import StudiosTab from "@/components/StudiosTab";
+import RelatedTab from "@/components/RelatedTab";
+import ExternalLinksTab from "@/components/ExternalLinksTab";
 
 const AddNewAnime = () => {
   const inputSpacingCommon = {
@@ -68,29 +71,11 @@ const AddNewAnime = () => {
           producerList: [{ producerId: "" }],
           licensorList: [{ licensorId: "" }],
           relatedMediaList: [{ relatedMediaId: "" }],
-          externalLinks: [{ externalUrl: "" }],
+          externalLinks: [],
           submissionNotes: "",
-          newCharactersList: [
-            {
-              givenNameSearchBar: "",
-              surnameSearchBar: "",
-              nativeNameSearchBar: "",
-              altNamesSearchBar: [{ name: "" }],
-              image: "",
-              description: "",
-            },
-          ],
-          newStaffList: [
-            {
-              givenNameSearchBar: "",
-              surnameSearchBar: "",
-              nativeNameSearchBar: "",
-              altNamesSearchBar: [{ name: "" }],
-              description: "",
-              language: "",
-              image: "",
-            },
-          ],
+          newCharactersList: [],
+          newStaffList: [],
+          newStudiosList: [],
         }}
         onSubmit={(values, actions) => {
           alert(JSON.stringify(values, null, 2));
@@ -136,7 +121,7 @@ const AddNewAnime = () => {
                     touched={touched}
                     handleChange={handleChange}
                     initialTouched={initialTouched}
-                   />
+                  />
                 </TabPanel>
                 <TabPanel>
                   <CharacterTab
@@ -147,7 +132,7 @@ const AddNewAnime = () => {
                     handleChange={handleChange}
                     initialTouched={initialTouched}
                     setFieldValue={setFieldValue}
-                   />
+                  />
                 </TabPanel>
                 <TabPanel>
                   <StaffTab
@@ -158,9 +143,41 @@ const AddNewAnime = () => {
                     handleChange={handleChange}
                     initialTouched={initialTouched}
                     setFieldValue={setFieldValue}
-                   />
+                  />
                 </TabPanel>
-                <TabPanel>Four</TabPanel>
+                <TabPanel>
+                  <StudiosTab
+                    inputSpacingCommon={inputSpacingCommon}
+                    values={values}
+                    errors={errors}
+                    touched={touched}
+                    handleChange={handleChange}
+                    initialTouched={initialTouched}
+                    setFieldValue={setFieldValue}
+                  />
+                </TabPanel>
+                <TabPanel>
+                  <RelatedTab
+                    inputSpacingCommon={inputSpacingCommon}
+                    values={values}
+                    errors={errors}
+                    touched={touched}
+                    handleChange={handleChange}
+                    initialTouched={initialTouched}
+                    setFieldValue={setFieldValue}
+                  />
+                </TabPanel>
+                <TabPanel>
+                  <ExternalLinksTab
+                    inputSpacingCommon={inputSpacingCommon}
+                    values={values}
+                    errors={errors}
+                    touched={touched}
+                    handleChange={handleChange}
+                    initialTouched={initialTouched}
+                    setFieldValue={setFieldValue}
+                  />
+                </TabPanel>
               </TabPanels>
             </Tabs>
             <Box>

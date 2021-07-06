@@ -35,6 +35,7 @@ const InfoSearchTab = ({
   placeholder,
 }) => {
   const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
   const [isOpenPopover, setIsOpenPopover] = useState(false);
   const searchRef = useRef(null);
   const dropdownRef = useRef(null);
