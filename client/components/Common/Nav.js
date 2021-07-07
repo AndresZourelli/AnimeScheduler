@@ -27,7 +27,7 @@ import {
 } from "@chakra-ui/react";
 import { MoonIcon, SunIcon, Search2Icon } from "@chakra-ui/icons";
 import NextLink from "next/link";
-import ImageLoader from "./ImageLoader";
+import ImageLoader from "@/components/Common/ImageLoader";
 import { useRouter } from "next/router";
 import { useState, useEffect, useCallback } from "react";
 import { useLazyQuery, gql } from "@apollo/client";
@@ -134,10 +134,7 @@ const Nav = () => {
         layerStyle={colorMode === "light" ? "header_light" : "header_dark"}
       >
         <Box mr="4" width="40px" height="40px" position="relative">
-          <ImageLoader
-            image_url="/coffee_jelly3.svg"
-            alt="Coffee Jelly Logo"
-           />
+          <ImageLoader image_url="/coffee_jelly3.svg" alt="Coffee Jelly Logo" />
         </Box>
         <Box>
           <Heading size="md" mr="4" textStyle="h2">

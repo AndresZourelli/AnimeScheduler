@@ -1,29 +1,7 @@
-import {
-  Box,
-  Flex,
-  FormControl,
-  FormLabel,
-  FormErrorMessage,
-  FormHelperText,
-  Input,
-  Button,
-  Heading,
-  Select,
-  InputRightElement,
-  InputGroup,
-  CloseButton,
-  NumberInput,
-  NumberInputField,
-  NumberInputStepper,
-  NumberIncrementStepper,
-  NumberDecrementStepper,
-  Text,
-  Spacer,
-  InputLeftElement,
-} from "@chakra-ui/react";
-import { FieldArray, Field, getIn } from "formik";
-import InfoSearchTab from "@/components/InfoSearchTab";
-import NewStudio from "@/components/NewStudio";
+import InfoSearchTab from "@/components/AddNewAnime/InfoSearchTab";
+import NewStudio from "@/components/AddNewAnime/NewStudio";
+import { Box, CloseButton, Flex, Heading } from "@chakra-ui/react";
+import { FieldArray } from "formik";
 
 const CharacterTab = ({
   values,

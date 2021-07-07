@@ -1,7 +1,6 @@
-import { useState, useEffect } from "react";
-import { gql } from "@apollo/client";
-import { Box, Heading, Flex, Button } from "@chakra-ui/react";
-import AnimeCard from "./AnimeCard";
+import AnimeCard from "@/components/Home/AnimeCard";
+import { Box, Button, Flex, Heading } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
 
 const MyAnimePageList = ({ animes }) => {
   const [hasMoreAnimes, setHasMoreAnimes] = useState(false);

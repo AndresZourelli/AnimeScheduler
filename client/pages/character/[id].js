@@ -14,7 +14,7 @@ import {
   Td,
 } from "@chakra-ui/react";
 import { initializeApollo } from "@/lib/apolloClient";
-import ImageLoader from "@/components/ImageLoader";
+import ImageLoader from "@/components/Common/ImageLoader";
 import NextLink from "next/link";
 
 const GET_CHARACTER = gql`
@@ -91,7 +91,7 @@ const characterPage = ({ character }) => {
                         <ImageLoader
                           image_url={anime.image_url}
                           alt={anime.name}
-                         />
+                        />
                       </Box>
                     </Td>
                   </Tr>

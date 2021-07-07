@@ -1,12 +1,11 @@
-import { ApolloProvider } from "@apollo/client";
+import Nav from "@/components/Common/Nav";
+import { TokenRefresh } from "@/lib/accessToken";
 import { useApollo } from "@/lib/apolloClient";
-import { ChakraProvider, Box } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
-import axios from "axios";
-import customTheme from "@/styles/theme";
-import Nav from "@/components/Nav";
-import { setAccessToken, TokenRefresh } from "@/lib/accessToken";
 import { AuthProvider } from "@/lib/authClient";
+import customTheme from "@/styles/theme";
+import { ApolloProvider } from "@apollo/client";
+import { Box, ChakraProvider } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
 
 function MyApp({ Component, pageProps }) {
   const [loading, setLoading] = useState(true);

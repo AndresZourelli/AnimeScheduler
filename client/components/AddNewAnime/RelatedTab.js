@@ -1,4 +1,4 @@
-import InfoSearchTab from "@/components/InfoSearchTab";
+import InfoSearchTab from "@/components/AddNewAnime/InfoSearchTab";
 import { Box, CloseButton, Flex, Heading } from "@chakra-ui/react";
 import { FieldArray } from "formik";
 

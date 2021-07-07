@@ -1,6 +1,6 @@
 import { Box, Heading, Badge, IconButton, useToast } from "@chakra-ui/react";
 import Link from "next/link";
-import LoadImage from "@/components/ImageLoader";
+import LoadImage from "@/components/Common/ImageLoader";
 import { BsPlus } from "react-icons/bs";
 import { useMutation, gql } from "@apollo/client";
 import { useEffect } from "react";

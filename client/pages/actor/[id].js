@@ -16,7 +16,7 @@ import {
 import NextImage from "next/image";
 import NextLink from "next/link";
 import { initializeApollo } from "@/lib/apolloClient";
-import ImageLoader from "@/components/ImageLoader";
+import ImageLoader from "@/components/Common/ImageLoader";
 
 const GET_ACTOR = gql`
   query GetActor($actor_id: ID!) {
@@ -103,7 +103,7 @@ const actorPage = ({ actor }) => {
                         <ImageLoader
                           image_url={anime.character.image_url}
                           alt={anime.character.name}
-                         />
+                        />
                       </Box>
                     </Td>
                     <Td mb="2" fontSize="sm">
@@ -118,7 +118,7 @@ const actorPage = ({ actor }) => {
                         <ImageLoader
                           image_url={anime.anime.image_url}
                           alt={anime.anime.name}
-                         />
+                        />
                       </Box>
                     </Td>
                   </Tr>

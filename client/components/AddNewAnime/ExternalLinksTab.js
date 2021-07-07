@@ -1,4 +1,4 @@
-import NewExternalLink from "@/components/NewExternalLink";
+import NewExternalLink from "@/components/AddNewAnime/NewExternalLink";
 import { Box, CloseButton, Flex, Heading } from "@chakra-ui/react";
 import { FieldArray } from "formik";
 

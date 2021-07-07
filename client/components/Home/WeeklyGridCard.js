@@ -1,9 +1,8 @@
 import { Box, Flex, Heading, Text } from "@chakra-ui/react";
-import { BsXCircle, BsEyeSlash, BsEye } from "react-icons/bs";
-import moment from "moment";
 import NextLink from "next/link";
-import ImageLoader from "./ImageLoader";
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { BsEye, BsEyeSlash, BsXCircle } from "react-icons/bs";
+import ImageLoader from "@/components/Common/ImageLoader";
 
 const WeeklyGridCard = ({
   title,

@@ -1,7 +1,7 @@
-import PopularRow from "@/components/PopularRow";
-import MostWatchedRow from "@/components/MostWatchedRow";
-import CurrentlyAiringThisSeason from "@/components/CurrentlyAiringThisSeason";
-import CurrentlyAiringContinue from "@/components/CurrentlyAiringContinue";
+import PopularRow from "@/components/Home/PopularRow";
+import MostWatchedRow from "@/components/Home/MostWatchedRow";
+import CurrentlyAiringThisSeason from "@/components/Home/CurrentlyAiringThisSeason";
+import CurrentlyAiringContinue from "@/components/Home/CurrentlyAiringContinue";
 import { gql } from "@apollo/client";
 import { initializeApollo } from "@/lib/apolloClient";
 

@@ -1,37 +1,19 @@
+import CharacterTab from "@/components/AddNewAnime/CharacterTab";
+import ExternalLinksTab from "@/components/AddNewAnime/ExternalLinksTab";
+import GeneralInfoTab from "@/components/AddNewAnime/GeneralInfoTab";
+import RelatedTab from "@/components/AddNewAnime/RelatedTab";
+import StaffTab from "@/components/AddNewAnime/StaffTab";
+import StudiosTab from "@/components/AddNewAnime/StudiosTab";
 import {
   Box,
-  Flex,
-  Tabs,
-  TabList,
-  TabPanels,
-  Tab,
-  TabPanel,
-  FormControl,
-  FormLabel,
-  FormErrorMessage,
-  FormHelperText,
-  Input,
   Button,
-  Spacer,
-  Heading,
-  Select,
-  InputRightElement,
-  InputGroup,
-  CloseButton,
-  NumberInput,
-  NumberInputField,
-  NumberInputStepper,
-  NumberIncrementStepper,
-  NumberDecrementStepper,
-  Text,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
 } from "@chakra-ui/react";
-import { Formik, FieldArray, Field, getIn, Form } from "formik";
-import GeneralInfoTab from "@/components/GeneralInfoTab";
-import CharacterTab from "@/components/CharacterTab";
-import StaffTab from "@/components/StaffTab";
-import StudiosTab from "@/components/StudiosTab";
-import RelatedTab from "@/components/RelatedTab";
-import ExternalLinksTab from "@/components/ExternalLinksTab";
+import { Formik } from "formik";
 
 const AddNewAnime = () => {
   const inputSpacingCommon = {

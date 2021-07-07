@@ -15,9 +15,9 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGripfire } from "@fortawesome/free-brands-svg-icons";
 import { faEye } from "@fortawesome/free-regular-svg-icons";
-import CharacterCard from "@/components/CharacterCard";
-import ActorCard from "@/components/ActorCard";
-import StaffCard from "@/components/StaffCard";
+import CharacterCard from "@/components/Home/CharacterCard";
+import ActorCard from "@/components/Home/ActorCard";
+import StaffCard from "@/components/Home/StaffCard";
 
 const AnimePageMain = ({
   description,
@@ -126,12 +126,7 @@ const AnimePageMain = ({
         <Heading mb="3">Characters</Heading>
         <Flex wrap="wrap" justifyContent="flexStart">
           {characters.slice(0, currentCharactersDisplayed).map((character) => {
-            return (
-              <CharacterCard
-                key={character.id}
-                character={character}
-               />
-            );
+            return <CharacterCard key={character.id} character={character} />;
           })}
         </Flex>
         <Box display="flex">

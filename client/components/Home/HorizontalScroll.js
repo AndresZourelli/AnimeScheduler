@@ -1,5 +1,5 @@
 import { HStack, Box, Heading } from "@chakra-ui/react";
-import AnimeCard from "@/components/AnimeCard";
+import AnimeCard from "@/components/Home/AnimeCard";
 import { v4 as uuidv4 } from "uuid";
 import { useRef } from "react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";

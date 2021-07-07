@@ -1,31 +1,9 @@
-import {
-  Box,
-  Flex,
-  FormControl,
-  FormLabel,
-  FormErrorMessage,
-  FormHelperText,
-  Input,
-  Button,
-  Heading,
-  Select,
-  InputRightElement,
-  InputGroup,
-  CloseButton,
-  NumberInput,
-  NumberInputField,
-  NumberInputStepper,
-  NumberIncrementStepper,
-  NumberDecrementStepper,
-  Text,
-  Spacer,
-  InputLeftElement,
-} from "@chakra-ui/react";
-import { FieldArray, Field, getIn } from "formik";
-import InfoSearchTab from "@/components/InfoSearchTab";
-import NewCharacter from "@/components/NewCharacter";
+import InfoSearchTab from "@/components/AddNewAnime/InfoSearchTab";
+import NewStaff from "@/components/AddNewAnime/NewStaff";
+import { Box, CloseButton, Flex, Heading } from "@chakra-ui/react";
+import { FieldArray } from "formik";
 
-const CharacterTab = ({
+const StaffTab = ({
   values,
   errors,
   touched,
@@ -38,21 +16,16 @@ const CharacterTab = ({
       <InfoSearchTab
         values={values}
         setFieldValue={setFieldValue}
-        placeholder="Search For Existing Character"
-        newItem={
-          <NewCharacter
-            values={values}
-            setFieldValue={setFieldValue}
-           />
-        }
-       />
-      <Heading>Added Characters</Heading>
+        placeholder="Search For Existing Staff"
+        newItem={<NewStaff values={values} setFieldValue={setFieldValue} />}
+      />
+      <Heading>Added Staff</Heading>
       <Flex wrap="wrap">
         <>
-          <FieldArray name="newCharactersList">
+          <FieldArray name="newStaffList">
             {({ push, remove }) => (
               <>
-                {values.newCharactersList
+                {values.newStaffList
                   .filter((value) => value.givenNameSearchBar != "")
                   .map((name, nameIndex) => (
                     <Box key={nameIndex} w="full">
@@ -66,14 +39,14 @@ const CharacterTab = ({
               </>
             )}
           </FieldArray>
-          <FieldArray name="characterList">
+          <FieldArray name="staffList">
             {({ push, remove }) => (
               <>
-                {values.characterList
-                  .filter((value) => value.characterId != "")
+                {values.staffList
+                  .filter((value) => value.staffId != "")
                   .map((name, nameIndex) => (
                     <Box w="full" key={nameIndex}>
-                      {name.characterId}
+                      {name.staffId}
                       <CloseButton
                         color="red.500"
                         onClick={() => remove(nameIndex)}
@@ -89,4 +62,4 @@ const CharacterTab = ({
   );
 };
 
-export default CharacterTab;
+export default StaffTab;

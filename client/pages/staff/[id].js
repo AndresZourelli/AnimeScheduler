@@ -17,7 +17,7 @@ import NextImage from "next/image";
 import NextLink from "next/link";
 import { v4 as uuidv4 } from "uuid";
 import { initializeApollo } from "@/lib/apolloClient";
-import ImageLoader from "@/components/ImageLoader";
+import ImageLoader from "@/components/Common/ImageLoader";
 
 const GET_STAFF = gql`
   query GetStaff($staff_id: ID!) {

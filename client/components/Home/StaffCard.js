@@ -1,7 +1,6 @@
-import NextImage from "next/image";
+import ImageLoader from "@/components/Common/ImageLoader";
 import { Box, Heading, Text } from "@chakra-ui/react";
 import NextLink from "next/link";
-import ImageLoader from "@/components/ImageLoader";
 
 const StaffCard = ({ staff: { id, name, image_url, role } }) => {
   return (
