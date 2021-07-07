@@ -87,7 +87,7 @@ const WeeklyGrid = () => {
               index={i}
               anime={animeWeekday.filter((animeInfo) => i == animeInfo.weekday)}
               deleteAnime={deleteAnime}
-             />
+            />
           );
         })}
       </Grid>

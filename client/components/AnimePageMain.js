@@ -15,9 +15,9 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGripfire } from "@fortawesome/free-brands-svg-icons";
 import { faEye } from "@fortawesome/free-regular-svg-icons";
-import CharacterCard from "@/components/Home/CharacterCard";
-import ActorCard from "@/components/Home/ActorCard";
-import StaffCard from "@/components/Home/StaffCard";
+import CharacterCard from "@/components/CharacterCard";
+import ActorCard from "@/components/ActorCard";
+import StaffCard from "@/components/StaffCard";
 
 const AnimePageMain = ({
   description,

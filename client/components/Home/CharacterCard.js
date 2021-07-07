@@ -11,7 +11,6 @@ const CharacterCard = ({ character: { id, name, image_url, role, actor } }) => {
       alignItems="center"
       flexDirection="column"
       position="relative"
-      overflow="hidden"
       minH="150px"
       w="200px"
       flex="0 0 auto"
