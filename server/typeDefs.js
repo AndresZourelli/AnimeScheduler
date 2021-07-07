@@ -8,6 +8,7 @@ const { authDef } = require("./typeDefs/authDef");
 const { actorDef } = require("./typeDefs/actorDef");
 const { characterDef } = require("./typeDefs/characterDef");
 const { staffDef } = require("./typeDefs/staffDef");
+const { searchDef } = require("./typeDefs/searchDef");
 
 const typeDefs = [
   animeDef,
@@ -20,6 +21,7 @@ const typeDefs = [
   actorDef,
   characterDef,
   staffDef,
+  searchDef,
 ];
 
 module.exports = { typeDefs };
