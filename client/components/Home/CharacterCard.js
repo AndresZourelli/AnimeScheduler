@@ -1,6 +1,6 @@
 import { Box, Heading, Text } from "@chakra-ui/react";
 import NextLink from "next/link";
-import ImageLoader from "./ImageLoader";
+import ImageLoader from "@/components/Common/ImageLoader";
 
 const CharacterCard = ({ character: { id, name, image_url, role, actor } }) => {
   return (

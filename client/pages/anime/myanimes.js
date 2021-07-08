@@ -1,5 +1,5 @@
-import MyAnimePageList from "@/components/MyAnimePageList";
-import WeeklyGrid from "@/components/WeeklyGrid";
+import MyAnimePageList from "@/components/MyAnimePage/MyAnimePageList";
+import WeeklyGrid from "@/components/MyAnimePage/WeeklyGrid";
 import { Box, Heading } from "@chakra-ui/react";
 import { initializeApollo } from "@/lib/apolloClient";
 import { gql } from "@apollo/client";

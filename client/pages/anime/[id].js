@@ -1,8 +1,8 @@
 import { useRouter } from "next/router";
 import { gql } from "@apollo/client";
 import { Spinner, Box, Flex } from "@chakra-ui/react";
-import AnimePageInfoCol from "@/components/AnimePageInfoCol";
-import AnimePageMain from "@/components/AnimePageMain";
+import AnimePageInfoCol from "@/components/Home/AnimePageInfoCol";
+import AnimePageMain from "@/components/Home/AnimePageMain";
 import { initializeApollo } from "@/lib/apolloClient";
 
 const GET_ANIME = gql`

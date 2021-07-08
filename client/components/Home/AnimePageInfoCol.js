@@ -20,7 +20,7 @@ import {
   Divider,
 } from "@chakra-ui/react";
 import { ChevronDownIcon } from "@chakra-ui/icons";
-import ImageLoader from "./ImageLoader";
+import ImageLoader from "@/components/Common/ImageLoader";
 
 const AnimePageInfoCol = ({
   image_url,
