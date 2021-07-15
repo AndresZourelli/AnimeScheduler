@@ -5,3 +5,4 @@ mongodb_data_container
 *.json
 .env
 *.pyc
+*log.txt

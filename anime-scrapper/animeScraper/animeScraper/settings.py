@@ -29,7 +29,6 @@ DOWNLOAD_DELAY = 3
 # The download delay setting will honor only one of:
 #CONCURRENT_REQUESTS_PER_DOMAIN = 16
 #CONCURRENT_REQUESTS_PER_IP = 16
-
 # Disable cookies (enabled by default)
 #COOKIES_ENABLED = False
 
@@ -63,10 +62,10 @@ DOWNLOAD_DELAY = 3
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-   'animeScraper.pipelines.ActorsPipeline': 100,
-   'animeScraper.pipelines.StaffPipeline': 100,
-   'animeScraper.pipelines.CharacterPipeline': 100,
-   # 'animeScraper.pipelines.AnimePipeline': 100,
+   # 'animeScraper.pipelines.AnimePipeline': 1,
+   'animeScraper.pipelines.CharacterPipeline': 200,
+   'animeScraper.pipelines.ActorsPipeline': 300,
+   'animeScraper.pipelines.StaffPipeline': 400,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
