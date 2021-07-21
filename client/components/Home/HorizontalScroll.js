@@ -25,10 +25,10 @@ const HorizontalScroll = ({ animes }) => {
   const display = animes?.map((anime) => {
     return (
       <AnimeCard
-        title={anime.title}
-        image_url={anime.image_url}
+        title={anime.anime_title}
+        image_url={anime.primary_image_url}
         score={anime.avg_score}
-        id={anime.id}
+        id={anime.anime_id}
         key={uuidv4()}
       />
     );

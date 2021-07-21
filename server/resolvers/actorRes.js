@@ -1,17 +1,17 @@
-const Actor = require("../mongoDB/models/actor");
+const Actor = require("../db/models/actors.model");
 
 const actorResolver = {
   Query: {
     getActors: async (_, __) => {
-      const result = await Actor.find({});
+      const result = await Actor.query();
       return result;
     },
     getActor: async (_, args) => {
-      const result = await Actor.find({ _id: args.actor_id });
-      return result[0];
+      const result = await Actor.query().for(args.actor_id);
+      return result;
     },
     getActorPaths: async () => {
-      const result = Actor.find({}, { _id: 1 });
+      const result = Actor.query().select("actor_id");
       return result;
     },
   },
@@ -36,10 +36,10 @@ const actorResolver = {
     editActor: async (_, args) => {
       const { actor_id } = args.input;
       const { data } = args.input;
-      let response = {
+      const response = {
         success: true,
         message: "Actor sucessfully updated!",
-        actor_id: actor_id,
+        actor_id,
       };
       try {
         await Actor.updateOne({ _id: actor_id }, data);
@@ -52,10 +52,10 @@ const actorResolver = {
     },
     deleteActor: async (_, args) => {
       const { actor_id } = args;
-      let response = {
+      const response = {
         success: true,
         message: "Actor sucessfully deleted!",
-        actor_id: actor_id,
+        actor_id,
       };
       try {
         await Actor.deleteOne({ _id: actor_id });

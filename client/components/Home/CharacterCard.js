@@ -2,7 +2,7 @@ import { Box, Heading, Text } from "@chakra-ui/react";
 import NextLink from "next/link";
 import ImageLoader from "@/components/Common/ImageLoader";
 
-const CharacterCard = ({ character: { id, name, image_url, role, actor } }) => {
+const CharacterCard = ({ character: { character_id, character_name, image_url, role, actor } }) => {
   return (
     <Box
       mb="4"
@@ -15,7 +15,7 @@ const CharacterCard = ({ character: { id, name, image_url, role, actor } }) => {
       w="200px"
       flex="0 0 auto"
     >
-      <NextLink href={`/character/${id}`}>
+      <NextLink href={`/character/${character_id}`}>
         <Box
           m="auto"
           position="relative"
@@ -35,10 +35,10 @@ const CharacterCard = ({ character: { id, name, image_url, role, actor } }) => {
             textOverflow="ellipsis"
             mb="0"
           >
-            {name}
+            {character_name}
           </Heading>
           <Box width="125px" height="194px" position="relative" display="block">
-            <ImageLoader image_url={image_url} alt={name} />
+            <ImageLoader image_url={image_url} alt={character_name} />
           </Box>
           <Text fontSize="sm">Role: {role} </Text>
         </Box>

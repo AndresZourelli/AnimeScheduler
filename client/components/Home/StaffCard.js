@@ -2,7 +2,7 @@ import ImageLoader from "@/components/Common/ImageLoader";
 import { Box, Heading, Text } from "@chakra-ui/react";
 import NextLink from "next/link";
 
-const StaffCard = ({ staff: { id, name, image_url, role } }) => {
+const StaffCard = ({ staff: { staff_id, staff_name, image_url, role } }) => {
   return (
     <Box
       overflow="hidden"
@@ -10,13 +10,12 @@ const StaffCard = ({ staff: { id, name, image_url, role } }) => {
       alignItems="center"
       flexDirection="column"
       position="relative"
-      overflow="hidden"
       minH="150px"
       w="200px"
       flex="0 0 auto"
       mb="4"
     >
-      <NextLink href={`/staff/${id}`}>
+      <NextLink href={`/staff/${staff_id}`}>
         <Box
           m="auto"
           position="relative"
@@ -36,10 +35,10 @@ const StaffCard = ({ staff: { id, name, image_url, role } }) => {
             textOverflow="ellipsis"
             mb="0"
           >
-            {name}
+            {staff_name}
           </Heading>
           <Box width="125px" height="194px" position="relative" display="block">
-            <ImageLoader image_url={image_url} alt={name} />
+            <ImageLoader image_url={image_url} alt={staff_name} />
           </Box>
           <Text fontSize="sm">Role: {role} </Text>
         </Box>

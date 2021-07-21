@@ -1,4 +1,4 @@
-import moment from "moment";
+import moment from "moment-timezone";
 import NextImage from "next/image";
 import { v4 as uuidv4 } from "uuid";
 import { useState, useRef, useEffect } from "react";
@@ -23,10 +23,10 @@ import { ChevronDownIcon } from "@chakra-ui/icons";
 import ImageLoader from "@/components/Common/ImageLoader";
 
 const AnimePageInfoCol = ({
-  image_url,
-  episodes,
-  aired_start,
-  aired_end,
+  primary_image_url,
+  number_of_episodes,
+  start_broadcast_datetime,
+  end_broadcast_datetime,
   duration,
   type,
   season,
@@ -37,10 +37,8 @@ const AnimePageInfoCol = ({
   studios,
   alt_names,
   loading,
-  broadcast_day,
-  broadcast_time,
   producers,
-  title,
+  anime_title,
 }) => {
   const [timerDays, setTimerDays] = useState("00");
   const [timerHours, setTimerHours] = useState("00");
@@ -49,25 +47,26 @@ const AnimePageInfoCol = ({
 
   useEffect(() => {
     if (loading === false && source) {
-      getCountDown(aired_start);
+      getCountDown(start_broadcast_datetime);
       return () => {
         clearInterval(internal.current);
       };
     }
   }, []);
 
-  if (!type || loading) {
-    return (
-      <Box>
-        <Spinner size="xl" display="block" m="auto" my="10" />
-      </Box>
-    );
-  }
-
   let internal = useRef();
 
+  // if (!type || loading) {
+  //   return (
+  //     <Box>
+  //       <Spinner size="xl" display="block" m="auto" my="10" />
+  //     </Box>
+  //   );
+  // }
+
+
   const getCountDown = (start) => {
-    const airDate = moment(parseInt(start));
+    const airDate = moment(start);
     let today = moment();
     while (airDate < today) {
       airDate.add(1, "week");
@@ -114,21 +113,23 @@ const AnimePageInfoCol = ({
     }, 1000);
   };
 
-  const momentObj = aired_start
-    ? moment.utc(parseInt(aired_start)).local()
-    : "???";
-  const air_date = aired_start
-    ? new Date(parseInt(aired_start)).toLocaleDateString()
-    : "???";
-  const end_date = aired_end
-    ? new Date(parseInt(aired_end)).toLocaleDateString()
+  const momentObj = start_broadcast_datetime
+    ? moment.utc(parseInt(start_broadcast_datetime)).local()
     : "???";
 
+  const air_date = start_broadcast_datetime
+    ? new Date(parseInt(start_broadcast_datetime)).toLocaleDateString()
+    : "???";
+  const end_date = end_broadcast_datetime
+    ? new Date(parseInt(end_broadcast_datetime)).toLocaleDateString()
+    : "???";
+
+  const broadcast_time_jst = moment.utc(parseInt(start_broadcast_datetime))
   return (
     <Box m="8" w="md">
       <Box width="225px">
         <Box height="300px" width="225px" minWidth="225px" position="relative">
-          <ImageLoader image_url={image_url} alt={title} />
+          <ImageLoader image_url={primary_image_url} alt={anime_title} />
         </Box>
         <ButtonGroup my="4" isAttached w="100%">
           <Button isFullWidth>Add to List</Button>
@@ -153,7 +154,7 @@ const AnimePageInfoCol = ({
       <Box>
         <Heading size="sm">Broadcast Time</Heading>
         <Text>
-          {broadcast_day} {broadcast_time}
+          {broadcast_time_jst.tz("Asia/Tokyo").format("HH:mm z")}
         </Text>
         <Heading size="sm" mt="3">
           Broadcast Time (Local Time)
@@ -163,7 +164,7 @@ const AnimePageInfoCol = ({
       <Divider my="3" />
       <Box>
         <Heading size="sm">Number of Episodes</Heading>
-        <Text>{episodes}</Text>
+        <Text>{number_of_episodes}</Text>
       </Box>
       <Divider my="3" />
       <Box>
@@ -209,21 +210,21 @@ const AnimePageInfoCol = ({
       <Box>
         <Heading size="sm">Licensors</Heading>
         {licensors.map((licensor) => (
-          <Text key={uuidv4()}>{licensor}</Text>
+          <Text key={uuidv4()}>{licensor.licensor_name}</Text>
         ))}
       </Box>
       <Divider my="3" />
       <Box>
         <Heading size="sm">Producers</Heading>
         {producers.map((producer) => (
-          <Text key={uuidv4()}>{producer}</Text>
+          <Text key={uuidv4()}>{producer.producer_name}</Text>
         ))}
       </Box>
       <Divider my="3" />
       <Box>
         <Heading size="sm">Studios</Heading>
         {studios.map((studio) => (
-          <Text key={uuidv4()}>{studio}</Text>
+          <Text key={uuidv4()}>{studio.studio_name}</Text>
         ))}
       </Box>
       <Divider my="3" />

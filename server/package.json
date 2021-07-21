@@ -33,11 +33,15 @@
 		"graphql": "^15.4.0",
 		"graphql-tools": "^7.0.2",
 		"jsonwebtoken": "^8.5.1",
+		"knex": "^0.95.7",
 		"lodash": "^4.17.20",
 		"moment": "^2.29.1",
 		"moment-timezone": "^0.5.33",
 		"mongoose": "^5.11.13",
 		"nodemailer": "^6.5.0",
+		"objection": "^2.2.15",
+		"pg": "^8.6.0",
+		"postgraphile": "^4.12.3",
 		"uuid": "^8.3.2",
 		"validator": "^13.5.2"
 	}

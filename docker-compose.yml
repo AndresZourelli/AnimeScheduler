@@ -3,6 +3,7 @@ services:
   db:
     image: "postgres"
     container_name: "anime-postgres"
+    restart: always
     environment:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: admin
@@ -19,3 +20,6 @@ services:
       - 27018:27017
     volumes:
       - ./mongodb_data_container:/data/db
+# docker exec -i anime-postgres /bin/bash -c "PGPASSWORD=admin psql --username admin anime --set ON_ERROR_STOP=on" < ~/dump.sql
+# docker exec -i anime-postgres pg_restore --verbose --clean --no-acl --no-owner -h localhost -U admin -d anime < ~/dump.sql
+

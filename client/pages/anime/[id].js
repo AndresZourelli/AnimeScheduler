@@ -8,14 +8,14 @@ import { initializeApollo } from "@/lib/apolloClient";
 const GET_ANIME = gql`
   query GetAnime($anime_id: ID!) {
     getAnime(anime_id: $anime_id) {
-      id: _id
-      title
+      anime_id
+      anime_title
       avg_score
-      description
-      image_url
-      episodes
-      aired_start
-      aired_end
+      anime_description
+      primary_image_url
+      number_of_episodes
+      start_broadcast_datetime
+      end_broadcast_datetime
       broadcast_day
       broadcast_time
       duration
@@ -24,10 +24,22 @@ const GET_ANIME = gql`
       source
       status
       rating
-      genres
-      licensors
-      producers
-      studios
+      genres{
+        genre_id
+        genre_name
+      }
+      licensors{
+        licensor_id
+        licensor_name
+      }
+      producers{
+        producer_id
+        producer_name
+      }
+      studios{
+        studio_id
+        studio_name
+      }
       alt_names {
         Japanese
         English
@@ -35,21 +47,21 @@ const GET_ANIME = gql`
       }
       minutes_watched
       actors {
-        id
-        name
+        actor_id
+        actor_name
         image_url
         actor_language
         character
       }
       characters {
-        id
-        name
+        character_id
+        character_name
         image_url
         role
       }
       staff {
-        id
-        name
+        staff_id
+        staff_name
         image_url
         role
       }
@@ -60,7 +72,7 @@ const GET_ANIME = gql`
 const GET_PATHS = gql`
   query GetPaths {
     getAnimePaths {
-      id
+      anime_id
     }
   }
 `;
@@ -105,7 +117,7 @@ export const getStaticPaths = async () => {
   const { data } = await client.query({ query: GET_PATHS });
   let formatedData = data?.getAnimePaths?.map((item) => ({
     params: {
-      id: item.id,
+      id: item.anime_id,
     },
   }));
 
@@ -122,6 +134,7 @@ export const getStaticProps = async (context) => {
     query: GET_ANIME,
     variables: { anime_id: id },
   });
+
   return {
     props: {
       anime: data.getAnime,

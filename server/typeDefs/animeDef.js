@@ -2,14 +2,15 @@ const { gql } = require("apollo-server-express");
 
 const animeDef = gql`
   type Anime {
-    _id: ID!
-    title: String
+    anime_id: ID
+    anime_mal_id: Int
+    anime_title: String
     avg_score: Float
-    description: String!
-    image_url: String
-    episodes: Int
-    aired_start: String
-    aired_end: String
+    anime_description: String
+    primary_image_url: String
+    number_of_episodes: Int
+    start_broadcast_datetime: String
+    end_broadcast_datetime: String
     broadcast_day: String
     broadcast_time: String
     duration: String
@@ -18,10 +19,10 @@ const animeDef = gql`
     source: String
     status: String
     rating: String
-    genres: [String]
-    licensors: [String]
-    producers: [String]
-    studios: [String]
+    genres: [AnimeGenre]
+    licensors: [AnimeLicensor]
+    producers: [AnimeProducer]
+    studios: [AnimeStudio]
     alt_names: Names
     minutes_watched: Int
     actors: [AnimeActor]
@@ -30,22 +31,22 @@ const animeDef = gql`
   }
 
   type AnimeStaff {
-    id: ID!
-    name: String
+    staff_id: ID!
+    staff_name: String
     image_url: String
     role: String
   }
 
   type AnimeCharacter {
-    id: ID!
-    name: String
+    character_id: ID!
+    character_name: String
     image_url: String
     role: String
   }
 
   type AnimeActor {
-    id: ID!
-    name: String
+    actor_id: ID!
+    actor_name: String
     image_url: String
     actor_language: String
     character: String
@@ -55,30 +56,6 @@ const animeDef = gql`
     English: String
     Synonyms: String
     Japanese: String
-  }
-
-  input AnimeInput {
-    title: String!
-    score_avg: Float
-    description: String!
-    image_url: String
-    episodes: Int
-    aired_start: String
-    aired_end: String
-    broadcast_day: String
-    broadcast_time: String
-    duration: String
-    type: String
-    season: String
-    source: String
-    status: String
-    rating: String
-    genres: [String]
-    licensors: [String]
-    producers: [String]
-    studios: [String]
-    alt_names: InputNames
-    minutes_watched: Int
   }
 
   input InputNames {
@@ -94,16 +71,36 @@ const animeDef = gql`
   }
 
   type AnimePath {
-    id: ID
+    anime_id: ID!
+  }
+
+  type AnimeLicensor {
+    licensor_id: ID!
+    licensor_name: String!
+  }
+
+  type AnimeGenre {
+    genre_id: ID!
+    genre_name: String!
+  }
+
+  type AnimeProducer {
+    producer_id: ID!
+    producer_name: String!
+  }
+
+  type AnimeStudio {
+    studio_id: ID!
+    studio_name: String!
   }
 
   type Query {
-    getAnimes(search: String, page: Int, limit: Int): AnimeResult!
+    getAnimes(search: String, page: Int, limit: Int): AnimeResult
     getAnime(anime_id: ID!): Anime
-    getAnimeHighestRated(page: Int, limit: Int): AnimeResult!
-    getAnimeMostWatched(page: Int, limit: Int): AnimeResult!
-    getCurrentAiringThisSeason(page: Int, limit: Int): AnimeResult!
-    getCurrentAiringContinue(page: Int, limit: Int): AnimeResult!
+    getAnimeHighestRated(page: Int, limit: Int): AnimeResult
+    getAnimeMostWatched(page: Int, limit: Int): AnimeResult
+    getCurrentAiringThisSeason(page: Int, limit: Int): AnimeResult
+    getCurrentAiringContinue(page: Int, limit: Int): AnimeResult
     getAnimePaths: [AnimePath]
     getAnimesAiringToday: AnimeResult
   }
@@ -121,8 +118,6 @@ const animeDef = gql`
   }
 
   type Mutation {
-    createAnime(data: AnimeInput!): AnimeUpdateResponse!
-    editAnime(animeId: ID!, data: AnimeInput!): AnimeUpdateResponse!
     deleteAnime(animeId: ID!): AnimeUpdateResponse!
   }
 `;

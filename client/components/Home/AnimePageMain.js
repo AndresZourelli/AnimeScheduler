@@ -20,8 +20,8 @@ import ActorCard from "@/components/Home/ActorCard";
 import StaffCard from "@/components/Home/StaffCard";
 
 const AnimePageMain = ({
-  description,
-  title,
+  anime_description,
+  anime_title,
   genres,
   characters,
   actors,
@@ -33,14 +33,14 @@ const AnimePageMain = ({
   const [hasMoreStaff, setHasMoreStaff] = useState(false);
 
   const [numberOfCharacters, setNumberOfCharacters] = useState(
-    characters.length
+    characters?.length ?? 0
   );
   const [currentCharactersDisplayed, setCharactersDisplayed] = useState(10);
 
-  const [numberOfActors, setNumberOfActors] = useState(actors.length);
+  const [numberOfActors, setNumberOfActors] = useState(actors?.length ?? 0);
   const [currentActorsDisplayed, setActorsDisplayed] = useState(10);
 
-  const [numberOfStaff, setNumberOfStaff] = useState(staff.length);
+  const [numberOfStaff, setNumberOfStaff] = useState(staff?.length ?? 0);
   const [currentStaffDisplayed, setStaffDisplayed] = useState(10);
 
   useEffect(() => {
@@ -105,7 +105,7 @@ const AnimePageMain = ({
         </Tag>
       </Box>
       <Box my="3" mr="16">
-        <Heading mb="2">{title}</Heading>
+        <Heading mb="2">{anime_title}</Heading>
         <Box mb="2">
           {genres.map((genre, idx) => {
             return (
@@ -116,17 +116,17 @@ const AnimePageMain = ({
                 key={uuidv4()}
                 colorScheme={tagColors[idx % genres.length]}
               >
-                <TagLabel>{genre}</TagLabel>
+                <TagLabel>{genre.genre_name}</TagLabel>
               </Tag>
             );
           })}
         </Box>
-        <Text>{description}</Text>
+        <Text>{anime_description}</Text>
         <Divider my="3" />
         <Heading mb="3">Characters</Heading>
         <Flex wrap="wrap" justifyContent="flexStart">
-          {characters.slice(0, currentCharactersDisplayed).map((character) => {
-            return <CharacterCard key={character.id} character={character} />;
+          {characters?.slice(0, currentCharactersDisplayed).map((character) => {
+            return <CharacterCard key={character.character_id} character={character} />;
           })}
         </Flex>
         <Box display="flex">
@@ -139,8 +139,8 @@ const AnimePageMain = ({
         <Divider my="3" />
         <Heading>Actors</Heading>
         <Flex wrap="wrap" justifyContent="flexStart">
-          {actors.slice(0, currentActorsDisplayed).map((actor) => {
-            return <ActorCard key={actor.id} actor={actor} />;
+          {actors?.slice(0, currentActorsDisplayed).map((actor) => {
+            return <ActorCard key={actor.actor_id} actor={actor} />;
           })}
         </Flex>
         <Box display="flex">
@@ -153,8 +153,8 @@ const AnimePageMain = ({
         <Divider my="3" />
         <Heading>Staff</Heading>
         <Flex wrap="wrap" justifyContent="flexStart">
-          {staff.slice(0, currentStaffDisplayed).map((staff) => {
-            return <StaffCard key={staff.id} staff={staff} />;
+          {staff?.slice(0, currentStaffDisplayed).map((staff) => {
+            return <StaffCard key={staff.staff_id} staff={staff} />;
           })}
         </Flex>
         <Box display="flex">

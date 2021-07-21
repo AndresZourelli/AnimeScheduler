@@ -9,12 +9,12 @@ const ANIME_QUERIES = gql`
   query GetMostWatchedAnimes($page: Int, $limit: Int) {
     getAnimeMostWatched(page: $page, limit: $limit) {
       animes {
-        title
-        description
-        image_url
+        anime_title
+        anime_description
+        primary_image_url
         minutes_watched
         avg_score
-        id: _id
+        anime_id
       }
       totalPages
       currentPage
@@ -22,11 +22,11 @@ const ANIME_QUERIES = gql`
 
     getAnimeHighestRated(page: $page, limit: $limit) {
       animes {
-        title
-        description
-        image_url
+        anime_title
+        anime_description
+        primary_image_url
         avg_score
-        id: _id
+        anime_id
       }
       totalPages
       currentPage
@@ -34,12 +34,12 @@ const ANIME_QUERIES = gql`
 
     getCurrentAiringThisSeason(page: $page, limit: $limit) {
       animes {
-        title
-        description
-        image_url
+        anime_title
+        anime_description
+        primary_image_url
         status
         avg_score
-        id: _id
+        anime_id
       }
       totalPages
       currentPage
@@ -47,12 +47,12 @@ const ANIME_QUERIES = gql`
 
     getCurrentAiringContinue(page: $page, limit: $limit) {
       animes {
-        title
-        description
-        image_url
+        anime_title
+        anime_description
+        primary_image_url
         status
         avg_score
-        id: _id
+        anime_id
       }
       totalPages
       currentPage
@@ -71,7 +71,7 @@ const Home = ({
       <CurrentlyAiringThisSeason animes={CurrentlyAiringThisSeasonData} />
       <CurrentlyAiringContinue animes={CurrentlyAiringContinueData} />
       <PopularRow animes={PopularRowData} />
-      <MostWatchedRow animes={MostWatchedRowData} />
+      {/* <MostWatchedRow animes={MostWatchedRowData} /> */}
     </>
   );
 };

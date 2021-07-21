@@ -3,7 +3,7 @@ import NextLink from "next/link";
 import ImageLoader from "@/components/Common/ImageLoader";
 
 const ActorCard = ({
-  actor: { id, name, image_url, actor_language, character },
+  actor: { actor_id, actor_name, image_url, actor_language, character },
 }) => (
   <Box
     mb="4"
@@ -16,7 +16,7 @@ const ActorCard = ({
     w="200px"
     flex="0 0 auto"
   >
-    <NextLink href={`/actor/${id}`}>
+    <NextLink href={`/actor/${actor_id}`}>
       <Box
         m="auto"
         position="relative"
@@ -36,10 +36,10 @@ const ActorCard = ({
           textOverflow="ellipsis"
           mb="0"
         >
-          {name}
+          {actor_name}
         </Heading>
         <Box width="125px" height="194px" position="relative" display="block">
-          <ImageLoader image_url={image_url} alt={name} />
+          <ImageLoader image_url={image_url} alt={actor_name} />
         </Box>
         <Text fontSize="sm">
           Language:
