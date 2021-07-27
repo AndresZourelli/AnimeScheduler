@@ -2,8 +2,8 @@ const { gql } = require("apollo-server-express");
 
 const characterDef = gql`
   type Character {
-    id: ID!
-    name: String
+    character_id: ID!
+    character_name: String
     image_url: String
     role: String
     actors: [CharacterActor]
@@ -41,7 +41,7 @@ const characterDef = gql`
   }
 
   type CharacterPath {
-    id: ID
+    character_id: ID
   }
 
   extend type Query {

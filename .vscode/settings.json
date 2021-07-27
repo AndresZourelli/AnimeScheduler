@@ -9,5 +9,8 @@
   "eslint.format.enable": true,
   "eslint.alwaysShowStatus": true,
   "eslint.packageManager": "yarn",
-  "eslint.workingDirectories": ["./client","./server"]
+  "eslint.workingDirectories": ["./client", "./server"],
+  "python.linting.pylintEnabled": false,
+  "python.linting.enabled": false,
+  "python.linting.flake8Enabled": true
 }

@@ -5,7 +5,7 @@ const animeDef = gql`
     anime_id: ID
     anime_mal_id: Int
     anime_title: String
-    avg_score: Float
+    average_rating: Float
     anime_description: String
     primary_image_url: String
     number_of_episodes: Int
@@ -14,10 +14,10 @@ const animeDef = gql`
     broadcast_day: String
     broadcast_time: String
     duration: String
-    type: String
-    season: String
-    source: String
-    status: String
+    media_type_name: String
+    season_name: String
+    source_material_type_name: String
+    airing_status_type_name: String
     rating: String
     genres: [AnimeGenre]
     licensors: [AnimeLicensor]
@@ -41,14 +41,14 @@ const animeDef = gql`
     character_id: ID!
     character_name: String
     image_url: String
-    role: String
+    character_role_name: String
   }
 
   type AnimeActor {
     actor_id: ID!
     actor_name: String
     image_url: String
-    actor_language: String
+    language_name: String
     character: String
   }
 

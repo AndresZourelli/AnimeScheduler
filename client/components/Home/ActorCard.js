@@ -3,7 +3,7 @@ import NextLink from "next/link";
 import ImageLoader from "@/components/Common/ImageLoader";
 
 const ActorCard = ({
-  actor: { actor_id, actor_name, image_url, actor_language, character },
+  actor: { actor_id, actor_name, image_url, language_name, character },
 }) => (
   <Box
     mb="4"
@@ -41,10 +41,7 @@ const ActorCard = ({
         <Box width="125px" height="194px" position="relative" display="block">
           <ImageLoader image_url={image_url} alt={actor_name} />
         </Box>
-        <Text fontSize="sm">
-          Language:
-          {actor_language}
-        </Text>
+        <Text fontSize="sm">Language: {language_name}</Text>
         <Text fontSize="sm">
           Character:
           {character}

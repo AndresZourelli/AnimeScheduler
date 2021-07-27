@@ -10,7 +10,7 @@ const GET_ANIME = gql`
     getAnime(anime_id: $anime_id) {
       anime_id
       anime_title
-      avg_score
+      average_rating
       anime_description
       primary_image_url
       number_of_episodes
@@ -19,24 +19,24 @@ const GET_ANIME = gql`
       broadcast_day
       broadcast_time
       duration
-      type
-      season
-      source
-      status
+      media_type_name
+      season_name
+      source_material_type_name
+      airing_status_type_name
       rating
-      genres{
+      genres {
         genre_id
         genre_name
       }
-      licensors{
+      licensors {
         licensor_id
         licensor_name
       }
-      producers{
+      producers {
         producer_id
         producer_name
       }
-      studios{
+      studios {
         studio_id
         studio_name
       }
@@ -50,14 +50,14 @@ const GET_ANIME = gql`
         actor_id
         actor_name
         image_url
-        actor_language
+        language_name
         character
       }
       characters {
         character_id
         character_name
         image_url
-        role
+        character_role_name
       }
       staff {
         staff_id
@@ -77,7 +77,7 @@ const GET_PATHS = gql`
   }
 `;
 
-const animePage = ({ anime }) => {
+const AnimePage = ({ anime }) => {
   const router = useRouter();
   const { id } = router.query;
 
@@ -142,4 +142,4 @@ export const getStaticProps = async (context) => {
   };
 };
 
-export default animePage;
+export default AnimePage;

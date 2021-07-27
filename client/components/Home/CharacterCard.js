@@ -2,7 +2,15 @@ import { Box, Heading, Text } from "@chakra-ui/react";
 import NextLink from "next/link";
 import ImageLoader from "@/components/Common/ImageLoader";
 
-const CharacterCard = ({ character: { character_id, character_name, image_url, role, actor } }) => {
+const CharacterCard = ({
+  character: {
+    character_id,
+    character_name,
+    image_url,
+    character_role_name,
+    actor,
+  },
+}) => {
   return (
     <Box
       mb="4"
@@ -40,7 +48,7 @@ const CharacterCard = ({ character: { character_id, character_name, image_url, r
           <Box width="125px" height="194px" position="relative" display="block">
             <ImageLoader image_url={image_url} alt={character_name} />
           </Box>
-          <Text fontSize="sm">Role: {role} </Text>
+          <Text fontSize="sm">Role: {character_role_name} </Text>
         </Box>
       </NextLink>
     </Box>

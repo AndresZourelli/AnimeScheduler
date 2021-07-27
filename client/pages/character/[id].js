@@ -30,7 +30,7 @@ const GET_CHARACTER = gql`
         anime
         id
       }
-      name
+      character_name
       image_url
       role
     }
@@ -40,7 +40,7 @@ const GET_CHARACTER = gql`
 const GET_PATHS = gql`
   query GetPaths {
     getCharacterPaths {
-      id
+      character_id
     }
   }
 `;
@@ -63,7 +63,7 @@ const characterPage = ({ character }) => {
           <ImageLoader image_url={character.image_url} alt={character.name} />
         </Box>
         <Box ml="6" position="relative">
-          <Heading>{character.name}</Heading>
+          <Heading>{character.character_name}</Heading>
           <Text>Role: {character.role}</Text>
           <Heading mt="12" as="h3">
             Voice Actor:
@@ -130,12 +130,13 @@ const characterPage = ({ character }) => {
 export const getStaticPaths = async () => {
   const client = initializeApollo();
   const { data } = await client.query({ query: GET_PATHS });
+  console.log(data);
   let formatedData = data?.getCharacterPaths?.map((item) => ({
     params: {
-      id: item.id,
+      id: item.character_id,
     },
   }));
-
+  console.log(formatedData);
   return {
     paths: formatedData,
     fallback: false,
@@ -149,6 +150,7 @@ export const getStaticProps = async (context) => {
     query: GET_CHARACTER,
     variables: { character_id: id },
   });
+  console.log(data);
   return {
     props: {
       character: data.getCharacter,

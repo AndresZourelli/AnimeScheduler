@@ -62,7 +62,7 @@ DOWNLOAD_DELAY = 3
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-   # 'animeScraper.pipelines.AnimePipeline': 1,
+   'animeScraper.pipelines.AnimePipeline': 1,
    'animeScraper.pipelines.CharacterPipeline': 200,
    'animeScraper.pipelines.ActorsPipeline': 300,
    'animeScraper.pipelines.StaffPipeline': 400,

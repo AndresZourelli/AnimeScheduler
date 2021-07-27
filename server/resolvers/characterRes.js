@@ -1,17 +1,17 @@
-const Character = require("../mongoDB/models/character");
+const Character = require("../db/models/characters.model");
 
 const characterResolver = {
   Query: {
     getCharacters: async (_, __) => {
-      const result = await Character.find({});
+      const result = await Character.query();
       return result;
     },
     getCharacter: async (_, args) => {
-      const result = await Character.find({ _id: args.character_id });
-      return result[0];
+      const result = await Character.query().findById(args.character_id);
+      return result;
     },
     getCharacterPaths: async () => {
-      const result = await Character.find({}, { _id: 1 });
+      const result = await Character.query();
       return result;
     },
   },
@@ -36,10 +36,10 @@ const characterResolver = {
     editCharacter: async (_, args) => {
       const { character_id } = args.input;
       const { data } = args.input;
-      let response = {
+      const response = {
         success: true,
         message: "Character sucessfully updated!",
-        character_id: character_id,
+        character_id,
       };
       try {
         await Character.updateOne({ _id: character_id }, data);
@@ -52,10 +52,10 @@ const characterResolver = {
     },
     deleteCharacter: async (_, args) => {
       const { character_id } = args;
-      let response = {
+      const response = {
         success: true,
         message: "Character sucessfully deleted!",
-        character_id: character_id,
+        character_id,
       };
       try {
         await Character.deleteOne({ _id: character_id });

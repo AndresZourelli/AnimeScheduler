@@ -28,10 +28,10 @@ const AnimePageInfoCol = ({
   start_broadcast_datetime,
   end_broadcast_datetime,
   duration,
-  type,
-  season,
-  source,
-  status,
+  media_type_name,
+  season_name,
+  source_material_type_name,
+  airing_status_type_name,
   rating,
   licensors,
   studios,
@@ -63,7 +63,6 @@ const AnimePageInfoCol = ({
   //     </Box>
   //   );
   // }
-
 
   const getCountDown = (start) => {
     const airDate = moment(start);
@@ -124,7 +123,7 @@ const AnimePageInfoCol = ({
     ? new Date(parseInt(end_broadcast_datetime)).toLocaleDateString()
     : "???";
 
-  const broadcast_time_jst = moment.utc(parseInt(start_broadcast_datetime))
+  const broadcast_time_jst = moment.utc(parseInt(start_broadcast_datetime));
   return (
     <Box m="8" w="md">
       <Box width="225px">
@@ -153,9 +152,7 @@ const AnimePageInfoCol = ({
       <Divider my="3" />
       <Box>
         <Heading size="sm">Broadcast Time</Heading>
-        <Text>
-          {broadcast_time_jst.tz("Asia/Tokyo").format("HH:mm z")}
-        </Text>
+        <Text>{broadcast_time_jst.tz("Asia/Tokyo").format("HH:mm z")}</Text>
         <Heading size="sm" mt="3">
           Broadcast Time (Local Time)
         </Heading>
@@ -184,22 +181,22 @@ const AnimePageInfoCol = ({
       <Divider my="3" />
       <Box>
         <Heading size="sm">Broadcast Media</Heading>
-        <Text>{type}</Text>
+        <Text>{media_type_name}</Text>
       </Box>
       <Divider my="3" />
       <Box>
         <Heading size="sm">Release Season</Heading>
-        <Text>{season}</Text>
+        <Text>{season_name}</Text>
       </Box>
       <Divider my="3" />
       <Box>
         <Heading size="sm">Source Material</Heading>
-        <Text>{source}</Text>
+        <Text>{source_material_type_name}</Text>
       </Box>
       <Divider my="3" />
       <Box>
         <Heading size="sm">Airing Status</Heading>
-        <Text>{status}</Text>
+        <Text>{airing_status_type_name}</Text>
       </Box>
       <Divider my="3" />
       <Box>

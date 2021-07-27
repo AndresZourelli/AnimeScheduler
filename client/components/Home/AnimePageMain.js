@@ -125,9 +125,17 @@ const AnimePageMain = ({
         <Divider my="3" />
         <Heading mb="3">Characters</Heading>
         <Flex wrap="wrap" justifyContent="flexStart">
-          {characters?.slice(0, currentCharactersDisplayed).map((character) => {
-            return <CharacterCard key={character.character_id} character={character} />;
-          })}
+          {characters
+            ?.slice(0, currentCharactersDisplayed)
+            .sort(characterSort)
+            .map((character) => {
+              return (
+                <CharacterCard
+                  key={character.character_id}
+                  character={character}
+                />
+              );
+            })}
         </Flex>
         <Box display="flex">
           {hasMoreCharacters ? (
@@ -170,3 +178,13 @@ const AnimePageMain = ({
 };
 
 export default AnimePageMain;
+
+const characterSort = (a, b) => {
+  if (a.character_role_name.localeCompare("Main")) {
+    return 1;
+  }
+  if (a.character_role_name.localeCompare("Supporting")) {
+    return -1;
+  }
+  return 0;
+};

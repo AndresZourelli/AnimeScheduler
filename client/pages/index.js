@@ -13,7 +13,7 @@ const ANIME_QUERIES = gql`
         anime_description
         primary_image_url
         minutes_watched
-        avg_score
+        average_rating
         anime_id
       }
       totalPages
@@ -25,7 +25,7 @@ const ANIME_QUERIES = gql`
         anime_title
         anime_description
         primary_image_url
-        avg_score
+        average_rating
         anime_id
       }
       totalPages
@@ -37,8 +37,8 @@ const ANIME_QUERIES = gql`
         anime_title
         anime_description
         primary_image_url
-        status
-        avg_score
+        airing_status_type_name
+        average_rating
         anime_id
       }
       totalPages
@@ -50,8 +50,8 @@ const ANIME_QUERIES = gql`
         anime_title
         anime_description
         primary_image_url
-        status
-        avg_score
+        airing_status_type_name
+        average_rating
         anime_id
       }
       totalPages

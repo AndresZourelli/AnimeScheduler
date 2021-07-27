@@ -14,7 +14,7 @@ const { typeDefs } = require("./typeDefs");
 require("dotenv").config();
 const isAuth = require("./middleware/isAuth");
 const { getCurrentSeasons } = require("./db/models/animes/animes.queries");
-require("./db/dbConfig")
+require("./db/dbConfig");
 
 const app = express();
 
@@ -71,10 +71,12 @@ const server = new ApolloServer({
   typeDefs,
   resolvers,
   context: ({ req, res, next }) => ({ req, res, next }),
-  // formatError: (error) => { console.log(JSON.stringify(error, null, 2)) }
+  formatError: (error) => {
+    console.log(JSON.stringify(error, null, 2));
+  },
 });
 
-server.applyMiddleware({ app, cors: false, });
+server.applyMiddleware({ app, cors: false });
 
 app.listen({ port: 4000 }, () => {
   /* eslint-disable-next-line no-console */

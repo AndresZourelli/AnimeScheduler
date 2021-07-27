@@ -1,39 +1,153 @@
 const moment = require("moment");
 const Anime = require("../db/models/animes/animes.model.js");
-const { getAnime, getHighestRatedAnimes, getCurrentSeasons, getContinuedSeasons, getAnimePaths } = require("../db/models/animes/animes.queries")
+const {
+  getAnime,
+  getHighestRatedAnimes,
+  getCurrentSeasons,
+  getContinuedSeasons,
+  getAnimePaths,
+} = require("../db/models/animes/animes.queries");
 const { formatErrors } = require("../utils/FormatError");
 const db = require("../db/dbConfig");
 const tableNames = require("../utils/constants/tableNames");
 
 const animeResolver = {
   Anime: {
-    genres: async parent => {
-      const result = await db(tableNames.anime_genre).select(`${tableNames.genres}.genre_id`, `${tableNames.genres}.genre_name`).join(tableNames.genres, `${tableNames.anime_genre}.fk_genre_id`, `${tableNames.genres}.genre_id`).where(`${tableNames.anime_genre}.fk_anime_id`, "=", parent.anime_id)
-      return result
+    genres: async (parent) => {
+      const result = await db(tableNames.anime_genre)
+        .select(
+          `${tableNames.genres}.genre_id`,
+          `${tableNames.genres}.genre_name`
+        )
+        .join(
+          tableNames.genres,
+          `${tableNames.anime_genre}.fk_genre_id`,
+          `${tableNames.genres}.genre_id`
+        )
+        .where(`${tableNames.anime_genre}.fk_anime_id`, "=", parent.anime_id);
+      return result;
     },
-    licensors: async parent => {
-      const result = await db(tableNames.anime_licensor).select(`${tableNames.licensors}.licensor_id`, `${tableNames.licensors}.licensor_name`).join(tableNames.licensors, `${tableNames.anime_licensor}.fk_licensor_id`, `${tableNames.licensors}.licensor_id`).where(`${tableNames.anime_licensor}.fk_anime_id`, "=", parent.anime_id)
-      return result
+    licensors: async (parent) => {
+      const result = await db(tableNames.anime_licensor)
+        .select(
+          `${tableNames.licensors}.licensor_id`,
+          `${tableNames.licensors}.licensor_name`
+        )
+        .join(
+          tableNames.licensors,
+          `${tableNames.anime_licensor}.fk_licensor_id`,
+          `${tableNames.licensors}.licensor_id`
+        )
+        .where(
+          `${tableNames.anime_licensor}.fk_anime_id`,
+          "=",
+          parent.anime_id
+        );
+      return result;
     },
-    producers: async parent => {
-      const result = await db(tableNames.anime_producer).select(`${tableNames.producers}.producer_id`, `${tableNames.producers}.producer_name`).join(tableNames.producers, `${tableNames.anime_producer}.fk_producer_id`, `${tableNames.producers}.producer_id`).where(`${tableNames.anime_producer}.fk_anime_id`, "=", parent.anime_id)
-      return result
+    producers: async (parent) => {
+      const result = await db(tableNames.anime_producer)
+        .select(
+          `${tableNames.producers}.producer_id`,
+          `${tableNames.producers}.producer_name`
+        )
+        .join(
+          tableNames.producers,
+          `${tableNames.anime_producer}.fk_producer_id`,
+          `${tableNames.producers}.producer_id`
+        )
+        .where(
+          `${tableNames.anime_producer}.fk_anime_id`,
+          "=",
+          parent.anime_id
+        );
+      return result;
     },
-    studios: async parent => {
-      const result = await db(tableNames.anime_studio).select(`${tableNames.studios}.studio_id`, `${tableNames.studios}.studio_name`).join(tableNames.studios, `${tableNames.anime_studio}.fk_studio_id`, `${tableNames.studios}.studio_id`).where(`${tableNames.anime_studio}.fk_anime_id`, "=", parent.anime_id)
-      return result
+    studios: async (parent) => {
+      const result = await db(tableNames.anime_studio)
+        .select(
+          `${tableNames.studios}.studio_id`,
+          `${tableNames.studios}.studio_name`
+        )
+        .join(
+          tableNames.studios,
+          `${tableNames.anime_studio}.fk_studio_id`,
+          `${tableNames.studios}.studio_id`
+        )
+        .where(`${tableNames.anime_studio}.fk_anime_id`, "=", parent.anime_id);
+      return result;
     },
-    characters: async parent => {
-      const result = await db(tableNames.anime_character).select("*").join(tableNames.characters, `${tableNames.anime_character}.fk_character_id`, `${tableNames.characters}.character_id`).join(tableNames.character_images, `${tableNames.characters}.fk_character_primary_image`, `${tableNames.character_images}.character_image_id`).join(tableNames.images, `${tableNames.character_images}.fk_image_id`, `${tableNames.images}.image_id`).where(`${tableNames.anime_character}.fk_anime_id`, "=", parent.anime_id)
-      return result
+    characters: async (parent) => {
+      const result = await db(tableNames.anime_character)
+        .select("*")
+        .join(
+          tableNames.characters,
+          `${tableNames.anime_character}.fk_character_id`,
+          `${tableNames.characters}.character_id`
+        )
+        .join(
+          tableNames.character_images,
+          `${tableNames.characters}.fk_character_primary_image`,
+          `${tableNames.character_images}.character_image_id`
+        )
+        .join(
+          tableNames.images,
+          `${tableNames.character_images}.fk_image_id`,
+          `${tableNames.images}.image_id`
+        )
+        .join(
+          tableNames.character_roles,
+          `${tableNames.anime_character}.fk_character_role_id`,
+          `${tableNames.character_roles}.character_role_id`
+        )
+        .where(
+          `${tableNames.anime_character}.fk_anime_id`,
+          "=",
+          parent.anime_id
+        );
+      return result;
     },
-    staff: async parent => {
-      const result = await db(tableNames.anime_staff).select("*").join(tableNames.staff, `${tableNames.anime_staff}.fk_staff_id`, `${tableNames.staff}.staff_id`).join(tableNames.staff_images, `${tableNames.staff}.fk_staff_primary_image`, `${tableNames.staff_images}.staff_image_id`).join(tableNames.images, `${tableNames.staff_images}.fk_image_id`, `${tableNames.images}.image_id`).where(`${tableNames.anime_staff}.fk_anime_id`, "=", parent.anime_id)
-      return result
+    staff: async (parent) => {
+      const result = await db(tableNames.anime_staff)
+        .select("*")
+        .join(
+          tableNames.staff,
+          `${tableNames.anime_staff}.fk_staff_id`,
+          `${tableNames.staff}.staff_id`
+        )
+        .join(
+          tableNames.staff_images,
+          `${tableNames.staff}.fk_staff_primary_image`,
+          `${tableNames.staff_images}.staff_image_id`
+        )
+        .join(
+          tableNames.images,
+          `${tableNames.staff_images}.fk_image_id`,
+          `${tableNames.images}.image_id`
+        )
+        .where(`${tableNames.anime_staff}.fk_anime_id`, "=", parent.anime_id);
+      return result;
     },
-    actors: async parent => {
-      const result = await db(tableNames.anime_actor).select("*").join(tableNames.actors, `${tableNames.anime_actor}.fk_actor_id`, `${tableNames.actors}.actor_id`).join(tableNames.images, `${tableNames.actors}.fk_actor_primary_image`, `${tableNames.images}.image_id`).where(`${tableNames.anime_actor}.fk_anime_id`, "=", parent.anime_id)
-      return result
+    actors: async (parent) => {
+      const result = await db(tableNames.anime_actor)
+        .select("*")
+        .join(
+          tableNames.actors,
+          `${tableNames.anime_actor}.fk_actor_id`,
+          `${tableNames.actors}.actor_id`
+        )
+        .join(
+          tableNames.images,
+          `${tableNames.actors}.fk_actor_primary_image`,
+          `${tableNames.images}.image_id`
+        )
+        .join(
+          tableNames.languages,
+          `${tableNames.anime_actor}.fk_language_id`,
+          `${tableNames.languages}.language_id`
+        )
+        .where(`${tableNames.anime_actor}.fk_anime_id`, "=", parent.anime_id);
+      return result;
     },
   },
   Query: {
@@ -59,7 +173,7 @@ const animeResolver = {
           ],
         };
       }
-      const animes = await Anime.query()
+      const animes = await Anime.query();
       return {
         animes: animes.results,
         totalPages: 0,
@@ -68,10 +182,10 @@ const animeResolver = {
     },
     getAnime: async (_, { anime_id }) => {
       const result = await getAnime(anime_id);
-      return result;
+      return result[0];
     },
     getAnimeHighestRated: async (_, { page = 0, limit = 20 }) => {
-      const animes = await getHighestRatedAnimes(limit, page)
+      const animes = await getHighestRatedAnimes(limit, page);
 
       return {
         animes: animes.results,
@@ -80,7 +194,7 @@ const animeResolver = {
       };
     },
     getAnimeMostWatched: async (_, { page = 1, limit = 20 }) => {
-      const animes = await Anime.query()
+      const animes = await Anime.query();
 
       return {
         animes: animes.results,
@@ -88,7 +202,7 @@ const animeResolver = {
         currentPage: 0,
       };
     },
-    getCurrentAiringThisSeason: async (_, { page = 0, limit = 1 }) => {
+    getCurrentAiringThisSeason: async (_, { page = 0, limit = 30 }) => {
       const seasons = {
         1: "Winter",
         2: "Winter",
@@ -105,8 +219,9 @@ const animeResolver = {
       };
       const today = moment();
       const dateMonth = seasons[today.month() + 1];
+      const season = `${dateMonth} ${today.format("YYYY")}`;
 
-      const animes = await getCurrentSeasons(dateMonth, page, limit)
+      const animes = await getCurrentSeasons(season, page, limit);
 
       return {
         animes: animes.results,
@@ -114,7 +229,7 @@ const animeResolver = {
         currentPage: page,
       };
     },
-    getCurrentAiringContinue: async (_, { page = 0, limit = 1 }) => {
+    getCurrentAiringContinue: async (_, { page = 0, limit = 30 }) => {
       const seasons = {
         1: "Winter",
         2: "Winter",
@@ -131,9 +246,9 @@ const animeResolver = {
       };
       const today = moment();
       const dateMonth = seasons[today.month() + 1];
+      const season = `${dateMonth} ${today.format("YYYY")}`;
 
-      const animes = await getContinuedSeasons(dateMonth, page, limit);
-
+      const animes = await getContinuedSeasons(season, page, limit);
 
       return {
         animes: animes.results,
