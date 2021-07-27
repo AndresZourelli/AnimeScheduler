@@ -41,7 +41,6 @@
 		"nodemailer": "^6.5.0",
 		"objection": "^2.2.15",
 		"pg": "^8.6.0",
-		"postgraphile": "^4.12.3",
 		"uuid": "^8.3.2",
 		"validator": "^13.5.2"
 	}
