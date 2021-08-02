@@ -197,7 +197,7 @@ const Nav = () => {
                             <Td display="relative">
                               <Box w="70px" h="100px" position="relative">
                                 <ImageLoader
-                                  image_url={anime.image_url}
+                                  image_url={anime.url}
                                   alt={anime.title}
                                 />
                               </Box>

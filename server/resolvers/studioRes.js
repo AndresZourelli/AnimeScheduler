@@ -1,10 +1,10 @@
-const Studio = require("../mongoDB/models/studio");
+const Studio = require("../db/models/studios.model");
 
 const studioResolver = {
   Query: {
-    getStudio: async (_, args) => {
-      const result = await Studio.find({ _id: args.studio_id });
-      return result[0];
+    getStudio: async (_, { studioId }) => {
+      const result = await Studio.query().findById(studioId);
+      return result;
     },
     getStudios: async () => {
       const result = await Studio.find({});
@@ -12,15 +12,15 @@ const studioResolver = {
     },
   },
   Mutation: {
-    createStudio: async (_, { studio_name }) => {
-      const newStudio = new Studio({ studio_name });
+    createStudio: async (_, { studioName }) => {
       const response = {
         success: true,
         message: "Studio sucessfully added!",
-        studio_id: newStudio._id,
+        studioId: null,
       };
       try {
-        await newStudio.save();
+        const newStudio = await Studio.query().insert({ studio: studioName });
+        response.studioId = newStudio.id;
         return response;
       } catch (error) {
         response.success = false;
@@ -28,14 +28,14 @@ const studioResolver = {
         return response;
       }
     },
-    editStudio: async (_, { studio_id, studio_name }) => {
+    editStudio: async (_, { studioId, studioName }) => {
       const response = {
         success: true,
         message: "Studio sucessfully updated!",
-        studio_id,
+        studioId,
       };
       try {
-        await Studio.updateOne({ _id: studio_id }, { studio_name });
+        await Studio.query().findById(studioId).patch({ studio: studioName });
         return response;
       } catch (error) {
         response.success = false;
@@ -43,14 +43,14 @@ const studioResolver = {
         return response;
       }
     },
-    deleteStudio: async (_, { studio_id }) => {
+    deleteStudio: async (_, { studioId }) => {
       const response = {
         success: true,
         message: "Studio sucessfully deleted!",
-        studio_id,
+        studioId,
       };
       try {
-        await Studio.deleteOne({ _id: studio_id });
+        await Studio.query().deleteById(studioId);
         return response;
       } catch (error) {
         response.success = false;

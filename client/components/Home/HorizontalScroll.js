@@ -21,18 +21,19 @@ const HorizontalScroll = ({ animes }) => {
       slide.scrollLeft = 0;
     }
   };
-  console.log(animes);
-  const display = animes?.map((anime) => {
-    return (
-      <AnimeCard
-        title={anime.anime_title}
-        image_url={anime.primary_image_url}
-        score={anime.average_rating}
-        id={anime.anime_id}
-        key={uuidv4()}
-      />
-    );
-  });
+
+  const display =
+    animes?.map((anime) => {
+      return (
+        <AnimeCard
+          title={anime.title}
+          url={anime.url}
+          score={anime.average_watcher_rating}
+          id={anime.id}
+          key={uuidv4()}
+        />
+      );
+    }) ?? [];
   return (
     <>
       <Box

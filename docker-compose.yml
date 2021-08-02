@@ -12,14 +12,3 @@ services:
       - "5433:5432"
     volumes:
       - ./pg-data:/var/lib/postgresql/data
-
-  mongodb_container:
-    image: mongo:latest
-    restart: always
-    ports:
-      - 27018:27017
-    volumes:
-      - ./mongodb_data_container:/data/db
-# docker exec -i anime-postgres /bin/bash -c "PGPASSWORD=admin psql --username admin anime --set ON_ERROR_STOP=on" < ~/dump.sql
-# docker exec -i anime-postgres pg_restore --verbose --clean --no-acl --no-owner -h localhost -U admin -d anime < ~/dump.sql
-

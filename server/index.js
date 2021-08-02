@@ -1,10 +1,11 @@
 const express = require("express");
 const { ApolloServer } = require("apollo-server-express");
+const { postgraphile } = require("postgraphile");
 
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
-const User = require("./mongoDB/models/user");
+const User = require("./db/models/users.model");
 const {
   createAccessToken,
   createRefreshToken,
@@ -13,7 +14,6 @@ const { resolvers } = require("./resolvers");
 const { typeDefs } = require("./typeDefs");
 require("dotenv").config();
 const isAuth = require("./middleware/isAuth");
-const { getCurrentSeasons } = require("./db/models/animes/animes.queries");
 require("./db/dbConfig");
 
 const app = express();
@@ -28,6 +28,14 @@ app.use(
 
 app.use(isAuth);
 
+app.use(
+  postgraphile(process.env.POSTGRES_DATABASE_URL, "public", {
+    watchPg: true,
+    graphiql: true,
+    enhanceGraphiql: true,
+  })
+);
+
 app.get("/refresh_token", async (req, res) => {
   const token = req.cookies["refresh-token"];
 
@@ -41,7 +49,7 @@ app.get("/refresh_token", async (req, res) => {
     return res.send({ success: false });
   }
 
-  const findUser = await User.findById(decodedToken.userId);
+  const findUser = await User.query().findById(decodedToken.userId);
 
   if (!findUser) {
     return res.send({ success: false });
@@ -67,18 +75,18 @@ app.get("/refresh_token", async (req, res) => {
   }
 });
 
-const server = new ApolloServer({
-  typeDefs,
-  resolvers,
-  context: ({ req, res, next }) => ({ req, res, next }),
-  formatError: (error) => {
-    console.log(JSON.stringify(error, null, 2));
-  },
-});
+// const server = new ApolloServer({
+//   typeDefs,
+//   resolvers,
+//   context: ({ req, res, next }) => ({ req, res, next }),
+//   formatError: (error) => {
+//     console.log(JSON.stringify(error, null, 2));
+//   },
+// });
 
-server.applyMiddleware({ app, cors: false });
+// server.applyMiddleware({ app, cors: false });
 
 app.listen({ port: 4000 }, () => {
   /* eslint-disable-next-line no-console */
-  console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`);
+  console.log(`🚀 Server ready at http://localhost:4000/graphiql`);
 });

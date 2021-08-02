@@ -1,10 +1,11 @@
-const Anime = require("../mongoDB/models/anime");
-const Character = require("../mongoDB/models/character");
-const Staff = require("../mongoDB/models/staff");
-const Studio = require("../mongoDB/models/studio");
+const Anime = require("../db/models/animes/animes.model");
+const Character = require("../db/models/characters.model");
+const Staff = require("../db/models/staff.model");
+const Studio = require("../db/models/studios.model");
 
 const searchResolver = {
   SearchResultType: {
+    // eslint-disable-next-line no-underscore-dangle
     __resolveType(obj) {
       if (obj.name) {
         return "SearchCharacterStaffResultType";

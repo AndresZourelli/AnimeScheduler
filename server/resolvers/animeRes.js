@@ -6,75 +6,69 @@ const {
   getCurrentSeasons,
   getContinuedSeasons,
   getAnimePaths,
+  getAnimeStaff,
 } = require("../db/models/animes/animes.queries");
 const { formatErrors } = require("../utils/FormatError");
 const db = require("../db/dbConfig");
 const tableNames = require("../utils/constants/tableNames");
 
 const animeResolver = {
+  AnimeStaff: {
+    person: async (parent) => {
+      const result = await getAnimeStaff(parent.id);
+      return result;
+    },
+    role: () => "stest",
+  },
   Anime: {
     genres: async (parent) => {
       const result = await db(tableNames.anime_genre)
-        .select(
-          `${tableNames.genres}.genre_id`,
-          `${tableNames.genres}.genre_name`
-        )
+        .select(`${tableNames.genres}.id`, `${tableNames.genres}.genre`)
         .join(
           tableNames.genres,
-          `${tableNames.anime_genre}.fk_genre_id`,
-          `${tableNames.genres}.genre_id`
+          `${tableNames.anime_genre}.genre_id`,
+          `${tableNames.genres}.id`
         )
-        .where(`${tableNames.anime_genre}.fk_anime_id`, "=", parent.anime_id);
+        .where(`${tableNames.anime_genre}.anime_id`, "=", parent.id);
       return result;
     },
     licensors: async (parent) => {
       const result = await db(tableNames.anime_licensor)
         .select(
-          `${tableNames.licensors}.licensor_id`,
-          `${tableNames.licensors}.licensor_name`
+          `${tableNames.licensors}.id`,
+          `${tableNames.licensors}.licensor`
         )
         .join(
           tableNames.licensors,
-          `${tableNames.anime_licensor}.fk_licensor_id`,
-          `${tableNames.licensors}.licensor_id`
+          `${tableNames.anime_licensor}.licensor_id`,
+          `${tableNames.licensors}.id`
         )
-        .where(
-          `${tableNames.anime_licensor}.fk_anime_id`,
-          "=",
-          parent.anime_id
-        );
+        .where(`${tableNames.anime_licensor}.anime_id`, "=", parent.anime_id);
       return result;
     },
     producers: async (parent) => {
       const result = await db(tableNames.anime_producer)
         .select(
-          `${tableNames.producers}.producer_id`,
-          `${tableNames.producers}.producer_name`
+          `${tableNames.producers}.id`,
+          `${tableNames.producers}.producer`
         )
         .join(
           tableNames.producers,
-          `${tableNames.anime_producer}.fk_producer_id`,
-          `${tableNames.producers}.producer_id`
+          `${tableNames.anime_producer}.producer_id`,
+          `${tableNames.producers}.id`
         )
-        .where(
-          `${tableNames.anime_producer}.fk_anime_id`,
-          "=",
-          parent.anime_id
-        );
+        .where(`${tableNames.anime_producer}.anime_id`, "=", parent.anime_id);
       return result;
     },
     studios: async (parent) => {
       const result = await db(tableNames.anime_studio)
-        .select(
-          `${tableNames.studios}.studio_id`,
-          `${tableNames.studios}.studio_name`
-        )
+        .select(`${tableNames.studios}.id`, `${tableNames.studios}.studio`)
         .join(
           tableNames.studios,
-          `${tableNames.anime_studio}.fk_studio_id`,
-          `${tableNames.studios}.studio_id`
+          `${tableNames.anime_studio}.studio_id`,
+          `${tableNames.studios}.id`
         )
-        .where(`${tableNames.anime_studio}.fk_anime_id`, "=", parent.anime_id);
+        .where(`${tableNames.anime_studio}.anime_id`, "=", parent.anime_id);
       return result;
     },
     characters: async (parent) => {
@@ -82,8 +76,8 @@ const animeResolver = {
         .select("*")
         .join(
           tableNames.characters,
-          `${tableNames.anime_character}.fk_character_id`,
-          `${tableNames.characters}.character_id`
+          `${tableNames.anime_character}.character_id`,
+          `${tableNames.characters}.id`
         )
         .join(
           tableNames.character_images,
@@ -92,40 +86,15 @@ const animeResolver = {
         )
         .join(
           tableNames.images,
-          `${tableNames.character_images}.fk_image_id`,
-          `${tableNames.images}.image_id`
+          `${tableNames.character_images}.image_id`,
+          `${tableNames.images}.id`
         )
         .join(
           tableNames.character_roles,
-          `${tableNames.anime_character}.fk_character_role_id`,
-          `${tableNames.character_roles}.character_role_id`
+          `${tableNames.anime_character}.character_role_id`,
+          `${tableNames.character_roles}.id`
         )
-        .where(
-          `${tableNames.anime_character}.fk_anime_id`,
-          "=",
-          parent.anime_id
-        );
-      return result;
-    },
-    staff: async (parent) => {
-      const result = await db(tableNames.anime_staff)
-        .select("*")
-        .join(
-          tableNames.staff,
-          `${tableNames.anime_staff}.fk_staff_id`,
-          `${tableNames.staff}.staff_id`
-        )
-        .join(
-          tableNames.staff_images,
-          `${tableNames.staff}.fk_staff_primary_image`,
-          `${tableNames.staff_images}.staff_image_id`
-        )
-        .join(
-          tableNames.images,
-          `${tableNames.staff_images}.fk_image_id`,
-          `${tableNames.images}.image_id`
-        )
-        .where(`${tableNames.anime_staff}.fk_anime_id`, "=", parent.anime_id);
+        .where(`${tableNames.anime_character}.anime_id`, "=", parent.anime_id);
       return result;
     },
     actors: async (parent) => {
@@ -149,10 +118,13 @@ const animeResolver = {
         .where(`${tableNames.anime_actor}.fk_anime_id`, "=", parent.anime_id);
       return result;
     },
+    staff: async (parent) => {
+      animeResolver.AnimeStaff.person(parent);
+    },
   },
   Query: {
     getAnimes: async (_, args) => {
-      const { search = null, page = 1, limit = 20 } = args;
+      const { search = null, page = 1, limit = 1 } = args;
       let searchQuery = {};
 
       if (search) {
@@ -173,22 +145,21 @@ const animeResolver = {
           ],
         };
       }
-      const animes = await Anime.query();
+      const animes = await Anime.query().limit(limit);
       return {
-        animes: animes.results,
+        animes,
         totalPages: 0,
         currentPage: 0,
       };
     },
-    getAnime: async (_, { anime_id }) => {
-      const result = await getAnime(anime_id);
+    getAnime: async (_, { animeId }) => {
+      const result = await getAnime(animeId);
       return result[0];
     },
     getAnimeHighestRated: async (_, { page = 0, limit = 20 }) => {
       const animes = await getHighestRatedAnimes(limit, page);
-
       return {
-        animes: animes.results,
+        animes,
         totalPages: 0,
         currentPage: page,
       };
@@ -224,7 +195,7 @@ const animeResolver = {
       const animes = await getCurrentSeasons(season, page, limit);
 
       return {
-        animes: animes.results,
+        animes,
         totalPages: 0,
         currentPage: page,
       };
@@ -251,7 +222,7 @@ const animeResolver = {
       const animes = await getContinuedSeasons(season, page, limit);
 
       return {
-        animes: animes.results,
+        animes,
         totalPages: 0,
         currentPage: page,
       };

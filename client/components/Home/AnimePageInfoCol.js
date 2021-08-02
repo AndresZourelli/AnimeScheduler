@@ -23,22 +23,22 @@ import { ChevronDownIcon } from "@chakra-ui/icons";
 import ImageLoader from "@/components/Common/ImageLoader";
 
 const AnimePageInfoCol = ({
-  primary_image_url,
+  url,
   number_of_episodes,
   start_broadcast_datetime,
   end_broadcast_datetime,
   duration,
-  media_type_name,
-  season_name,
-  source_material_type_name,
-  airing_status_type_name,
+  media_type,
+  season,
+  source_material_type,
+  airing_status_type,
   rating,
   licensors,
   studios,
   alt_names,
   loading,
   producers,
-  anime_title,
+  title,
 }) => {
   const [timerDays, setTimerDays] = useState("00");
   const [timerHours, setTimerHours] = useState("00");
@@ -128,7 +128,7 @@ const AnimePageInfoCol = ({
     <Box m="8" w="md">
       <Box width="225px">
         <Box height="300px" width="225px" minWidth="225px" position="relative">
-          <ImageLoader image_url={primary_image_url} alt={anime_title} />
+          <ImageLoader image_url={url} alt={anime_title} />
         </Box>
         <ButtonGroup my="4" isAttached w="100%">
           <Button isFullWidth>Add to List</Button>
@@ -181,22 +181,22 @@ const AnimePageInfoCol = ({
       <Divider my="3" />
       <Box>
         <Heading size="sm">Broadcast Media</Heading>
-        <Text>{media_type_name}</Text>
+        <Text>{media_type}</Text>
       </Box>
       <Divider my="3" />
       <Box>
         <Heading size="sm">Release Season</Heading>
-        <Text>{season_name}</Text>
+        <Text>{season}</Text>
       </Box>
       <Divider my="3" />
       <Box>
         <Heading size="sm">Source Material</Heading>
-        <Text>{source_material_type_name}</Text>
+        <Text>{source_material_type}</Text>
       </Box>
       <Divider my="3" />
       <Box>
         <Heading size="sm">Airing Status</Heading>
-        <Text>{airing_status_type_name}</Text>
+        <Text>{airing_status_type}</Text>
       </Box>
       <Divider my="3" />
       <Box>
@@ -207,21 +207,21 @@ const AnimePageInfoCol = ({
       <Box>
         <Heading size="sm">Licensors</Heading>
         {licensors.map((licensor) => (
-          <Text key={uuidv4()}>{licensor.licensor_name}</Text>
+          <Text key={uuidv4()}>{licensor.licensor}</Text>
         ))}
       </Box>
       <Divider my="3" />
       <Box>
         <Heading size="sm">Producers</Heading>
         {producers.map((producer) => (
-          <Text key={uuidv4()}>{producer.producer_name}</Text>
+          <Text key={uuidv4()}>{producer.producer}</Text>
         ))}
       </Box>
       <Divider my="3" />
       <Box>
         <Heading size="sm">Studios</Heading>
         {studios.map((studio) => (
-          <Text key={uuidv4()}>{studio.studio_name}</Text>
+          <Text key={uuidv4()}>{studio.studio}</Text>
         ))}
       </Box>
       <Divider my="3" />

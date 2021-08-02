@@ -1,27 +1,27 @@
-const Licensor = require("../mongoDB/models/licensor");
+const Licensor = require("../db/models/licensors.model");
 
 const licensorResolver = {
   Query: {
     getLicensors: async (_, args) => {
-      const result = await Licensor.find({});
+      const result = await Licensor.query();
       return result;
     },
     getLicensor: async (_, args) => {
-      const result = await Licensor.find({ _id: args.licensor_id });
-      return result[0];
+      const result = await Licensor.find({ _id: args.licensorId });
+      return result;
     },
   },
   Mutation: {
     createLicensor: async (_, args) => {
       const data = args.input;
-      const new_licensor = new Licensor(data);
-      let response = {
+      const newLicensor = await Licensor.query().insert(data).returning("id");
+      const response = {
         success: true,
         message: "Licensor sucessfully added!",
-        licensor_id: new_licensor._id,
+        licensorId: null,
       };
       try {
-        await new_licensor.save();
+        response.licensorId = newLicensor.id;
         return response;
       } catch (error) {
         response.success = false;
@@ -30,15 +30,15 @@ const licensorResolver = {
       }
     },
     editLicensor: async (_, args) => {
-      const { licensor_id } = args.input;
+      const { licensorId } = args.input;
       const { data } = args.input;
-      let response = {
+      const response = {
         success: true,
         message: "Licensor sucessfully updated!",
-        licensor_id: licensor_id,
+        licensorId,
       };
       try {
-        await Licensor.updateOne({ _id: licensor_id }, data);
+        await Licensor.query().findById(licensorId).patch(data);
         return response;
       } catch (error) {
         response.success = false;
@@ -47,14 +47,14 @@ const licensorResolver = {
       }
     },
     deleteLicensor: async (_, args) => {
-      const { licensor_id } = args;
-      let response = {
+      const { licensorId } = args;
+      const response = {
         success: true,
         message: "Licensor sucessfully deleted!",
-        licensor_id: licensor_id,
+        licensorId,
       };
       try {
-        await Licensor.deleteOne({ _id: licensor_id });
+        await Licensor.query().deleteById(licensorId);
         return response;
       } catch (error) {
         response.success = false;

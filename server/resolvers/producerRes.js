@@ -1,27 +1,27 @@
-const Producer = require("../mongoDB/models/producer");
+const Producer = require("../db/models/producers.model");
 
 const producerResolver = {
   Query: {
     getProducers: async (_, args) => {
-      const result = await Producer.find({});
+      const result = await Producer.query();
       return result;
     },
-    getProducer: async (_, args) => {
-      const result = await Producer.find({ _id: args.producer_id });
-      return result[0];
+    getProducer: async (_, { producerId }) => {
+      const result = await Producer.query().findById(producerId);
+      return result;
     },
   },
   Mutation: {
     createProducer: async (_, args) => {
       const data = args.input;
-      const new_producer = new Producer(data);
-      let response = {
+      const response = {
         success: true,
         message: "Producer sucessfully added!",
-        producer_id: new_producer._id,
+        producerId: null,
       };
       try {
-        await new_producer.save();
+        const newProducer = await Producer.query().insert(data);
+        response.producerId = newProducer.id;
         return response;
       } catch (error) {
         response.success = false;
@@ -30,15 +30,15 @@ const producerResolver = {
       }
     },
     editProducer: async (_, args) => {
-      const { producer_id } = args.input;
+      const { producerId } = args.input;
       const { data } = args.input;
-      let response = {
+      const response = {
         success: true,
         message: "Producer sucessfully updated!",
-        producer_id: producer_id,
+        producerId,
       };
       try {
-        await Producer.updateOne({ _id: producer_id }, data);
+        await Producer.query().findById(producerId).patch(data);
         return response;
       } catch (error) {
         response.success = false;
@@ -47,14 +47,14 @@ const producerResolver = {
       }
     },
     deleteProducer: async (_, args) => {
-      const { producer_id } = args;
-      let response = {
+      const { producerId } = args;
+      const response = {
         success: true,
         message: "Producer sucessfully deleted!",
-        producer_id: producer_id,
+        producerId,
       };
       try {
-        await Producer.deleteOne({ _id: producer_id });
+        await Producer.query().deleteById(producerId);
         return response;
       } catch (error) {
         response.success = false;

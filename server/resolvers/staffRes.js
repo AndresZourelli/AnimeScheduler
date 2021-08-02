@@ -1,4 +1,4 @@
-const Staff = require("../mongoDB/models/staff");
+const Staff = require("../db/models/staff.model");
 
 const staffResolver = {
   Query: {
@@ -6,26 +6,26 @@ const staffResolver = {
       const result = await Staff.find({});
       return result;
     },
-    getStaff: async (_, args) => {
-      const result = await Staff.find({ _id: args.staff_id });
-      return result[0];
+    getStaff: async (_, { staffId }) => {
+      const result = await Staff.query().findById(staffId);
+      return result;
     },
     getStaffPaths: async (_, args) => {
-      const result = await Staff.find({}, { _id: 1 });
+      const result = await Staff.query().select("id");
       return result;
     },
   },
   Mutation: {
     createStaff: async (_, args) => {
       const data = args.input;
-      const newStaff = new Staff(data);
       const response = {
         success: true,
         message: "Staff sucessfully added!",
-        staff_id: newStaff._id,
+        staffId: null,
       };
       try {
-        await newStaff.save();
+        const newStaff = await Staff.query().insert(data).returning("id");
+        response.staffId = newStaff.id;
         return response;
       } catch (error) {
         response.success = false;
@@ -34,15 +34,15 @@ const staffResolver = {
       }
     },
     editStaff: async (_, args) => {
-      const { staff_id } = args.input;
+      const { staffId } = args.input;
       const { data } = args.input;
-      let response = {
+      const response = {
         success: true,
         message: "Staff sucessfully updated!",
-        staff_id: staff_id,
+        staffId,
       };
       try {
-        await Staff.updateOne({ _id: staff_id }, data);
+        await Staff.query().findById(staffId).patch(data);
         return response;
       } catch (error) {
         response.success = false;
@@ -51,14 +51,14 @@ const staffResolver = {
       }
     },
     deleteStaff: async (_, args) => {
-      const { staff_id } = args;
-      let response = {
+      const { staffId } = args;
+      const response = {
         success: true,
         message: "Staff sucessfully deleted!",
-        staff_id: staff_id,
+        staffId,
       };
       try {
-        await Staff.deleteOne({ _id: staff_id });
+        await Staff.query().deleteById(staffId);
         return response;
       } catch (error) {
         response.success = false;

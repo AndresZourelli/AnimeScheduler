@@ -1,7 +1,7 @@
 const bcrypt = require("bcryptjs");
 
 const { v4: uuidv4 } = require("uuid");
-const User = require("../mongoDB/models/user");
+const User = require("../db/models/users.model");
 const CustomError = require("../lib/CustomErrors");
 const { formatErrors } = require("../utils/FormatError");
 const {
@@ -19,7 +19,7 @@ const authResolver = {
         if (!email || !password) {
           throw new CustomError("loginCredentials", "Missing email/password");
         }
-        const findUser = await User.findOne({ email });
+        const findUser = await User.query().findOne({ email });
         if (!findUser) {
           throw new CustomError("invalidEmail", "Email not found");
         }
@@ -36,7 +36,7 @@ const authResolver = {
           });
 
           return {
-            userId: findUser._id,
+            userId: findUser.id,
             token: accessToken,
             success: true,
           };
@@ -50,8 +50,9 @@ const authResolver = {
         };
       }
     },
+    // TODO: What am I doing here?
     verifyResetToken: async (_, { token }) => {
-      const user = await User.findOne({
+      const user = await User.query().findOne({
         resetEmailToken: token,
         resetEmailTokenExpires: {
           $gt: Date.now(),

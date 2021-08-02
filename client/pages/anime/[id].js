@@ -6,63 +6,61 @@ import AnimePageMain from "@/components/Home/AnimePageMain";
 import { initializeApollo } from "@/lib/apolloClient";
 
 const GET_ANIME = gql`
-  query GetAnime($anime_id: ID!) {
-    getAnime(anime_id: $anime_id) {
-      anime_id
-      anime_title
-      average_rating
-      anime_description
-      primary_image_url
+  query GetAnime($animeId: ID!) {
+    getAnime(animeId: $animeId) {
+      id
+      title
+      average_watcher_rating
+      description
+      profile_image
       number_of_episodes
       start_broadcast_datetime
       end_broadcast_datetime
       broadcast_day
       broadcast_time
       duration
-      media_type_name
-      season_name
-      source_material_type_name
-      airing_status_type_name
+      media_type
+      season
+      source_material_type
+      airing_status_type
       rating
       genres {
-        genre_id
-        genre_name
+        id
+        genre
       }
       licensors {
-        licensor_id
-        licensor_name
+        id
+        licensor
       }
       producers {
-        producer_id
-        producer_name
+        id
+        producer
       }
       studios {
-        studio_id
-        studio_name
+        id
+        studio
       }
       alt_names {
-        Japanese
-        English
-        Synonyms
+        name
       }
       minutes_watched
       actors {
-        actor_id
+        id
         actor_name
-        image_url
-        language_name
+        person_image
+        language
         character
       }
       characters {
-        character_id
-        character_name
-        image_url
-        character_role_name
+        id
+        name
+        character_image
+        role
       }
       staff {
-        staff_id
+        id
         staff_name
-        image_url
+        person_image
         role
       }
     }
@@ -72,7 +70,7 @@ const GET_ANIME = gql`
 const GET_PATHS = gql`
   query GetPaths {
     getAnimePaths {
-      anime_id
+      id
     }
   }
 `;
@@ -117,7 +115,7 @@ export const getStaticPaths = async () => {
   const { data } = await client.query({ query: GET_PATHS });
   let formatedData = data?.getAnimePaths?.map((item) => ({
     params: {
-      id: item.anime_id,
+      id: item.id,
     },
   }));
 
@@ -132,7 +130,7 @@ export const getStaticProps = async (context) => {
   const client = initializeApollo();
   const { data } = await client.query({
     query: GET_ANIME,
-    variables: { anime_id: id },
+    variables: { animeId: id },
   });
 
   return {

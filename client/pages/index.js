@@ -9,12 +9,12 @@ const ANIME_QUERIES = gql`
   query GetMostWatchedAnimes($page: Int, $limit: Int) {
     getAnimeMostWatched(page: $page, limit: $limit) {
       animes {
-        anime_title
-        anime_description
-        primary_image_url
+        title
+        description
+        url
         minutes_watched
-        average_rating
-        anime_id
+        average_watcher_rating
+        id
       }
       totalPages
       currentPage
@@ -22,11 +22,11 @@ const ANIME_QUERIES = gql`
 
     getAnimeHighestRated(page: $page, limit: $limit) {
       animes {
-        anime_title
-        anime_description
-        primary_image_url
-        average_rating
-        anime_id
+        title
+        description
+        url
+        average_watcher_rating
+        id
       }
       totalPages
       currentPage
@@ -34,12 +34,12 @@ const ANIME_QUERIES = gql`
 
     getCurrentAiringThisSeason(page: $page, limit: $limit) {
       animes {
-        anime_title
-        anime_description
-        primary_image_url
-        airing_status_type_name
-        average_rating
-        anime_id
+        title
+        description
+        url
+        airing_status_type
+        average_watcher_rating
+        id
       }
       totalPages
       currentPage
@@ -47,12 +47,12 @@ const ANIME_QUERIES = gql`
 
     getCurrentAiringContinue(page: $page, limit: $limit) {
       animes {
-        anime_title
-        anime_description
-        primary_image_url
-        airing_status_type_name
-        average_rating
-        anime_id
+        title
+        description
+        url
+        airing_status_type
+        average_watcher_rating
+        id
       }
       totalPages
       currentPage

@@ -10,7 +10,9 @@ const ImageLoader = ({ image_url, alt }) => {
   return (
     <Skeleton width="100%" height="100%" isLoaded={isLoaded}>
       <NextImage
-        src={image_url ?? "https://cdn.myanimelist.net/images/questionmark_23.gif"}
+        src={
+          image_url ?? "https://cdn.myanimelist.net/images/questionmark_23.gif"
+        }
         alt={alt}
         layout="fill"
         onLoad={handleImageLoad}

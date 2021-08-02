@@ -1,27 +1,27 @@
-const Genre = require("../mongoDB/models/genre");
+const Genre = require("../db/models/genres.model");
 
 const genreResolver = {
   Query: {
     getGenres: async (_, args) => {
-      const result = await Genre.find({});
+      const result = await Genre.query();
       return result;
     },
-    getGenre: async (_, args) => {
-      const result = await Genre.find({ _id: args.genre_id });
-      return result[0];
+    getGenre: async (_, { genreId }) => {
+      const result = await Genre.query().findById(genreId);
+      return result;
     },
   },
   Mutation: {
     createGenre: async (_, args) => {
       const data = args.input;
-      const new_genre = new Genre(data);
-      let response = {
+      const response = {
         success: true,
         message: "Genre sucessfully added!",
-        genre_id: new_genre._id,
+        genreId: null,
       };
       try {
-        await new_genre.save();
+        const newGenre = await Genre.query().insert(data).returning("id");
+        response.genreId = newGenre.id;
         return response;
       } catch (error) {
         response.success = false;
@@ -30,15 +30,15 @@ const genreResolver = {
       }
     },
     editGenre: async (_, args) => {
-      const { genre_id } = args.input;
+      const { genreId } = args.input;
       const { data } = args.input;
-      let response = {
+      const response = {
         success: true,
         message: "Genre sucessfully updated!",
-        genre_id: genre_id,
+        genreId,
       };
       try {
-        await Genre.updateOne({ _id: genre_id }, data);
+        await Genre.query().findById(genreId).patch(data);
         return response;
       } catch (error) {
         response.success = false;
@@ -47,14 +47,14 @@ const genreResolver = {
       }
     },
     deleteGenre: async (_, args) => {
-      const { genre_id } = args;
-      let response = {
+      const { genreId } = args;
+      const response = {
         success: true,
         message: "Genre sucessfully deleted!",
-        genre_id: genre_id,
+        genreId,
       };
       try {
-        await Genre.deleteOne({ _id: genre_id });
+        await Genre.query().deleteById(genreId);
         return response;
       } catch (error) {
         response.success = false;

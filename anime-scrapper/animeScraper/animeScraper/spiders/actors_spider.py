@@ -1,16 +1,27 @@
 import re
 from scrapy.loader import ItemLoader
 import scrapy
+from scrapy import Request
 from animeScraper.items import ActorItem, StaffItem, CharacterItem, AnimeItem
 import datetime
 import pytz
 import logging
 from urllib.parse import urlparse
+from dotenv import load_dotenv
+import os
+import psycopg2 
+load_dotenv()
+
+DB = os.getenv("DB")
+DB_USER = os.getenv("DB_USER")
+DB_PASSWORD = os.getenv("DB_PASSWORD")
+
+db_conn = psycopg2.connect(database=DB, user=DB_USER, password=DB_PASSWORD, host="localhost", port="5433", connect_timeout=3)
 class ActorsSpider(scrapy.Spider):
     name = "actors"
 
     count = 1
-    COUNT_MAX = 1500
+    COUNT_MAX = 100
     start_urls = [
         "https://myanimelist.net/topanime.php"
     ]
@@ -45,13 +56,13 @@ class ActorsSpider(scrapy.Spider):
         anime_loader.add_value("description", normalized_description.strip())
 
         languages_path = response.xpath('//*[preceding-sibling::h2[.="Alternative Titles"] and following-sibling::h2[. = "Information"]]/../div[@class="spaceit_pad"]')
-        languages = {}
+        alternate_names = []
         for language in languages_path:
-            key = language.xpath("./span/text()").extract_first().replace(":","")
             value = "".join(language.xpath("./text()").extract()).strip()
-            languages[key] = [x.strip() for x in value.split(',')]
-        
-        anime_loader.add_value("alt_names", languages)
+            for name in [x.strip() for x in value.split(',')]:
+                alternate_names.append(name)
+
+        anime_loader.add_value("alt_names", alternate_names)
 
         information_data = response.xpath('//*[preceding-sibling::h2[.="Information"] and following-sibling::h2[. = "Statistics"]]')
         only_info_divs = information_data.css("div")
@@ -70,7 +81,7 @@ class ActorsSpider(scrapy.Spider):
                 if len(split_aired) > 1:
                     hold_dates["end"] = split_aired[1]
                 else:
-                    hold_dates["end"] = "?"
+                    hold_dates["end"] = None
             elif key == "Premiered":
                 anime_loader.add_value("season", value)
             elif key == "Broadcast":
@@ -101,7 +112,7 @@ class ActorsSpider(scrapy.Spider):
                 clean_duration = value.replace("min. per ep.","").strip()
                 anime_loader.add_value("duration", clean_duration)
             elif key == "Rating":
-                anime_loader.add_value("rating", value)
+                anime_loader.add_value("age_rating", value)
 
         image_url = response.xpath("//div[@id='content']//img[@itemprop='image']/@data-src").extract_first()
         anime_loader.add_value("image_url",image_url)
@@ -130,6 +141,9 @@ class ActorsSpider(scrapy.Spider):
             character_staff_name = character_staff[1].xpath("./a/text()").extract_first()
             character_staff_url = character_staff[1].xpath("./a/@href").extract_first()
             character_staff_role = character_staff[1].xpath(".//div[@class='spaceit_pad']/small/text()").extract_first()
+            # character_staff_native_name = #TODO
+            # character_staff_alt_names = #TODO
+            # staff_description = #TODO
             character_staff_type = "staff"
 
             if len(character_staff ) == 3:
@@ -140,12 +154,13 @@ class ActorsSpider(scrapy.Spider):
 
                 character_loader.add_value("name", character_staff_name)
                 character_loader.add_value("image_url", character_staff_image_url)
-                character_loader.add_value("role", character_staff_role)
-                character_loader.add_value("anime", anime_title)
+                character_loader.add_value("character_role", character_staff_role)
                 character_mal_id = get_mal_id(character_staff_url)
                 character_loader.add_value("character_mal_id", character_mal_id)
+               
+                character_page_link = f"https://myanimelist.net/character/{character_mal_id}"
                 character_loader.add_value("anime_mal_id", mal_anime_id)
-                yield character_loader.load_item() 
+                yield response.follow( character_page_link, callback=self.character_page, meta={"item":character_loader})
 
                 for actor in all_actors:
                     actor_data = actor.xpath(".//td")
@@ -153,28 +168,53 @@ class ActorsSpider(scrapy.Spider):
                     actor_language = actor_data[0].xpath(".//small/text()").extract_first()
                     mal_id_actor = actor_data[0].xpath(".//a/@href").extract_first()
                     actor_image = actor_data[1].xpath(".//img/@data-src").extract_first()
+                    # actor_description = ##DONE
+                    # actor_alt_names = ##Done
+                    # actor_native_name = ##DONE
 
-                    actor_loader.add_value("name", actor_name)
-                    actor_loader.add_value("image_url", actor_image)
+                    actor_loader.add_value("actor_first_name", actor_name)
+                    actor_loader.add_value("actor_last_name", actor_name)
+                    actor_loader.add_value("actor_image_url", actor_image)
+
                     actor_loader.add_value("actor_language", actor_language)
-                    actor_loader.add_value("anime", anime_title)
-                    actor_loader.add_value("character", character_staff_name)
-                    actor_loader.add_value("character_image_url", character_staff_image_url)
-                    actor_loader.add_value("actor_mal_id", get_mal_id(mal_id_actor))
-                    actor_loader.add_value("character_mal_id", character_mal_id)
-                    actor_loader.add_value("anime_mal_id", mal_anime_id) 
+                    parsed_actor_mal_id = get_mal_id(mal_id_actor)
+                    actor_loader.add_value("actor_mal_id", parsed_actor_mal_id)
 
-                    yield actor_loader.load_item()
+                    actor_loader.add_value("character_image_url", character_staff_image_url)
+                    actor_loader.add_value("character_mal_id", character_mal_id)
+                    actor_loader.add_value("anime_mal_id", mal_anime_id)
+
+                    person_page_link = f"https://myanimelist.net/people/{parsed_actor_mal_id}" 
+                    yield response.follow(person_page_link, callback=self.person_page_parse, meta={'item': actor_loader})
 
             else:
-                staff_loader.add_value("name", character_staff_name)
-                staff_loader.add_value("image_url", character_staff_image_url)
-                staff_loader.add_value("role", character_staff_role)
-                staff_loader.add_value("anime", anime_title)
-                staff_loader.add_value("staff_mal_id", get_mal_id(character_staff_url))
-                staff_loader.add_value("anime_mal_id", mal_anime_id) 
-                yield staff_loader.load_item()
+                parsed_staff_mal_id = get_mal_id(character_staff_url)
+                staff_loader.add_value("staff_mal_id", parsed_staff_mal_id)
+                staff_loader.add_value("staff_first_name", character_staff_name)
+                staff_loader.add_value("staff_last_name", character_staff_name)
+                staff_loader.add_value("staff_image_url", character_staff_image_url)
+                staff_loader.add_value("staff_role", character_staff_role)
+                staff_loader.add_value("anime_mal_id", mal_anime_id)
+                person_page_link = f"https://myanimelist.net/people/{parsed_staff_mal_id}" 
+                yield response.follow(person_page_link, callback=self.person_page_parse, meta={'item': staff_loader})
+    
+    def person_page_parse(self, response):
+        given_name = response.xpath("normalize-space(.//*[@id='content']/table/tr/td[1]//*[contains(text(), 'Given name')]/following-sibling::text())").get()
+        family_name = response.xpath("normalize-space(.//*[@id='content']/table/tr/td[1]//*[contains(text(), 'Family name')]/following-sibling::text())").get()
+        other_info = response.xpath("normalize-space(.//*[@id='content']/table/tr/td[1]//*[contains(@class,'people-informantion-more')])").getall()
+        alt_names = response.xpath("normalize-space(.//*[@id='content']/table/tr/td[1]//*[contains(text(), 'Alternate names')]/following-sibling::text())").get()
 
+        item = response.meta['item']
+        item.add_value("description", other_info)
+        item.add_value("native_name", f"{family_name} {given_name}")
+        item.add_value("alt_names", alt_names)
+        yield item.load_item()
+    
+    def character_page(self, response):
+        item = response.meta['item']
+        character_description = [ x.strip() for x in response.xpath(".//div[@id='content']/table/tr/td[2]/h2[1]/following-sibling::text()[preceding::div[1] and normalize-space()]").getall()]
+        item.add_value("character_description", "\n".join(character_description))
+        yield item.load_item() 
 
 def set_date(date=None, time=None):
     try:

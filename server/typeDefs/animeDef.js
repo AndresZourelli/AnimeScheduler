@@ -2,23 +2,23 @@ const { gql } = require("apollo-server-express");
 
 const animeDef = gql`
   type Anime {
-    anime_id: ID
-    anime_mal_id: Int
-    anime_title: String
-    average_rating: Float
-    anime_description: String
-    primary_image_url: String
+    id: ID
+    mal_id: Int
+    title: String
+    average_watcher_rating: Float
+    description: String
+    url: String
     number_of_episodes: Int
     start_broadcast_datetime: String
     end_broadcast_datetime: String
     broadcast_day: String
     broadcast_time: String
     duration: String
-    media_type_name: String
-    season_name: String
-    source_material_type_name: String
-    airing_status_type_name: String
-    rating: String
+    media_type: String
+    season: String
+    source_material_type: String
+    airing_status_type: String
+    age_rating: String
     genres: [AnimeGenre]
     licensors: [AnimeLicensor]
     producers: [AnimeProducer]
@@ -27,14 +27,22 @@ const animeDef = gql`
     minutes_watched: Int
     actors: [AnimeActor]
     characters: [AnimeCharacter]
-    staff: [AnimeStaff]
+    staff: [AnimeStaff!]
   }
 
   type AnimeStaff {
-    staff_id: ID!
-    staff_name: String
-    image_url: String
+    person: Person
     role: String
+  }
+
+  type Person {
+    id: ID
+    first_name: String
+    last_name: String
+    native_name: String
+    alternate_names: String
+    description: String
+    profile_image_url: String
   }
 
   type AnimeCharacter {
@@ -71,32 +79,32 @@ const animeDef = gql`
   }
 
   type AnimePath {
-    anime_id: ID!
+    id: ID!
   }
 
   type AnimeLicensor {
-    licensor_id: ID!
-    licensor_name: String!
+    id: ID!
+    licensor: String!
   }
 
   type AnimeGenre {
-    genre_id: ID!
-    genre_name: String!
+    id: ID!
+    genre: String!
   }
 
   type AnimeProducer {
-    producer_id: ID!
-    producer_name: String!
+    id: ID!
+    producer: String!
   }
 
   type AnimeStudio {
-    studio_id: ID!
-    studio_name: String!
+    id: ID!
+    studio: String!
   }
 
   type Query {
     getAnimes(search: String, page: Int, limit: Int): AnimeResult
-    getAnime(anime_id: ID!): Anime
+    getAnime(animeId: ID!): Anime
     getAnimeHighestRated(page: Int, limit: Int): AnimeResult
     getAnimeMostWatched(page: Int, limit: Int): AnimeResult
     getCurrentAiringThisSeason(page: Int, limit: Int): AnimeResult

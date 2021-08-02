@@ -1,7 +1,7 @@
 const knex = require("knex");
 const { Model } = require("objection");
 const knexConfig = require("./knexfile");
-require("dotenv").config();
+require("dotenv").config({ debug: true, path: "/" });
 
 const env = process.env.NODE_ENV || "development";
 

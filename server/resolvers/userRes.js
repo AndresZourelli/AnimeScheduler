@@ -1,6 +1,6 @@
 const { v4: uuidv4 } = require("uuid");
 const bcrypt = require("bcryptjs");
-const User = require("../mongoDB/models/user");
+const User = require("../db/models/users.model");
 const CustomError = require("../lib/CustomErrors");
 const { formatErrors } = require("../utils/FormatError");
 const {
@@ -31,14 +31,7 @@ const userResolver = {
       }
 
       try {
-        const data = await User.findById(userId, "myAnimes").populate(
-          "myAnimes",
-          {
-            title: 1,
-            image_url: 1,
-            _id: 1,
-          }
-        );
+        const data = await User.relatedQuery("myAnimes").for(userId);
         return { success: true, animes: data.myAnimes };
       } catch (error) {
         return { errors: formatErrors(error), success: false };

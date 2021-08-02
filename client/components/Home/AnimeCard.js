@@ -17,7 +17,8 @@ const ADD_ANIME_TO_USER = gql`
   }
 `;
 
-const AnimeCard = ({ title, image_url, score, id }) => {
+const AnimeCard = ({ title, url, score, id }) => {
+  console.log(title, id);
   const toast = useToast();
   const [addAnime, { data, loading, error }] = useMutation(ADD_ANIME_TO_USER, {
     variables: { animeId: id },
@@ -86,7 +87,7 @@ const AnimeCard = ({ title, image_url, score, id }) => {
           {score}
         </Badge>
         <Box width="100%" height="80%" position="relative" display="block">
-          <LoadImage image_url={image_url} alt={title} />
+          <LoadImage image_url={url} alt={title} />
           <IconButton
             position="absolute"
             icon={<BsPlus size="2rem" />}
