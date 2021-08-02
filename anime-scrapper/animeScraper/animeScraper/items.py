@@ -70,6 +70,7 @@ class ActorItem(scrapy.Item):
     description = scrapy.Field( output_processor = TakeFirst())
     alt_names = scrapy.Field(output_processor = TakeFirst())
     native_name = scrapy.Field(output_processor = TakeFirst())
+    character_role = scrapy.Field( output_processor = TakeFirst())
 class StaffItem(scrapy.Item):
     staff_mal_id = scrapy.Field(output_processor = TakeFirst())
     staff_first_name = scrapy.Field( input_processor=MapCompose(getFirstName), output_processor = TakeFirst())

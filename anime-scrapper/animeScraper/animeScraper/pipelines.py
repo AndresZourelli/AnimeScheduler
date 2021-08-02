@@ -54,9 +54,9 @@ class ActorsPipeline:
 
             db_cur.execute("INSERT INTO images (title, url) VALUES (%s, %s) ON CONFLICT DO NOTHING", (f"{data['actor_first_name']} {data['actor_last_name']}", data["actor_image_url"]))
             db_cur.execute("INSERT INTO persons (mal_id, first_name, last_name, native_name, alternate_names, description, person_image_id) VALUES (%s, %s, %s, %s, %s, %s, (SELECT id FROM images WHERE url=%s LIMIT 1)) ON CONFLICT DO NOTHING", (data["actor_mal_id"], data["actor_first_name"], data["actor_last_name"], data["native_name"], data["alt_names"], data["description"], data["actor_image_url"]))
-            db_cur.execute("INSERT INTO character_roles (character_role) VALUES (%s) ON CONFLICT DO NOTHING", (data["character_role"],))
+            db_cur.execute("INSERT INTO character_roles (role) VALUES (%s) ON CONFLICT DO NOTHING", (data["character_role"],))
             db_cur.execute("INSERT INTO languages (language) VALUES (%s) ON CONFLICT DO NOTHING", (data["actor_language"],))
-            db_cur.execute("INSERT INTO anime_character (anime_id, character_id, person_id, role, language) VALUES ((SELECT id FROM animes WHERE mal_id=%s), (SELECT id FROM characters WHERE mal_id=%s), (SELECT id FROM persons WHERE mal_id=%s), (SELECT id FROM character_roles WHERE character_role=%s), (SELECT id FROM languages WHERE language=%s)) ON CONFLICT DO NOTHING", (data["anime_mal_id"], data["character_mal_id"], data["actor_mal_id"], data["character_role"], data["actor_language"]))
+            db_cur.execute("INSERT INTO anime_character (anime_id, character_id, person_id, role, language) VALUES ((SELECT id FROM animes WHERE mal_id=%s), (SELECT id FROM characters WHERE mal_id=%s), (SELECT id FROM persons WHERE mal_id=%s), (SELECT id FROM character_roles WHERE role=%s), (SELECT id FROM languages WHERE language=%s)) ON CONFLICT DO NOTHING", (data["anime_mal_id"], data["character_mal_id"], data["actor_mal_id"], data["character_role"], data["actor_language"]))
             
             db_conn.commit()
         except psycopg2.InternalError as e:

@@ -154,9 +154,10 @@ class ActorsSpider(scrapy.Spider):
 
                 character_loader.add_value("name", character_staff_name)
                 character_loader.add_value("image_url", character_staff_image_url)
-                character_loader.add_value("character_role", character_staff_role)
                 character_mal_id = get_mal_id(character_staff_url)
                 character_loader.add_value("character_mal_id", character_mal_id)
+                
+                actor_loader.add_value("character_role", character_staff_role)
                
                 character_page_link = f"https://myanimelist.net/character/{character_mal_id}"
                 character_loader.add_value("anime_mal_id", mal_anime_id)
