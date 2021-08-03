@@ -12,15 +12,20 @@ const createAccessToken = (user) => {
   return accessToken;
 };
 
-const createRefreshToken = (user) => {
+const createRefreshToken = (res, user) => {
   const refreshToken = jwt.sign(
-    { userId: user.id, refreshVerify: user.refreshVerify },
+    { userId: user.id, refreshTokenKey: user.refresh_token_key },
     process.env.REFRESH_TOKEN,
     {
       expiresIn: "7d",
     }
   );
-  return refreshToken;
+
+  res.cookie("refresh-token", refreshToken, {
+    maxAge: 1000 * 60 * 60 * 24 * 7,
+    httpOnly: true,
+    // path: "/refresh_token",
+  });
 };
 
 const createEmailResetToken = (user) => {
