@@ -411,7 +411,7 @@ exports.up = (knex) =>
         .primary()
         .notNullable()
         .defaultTo(knex.raw("uuid_generate_v4()"));
-      table.string("displayname").notNullable();
+      table.string("username").notNullable().unique();
       table.string("email").unique().notNullable();
       table.string("password").notNullable();
       table.string("refresh_token_key").notNullable();

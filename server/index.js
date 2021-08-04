@@ -6,7 +6,6 @@ const jwt = require("jsonwebtoken");
 const passport = require("passport");
 const User = require("./db/models/users.model");
 const auth = require("./routes/auth/auth");
-const authenticationPlugin = require("./utils/postgraphilePlugins/AuthenticationPlugin");
 const {
   createAccessToken,
   createRefreshToken,
@@ -38,7 +37,6 @@ app.use(
     watchPg: true,
     graphiql: true,
     enhanceGraphiql: true,
-    appendPlugins: [authenticationPlugin],
     pgSettings: (req) => {
       const settings = {};
       if (req.user) {

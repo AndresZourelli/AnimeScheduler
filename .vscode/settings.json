@@ -12,5 +12,6 @@
   "eslint.workingDirectories": ["./client", "./server"],
   "python.linting.pylintEnabled": false,
   "python.linting.enabled": false,
-  "python.linting.flake8Enabled": true
+  "python.linting.flake8Enabled": true,
+  "files.eol": "\n"
 }
