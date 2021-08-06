@@ -4,6 +4,7 @@ import CurrentlyAiringThisSeason from "@/components/Home/CurrentlyAiringThisSeas
 import CurrentlyAiringContinue from "@/components/Home/CurrentlyAiringContinue";
 import { gql } from "@apollo/client";
 import { initializeApollo } from "@/lib/apolloClient";
+import { Box } from "@chakra-ui/react";
 
 const ANIME_QUERIES = gql`
   query GetMostWatchedAnimes($page: Int, $limit: Int) {
@@ -60,38 +61,41 @@ const ANIME_QUERIES = gql`
   }
 `;
 
-const Home = ({
-  MostWatchedRowData,
-  PopularRowData,
-  CurrentlyAiringThisSeasonData,
-  CurrentlyAiringContinueData,
-}) => {
+const Home = (
+  {
+    // MostWatchedRowData,
+    // PopularRowData,
+    // CurrentlyAiringThisSeasonData,
+    // CurrentlyAiringContinueData,
+  }
+) => {
   return (
     <>
-      <CurrentlyAiringThisSeason animes={CurrentlyAiringThisSeasonData} />
+      <Box>Hello</Box>
+      {/* <CurrentlyAiringThisSeason animes={CurrentlyAiringThisSeasonData} />
       <CurrentlyAiringContinue animes={CurrentlyAiringContinueData} />
-      <PopularRow animes={PopularRowData} />
+      <PopularRow animes={PopularRowData} /> */}
       {/* <MostWatchedRow animes={MostWatchedRowData} /> */}
     </>
   );
 };
 
-export const getStaticProps = async () => {
-  const client = initializeApollo();
-  const { data } = await client.query({ query: ANIME_QUERIES });
-  if (!data) {
-    return {
-      notFound: true,
-    };
-  }
-  return {
-    props: {
-      MostWatchedRowData: data.getAnimeMostWatched.animes,
-      PopularRowData: data.getAnimeHighestRated.animes,
-      CurrentlyAiringThisSeasonData: data.getCurrentAiringThisSeason.animes,
-      CurrentlyAiringContinueData: data.getCurrentAiringContinue.animes,
-    },
-  };
-};
+// export const getStaticProps = async () => {
+//   const client = initializeApollo();
+//   const { data } = await client.query({ query: ANIME_QUERIES });
+//   if (!data) {
+//     return {
+//       notFound: true,
+//     };
+//   }
+//   return {
+//     props: {
+//       MostWatchedRowData: data.getAnimeMostWatched.animes,
+//       PopularRowData: data.getAnimeHighestRated.animes,
+//       CurrentlyAiringThisSeasonData: data.getCurrentAiringThisSeason.animes,
+//       CurrentlyAiringContinueData: data.getCurrentAiringContinue.animes,
+//     },
+//   };
+// };
 
 export default Home;

@@ -12,6 +12,7 @@ import { ArrowLeftIcon } from "@chakra-ui/icons";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import { gql, useMutation } from "@apollo/client";
+import { useAuth } from "@/components/Auth/FirebaseAuth";
 
 const SIGNUP = gql`
   mutation CreateUser(
@@ -37,6 +38,7 @@ const SIGNUP = gql`
 
 const signup = () => {
   const router = useRouter();
+  const { registerUser } = useAuth();
   const [signupUser, { data: signupUserResult }] = useMutation(SIGNUP);
   const [buttonDisabled, setButtonDisabled] = useState(false);
   const [signupData, setSignupData] = useState({
@@ -49,7 +51,8 @@ const signup = () => {
     router.push("/");
   };
   const onSignupSubmit = () => {
-    signupUser({ variables: signupData });
+    registerUser("email", signupData.email, signupData.password);
+    // signupUser({ variables: signupData });
   };
   const onFormChange = (e) => {
     setSignupData((prevState) => ({

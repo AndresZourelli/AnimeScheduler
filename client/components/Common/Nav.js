@@ -32,7 +32,7 @@ import { useRouter } from "next/router";
 import { useState, useEffect, useCallback } from "react";
 import { useLazyQuery, gql } from "@apollo/client";
 import debouce from "lodash";
-import { useAuth } from "@/lib/authClient";
+import { useAuth } from "@/components/Auth/FirebaseAuth";
 
 const SEARCH_FOR_ANIME = gql`
   query SearchForAnime(
@@ -115,7 +115,7 @@ const Nav = () => {
   }, [search, delayedSearch]);
 
   useEffect(() => {
-    if (user.userId) {
+    if (user?.uid) {
       setSignedIn(true);
     } else {
       setSignedIn(false);

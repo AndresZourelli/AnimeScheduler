@@ -13,7 +13,7 @@ import { ArrowLeftIcon } from "@chakra-ui/icons";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import { gql, useLazyQuery, useMutation } from "@apollo/client";
-import { useAuth } from "@/lib/authClient";
+import { useAuth } from "@/components/Auth/FirebaseAuth";
 
 const USER_LOGIN = gql`
   query UserLogin($email: String!, $password: String!) {
@@ -37,7 +37,7 @@ const RESET_PASSWORD = gql`
 
 const login = () => {
   const router = useRouter();
-  const { loginUser: loginUserAccessToken } = useAuth();
+  const { signInUser } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isError, setIsError] = useState(false);
@@ -66,7 +66,8 @@ const login = () => {
 
   const onLoginClick = () => {
     if (email && password) {
-      loginUser({ variables: { email: email, password: password } });
+      signInUser("email", email, password);
+      // loginUser({ variables: { email: email, password: password } });
     }
   };
 

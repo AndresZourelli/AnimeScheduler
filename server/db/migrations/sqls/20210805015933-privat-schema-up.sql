@@ -1,0 +1,1 @@
+CREATE SCHEMA anime_app_private;

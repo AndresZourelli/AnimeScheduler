@@ -1,0 +1,1 @@
+DROP SCHEMA anime_app_private;
