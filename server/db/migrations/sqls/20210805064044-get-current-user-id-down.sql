@@ -1,1 +1,1 @@
-DROP FUNCTION current_user();
+DROP FUNCTION anime_app_public.current_user();

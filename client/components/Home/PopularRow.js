@@ -1,4 +1,3 @@
-import { gql, useQuery } from "@apollo/client";
 import HorizontalScroll from "@/components/Home/HorizontalScroll";
 import { Heading, Box } from "@chakra-ui/react";
 

@@ -2,11 +2,10 @@ import PopularRow from "@/components/Home/PopularRow";
 import MostWatchedRow from "@/components/Home/MostWatchedRow";
 import CurrentlyAiringThisSeason from "@/components/Home/CurrentlyAiringThisSeason";
 import CurrentlyAiringContinue from "@/components/Home/CurrentlyAiringContinue";
-import { gql } from "@apollo/client";
-import { initializeApollo } from "@/lib/apolloClient";
+import { useQuery, useClient } from "urql";
 import { Box } from "@chakra-ui/react";
 
-const ANIME_QUERIES = gql`
+const ANIME_QUERIES = `
   query GetMostWatchedAnimes($page: Int, $limit: Int) {
     getAnimeMostWatched(page: $page, limit: $limit) {
       animes {

@@ -2,11 +2,11 @@ import { Box, Heading, Badge, IconButton, useToast } from "@chakra-ui/react";
 import Link from "next/link";
 import LoadImage from "@/components/Common/ImageLoader";
 import { BsPlus } from "react-icons/bs";
-import { useMutation, gql } from "@apollo/client";
+import { useMutation } from "urql";
 import { useEffect } from "react";
-import { useAuth } from "@/lib/authClient";
+import { useAuth } from "@/lib/Auth/FirebaseAuth";
 
-const ADD_ANIME_TO_USER = gql`
+const ADD_ANIME_TO_USER = `
   mutation AddToAnime($animeId: ID!) {
     addAnimeToUser(animeId: $animeId) {
       success
@@ -18,16 +18,15 @@ const ADD_ANIME_TO_USER = gql`
 `;
 
 const AnimeCard = ({ title, url, score, id }) => {
-  console.log(title, id);
   const toast = useToast();
-  const [addAnime, { data, loading, error }] = useMutation(ADD_ANIME_TO_USER, {
-    variables: { animeId: id },
-  });
+  const [{ fetching, error, data }, addAnime] = useMutation(ADD_ANIME_TO_USER);
   const { user } = useAuth();
 
-  const callAddAnime = (e) => {
+  const callAddAnime = async (e) => {
     e.preventDefault();
-    addAnime();
+    addAnime({
+      animeId: id,
+    });
   };
 
   useEffect(() => {

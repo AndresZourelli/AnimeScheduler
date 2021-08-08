@@ -136,7 +136,6 @@ export const getStaticPaths = async () => {
       id: item.character_id,
     },
   }));
-  console.log(formatedData);
   return {
     paths: formatedData,
     fallback: false,

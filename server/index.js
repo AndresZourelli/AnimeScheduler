@@ -6,17 +6,21 @@ const morgan = require("morgan");
 const isAuth = require("./middleware/isAuth");
 require("dotenv").config();
 require("./db/dbConfig");
+const { addCustomClaims } = require("./utils/AuthHelpers");
 
 const app = express();
 
 app.use(cookieParser());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
+app.use(express.urlencoded());
 app.use(
   cors({
     credentials: true,
     origin: "http://localhost:3001",
   })
 );
+
+app.post("/setCustomClaims", addCustomClaims);
 
 app.use(morgan("dev"));
 
@@ -35,7 +39,6 @@ app.use(
       } else {
         settings.role = "anime_default";
       }
-      console.log(settings);
       return settings;
     },
   })

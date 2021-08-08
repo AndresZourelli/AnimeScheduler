@@ -1,17 +1,27 @@
 import Nav from "@/components/Common/Nav";
-import { useApollo } from "@/lib/apolloClient";
 import customTheme from "@/styles/theme";
-import { ApolloProvider } from "@apollo/client";
 import { Box, ChakraProvider } from "@chakra-ui/react";
 import { useState } from "react";
-import { AuthProvider } from "@/components/Auth/FirebaseAuth";
+import { AuthProvider } from "@/lib/Auth/FirebaseAuth";
+import { createClient, Provider } from "urql";
+import firebase from "firebase/app";
+import "firebase/auth";
+
+const client = createClient({
+  url: "http://localhost:4000/graphql",
+  fetchOptions: async () => {
+    const token = firebase?.auth()?.currentUser?.getIdToken();
+    return {
+      headers: { Authorization: token ? `Bearer ${token}` : "" },
+    };
+  },
+});
 
 function MyApp({ Component, pageProps }) {
   const [loading, setLoading] = useState(false);
-  const client = useApollo(pageProps.initialApolloState);
   return (
-    <ApolloProvider client={client}>
-      <ChakraProvider resetCSS theme={customTheme}>
+    <ChakraProvider resetCSS theme={customTheme}>
+      <Provider value={client}>
         <AuthProvider>
           {loading ? (
             // TODO: add loading symbol
@@ -23,8 +33,8 @@ function MyApp({ Component, pageProps }) {
             </>
           )}
         </AuthProvider>
-      </ChakraProvider>
-    </ApolloProvider>
+      </Provider>
+    </ChakraProvider>
   );
 }
 

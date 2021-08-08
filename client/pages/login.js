@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import {
   Box,
   FormControl,
@@ -12,44 +13,20 @@ import {
 import { ArrowLeftIcon } from "@chakra-ui/icons";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
-import { gql, useLazyQuery, useMutation } from "@apollo/client";
-import { useAuth } from "@/components/Auth/FirebaseAuth";
-
-const USER_LOGIN = gql`
-  query UserLogin($email: String!, $password: String!) {
-    login(email: $email, password: $password) {
-      userId
-      success
-      token
-      errors {
-        type
-        message
-      }
-    }
-  }
-`;
-
-const RESET_PASSWORD = gql`
-  mutation ResetPassword($email: String!) {
-    generateResetToken(email: $email)
-  }
-`;
+import { useAuth } from "@/lib/Auth/FirebaseAuth";
+import { FcGoogle } from "react-icons/fc";
+import { set } from "lodash";
+import firebase from "firebase/app";
+import "firebase/auth";
+import axios from "axios";
 
 const login = () => {
   const router = useRouter();
-  const { signInUser } = useAuth();
+  const { signInUser, user } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isError, setIsError] = useState(false);
-  const [loginUser, { loading, data }] = useLazyQuery(USER_LOGIN);
-  const [resetPassword, { data: resetPasswordResult }] = useMutation(
-    RESET_PASSWORD,
-    {
-      variables: {
-        email,
-      },
-    }
-  );
+  const [loading, setLoading] = useState(true);
 
   const [showForgotPassword, setShowForgotPassword] = useState(false);
   const goBackClick = () => {
@@ -64,21 +41,28 @@ const login = () => {
     setPassword(e.target.value);
   };
 
-  const onLoginClick = () => {
-    if (email && password) {
-      signInUser("email", email, password);
-      // loginUser({ variables: { email: email, password: password } });
+  const onLoginClick = async () => {
+    setLoading(true);
+    try {
+      if (email && password) {
+        await signInUser("email", email, password);
+      }
+    } catch (e) {
+      console.log(e);
     }
+    setLoading(false);
   };
 
-  useEffect(() => {
-    if (data && data?.login?.success) {
-      loginUserAccessToken(data.login.token);
-      router.push("/");
-    } else if (data && !data?.login?.success) {
-      setIsError(true);
+  const onGoogleLoginClick = async () => {
+    setLoading(true);
+    try {
+      router.push("/", undefined, { shallow: true });
+      await signInUser("google");
+    } catch (e) {
+      console.log(e);
     }
-  }, [data]);
+    setLoading(false);
+  };
 
   return (
     <Box p="12">
@@ -143,8 +127,18 @@ const login = () => {
                 value={password}
               />
             </FormControl>
+            <Box>
+              <Button
+                w="full"
+                mt="7"
+                leftIcon={<FcGoogle />}
+                onClick={onGoogleLoginClick}
+              >
+                Login with Google
+              </Button>
+            </Box>
             <Button onClick={onLoginClick} mt="7" mr="5">
-              Login
+              Submit
             </Button>
             <Button
               mt="7"

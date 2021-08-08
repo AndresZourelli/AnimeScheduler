@@ -25,7 +25,7 @@ NEWSPIDER_MODULE = 'animeScraper.spiders'
 # Configure a delay for requests for the same website (default: 0)
 # See https://docs.scrapy.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
-DOWNLOAD_DELAY = 2
+DOWNLOAD_DELAY = 2.25
 # The download delay setting will honor only one of:
 #CONCURRENT_REQUESTS_PER_DOMAIN = 16
 #CONCURRENT_REQUESTS_PER_IP = 16
@@ -63,9 +63,9 @@ SPIDER_MIDDLEWARES = {
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
    # 'animeScraper.pipelines.AnimePipeline': 100,
-   # 'animeScraper.pipelines.CharacterPipeline': 200,
-   'animeScraper.pipelines.ActorsPipeline': 400,
-   # 'animeScraper.pipelines.StaffPipeline': 300,
+   'animeScraper.pipelines.CharacterPipeline': 200,
+   # 'animeScraper.pipelines.ActorsPipeline': 400,
+   'animeScraper.pipelines.StaffPipeline': 300,
    'animeScraper.pipelines.DefaultPipeline': 1,
    'animeScraper.pipelines.LastStep': 999
 }

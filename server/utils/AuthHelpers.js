@@ -1,8 +1,16 @@
-const { v4: uuidv4 } = require("uuid");
 const User = require("../db/models/users.model");
+const fb = require("../lib/fb");
 
-const invalidateTokens = async (userId) => {
-  await User.query().findById(userId).patch({ refresh_token_key: uuidv4() });
+const addCustomClaims = async (req, res) => {
+  const { idToken } = req.body;
+  const claims = await fb.auth().verifyIdToken(idToken);
+  if (typeof claims.email !== "undefined") {
+    const { role } = await User.query().findById(claims.uid);
+    await fb.auth().setCustomUserClaims(claims.uid, { role });
+    res.json({ status: "success" });
+  } else {
+    res.json({ status: "ineligible" });
+  }
 };
 
-module.exports = { invalidateTokens };
+module.exports = { addCustomClaims };

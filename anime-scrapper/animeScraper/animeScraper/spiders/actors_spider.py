@@ -8,15 +8,7 @@ import pytz
 import logging
 from urllib.parse import urlparse
 from dotenv import load_dotenv
-import os
-import psycopg2 
-load_dotenv()
 
-DB = os.getenv("DB")
-DB_USER = os.getenv("DB_USER")
-DB_PASSWORD = os.getenv("DB_PASSWORD")
-
-db_conn = psycopg2.connect(database=DB, user=DB_USER, password=DB_PASSWORD, host="localhost", port="5433", connect_timeout=3)
 class ActorsSpider(scrapy.Spider):
     name = "actors"
 

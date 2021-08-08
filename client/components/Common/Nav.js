@@ -30,11 +30,11 @@ import NextLink from "next/link";
 import ImageLoader from "@/components/Common/ImageLoader";
 import { useRouter } from "next/router";
 import { useState, useEffect, useCallback } from "react";
-import { useLazyQuery, gql } from "@apollo/client";
 import debouce from "lodash";
-import { useAuth } from "@/components/Auth/FirebaseAuth";
+import { useAuth } from "@/lib/Auth/FirebaseAuth";
+import { useQuery } from "urql";
 
-const SEARCH_FOR_ANIME = gql`
+const SEARCH_FOR_ANIME = `
   query SearchForAnime(
     $SearchInput: String!
     $PageInput: Int
@@ -54,7 +54,13 @@ const SEARCH_FOR_ANIME = gql`
 const Nav = () => {
   const [search, setSearch] = useState("");
   const [openPopover, setOpenPopover] = useState(false);
-  const [searchAnimes, { loading, data }] = useLazyQuery(SEARCH_FOR_ANIME);
+
+  const [{ data, fetching, error }, reDoSearch] = useQuery({
+    query: SEARCH_FOR_ANIME,
+    variables: { search },
+    pause: search === null || search === "" || search === undefined,
+  });
+
   const router = useRouter();
   const { colorMode, toggleColorMode } = useColorMode();
   const { user, logoutUser } = useAuth();
@@ -75,7 +81,7 @@ const Nav = () => {
   const buttons = signedIn ? (
     <>
       <Text display="inline-flex" mr="3">
-        Welcome, {user.username}
+        Welcome, {user?.username}
       </Text>
       <Button onClick={hangleSignOutClick} mr="3">
         Sign out
@@ -115,7 +121,7 @@ const Nav = () => {
   }, [search, delayedSearch]);
 
   useEffect(() => {
-    if (user?.uid) {
+    if (user) {
       setSignedIn(true);
     } else {
       setSignedIn(false);
@@ -166,7 +172,7 @@ const Nav = () => {
             <PopoverContent>
               <PopoverHeader>Search Results</PopoverHeader>
 
-              {loading ? (
+              {fetching ? (
                 <PopoverBody m="auto">
                   <Spinner size="xl" />
                 </PopoverBody>

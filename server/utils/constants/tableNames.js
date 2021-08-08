@@ -31,6 +31,6 @@ module.exports = {
   staff_roles: "staff_roles",
   studios: "studios",
   user_roles: "user_roles",
-  users: "users",
+  users: "anime_app_private.users",
   watch_types: "watch_types",
 };

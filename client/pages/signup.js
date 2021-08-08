@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import {
   Box,
   FormControl,
@@ -11,35 +12,14 @@ import {
 import { ArrowLeftIcon } from "@chakra-ui/icons";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
-import { gql, useMutation } from "@apollo/client";
-import { useAuth } from "@/components/Auth/FirebaseAuth";
-
-const SIGNUP = gql`
-  mutation CreateUser(
-    $username: String!
-    $email: String!
-    $password: String!
-    $verifyPassword: String!
-  ) {
-    createUser(
-      username: $username
-      email: $email
-      password: $password
-      verifyPassword: $verifyPassword
-    ) {
-      success
-      errors {
-        type
-        message
-      }
-    }
-  }
-`;
+import { useAuth } from "@/lib/Auth/FirebaseAuth";
+import { FcGoogle } from "react-icons/fc";
+import firebase from "firebase/app";
+import "firebase/auth";
 
 const signup = () => {
   const router = useRouter();
   const { registerUser } = useAuth();
-  const [signupUser, { data: signupUserResult }] = useMutation(SIGNUP);
   const [buttonDisabled, setButtonDisabled] = useState(false);
   const [signupData, setSignupData] = useState({
     email: "",
@@ -47,12 +27,21 @@ const signup = () => {
     password: "",
     verifyPassword: "",
   });
+
+  const onGoogleSignUpClick = () => {
+    registerUser("google");
+  };
+
   const goBackClick = () => {
     router.push("/");
   };
   const onSignupSubmit = () => {
-    registerUser("email", signupData.email, signupData.password);
-    // signupUser({ variables: signupData });
+    registerUser(
+      "email",
+      signupData.username,
+      signupData.email,
+      signupData.password
+    );
   };
   const onFormChange = (e) => {
     setSignupData((prevState) => ({
@@ -70,10 +59,15 @@ const signup = () => {
   }, [signupData]);
 
   useEffect(() => {
-    if (signupUserResult?.createUser?.success) {
-      router.push("/");
-    }
-  }, [signupUserResult]);
+    firebase
+      .auth()
+      .getRedirectResult()
+      .then((result) => {
+        if (result.user) {
+          router.push("/");
+        }
+      });
+  });
 
   return (
     <Box p="12">
@@ -134,6 +128,16 @@ const signup = () => {
           <Input type="password" placeholder="Re-Enter Password" />
           <FormErrorMessage>Passwords do not match!</FormErrorMessage>
         </FormControl>
+        <Box>
+          <Button
+            w="full"
+            mt="7"
+            leftIcon={<FcGoogle />}
+            onClick={onGoogleSignUpClick}
+          >
+            Sign-in with Google
+          </Button>
+        </Box>
         <Button isDisabled={buttonDisabled} mt="7" onClick={onSignupSubmit}>
           Sign Up
         </Button>

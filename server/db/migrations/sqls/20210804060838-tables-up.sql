@@ -168,19 +168,18 @@ CREATE TABLE anime_app_public.person_images (
 );
 
 CREATE TABLE anime_app_public.users (
-    id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
-    username text UNIQUE NOT NULL
+    id text PRIMARY KEY
 );
 
 CREATE TABLE anime_app_public.user_anime (
     anime_id uuid REFERENCES anime_app_public.animes(id) ON DELETE CASCADE NOT NULL,
-    user_id uuid REFERENCES anime_app_public.users(id) ON DELETE CASCADE NOT NULL,
+    user_id text REFERENCES anime_app_public.users(id) ON DELETE CASCADE NOT NULL,
     PRIMARY KEY (anime_id, user_id)
 );
 
 CREATE TABLE anime_app_public.anime_user_score (
     anime_id uuid REFERENCES anime_app_public.animes(id) ON DELETE CASCADE NOT NULL,
-    user_id uuid REFERENCES anime_app_public.users(id) ON DELETE CASCADE NOT NULL,
+    user_id text REFERENCES anime_app_public.users(id) ON DELETE CASCADE NOT NULL,
     user_score decimal NOT NULL,
     PRIMARY KEY (anime_id, user_id)
 );
