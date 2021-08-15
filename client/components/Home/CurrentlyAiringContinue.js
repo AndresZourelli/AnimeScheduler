@@ -1,7 +1,30 @@
 import HorizontalScroll from "@/components/Home/HorizontalScroll";
 import { Heading, Box } from "@chakra-ui/react";
+import { useQuery } from "urql";
 
-const CurrentlyAiringContinue = ({ animes }) => {
+const CURRENTLY_AIRING_CONTINUED = `
+  query CurrentlyAiringContinued($limit: Int!, $currentSeason: String!) {
+    allAnimesTiles(
+      first: $limit
+      filter: {
+        airingStatusType: { equalTo: "Currently Airing" }
+        and: { season: { notEqualTo: $currentSeason } }
+      }
+    ) {
+      nodes {
+        id
+        title
+        url
+        season
+        averageWatcherRating
+        airingStatusType
+        likes
+      }
+    }
+  }
+`;
+
+const CurrentlyAiringContinue = () => {
   const seasons = {
     1: "Winter",
     2: "Winter",
@@ -16,13 +39,25 @@ const CurrentlyAiringContinue = ({ animes }) => {
     11: "Fall",
     12: "Fall",
   };
+  const date = new Date();
+  const month = date.getMonth() + 1;
+  const year = date.getFullYear();
+
+  const currentSeason = `${seasons[month]} ${year}`;
+
+  const [currentAiringContResult, queryCurrentAiringCont] = useQuery({
+    query: CURRENTLY_AIRING_CONTINUED,
+    variables: { limit: 30, currentSeason },
+  });
 
   return (
     <Box>
       <Heading mt="25px" ml="50px">
         Continuing This Season
       </Heading>
-      <HorizontalScroll animes={animes} />
+      <HorizontalScroll
+        animes={currentAiringContResult?.data?.allAnimesTiles?.nodes}
+      />
     </Box>
   );
 };

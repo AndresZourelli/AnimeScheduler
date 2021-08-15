@@ -13,14 +13,14 @@ const firebaseConfig = {
   measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
 };
 
-export default function initFirebase() {
-  if (!firebase.apps.length) {
-    firebase.initializeApp(firebaseConfig);
-    if (typeof window !== "undefined") {
-      if ("mesurementId" in firebaseConfig) {
-        firebase.analytics();
-        firebase.performance();
-      }
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+  if (typeof window !== "undefined") {
+    if ("mesurementId" in firebaseConfig) {
+      firebase.analytics();
+      firebase.performance();
     }
   }
 }
+
+export default firebase;

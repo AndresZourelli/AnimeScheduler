@@ -1,6 +1,6 @@
-import firebaseInit from "../../firebase/firebaseInit";
 import firebase from "firebase/app";
 import "firebase/auth";
+import fb from "../../firebase/firebaseInit";
 import { useEffect, useState, useContext, createContext } from "react";
 import { useRouter } from "next/router";
 import { useMutation, useQuery, useClient } from "urql";
@@ -21,6 +21,7 @@ const REGISTER_USER = `
 const GET_USER = `
   query GetUser($userId: String!) {
   getUser(uId: $userId) {
+    id: userId
     username
   }
 }
@@ -29,7 +30,6 @@ const GET_USER = `
 const AuthContext = createContext({});
 
 export const AuthProvider = ({ children }) => {
-  firebaseInit();
   const router = useRouter();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -88,6 +88,7 @@ export const AuthProvider = ({ children }) => {
           .signInWithEmailAndPassword(email, password);
       } else if (provider === "google") {
         const providerGoogle = new firebase.auth.GoogleAuthProvider();
+        window.sessionStorage.setItem("signInPending", true);
         response = await firebase.auth().signInWithRedirect(providerGoogle);
       } else {
         throw new Error("Invalid provider");
@@ -141,8 +142,8 @@ export const AuthProvider = ({ children }) => {
           return client
             .query(GET_USER, { userId: user?.uid })
             .toPromise()
-            .then((result) => {
-              user.username = result.data.getUser.username;
+            .then((_result) => {
+              user.username = _result.data.getUser.username;
               setUser(user);
               setLoading(false);
             });
@@ -154,29 +155,35 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    firebase
-      .auth()
-      .getRedirectResult()
-      .then((result) => {
-        if (result.user) {
-          return result.user.getIdToken().then((token) => {
-            return axios
-              .post("http://localhost:4000/setCustomClaims", {
-                idToken: token,
-              })
-              .then((result) => {
-                if (result.data.status === "success") {
-                  return firebase
-                    .auth()
-                    .currentUser.getIdToken(true)
-                    .then(() => {
-                      router.push("/");
-                    });
-                }
-              });
-          });
-        }
-      });
+    if (window.sessionStorage.getItem("signInPending")) {
+      window.sessionStorage.removeItem("signInPending");
+      setLoading(true);
+      firebase
+        .auth()
+        .getRedirectResult()
+        .then((result) => {
+          if (result.user) {
+            return result.user.getIdToken().then((token) => {
+              return axios
+                .post("http://localhost:4000/setCustomClaims", {
+                  idToken: token,
+                })
+                .then((result) => {
+                  if (result.data.status === "success") {
+                    return firebase
+                      .auth()
+                      .currentUser.getIdToken(true)
+                      .then(() => {
+                        setLoading(false);
+                        return router.push("/");
+                      });
+                  }
+                });
+            });
+          }
+          setLoading(false);
+        });
+    }
   }, []);
 
   return (

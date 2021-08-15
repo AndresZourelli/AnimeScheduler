@@ -1,67 +1,93 @@
 import { Box, Heading, Badge, IconButton, useToast } from "@chakra-ui/react";
-import Link from "next/link";
 import LoadImage from "@/components/Common/ImageLoader";
-import { BsPlus } from "react-icons/bs";
+import { BsPlus, BsX } from "react-icons/bs";
 import { useMutation } from "urql";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "@/lib/Auth/FirebaseAuth";
+import { useRouter } from "next/router";
 
 const ADD_ANIME_TO_USER = `
-  mutation AddToAnime($animeId: ID!) {
-    addAnimeToUser(animeId: $animeId) {
-      success
-      errors {
-        message
-      }
+  mutation AddAnimeToUser($animeId: UUID!, $userId: String!) {
+  createUserAnime(input: {userAnime: {animeId: $animeId, userId: $userId}}) {
+    userAnime {
+      animeId
+      userId
     }
   }
+}
+`;
+const REMOVE_ANIME_TO_USER = `
+  mutation RemoveAnimeToUser($animeId: UUID!, $userId: String!) {
+  deleteUserAnime(input: {animeId: $animeId, userId: $userId}) {
+    userAnime {
+      animeId
+      userId
+    }
+  }
+}
 `;
 
-const AnimeCard = ({ title, url, score, id }) => {
+const AnimeCard = ({ title, url, score, id, likes }) => {
+  const router = useRouter();
   const toast = useToast();
-  const [{ fetching, error, data }, addAnime] = useMutation(ADD_ANIME_TO_USER);
+  const [error, setError] = useState(false);
+  const [notification, setNotification] = useState("none");
+  const [AddResult, addAnimeToUser] = useMutation(ADD_ANIME_TO_USER);
+  const [RemoveResult, removeAnimeToUser] = useMutation(REMOVE_ANIME_TO_USER);
   const { user } = useAuth();
 
-  const callAddAnime = async (e) => {
-    e.preventDefault();
-    addAnime({
-      animeId: id,
-    });
+  const redirectToAnime = (e) => {
+    router.push(`/anime/${id}`);
+  };
+
+  const onClickAdd = (e, userId, animeId) => {
+    e.stopPropagation();
+    try {
+      addAnimeToUser({ userId, animeId }).then(() => {
+        setNotification("anime-added");
+      });
+    } catch (e) {
+      setError(true);
+    }
+  };
+
+  const onClickRemove = (e, userId, animeId) => {
+    e.stopPropagation();
+    try {
+      removeAnimeToUser({ userId, animeId }).then(() => {
+        setNotification("anime-removed");
+      });
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   useEffect(() => {
-    if (data?.addAnimeToUser?.success) {
+    if (notification === "anime-added") {
       toast({
         title: "Anime Added!",
         description: `${title} successfully added.`,
         status: "success",
-        duration: 5000,
+        duration: 3000,
         isClosable: true,
         position: "bottom-right",
       });
-    } else if (data?.addAnimeToUser?.success == false) {
+      setNotification("none");
+    } else if (notification === "anime-removed") {
       toast({
-        title: "Anime Already Added!",
-        description: `${title} already added to list.`,
-        status: "warning",
-        duration: 5000,
-        isClosable: true,
-        position: "bottom-right",
-      });
-    } else if (error) {
-      toast({
-        title: "Account created.",
-        description: error.message,
+        title: "Removed Anime!",
+        description: `${title} removed from list.`,
         status: "error",
-        duration: 5000,
+        duration: 3000,
         isClosable: true,
         position: "bottom-right",
       });
+      setNotification("none");
     }
-  }, [data, error]);
+  }, [AddResult, error, title, toast, RemoveResult, notification]);
 
   return (
-    <Link href={`/anime/${id}`}>
+    <>
       <Box
         cursor="pointer"
         overflow="hidden"
@@ -73,6 +99,7 @@ const AnimeCard = ({ title, url, score, id }) => {
         minH="350px"
         w="200px"
         flex="0 0 auto"
+        onClick={redirectToAnime}
       >
         <Badge
           position="absolute"
@@ -87,17 +114,31 @@ const AnimeCard = ({ title, url, score, id }) => {
         </Badge>
         <Box width="100%" height="80%" position="relative" display="block">
           <LoadImage image_url={url} alt={title} />
-          <IconButton
-            position="absolute"
-            icon={<BsPlus size="2rem" />}
-            isRound
-            bg="teal"
-            bottom="3%"
-            right="3%"
-            isLoading={loading}
-            onClick={callAddAnime}
-            visibility={user?.isAuthenticated ? "visible" : "hidden"}
-          />
+          {likes ? (
+            <IconButton
+              position="absolute"
+              icon={<BsX size="2rem" />}
+              isRound
+              bg="red.300"
+              bottom="3%"
+              right="3%"
+              onClick={(e) => onClickRemove(e, user.uid, id)}
+              isLoading={AddResult.fetching}
+              visibility={user ? "visible" : "hidden"}
+            />
+          ) : (
+            <IconButton
+              position="absolute"
+              icon={<BsPlus size="2rem" />}
+              isRound
+              bg="teal"
+              bottom="3%"
+              right="3%"
+              isLoading={RemoveResult.fetching}
+              onClick={(e) => onClickAdd(e, user.uid, id)}
+              visibility={user ? "visible" : "hidden"}
+            />
+          )}
         </Box>
         <Heading
           height="20%"
@@ -115,7 +156,7 @@ const AnimeCard = ({ title, url, score, id }) => {
           {title}
         </Heading>
       </Box>
-    </Link>
+    </>
   );
 };
 

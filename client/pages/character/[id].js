@@ -1,5 +1,5 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { useRouter } from "next/router";
-import { gql } from "@apollo/client";
 import {
   Spinner,
   Box,
@@ -13,58 +13,90 @@ import {
   Th,
   Td,
 } from "@chakra-ui/react";
-import { initializeApollo } from "@/lib/apolloClient";
 import ImageLoader from "@/components/Common/ImageLoader";
 import NextLink from "next/link";
+import { useQuery } from "urql";
+import ReadMore from "@/components/Common/ReadMore";
 
-const GET_CHARACTER = gql`
-  query GetCharacter($character_id: ID!) {
-    getCharacter(character_id: $character_id) {
-      actors {
-        id
-        name
-        image_url
-        actor_language
+const GET_CHARACTER = `
+  query GetCharacter($characterId: UUID!) {
+    character(id: $characterId) {
+      name
+      description
+      animeCharacters {
+        nodes {
+          anime {
+            title
+            id
+          }
+          language {
+            language
+          }
+          person {
+            firstName
+            lastName
+            id
+            personImage {
+              url
+            }
+          }
+        }
       }
-      animes {
-        anime
-        id
+      characterImage {
+        url
       }
-      character_name
-      image_url
-      role
+      voiceActors(first: 10) {
+        nodes {
+          actorFirstName
+          actorLastName
+          language
+          personImageUrl
+          voiceActorId
+        }
+      }
+      characterAnimePreviews(first: 10) {
+        nodes {
+          title
+          animeImageUrl
+          animeId
+        }
+      }
     }
   }
 `;
 
-const GET_PATHS = gql`
-  query GetPaths {
-    getCharacterPaths {
-      character_id
-    }
-  }
-`;
 const characterPage = ({ character }) => {
   const router = useRouter();
   const { id } = router.query;
-
-  if (!id || !character) {
+  const [characterResult, characterQuery] = useQuery({
+    query: GET_CHARACTER,
+    variables: { characterId: id },
+  });
+  if (!id || !characterResult.data) {
     return (
       <Box>
         <Spinner size="xl" display="block" m="auto" my="10" />
       </Box>
     );
   }
+  const {
+    name,
+    description,
+    animeCharacters,
+    characterImage,
+    voiceActors,
+    characterAnimePreviews,
+  } = characterResult.data.character;
 
   return (
     <Box>
       <Flex justifyContent="flex-start" p="6">
-        <Box w="225px" h="350px" position="relative" m="2">
-          <ImageLoader image_url={character.image_url} alt={character.name} />
+        <Box minW="225px" h="350px" position="relative" m="2">
+          <ImageLoader image_url={characterImage?.url} alt={name} />
         </Box>
         <Box ml="6" position="relative">
-          <Heading>{character.character_name}</Heading>
-          <Text>Role: {character.role}</Text>
+          <Heading>{name}</Heading>
+          <ReadMore text={description} />
           <Heading mt="12" as="h3">
             Voice Actor:
           </Heading>
@@ -78,21 +110,34 @@ const characterPage = ({ character }) => {
                 </Tr>
               </Thead>
               <Tbody>
-                {character.actors?.map((anime) => (
-                  <Tr key={anime.id} mb="2" fontSize="sm">
+                {voiceActors?.nodes?.map((actor) => (
+                  <Tr key={actor?.voiceActorId} mb="2" fontSize="sm">
                     <Td>
-                      <NextLink href={`/actor/${anime.id}`}>
-                        {anime.name}
+                      <NextLink href={`/person/${actor?.voiceActorId}`}>
+                        {actor?.actorFirstName +
+                          " " +
+                          (actor?.actorLastName ?? "")}
                       </NextLink>
                     </Td>
-                    <Td>{anime.actor_language}</Td>
+                    <Td>{actor?.language}</Td>
                     <Td>
-                      <Box w="125px" h="179px" position="relative">
-                        <ImageLoader
-                          image_url={anime.image_url}
-                          alt={anime.name}
-                        />
-                      </Box>
+                      <NextLink href={`/person/${actor?.voiceActorId}`}>
+                        <Box
+                          w="125px"
+                          h="179px"
+                          position="relative"
+                          cursor="pointer"
+                        >
+                          <ImageLoader
+                            image_url={actor?.personImageUrl}
+                            alt={
+                              actor?.actorFirstName +
+                              " " +
+                              (actor?.actorLastName ?? "")
+                            }
+                          />
+                        </Box>
+                      </NextLink>
                     </Td>
                   </Tr>
                 ))}
@@ -112,10 +157,17 @@ const characterPage = ({ character }) => {
                 </Tr>
               </Thead>
               <Tbody>
-                {character.animes?.map((anime) => (
-                  <Tr key={anime.id} mb="2" fontSize="sm">
-                    <Td>{anime.anime}</Td>
-                    <Td />
+                {characterAnimePreviews?.nodes?.map((anime) => (
+                  <Tr key={anime?.animeId} mb="2" fontSize="sm">
+                    <Td>{anime?.title}</Td>
+                    <Td>
+                      <Box w="125px" h="179px" position="relative">
+                        <ImageLoader
+                          image_url={anime?.animeImageUrl}
+                          alt={anime?.title}
+                        />
+                      </Box>
+                    </Td>
                   </Tr>
                 ))}
               </Tbody>
@@ -125,36 +177,6 @@ const characterPage = ({ character }) => {
       </Flex>
     </Box>
   );
-};
-
-export const getStaticPaths = async () => {
-  const client = initializeApollo();
-  const { data } = await client.query({ query: GET_PATHS });
-  console.log(data);
-  let formatedData = data?.getCharacterPaths?.map((item) => ({
-    params: {
-      id: item.character_id,
-    },
-  }));
-  return {
-    paths: formatedData,
-    fallback: false,
-  };
-};
-
-export const getStaticProps = async (context) => {
-  const { id } = context.params;
-  const client = initializeApollo();
-  const { data } = await client.query({
-    query: GET_CHARACTER,
-    variables: { character_id: id },
-  });
-  console.log(data);
-  return {
-    props: {
-      character: data.getCharacter,
-    },
-  };
 };
 
 export default characterPage;

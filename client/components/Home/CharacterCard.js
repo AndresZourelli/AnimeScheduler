@@ -1,57 +1,71 @@
-import { Box, Heading, Text } from "@chakra-ui/react";
+import { Box, Heading, Text, HStack, Stack } from "@chakra-ui/react";
 import NextLink from "next/link";
 import ImageLoader from "@/components/Common/ImageLoader";
 
-const CharacterCard = ({
-  character: {
-    character_id,
-    character_name,
-    image_url,
-    character_role_name,
-    actor,
-  },
-}) => {
+const CharacterCard = ({ character, role, actor, language }) => {
   return (
-    <Box
-      mb="4"
-      overflow="hidden"
-      d="flex"
-      alignItems="center"
-      flexDirection="column"
-      position="relative"
-      minH="150px"
-      w="200px"
-      flex="0 0 auto"
+    <HStack
+      justifyContent="space-between"
+      minH="full"
+      w="350px"
+      bg="rgba(0, 0, 0, 0.2)"
     >
-      <NextLink href={`/character/${character_id}`}>
-        <Box
-          m="auto"
-          position="relative"
-          d="flex"
-          flexDirection="column"
-          alignItems="center"
-          cursor="pointer"
-        >
-          <Heading
+      <HStack maxW="175px">
+        <NextLink href={`/character/${character.id}`}>
+          <Box
+            minW="60px"
+            minH="90px"
+            position="relative"
             display="block"
-            size="md"
-            wordBreak="normal"
-            textAlign="center"
-            justifySelf="center"
-            overflow="hidden"
-            whiteSpace="nowrap"
-            textOverflow="ellipsis"
-            mb="0"
+            cursor="pointer"
           >
-            {character_name}
-          </Heading>
-          <Box width="125px" height="194px" position="relative" display="block">
-            <ImageLoader image_url={image_url} alt={character_name} />
+            <ImageLoader
+              image_url={character.characterImage.url}
+              alt={character.name}
+            />
           </Box>
-          <Text fontSize="sm">Role: {character_role_name} </Text>
+        </NextLink>
+        <Stack
+          height="full"
+          justifyContent="space-between"
+          minH="90px"
+          width="full"
+        >
+          <Text fontSize="sm">{character.name} </Text>
+          <Text fontSize="sm">{role} </Text>
+        </Stack>
+      </HStack>
+
+      <HStack maxW="175px">
+        <Stack
+          justifyContent="space-between"
+          height="full"
+          textAlign="end"
+          minH="90px"
+        >
+          <Text fontSize="sm">
+            {actor.firstName + " " + (actor.lastName ?? "")}{" "}
+          </Text>
+          <Text fontSize="sm">{language} </Text>
+        </Stack>
+        <Box>
+          <NextLink href={`/person/${actor.id}`}>
+            <Box
+              minW="60px"
+              minH="90px"
+              position="relative"
+              display="block"
+              cursor="pointer"
+            >
+              <ImageLoader
+                image_url={actor.personImage.url}
+                alt={actor.firstName + " " + (actor.lastName ?? "")}
+              />
+            </Box>
+          </NextLink>
         </Box>
-      </NextLink>
-    </Box>
+      </HStack>
+    </HStack>
   );
 };
 

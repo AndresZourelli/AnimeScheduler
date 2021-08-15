@@ -21,16 +21,16 @@ const HorizontalScroll = ({ animes }) => {
       slide.scrollLeft = 0;
     }
   };
-
   const display =
     animes?.map((anime) => {
       return (
         <AnimeCard
           title={anime.title}
           url={anime.url}
-          score={anime.average_watcher_rating}
+          score={anime.averageWatcherRating}
           id={anime.id}
-          key={uuidv4()}
+          likes={anime.likes}
+          key={anime.id}
         />
       );
     }) ?? [];

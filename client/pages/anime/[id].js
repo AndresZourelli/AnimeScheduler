@@ -1,98 +1,125 @@
 import { useRouter } from "next/router";
-import { gql } from "@apollo/client";
 import { Spinner, Box, Flex } from "@chakra-ui/react";
 import AnimePageInfoCol from "@/components/Home/AnimePageInfoCol";
 import AnimePageMain from "@/components/Home/AnimePageMain";
-import { initializeApollo } from "@/lib/apolloClient";
+import { useQuery } from "urql";
 
-const GET_ANIME = gql`
-  query GetAnime($animeId: ID!) {
-    getAnime(animeId: $animeId) {
-      id
-      title
-      average_watcher_rating
+const GET_ANIME = `
+  query SelectAnime($animeId: UUID!) {
+    anime(id: $animeId) {
+      ageRating {
+        ageRatingType
+      }
+      airingStatus {
+        airingStatusType
+      }
+      alternateAnimeNames {
+        nodes {
+          name
+        }
+      }
+      animeCharacters(filter: {languageId: {equalTo: "4bb3de26-f4b2-4e44-8e65-364e32a19e22"}}) {
+        nodes {
+          character {
+            id
+            name
+            characterImage {
+            url
+          }
+          }
+          characterRole {
+            role
+            id
+          }
+          language {
+            language
+          }
+          person {
+            firstName
+            lastName
+            id
+            personImage {
+            url
+          }
+          }
+        }
+      }
+      animeGenres {
+        nodes {
+          genre {
+            genre
+          }
+        }
+      }
+      animeLicensors {
+        nodes {
+          licensor {
+            licensor
+          }
+        }
+      }
+      animeProducers {
+        nodes {
+          producer {
+            producer
+          }
+        }
+      }
+      animeStaffs {
+        nodes {
+          person {
+            firstName
+            lastName
+            id
+            personImage {
+              url
+            }
+          }
+          staffRole {
+            role
+          }
+        }
+      }
+      animeStudios {
+        nodes {
+          studio {
+            studio
+          }
+        }
+      }
+      averageWatcherRating
       description
-      profile_image
-      number_of_episodes
-      start_broadcast_datetime
-      end_broadcast_datetime
-      broadcast_day
-      broadcast_time
       duration
-      media_type
-      season
-      source_material_type
-      airing_status_type
-      rating
-      genres {
-        id
-        genre
+      endBroadcastDatetime
+      mediaType {
+        mediaType
       }
-      licensors {
-        id
-        licensor
+      numberOfEpisodes
+      profileImage {
+        url
       }
-      producers {
-        id
-        producer
+      season {
+        season
       }
-      studios {
-        id
-        studio
+      sourceMaterial {
+        sourceMaterialType
       }
-      alt_names {
-        name
-      }
-      minutes_watched
-      actors {
-        id
-        actor_name
-        person_image
-        language
-        character
-      }
-      characters {
-        id
-        name
-        character_image
-        role
-      }
-      staff {
-        id
-        staff_name
-        person_image
-        role
-      }
+      title
+      startBroadcastDatetime
     }
   }
 `;
 
-const GET_PATHS = gql`
-  query GetPaths {
-    getAnimePaths {
-      id
-    }
-  }
-`;
-
-const AnimePage = ({ anime }) => {
+const AnimePage = () => {
   const router = useRouter();
   const { id } = router.query;
+  const [AnimeResult, AnimeQuery] = useQuery({
+    query: GET_ANIME,
+    variables: { animeId: id },
+    pause: !id,
+  });
 
-  const tagColors = [
-    "gray",
-    "blue",
-    "cyan",
-    "green",
-    "orange",
-    "pink",
-    "purple",
-    "red",
-    "teal",
-    "yellow",
-  ];
-
-  if (!id || !anime) {
+  if (!id || !AnimeResult.data) {
     return (
       <Box>
         <Spinner size="xl" display="block" m="auto" my="10" />
@@ -103,41 +130,17 @@ const AnimePage = ({ anime }) => {
   return (
     <Box position="relative">
       <Flex position="relative">
-        <AnimePageInfoCol {...anime} />
-        <AnimePageMain {...anime} />
+        <AnimePageInfoCol
+          {...AnimeResult.data?.anime}
+          fetching={AnimeResult.fetching}
+        />
+        <AnimePageMain
+          {...AnimeResult.data?.anime}
+          fetching={AnimeResult.fetching}
+        />
       </Flex>
     </Box>
   );
-};
-
-export const getStaticPaths = async () => {
-  const client = initializeApollo();
-  const { data } = await client.query({ query: GET_PATHS });
-  let formatedData = data?.getAnimePaths?.map((item) => ({
-    params: {
-      id: item.id,
-    },
-  }));
-
-  return {
-    paths: formatedData,
-    fallback: false,
-  };
-};
-
-export const getStaticProps = async (context) => {
-  const { id } = context.params;
-  const client = initializeApollo();
-  const { data } = await client.query({
-    query: GET_ANIME,
-    variables: { animeId: id },
-  });
-
-  return {
-    props: {
-      anime: data.getAnime,
-    },
-  };
 };
 
 export default AnimePage;

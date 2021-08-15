@@ -11,6 +11,8 @@ import {
   Text,
   Button,
   Divider,
+  HStack,
+  Grid,
 } from "@chakra-ui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGripfire } from "@fortawesome/free-brands-svg-icons";
@@ -20,27 +22,25 @@ import ActorCard from "@/components/Home/ActorCard";
 import StaffCard from "@/components/Home/StaffCard";
 
 const AnimePageMain = ({
-  anime_description,
-  anime_title,
-  genres,
-  characters,
-  actors,
-  staff,
-  loading,
+  title,
+  description,
+  animeGenres,
+  animeCharacters,
+  animeStaffs,
+  fetching,
 }) => {
   const [hasMoreCharacters, setHasMoreCharacters] = useState(false);
   const [hasMoreActors, setHasMoreActors] = useState(false);
   const [hasMoreStaff, setHasMoreStaff] = useState(false);
 
   const [numberOfCharacters, setNumberOfCharacters] = useState(
-    characters?.length ?? 0
+    animeCharacters?.nodes?.length ?? 0
   );
   const [currentCharactersDisplayed, setCharactersDisplayed] = useState(10);
 
-  const [numberOfActors, setNumberOfActors] = useState(actors?.length ?? 0);
-  const [currentActorsDisplayed, setActorsDisplayed] = useState(10);
-
-  const [numberOfStaff, setNumberOfStaff] = useState(staff?.length ?? 0);
+  const [numberOfStaff, setNumberOfStaff] = useState(
+    animeStaffs?.nodes?.length ?? 0
+  );
   const [currentStaffDisplayed, setStaffDisplayed] = useState(10);
 
   useEffect(() => {
@@ -50,14 +50,6 @@ const AnimePageMain = ({
       setHasMoreCharacters(false);
     }
   }, [currentCharactersDisplayed, numberOfCharacters]);
-
-  useEffect(() => {
-    if (currentActorsDisplayed < numberOfActors) {
-      setHasMoreActors(true);
-    } else {
-      setHasMoreActors(false);
-    }
-  }, [currentActorsDisplayed, numberOfActors]);
 
   useEffect(() => {
     if (currentStaffDisplayed < numberOfStaff) {
@@ -105,38 +97,46 @@ const AnimePageMain = ({
         </Tag>
       </Box>
       <Box my="3" mr="16">
-        <Heading mb="2">{anime_title}</Heading>
+        <Heading mb="2">{title}</Heading>
         <Box mb="2">
-          {genres.map((genre, idx) => {
+          {animeGenres.nodes.map((genre, idx) => {
             return (
               <Tag
                 position="relative"
                 mr="2"
                 variant="outline"
                 key={uuidv4()}
-                colorScheme={tagColors[idx % genres.length]}
+                colorScheme={tagColors[idx % animeGenres.nodes.length]}
               >
-                <TagLabel>{genre.genre_name}</TagLabel>
+                <TagLabel>{genre.genre.genre}</TagLabel>
               </Tag>
             );
           })}
         </Box>
-        <Text>{anime_description}</Text>
+        <Text>{description}</Text>
         <Divider my="3" />
         <Heading mb="3">Characters</Heading>
-        <Flex wrap="wrap" justifyContent="flexStart">
-          {characters
+        <Grid
+          templateColumns="repeat(3, 350px)"
+          gap={4}
+          justifyContent="space-around"
+          mb={4}
+        >
+          {animeCharacters?.nodes
             ?.slice(0, currentCharactersDisplayed)
             .sort(characterSort)
-            .map((character) => {
+            .map((characterPreview) => {
               return (
                 <CharacterCard
-                  key={character.character_id}
-                  character={character}
+                  key={characterPreview.character.id}
+                  character={characterPreview.character}
+                  role={characterPreview.characterRole.role}
+                  language={characterPreview.language.language}
+                  actor={characterPreview.person}
                 />
               );
             })}
-        </Flex>
+        </Grid>
         <Box display="flex">
           {hasMoreCharacters ? (
             <Button m="auto" onClick={charactersShowMore} size="sm">
@@ -145,25 +145,19 @@ const AnimePageMain = ({
           ) : null}
         </Box>
         <Divider my="3" />
-        <Heading>Actors</Heading>
-        <Flex wrap="wrap" justifyContent="flexStart">
-          {actors?.slice(0, currentActorsDisplayed).map((actor) => {
-            return <ActorCard key={actor.actor_id} actor={actor} />;
-          })}
-        </Flex>
-        <Box display="flex">
-          {hasMoreActors ? (
-            <Button m="auto" onClick={actorsShowMore} size="sm">
-              Show More
-            </Button>
-          ) : null}
-        </Box>
-        <Divider my="3" />
         <Heading>Staff</Heading>
         <Flex wrap="wrap" justifyContent="flexStart">
-          {staff?.slice(0, currentStaffDisplayed).map((staff) => {
-            return <StaffCard key={staff.staff_id} staff={staff} />;
-          })}
+          {animeStaffs?.nodes
+            ?.slice(0, currentStaffDisplayed)
+            .map((staffPreview) => {
+              return (
+                <StaffCard
+                  key={staffPreview.person.id}
+                  staff={staffPreview.person}
+                  role={staffPreview.staffRole.role}
+                />
+              );
+            })}
         </Flex>
         <Box display="flex">
           {hasMoreStaff ? (
@@ -180,10 +174,10 @@ const AnimePageMain = ({
 export default AnimePageMain;
 
 const characterSort = (a, b) => {
-  if (a.character_role_name.localeCompare("Main")) {
+  if (a.characterRole.role.localeCompare("Main")) {
     return 1;
   }
-  if (a.character_role_name.localeCompare("Supporting")) {
+  if (a.characterRole.role.localeCompare("Supporting")) {
     return -1;
   }
   return 0;

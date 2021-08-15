@@ -9,6 +9,7 @@ import {
   Heading,
   Button,
   Text,
+  Spinner,
 } from "@chakra-ui/react";
 import { ArrowLeftIcon } from "@chakra-ui/icons";
 import { useRouter } from "next/router";
@@ -53,15 +54,10 @@ const login = () => {
     setLoading(false);
   };
 
-  const onGoogleLoginClick = async () => {
+  const onGoogleLoginClick = () => {
     setLoading(true);
-    try {
-      router.push("/", undefined, { shallow: true });
-      await signInUser("google");
-    } catch (e) {
-      console.log(e);
-    }
-    setLoading(false);
+    // router.push("/", undefined, { shallow: true });
+    return signInUser("google").then(() => setLoading(false));
   };
 
   return (

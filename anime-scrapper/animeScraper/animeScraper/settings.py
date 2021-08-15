@@ -63,9 +63,9 @@ SPIDER_MIDDLEWARES = {
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
    # 'animeScraper.pipelines.AnimePipeline': 100,
-   'animeScraper.pipelines.CharacterPipeline': 200,
-   # 'animeScraper.pipelines.ActorsPipeline': 400,
-   'animeScraper.pipelines.StaffPipeline': 300,
+   # 'animeScraper.pipelines.CharacterPipeline': 200,
+   'animeScraper.pipelines.ActorsPipeline': 400,
+   # 'animeScraper.pipelines.StaffPipeline': 300,
    'animeScraper.pipelines.DefaultPipeline': 1,
    'animeScraper.pipelines.LastStep': 999
 }

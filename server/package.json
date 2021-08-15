@@ -29,6 +29,8 @@
     "nodemon": "^2.0.7"
   },
   "dependencies": {
+    "@graphile-contrib/pg-order-by-related": "^1.0.0-beta.6",
+    "@graphile-contrib/pg-simplify-inflector": "^6.1.0",
     "apollo-server-express": "^2.19.2",
     "axios": "^0.21.1",
     "bcryptjs": "^2.4.3",
@@ -53,6 +55,8 @@
     "objection": "^2.2.15",
     "pg": "^8.6.0",
     "postgraphile": "^4.12.3",
+    "postgraphile-plugin-connection-filter": "^2.2.2",
+    "postgraphile-remove-foreign-key-fields-plugin": "^1.2.0",
     "uuid": "^8.3.2",
     "yup": "^0.32.9"
   }

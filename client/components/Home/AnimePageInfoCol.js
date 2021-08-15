@@ -1,5 +1,4 @@
 import moment from "moment-timezone";
-import NextImage from "next/image";
 import { v4 as uuidv4 } from "uuid";
 import { useState, useRef, useEffect } from "react";
 import {
@@ -23,40 +22,41 @@ import { ChevronDownIcon } from "@chakra-ui/icons";
 import ImageLoader from "@/components/Common/ImageLoader";
 
 const AnimePageInfoCol = ({
-  url,
-  number_of_episodes,
-  start_broadcast_datetime,
-  end_broadcast_datetime,
+  ageRating,
+  airingStatus,
+  alternateAnimeNames,
+  animeGenres,
+  animeLicensors,
+  animeProducers,
+  animeStudios,
   duration,
-  media_type,
+  startBroadcastDatetime,
+  endBroadcastDatetime,
+  mediaType,
+  numberOfEpisodes,
   season,
-  source_material_type,
-  airing_status_type,
-  rating,
-  licensors,
-  studios,
-  alt_names,
-  loading,
-  producers,
+  sourceMaterial,
+  profileImage,
   title,
+  fetching,
 }) => {
   const [timerDays, setTimerDays] = useState("00");
   const [timerHours, setTimerHours] = useState("00");
   const [timerMinutes, setTimerMinutes] = useState("00");
   const [timerSeconds, setTimerSeconds] = useState("00");
 
+  let internal = useRef();
+
   useEffect(() => {
-    if (loading === false && source) {
-      getCountDown(start_broadcast_datetime);
+    if (fetching === false && title) {
+      getCountDown(startBroadcastDatetime);
       return () => {
         clearInterval(internal.current);
       };
     }
   }, []);
 
-  let internal = useRef();
-
-  // if (!type || loading) {
+  // if (!type || fetching) {
   //   return (
   //     <Box>
   //       <Spinner size="xl" display="block" m="auto" my="10" />
@@ -112,23 +112,23 @@ const AnimePageInfoCol = ({
     }, 1000);
   };
 
-  const momentObj = start_broadcast_datetime
-    ? moment.utc(parseInt(start_broadcast_datetime)).local()
+  const momentObj = startBroadcastDatetime
+    ? moment.utc(startBroadcastDatetime).local()
     : "???";
 
-  const air_date = start_broadcast_datetime
-    ? new Date(parseInt(start_broadcast_datetime)).toLocaleDateString()
+  const air_date = startBroadcastDatetime
+    ? new Date(startBroadcastDatetime).toLocaleDateString()
     : "???";
-  const end_date = end_broadcast_datetime
-    ? new Date(parseInt(end_broadcast_datetime)).toLocaleDateString()
+  const end_date = endBroadcastDatetime
+    ? new Date(endBroadcastDatetime).toLocaleDateString()
     : "???";
 
-  const broadcast_time_jst = moment.utc(parseInt(start_broadcast_datetime));
+  const broadcast_time_jst = moment.utc(startBroadcastDatetime);
   return (
     <Box m="8" w="md">
       <Box width="225px">
         <Box height="300px" width="225px" minWidth="225px" position="relative">
-          <ImageLoader image_url={url} alt={anime_title} />
+          <ImageLoader image_url={profileImage.url} alt={title} />
         </Box>
         <ButtonGroup my="4" isAttached w="100%">
           <Button isFullWidth>Add to List</Button>
@@ -141,7 +141,7 @@ const AnimePageInfoCol = ({
         </ButtonGroup>
       </Box>
       <Box>
-        {status === "Currently Airing" ? (
+        {airingStatus.airingStatusType === "Currently Airing" ? (
           <Stat>
             <Heading size="sm">Next Episode</Heading>
             <StatNumber fontSize="md">{`${timerDays}:${timerHours}:${timerMinutes}:${timerSeconds}`}</StatNumber>
@@ -161,7 +161,7 @@ const AnimePageInfoCol = ({
       <Divider my="3" />
       <Box>
         <Heading size="sm">Number of Episodes</Heading>
-        <Text>{number_of_episodes}</Text>
+        <Text>{numberOfEpisodes}</Text>
       </Box>
       <Divider my="3" />
       <Box>
@@ -176,58 +176,62 @@ const AnimePageInfoCol = ({
       <Divider my="3" />
       <Box>
         <Heading size="sm">Average Episode Length</Heading>
-        <Text>{duration}</Text>
+        <Text>{duration} min.</Text>
       </Box>
       <Divider my="3" />
       <Box>
         <Heading size="sm">Broadcast Media</Heading>
-        <Text>{media_type}</Text>
+        <Text>{mediaType.mediaType}</Text>
       </Box>
       <Divider my="3" />
       <Box>
         <Heading size="sm">Release Season</Heading>
-        <Text>{season}</Text>
+        <Text>{season.season}</Text>
       </Box>
       <Divider my="3" />
       <Box>
         <Heading size="sm">Source Material</Heading>
-        <Text>{source_material_type}</Text>
+        <Text>{sourceMaterial.sourceMaterialType}</Text>
       </Box>
       <Divider my="3" />
       <Box>
         <Heading size="sm">Airing Status</Heading>
-        <Text>{airing_status_type}</Text>
+        <Text>{airingStatus.airingStatusType}</Text>
       </Box>
       <Divider my="3" />
       <Box>
         <Heading size="sm">Age Rating</Heading>
-        <Text>{rating}</Text>
+        <Text>{ageRating.ageRatingType}</Text>
       </Box>
       <Divider my="3" />
       <Box>
         <Heading size="sm">Licensors</Heading>
-        {licensors.map((licensor) => (
-          <Text key={uuidv4()}>{licensor.licensor}</Text>
+        {animeLicensors.nodes.map((licensor) => (
+          <Text key={uuidv4()}>{licensor.licensor.licensor}</Text>
         ))}
       </Box>
       <Divider my="3" />
       <Box>
         <Heading size="sm">Producers</Heading>
-        {producers.map((producer) => (
-          <Text key={uuidv4()}>{producer.producer}</Text>
+        {animeProducers.nodes.map((producer) => (
+          <Text key={uuidv4()}>{producer.producer.producer}</Text>
         ))}
       </Box>
       <Divider my="3" />
       <Box>
         <Heading size="sm">Studios</Heading>
-        {studios.map((studio) => (
-          <Text key={uuidv4()}>{studio.studio}</Text>
+        {animeStudios.nodes.map((studio) => (
+          <Text key={uuidv4()}>{studio.studio.studio}</Text>
         ))}
       </Box>
       <Divider my="3" />
       <Box>
         <Heading size="sm">Alternate Names</Heading>
-        {showAltNames(alt_names)}
+        {alternateAnimeNames.nodes
+          .map((name) => {
+            return name.name;
+          })
+          .join(", ")}
       </Box>
     </Box>
   );

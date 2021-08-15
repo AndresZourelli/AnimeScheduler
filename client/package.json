@@ -19,6 +19,8 @@
     "@fortawesome/free-regular-svg-icons": "^5.15.2",
     "@fortawesome/free-solid-svg-icons": "^5.15.2",
     "@fortawesome/react-fontawesome": "^0.1.14",
+    "@urql/exchange-auth": "^0.1.6",
+    "@urql/exchange-graphcache": "^4.2.1",
     "axios": "^0.21.1",
     "firebase": "^8.9.0",
     "formik": "^2.2.8",

@@ -1,18 +1,19 @@
 const firebase = require("../lib/fb");
 require("dotenv").config();
 
-module.exports = (req, res, next) => {
+module.exports = async (req, res, next) => {
   const accessToken = req?.headers?.authorization?.split(" ")[1];
-  if (!accessToken) {
+  if (accessToken == null || accessToken === undefined) {
     return next();
   }
 
   try {
-    const user = firebase.auth().verifyIdToken(accessToken);
+    const user = await firebase.auth().verifyIdToken(accessToken);
+    req.user = {};
     req.user.id = user.uid;
-    req.user.role = user.claims.role;
+    req.user.role = user.role;
     return next();
-  } catch {
-    return next();
+  } catch (e) {
+    return next(e);
   }
 };

@@ -3,6 +3,12 @@ const { postgraphile } = require("postgraphile");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const morgan = require("morgan");
+const postgraphilePluginConnectionFilter = require("postgraphile-plugin-connection-filter");
+const PgSimplifyInflectorPlugin = require("@graphile-contrib/pg-simplify-inflector");
+const PgOrderByRelatedPlugin = require("@graphile-contrib/pg-order-by-related");
+const {
+  RemoveForeignKeyFieldsPlugin,
+} = require("postgraphile-remove-foreign-key-fields-plugin");
 const isAuth = require("./middleware/isAuth");
 require("dotenv").config();
 require("./db/dbConfig");
@@ -31,19 +37,28 @@ app.use(
     watchPg: true,
     graphiql: true,
     enhanceGraphiql: true,
+    appendPlugins: [
+      postgraphilePluginConnectionFilter,
+      PgSimplifyInflectorPlugin,
+      PgOrderByRelatedPlugin,
+      RemoveForeignKeyFieldsPlugin,
+    ],
     pgSettings: (req) => {
       const settings = {};
       if (req.user) {
         settings["jwt.claims.user_id"] = req.user.id;
-        settings.role = req.user.role;
+        settings["jwt.role"] = req.user.role;
+        console.log(settings);
       } else {
-        settings.role = "anime_default";
+        settings.role = "admin";
       }
       return settings;
     },
   })
 );
-
+app.use((err, req, res, next) => {
+  console.log(err);
+});
 app.listen({ port: 4000 }, () => {
   /* eslint-disable-next-line no-console */
   console.log(`🚀 Server ready at http://localhost:4000/graphiql`);

@@ -3,19 +3,8 @@ import customTheme from "@/styles/theme";
 import { Box, ChakraProvider } from "@chakra-ui/react";
 import { useState } from "react";
 import { AuthProvider } from "@/lib/Auth/FirebaseAuth";
-import { createClient, Provider } from "urql";
-import firebase from "firebase/app";
-import "firebase/auth";
-
-const client = createClient({
-  url: "http://localhost:4000/graphql",
-  fetchOptions: async () => {
-    const token = firebase?.auth()?.currentUser?.getIdToken();
-    return {
-      headers: { Authorization: token ? `Bearer ${token}` : "" },
-    };
-  },
-});
+import { Provider } from "urql";
+import client from "@/lib/Urql/urqlClient";
 
 function MyApp({ Component, pageProps }) {
   const [loading, setLoading] = useState(false);
