@@ -1,10 +1,25 @@
-import { Box, Heading, Badge, IconButton, useToast } from "@chakra-ui/react";
+import {
+  Box,
+  Heading,
+  Badge,
+  IconButton,
+  useToast,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverHeader,
+  PopoverBody,
+  PopoverFooter,
+  PopoverArrow,
+  PopoverCloseButton,
+} from "@chakra-ui/react";
 import LoadImage from "@/components/Common/ImageLoader";
 import { BsPlus, BsX } from "react-icons/bs";
 import { useMutation } from "urql";
 import { useEffect, useState } from "react";
 import { useAuth } from "@/lib/Auth/FirebaseAuth";
 import { useRouter } from "next/router";
+import PopupMenuButton from "@/components/Common/PopupMenuButton";
 
 const ADD_ANIME_TO_USER = `
   mutation AddAnimeToUser($animeId: UUID!, $userId: String!) {
@@ -95,9 +110,8 @@ const AnimeCard = ({ title, url, score, id, likes }) => {
         alignItems="center"
         flexDirection="column"
         position="relative"
-        height="100%"
-        minH="350px"
-        w="200px"
+        minH="346px"
+        w="225px"
         flex="0 0 auto"
         onClick={redirectToAnime}
       >
@@ -112,10 +126,10 @@ const AnimeCard = ({ title, url, score, id, likes }) => {
         >
           {score}
         </Badge>
-        <Box width="100%" height="80%" position="relative" display="block">
+        <Box width="full" height="80%" display="block">
           <LoadImage image_url={url} alt={title} />
           {likes ? (
-            <IconButton
+            <PopupMenuButton
               position="absolute"
               icon={<BsX size="2rem" />}
               isRound
@@ -127,7 +141,7 @@ const AnimeCard = ({ title, url, score, id, likes }) => {
               visibility={user ? "visible" : "hidden"}
             />
           ) : (
-            <IconButton
+            <PopupMenuButton
               position="absolute"
               icon={<BsPlus size="2rem" />}
               isRound
@@ -135,7 +149,7 @@ const AnimeCard = ({ title, url, score, id, likes }) => {
               bottom="3%"
               right="3%"
               isLoading={RemoveResult.fetching}
-              onClick={(e) => onClickAdd(e, user.uid, id)}
+              onClickInner={(e) => onClickAdd(e, user.uid, id)}
               visibility={user ? "visible" : "hidden"}
             />
           )}

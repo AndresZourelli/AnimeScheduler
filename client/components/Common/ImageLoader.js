@@ -8,7 +8,7 @@ const ImageLoader = ({ image_url, alt }) => {
     setIsLoaded(true);
   };
   return (
-    <Skeleton width="100%" height="100%" isLoaded={isLoaded}>
+    <Skeleton width="full" height="full" isLoaded={isLoaded}>
       <NextImage
         src={
           image_url ?? "https://cdn.myanimelist.net/images/questionmark_23.gif"

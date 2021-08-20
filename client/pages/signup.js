@@ -16,6 +16,7 @@ import { useAuth } from "@/lib/Auth/FirebaseAuth";
 import { FcGoogle } from "react-icons/fc";
 import firebase from "firebase/app";
 import "firebase/auth";
+import { withAuthPublic } from "@/lib/Auth/withAuth";
 
 const signup = () => {
   const router = useRouter();
@@ -135,7 +136,7 @@ const signup = () => {
             leftIcon={<FcGoogle />}
             onClick={onGoogleSignUpClick}
           >
-            Sign-in with Google
+            Sign-up with Google
           </Button>
         </Box>
         <Button isDisabled={buttonDisabled} mt="7" onClick={onSignupSubmit}>
@@ -146,4 +147,4 @@ const signup = () => {
   );
 };
 
-export default signup;
+export default withAuthPublic(signup);

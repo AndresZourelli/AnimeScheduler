@@ -5,6 +5,7 @@ import { useEffect, useState, useContext, createContext } from "react";
 import { useRouter } from "next/router";
 import { useMutation, useQuery, useClient } from "urql";
 import axios from "axios";
+import FullPageSpinner from "@/components/Common/FullPageSpinner";
 
 const REGISTER_USER = `
   mutation RegisterUser($userId: String!, $username: String!, $email: String!) {
@@ -88,7 +89,6 @@ export const AuthProvider = ({ children }) => {
           .signInWithEmailAndPassword(email, password);
       } else if (provider === "google") {
         const providerGoogle = new firebase.auth.GoogleAuthProvider();
-        window.sessionStorage.setItem("signInPending", true);
         response = await firebase.auth().signInWithRedirect(providerGoogle);
       } else {
         throw new Error("Invalid provider");
@@ -136,6 +136,7 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     return firebase.auth().onAuthStateChanged((user) => {
+      console.log("onAuthStateChanged 1");
       if (user) {
         return user.getIdTokenResult().then((result) => {
           user.role = result.claims.role;
@@ -143,7 +144,7 @@ export const AuthProvider = ({ children }) => {
             .query(GET_USER, { userId: user?.uid })
             .toPromise()
             .then((_result) => {
-              user.username = _result.data.getUser.username;
+              user.username = _result?.data?.getUser?.username || null;
               setUser(user);
               setLoading(false);
             });
@@ -155,14 +156,17 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    if (window.sessionStorage.getItem("signInPending")) {
-      window.sessionStorage.removeItem("signInPending");
-      setLoading(true);
-      firebase
-        .auth()
-        .getRedirectResult()
-        .then((result) => {
-          if (result.user) {
+    firebase
+      .auth()
+      .getRedirectResult()
+      .then((result) => {
+        console.log("getRedirectResult 1");
+        if (result.user) {
+          return registerUserCall({
+            userId: result.user.uid,
+            username: result.user.email.split("@")[0],
+            email: result.user.email,
+          }).then(() => {
             return result.user.getIdToken().then((token) => {
               return axios
                 .post("http://localhost:4000/setCustomClaims", {
@@ -174,21 +178,23 @@ export const AuthProvider = ({ children }) => {
                       .auth()
                       .currentUser.getIdToken(true)
                       .then(() => {
-                        setLoading(false);
+                        let newUser = firebase.auth().currentUser;
+                        newUser.username = newUser.email.split("@")[0];
+                        setUser(newUser);
                         return router.push("/");
                       });
                   }
                 });
             });
-          }
-          setLoading(false);
-        });
-    }
+          });
+        }
+      });
   }, []);
 
   return (
     <AuthContext.Provider
       value={{
+        loading,
         user,
         registerUser,
         signInUser,
@@ -199,7 +205,7 @@ export const AuthProvider = ({ children }) => {
         resetPassword,
       }}
     >
-      {!loading && children}
+      {!loading ? children : <FullPageSpinner />}
     </AuthContext.Provider>
   );
 };

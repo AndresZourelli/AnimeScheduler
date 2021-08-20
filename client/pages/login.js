@@ -20,6 +20,7 @@ import { set } from "lodash";
 import firebase from "firebase/app";
 import "firebase/auth";
 import axios from "axios";
+import { withAuthPublic } from "@/lib/Auth/withAuth";
 
 const login = () => {
   const router = useRouter();
@@ -151,4 +152,4 @@ const login = () => {
   );
 };
 
-export default login;
+export default withAuthPublic(login);

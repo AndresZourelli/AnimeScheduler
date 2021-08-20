@@ -1,64 +1,45 @@
 import MyAnimePageList from "@/components/MyAnimePage/MyAnimePageList";
 import WeeklyGrid from "@/components/MyAnimePage/WeeklyGrid";
 import { Box, Heading } from "@chakra-ui/react";
-import { initializeApollo } from "@/lib/apolloClient";
-import { gql } from "@apollo/client";
-import axios from "axios";
+import { useQuery } from "urql";
+import { useAuth } from "@/lib/Auth/FirebaseAuth";
+import { withAuthPrivate } from "@/lib/Auth/withAuth";
+
+const GET_MY_ANIME = `
+    query GetMyAnime($userId: String!) {
+      user(id: $userId) {
+        id
+        userAnimes {
+          nodes {
+            anime {
+              title
+              id
+              profileImage {
+                id
+                url
+              }
+            }
+          }
+        }
+      }
+    }
+  `;
 
 const MyAnimes = (props) => {
+  const { user } = useAuth();
+  const [UserResult, UserRefetch] = useQuery({
+    query: GET_MY_ANIME,
+    variables: { userId: user.uid },
+  });
   return (
     <Box m={5}>
       <Heading>My Animes Page</Heading>
       <Box>
         <WeeklyGrid />
       </Box>
-      <MyAnimePageList animes={props.animes} />
+      <MyAnimePageList animes={UserResult?.data?.user?.userAnimes?.nodes} />
     </Box>
   );
 };
 
-const GET_MY_ANIME = gql`
-  query GetMyAnime {
-    getUserAnimes {
-      success
-      errors {
-        message
-      }
-      animes {
-        title
-        image_url
-        id: _id
-      }
-    }
-  }
-`;
-
-export const getServerSideProps = async ({ req, res }) => {
-  const refreshtoken = req.cookies["refresh-token"];
-  const response = await axios.get("http://localhost:4000/refresh_token", {
-    headers: { Cookie: "refresh-token=" + refreshtoken },
-    withCredentials: true,
-  });
-  const token = response.data.accessToken;
-  const client = initializeApollo(null, token);
-
-  let result;
-  try {
-    result = await client.query({
-      query: GET_MY_ANIME,
-      headers: {
-        authorization: `bearer ${token}`,
-      },
-    });
-  } catch (error) {
-    console.log("error", error.graphQLErrors[0]);
-  }
-
-  return {
-    props: {
-      animes: result?.data?.getUserAnimes?.animes ?? [],
-    },
-  };
-};
-
-export default MyAnimes;
+export default withAuthPrivate(MyAnimes);
