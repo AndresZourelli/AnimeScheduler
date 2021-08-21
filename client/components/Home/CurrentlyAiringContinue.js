@@ -49,7 +49,7 @@ const CurrentlyAiringContinue = () => {
     query: CURRENTLY_AIRING_CONTINUED,
     variables: { limit: 30, currentSeason },
   });
-
+  console.log(currentAiringContResult?.data);
   return (
     <Box>
       <Heading mt="25px" ml="50px">

@@ -1,3 +1,4 @@
+drop view anime_app_public.all_animes_tile;
 drop table anime_app_public.user_anime_lists;
 drop type anime_app_public.watching_status_enum;
 drop table anime_app_public.anime_lists;

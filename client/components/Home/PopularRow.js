@@ -23,6 +23,7 @@ const PopularRow = () => {
     query: HIGHEST_RATED_ANIMES,
     variables: { limit: 30 },
   });
+  console.log(highestRatedResult?.data);
   return (
     <Box>
       <Heading mt="25px" ml="50px">

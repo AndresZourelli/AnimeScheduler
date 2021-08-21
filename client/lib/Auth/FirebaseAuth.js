@@ -1,11 +1,10 @@
+import FullPageSpinner from "@/components/Common/FullPageSpinner";
+import axios from "axios";
 import firebase from "firebase/app";
 import "firebase/auth";
-import fb from "../../firebase/firebaseInit";
-import { useEffect, useState, useContext, createContext } from "react";
 import { useRouter } from "next/router";
-import { useMutation, useQuery, useClient } from "urql";
-import axios from "axios";
-import FullPageSpinner from "@/components/Common/FullPageSpinner";
+import { createContext, useContext, useEffect, useState } from "react";
+import { useClient, useMutation } from "urql";
 
 const REGISTER_USER = `
   mutation RegisterUser($userId: String!, $username: String!, $email: String!) {
@@ -153,7 +152,7 @@ export const AuthProvider = ({ children }) => {
       setUser(user);
       setLoading(false);
     });
-  }, []);
+  }, [client]);
 
   useEffect(() => {
     firebase

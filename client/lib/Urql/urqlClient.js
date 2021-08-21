@@ -3,6 +3,8 @@ import { cacheExchange } from "@urql/exchange-graphcache";
 import { authExchange } from "@urql/exchange-auth";
 import firebase from "../../firebase/firebaseInit";
 import { gql } from "@urql/core";
+import { checkTokenExpiration } from "../../utilities/checkTokenExpiration";
+import { makeOperation } from "@urql/core";
 
 const client = createClient({
   url: "http://localhost:4000/graphql",
@@ -41,17 +43,26 @@ const client = createClient({
       },
     }),
     authExchange({
-      getAuth: async () => {
-        if (firebase.apps.length === 0) {
-          return;
-        }
+      getAuth: async ({ authState }) => {
+        if (!authState) {
+          if (firebase.apps.length === 0) {
+            return null;
+          }
 
-        if (!firebase.auth().currentUser) {
-          return;
+          if (!firebase.auth().currentUser) {
+            return null;
+          }
+
+          const token = await firebase.auth().currentUser.getIdToken();
+          return { token };
         }
 
         const token = await firebase.auth().currentUser.getIdToken();
-        return { token };
+
+        if (token) {
+          return { token };
+        }
+        return null;
       },
       addAuthToOperation: ({ authState, operation }) => {
         if (!authState || !authState.token) {
@@ -69,10 +80,16 @@ const client = createClient({
             ...fetchOptions,
             headers: {
               ...fetchOptions.headers,
-              Authorization: authState.token,
+              Authorization: `Bearer ${authState.token}`,
             },
           },
         });
+      },
+      willAuthError: ({ authState }) => {
+        if (!authState || checkTokenExpiration(authState.token)) {
+          return true;
+        }
+        return false;
       },
     }),
     fetchExchange,

@@ -1,36 +1,35 @@
-import {
-  Box,
-  Heading,
-  Badge,
-  IconButton,
-  useToast,
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  PopoverHeader,
-  PopoverBody,
-  PopoverFooter,
-  PopoverArrow,
-  PopoverCloseButton,
-} from "@chakra-ui/react";
 import LoadImage from "@/components/Common/ImageLoader";
-import { BsPlus, BsX } from "react-icons/bs";
-import { useMutation } from "urql";
-import { useEffect, useState } from "react";
-import { useAuth } from "@/lib/Auth/FirebaseAuth";
-import { useRouter } from "next/router";
 import PopupMenuButton from "@/components/Common/PopupMenuButton";
+import { useAuth } from "@/lib/Auth/FirebaseAuth";
+import { Badge, Box, Heading, IconButton, useToast } from "@chakra-ui/react";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import { BsPlus, BsX } from "react-icons/bs";
+import { useMutation, useQuery } from "urql";
 
 const ADD_ANIME_TO_USER = `
-  mutation AddAnimeToUser($animeId: UUID!, $userId: String!) {
-  createUserAnime(input: {userAnime: {animeId: $animeId, userId: $userId}}) {
-    userAnime {
-      animeId
-      userId
+  mutation AddAnimeToUserAnimeList($animeListId: UUID!, $animeId: UUID!) {
+    createUserAnimeList(
+      input: { userAnimeList: { animeListId: $animeListId, animeId: $animeId } }
+    ) {
+      animeList {
+        id
+      }
     }
   }
-}
 `;
+
+const GET_USER_ANIME_LISTS = `
+  query AnimeListQuery($userId: String!) {
+    animeLists(condition: { userId: $userId }) {
+      nodes {
+        title
+        id
+      }
+    }
+  }
+`;
+
 const REMOVE_ANIME_TO_USER = `
   mutation RemoveAnimeToUser($animeId: UUID!, $userId: String!) {
   deleteUserAnime(input: {animeId: $animeId, userId: $userId}) {
@@ -46,22 +45,32 @@ const AnimeCard = ({ title, url, score, id, likes }) => {
   const router = useRouter();
   const toast = useToast();
   const [error, setError] = useState(false);
+  const [userLists, setUserLists] = useState([]);
   const [notification, setNotification] = useState("none");
   const [AddResult, addAnimeToUser] = useMutation(ADD_ANIME_TO_USER);
   const [RemoveResult, removeAnimeToUser] = useMutation(REMOVE_ANIME_TO_USER);
   const { user } = useAuth();
+  const [UserListResult, getUserLists] = useQuery({
+    query: GET_USER_ANIME_LISTS,
+    variables: { userId: user?.uid },
+    pause: true,
+  });
 
   const redirectToAnime = (e) => {
     router.push(`/anime/${id}`);
   };
 
-  const onClickAdd = (e, userId, animeId) => {
+  const onClickAdd = (e, animeId) => {
     e.stopPropagation();
     try {
-      addAnimeToUser({ userId, animeId }).then(() => {
+      const animeListId = userLists.filter((item) => {
+        return item.title === "default";
+      })[0].id;
+      addAnimeToUser({ animeListId, animeId }).then(() => {
         setNotification("anime-added");
       });
     } catch (e) {
+      console.log(e);
       setError(true);
     }
   };
@@ -101,6 +110,18 @@ const AnimeCard = ({ title, url, score, id, likes }) => {
     }
   }, [AddResult, error, title, toast, RemoveResult, notification]);
 
+  useEffect(() => {
+    if (!UserListResult.fetching && UserListResult.data) {
+      setUserLists(UserListResult.data.animeLists.nodes);
+    }
+  }, [UserListResult]);
+
+  useEffect(() => {
+    if (user?.uid) {
+      getUserLists();
+    }
+  }, [user, getUserLists]);
+
   return (
     <>
       <Box
@@ -136,12 +157,12 @@ const AnimeCard = ({ title, url, score, id, likes }) => {
               bg="red.300"
               bottom="3%"
               right="3%"
-              onClick={(e) => onClickRemove(e, user.uid, id)}
+              onClick={(e) => onClickRemove(e, id)}
               isLoading={AddResult.fetching}
               visibility={user ? "visible" : "hidden"}
             />
           ) : (
-            <PopupMenuButton
+            <IconButton
               position="absolute"
               icon={<BsPlus size="2rem" />}
               isRound
@@ -149,7 +170,7 @@ const AnimeCard = ({ title, url, score, id, likes }) => {
               bottom="3%"
               right="3%"
               isLoading={RemoveResult.fetching}
-              onClickInner={(e) => onClickAdd(e, user.uid, id)}
+              onClick={(e) => onClickAdd(e, id)}
               visibility={user ? "visible" : "hidden"}
             />
           )}
