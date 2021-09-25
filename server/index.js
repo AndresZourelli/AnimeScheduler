@@ -37,6 +37,7 @@ app.use(
     watchPg: true,
     graphiql: true,
     enhanceGraphiql: true,
+    dynamicJson: true,
     appendPlugins: [
       postgraphilePluginConnectionFilter,
       PgSimplifyInflectorPlugin,
@@ -48,7 +49,6 @@ app.use(
       if (req.user) {
         settings["jwt.claims.user_id"] = req.user.id;
         settings["jwt.role"] = req.user.role;
-        console.log(settings);
       } else {
         settings.role = "admin";
       }

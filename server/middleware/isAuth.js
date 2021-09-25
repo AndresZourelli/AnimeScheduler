@@ -3,7 +3,6 @@ require("dotenv").config();
 
 module.exports = async (req, res, next) => {
   const accessToken = req?.headers?.authorization?.split(" ")[1];
-  console.log(req.headers.authorization);
   if (accessToken == null || accessToken === undefined) {
     return next();
   }
@@ -15,6 +14,7 @@ module.exports = async (req, res, next) => {
     req.user.role = user.role;
     return next();
   } catch (e) {
-    return next(e);
+    console.log(e);
+    return next();
   }
 };

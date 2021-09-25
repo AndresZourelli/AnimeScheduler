@@ -6,7 +6,8 @@
     "dev": "next dev -p 3001",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "graphql-codegen": "graphql-codegen --config codegen.yml"
   },
   "dependencies": {
     "@chakra-ui/icons": "^1.0.5",
@@ -22,7 +23,7 @@
     "@urql/exchange-auth": "^0.1.6",
     "@urql/exchange-graphcache": "^4.2.1",
     "axios": "^0.21.1",
-    "firebase": "^8.9.0",
+    "firebase": "^9.0.0",
     "formik": "^2.2.8",
     "framer-motion": "^4",
     "graphql": "^15.5.1",
@@ -37,9 +38,20 @@
     "react-icons": "^4.2.0",
     "urql": "^2.0.4",
     "uuid": "^8.3.2",
-    "yup": "^0.32.9"
+    "yup": "^0.32.9",
+    "zustand": "^3.5.9"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "2.2.0",
+    "@graphql-codegen/introspection": "2.1.0",
+    "@graphql-codegen/typescript": "2.2.2",
+    "@graphql-codegen/typescript-graphql-files-modules": "2.1.0",
+    "@graphql-codegen/typescript-operations": "2.1.4",
+    "@graphql-codegen/typescript-react-apollo": "3.1.4",
+    "@graphql-codegen/typescript-urql": "^3.2.0",
+    "@graphql-codegen/urql-introspection": "2.1.0",
+    "@types/node": "^16.9.6",
+    "@types/react": "^17.0.24",
     "eslint": "^7.29.0",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-config-next": "^11.0.1",
@@ -49,7 +61,8 @@
     "eslint-plugin-jsx-a11y": "^6.4.1",
     "eslint-plugin-react": "^7.24.0",
     "eslint-plugin-react-hooks": "^4.2.0",
-    "prettier": "^2.3.2"
+    "prettier": "^2.3.2",
+    "typescript": "^4.4.3"
   },
   "peerDependencies": {
     "@babel/core": "^7.14.6",

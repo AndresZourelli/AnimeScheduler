@@ -47,13 +47,13 @@ CASE
     WHEN user_anime.anime_id IS NULL THEN false
     else true
 END as likes,
-a.id, a.title, p.url, s.season, st.airing_status_type, a.average_watcher_rating
+a.id, a.title, p.url, s.season, st.airing_status_type, a.average_watcher_rating, a.start_broadcast_datetime
 FROM anime_app_public.animes a
 JOIN anime_app_public.airing_status_types st 
 ON a.airing_status_id = st.id JOIN anime_app_public.seasons s 
 ON a.season_id = s.id JOIN anime_app_public.images p
 ON a.profile_image_id = p.id
 LEFT JOIN (
-    select distinct on (ual.anime_id) al.title, ual.anime_id from anime_app_public.user_anime_lists ual JOIN anime_app_public.anime_lists al on ual.anime_list_id = al.id where al.user_id = anime_app_public.current_user()
+    select distinct on (ual.anime_id) al.title, ual.anime_id, ual.watching_status, al.title, al.id as anime_list  from anime_app_public.user_anime_lists ual JOIN anime_app_public.anime_lists al on ual.anime_list_id = al.id where al.user_id = anime_app_public.current_user()
 ) as user_anime on a.id = user_anime.anime_id
 ORDER BY a.average_watcher_rating DESC;

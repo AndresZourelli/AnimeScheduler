@@ -1,0 +1,8 @@
+query AnimeListQuery($userId: String!) {
+  animeLists(condition: { userId: $userId }) {
+    nodes {
+      title
+      id
+    }
+  }
+}

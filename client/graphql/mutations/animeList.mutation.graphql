@@ -1,0 +1,19 @@
+mutation AddAnimeToUserAnimeList($animeListId: UUID!, $animeId: UUID!) {
+  createUserAnimeList(
+    input: { userAnimeList: { animeListId: $animeListId, animeId: $animeId } }
+  ) {
+    animeList {
+      id
+    }
+  }
+}
+
+mutation DeleteAnimeFromList($animeListId: UUID!, $animeId: UUID!) {
+  deleteUserAnimeListByAnimeListIdAndAnimeId(
+    input: { animeListId: $animeListId, animeId: $animeId }
+  ) {
+    animeList {
+      id
+    }
+  }
+}
