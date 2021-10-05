@@ -5140,6 +5140,11 @@ postgraphile-remove-foreign-key-fields-plugin@^1.2.0:
   dependencies:
     lodash "^4.17.20"
 
+postgraphile-upsert-plugin@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/postgraphile-upsert-plugin/-/postgraphile-upsert-plugin-2.1.0.tgz#05f8294c7dd74bfb88946bc3e35fefa9020dddd8"
+  integrity sha512-WoDrtlUCmmQl6EVW0KzNr5L4z8pGMgPw0sy6cq5nTdPu4SlCh+tEL/r/Pq3XmRZo1eIpYc0LbfGUXxgLgsYdMg==
+
 postgraphile@^4.12.3:
   version "4.12.3"
   resolved "https://registry.yarnpkg.com/postgraphile/-/postgraphile-4.12.3.tgz#19493421b170b21428db696f04d857a5644a6b54"

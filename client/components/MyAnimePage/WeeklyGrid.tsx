@@ -1,33 +1,12 @@
-import { Box, Grid, VStack } from "@chakra-ui/react";
-import WeeklyGridColumn from "./WeeklyGridColumn";
-import moment from "moment-timezone";
-import { useState, useEffect } from "react";
-import { useQuery } from "urql";
 import FullPageSpinner from "@/components/Common/FullPageSpinner";
+import { useWeeklyAnimesQuery } from "@/graphql";
+import { Box, VStack } from "@chakra-ui/react";
+import moment from "moment-timezone";
+import { useEffect, useState } from "react";
+import WeeklyGridColumn from "./WeeklyGridColumn";
 
-const WEEKLY_ANIMES = `
-query WeeklyAnimes {
-  allAnimesTiles(filter: {airingStatusType: {equalTo: "Currently Airing"}}) {
-      nodes {
-        id
-        title
-        season
-        airingStatusType
-        averageWatcherRating
-        startBroadcastDatetime
-        url
-        description
-        genres
-        mediaType
-        numberOfEpisodes
-        studios
-        likes
-      }
-    }
-}
-`;
 const WeeklyGrid = () => {
-  const [animeResults, fetchAnimes] = useQuery({ query: WEEKLY_ANIMES });
+  const [animeResults, fetchAnimes] = useWeeklyAnimesQuery();
   const animes = animeResults.data?.allAnimesTiles?.nodes;
   const WEEK = [
     "Sunday",

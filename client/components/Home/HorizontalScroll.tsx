@@ -71,7 +71,6 @@ const HorizontalScroll = ({ animes }) => {
           width="100%"
           spacing="15px"
           ref={currentRef}
-          overflow="hidden"
           sx={{ scrollBehavior: "smooth" }}
         >
           {display.length == 0 ? (

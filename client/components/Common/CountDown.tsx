@@ -40,7 +40,7 @@ const CountDown = ({ endInputDate }) => {
 
   const calculateTimeLeft = () => {
     const diff: moment.Duration = moment.duration(endDate.diff(startDate));
-    if (diff.milliseconds() > 0) {
+    if (diff.asMilliseconds() > 0) {
       const days = getFormatDigit(diff.asDays());
       const hours = getFormatDigit(diff.asHours() % 24);
       const minutes = getFormatDigit(diff.asMinutes() % 60);

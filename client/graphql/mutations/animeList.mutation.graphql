@@ -17,3 +17,37 @@ mutation DeleteAnimeFromList($animeListId: UUID!, $animeId: UUID!) {
     }
   }
 }
+
+mutation AddAnimeToList(
+  $animeListId: UUID!
+  $animeId: UUID!
+  $watchingStatus: WatchingStatusEnum
+) {
+  upsertUserAnimeList(
+    input: {
+      userAnimeList: {
+        animeListId: $animeListId
+        animeId: $animeId
+        watchingStatus: $watchingStatus
+      }
+    }
+    where: { animeId: $animeId, animeListId: $animeListId }
+  ) {
+    userAnimeList {
+      animeList {
+        title
+        id
+      }
+      watchingStatus
+    }
+  }
+}
+
+mutation CreateNewList($userId: String!, $title: String!) {
+  createAnimeList(input: { animeList: { userId: $userId, title: $title } }) {
+    animeList {
+      id
+      title
+    }
+  }
+}

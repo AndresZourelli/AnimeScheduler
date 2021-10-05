@@ -2,12 +2,11 @@ import { AddIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
-  CloseButton,
+  Checkbox,
   Flex,
   FormControl,
   FormLabel,
   Input,
-  InputRightElement,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -18,7 +17,6 @@ import {
   Text,
   Textarea,
   useDisclosure,
-  Checkbox,
 } from "@chakra-ui/react";
 import { useState } from "react";
 
@@ -79,7 +77,7 @@ const NewStudio = ({ values, setFieldValue }) => {
                 <Checkbox
                   onChange={onChecked}
                   name="isPrimary"
-                  value={studioData.isPrimary}
+                  value={studioData.isPrimary ? 1 : 0}
                 />
               </FormControl>
               <Box w="full" mb={3}>

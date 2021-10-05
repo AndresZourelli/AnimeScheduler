@@ -5,15 +5,24 @@ import { auth } from "../../firebase/firebaseInit";
 import { gql } from "@urql/core";
 import { checkTokenExpiration } from "../../utilities/checkTokenExpiration";
 import { makeOperation } from "@urql/core";
+import { devtoolsExchange } from "@urql/devtools";
+import {
+  AnimeListFragmentFragment,
+  AnimeListFragmentFragmentDoc,
+  CreateAnimeListPayload,
+  AnimeListQueryDocument,
+  WatchingDocument,
+} from "@/graphql";
 
 const client = createClient({
   url: "http://localhost:4000/graphql",
   exchanges: [
+    devtoolsExchange,
     dedupExchange,
     cacheExchange({
       updates: {
         Mutation: {
-          createUserAnimeList(_result, args, cache, _info) {
+          createUserAnimeList(_result, args: any, cache, _info) {
             const fragment = gql`
               fragment AllAnimesTileFragment on AllAnimesTile {
                 id
@@ -27,7 +36,7 @@ const client = createClient({
           },
           deleteUserAnimeListByAnimeListIdAndAnimeId(
             _result,
-            args,
+            args: any,
             cache,
             _info
           ) {
@@ -42,6 +51,36 @@ const client = createClient({
               id: args.input.animeId,
               likes: false,
             });
+          },
+          createAnimeList(_result: any, args: any, cache, _info) {
+            console.log(_result);
+            if (_result.createAnimeList) {
+              cache.updateQuery(
+                {
+                  query: AnimeListQueryDocument,
+                  variables: { userId: args.input.animeList.userId },
+                },
+                (data: any) => {
+                  data.animeLists.nodes.push(_result.createAnimeList.animeList);
+                  return data;
+                }
+              );
+            }
+          },
+          AddAnimeToList(_result: any, args: any, cache, _info) {
+            if (_result.allUserAnimes) {
+              console.log(_result);
+              // cache.updateQuery(
+              //   {
+              //     query: WatchingDocument,
+              //     variables: { watchingStatus: args.watchingStatus },
+              //   },
+              //   (data: any) => {
+              //     data.animeLists.nodes.push(_result.allUserAnimes.animeList);
+              //     return data;
+              //   }
+              // );
+            }
           },
         },
       },
@@ -66,7 +105,7 @@ const client = createClient({
         return null;
       },
       addAuthToOperation: ({ authState, operation }) => {
-        if (!authState || !authState.token) {
+        if (!authState || !(authState as any).token) {
           return operation;
         }
 
@@ -81,13 +120,13 @@ const client = createClient({
             ...fetchOptions,
             headers: {
               ...fetchOptions.headers,
-              Authorization: `Bearer ${authState.token}`,
+              Authorization: `Bearer ${(authState as any).token}`,
             },
           },
         });
       },
       willAuthError: ({ authState }) => {
-        if (!authState || checkTokenExpiration(authState.token)) {
+        if (!authState || checkTokenExpiration((authState as any).token)) {
           return true;
         }
         return false;

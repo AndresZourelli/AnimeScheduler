@@ -9,6 +9,7 @@ const PgOrderByRelatedPlugin = require("@graphile-contrib/pg-order-by-related");
 const {
   RemoveForeignKeyFieldsPlugin,
 } = require("postgraphile-remove-foreign-key-fields-plugin");
+const { PgMutationUpsertPlugin } = require("postgraphile-upsert-plugin");
 const isAuth = require("./middleware/isAuth");
 require("dotenv").config();
 require("./db/dbConfig");
@@ -43,6 +44,7 @@ app.use(
       PgSimplifyInflectorPlugin,
       PgOrderByRelatedPlugin,
       RemoveForeignKeyFieldsPlugin,
+      PgMutationUpsertPlugin,
     ],
     pgSettings: (req) => {
       const settings = {};

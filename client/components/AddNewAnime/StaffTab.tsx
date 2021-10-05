@@ -10,10 +10,12 @@ const StaffTab = ({
   handleChange,
   inputSpacingCommon,
   setFieldValue,
+  push,
 }) => {
   return (
     <>
       <InfoSearchTab
+        push={push}
         values={values}
         setFieldValue={setFieldValue}
         placeholder="Search For Existing Staff"

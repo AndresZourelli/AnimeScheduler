@@ -1,74 +1,23 @@
 import MyAnimePageList from "@/components/MyAnimePage/MyAnimePageList";
 import WeeklyGrid from "@/components/MyAnimePage/WeeklyGrid";
-import {
-  Box,
-  Flex,
-  Heading,
-  Tabs,
-  TabList,
-  TabPanels,
-  Tab,
-  TabPanel,
-} from "@chakra-ui/react";
-import { useQuery } from "urql";
+import { useWatchingQuery, WatchingStatusEnum } from "@/graphql";
 import { useAuth } from "@/lib/Auth/FirebaseAuth";
 import { withAuthPrivate } from "@/lib/Auth/withAuth";
-
-const CURRENTLY_WATCHING = `
-  query CurrentlyWatching {
-    allUserAnimes(condition: { watchingStatus: WATCHING }) {
-      nodes {
-        id
-        listId
-        listName
-        title
-        url
-        watchingStatus
-      }
-    }
-  }
-`;
-
-const PLANNING = `
-  query PlanToWatch {
-    allUserAnimes(condition: {watchingStatus: PLAN_TO_WATCH}) {
-    nodes {
-      id
-      listId
-      listName
-      title
-      url
-      watchingStatus
-    }
-  }
-  }
-`;
-const COMPLETED = `
-  query PlanToWatch {
-    allUserAnimes(condition: { watchingStatus: COMPLETED }) {
-      nodes {
-        id
-        listId
-        listName
-        title
-        url
-        watchingStatus
-      }
-    }
-  }
-`;
+import {
+  Box,
+  Heading,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
+} from "@chakra-ui/react";
+import { useRouter } from "next/router";
 
 const MyAnimes = (props) => {
   const { user } = useAuth();
-  const [CurrentlyResult, CurrentlyFetch] = useQuery({
-    query: CURRENTLY_WATCHING,
-  });
-  const [PlanningResult, PlanningFetch] = useQuery({
-    query: PLANNING,
-  });
-  const [CompletedResult, CompletedFetch] = useQuery({
-    query: COMPLETED,
-  });
+  const router = useRouter();
+
   return (
     <Box>
       <Tabs orientation="vertical">
@@ -86,49 +35,32 @@ const MyAnimes = (props) => {
           <TabPanel>
             <Box m={5}>
               <Heading>Currently Watching</Heading>
-              {CurrentlyResult?.data?.allUserAnimes?.nodes.length === 0 ? (
-                "You aren't watching any anime currently..."
-              ) : (
-                <MyAnimePageList
-                  animes={CurrentlyResult?.data?.allUserAnimes?.nodes}
-                />
-              )}
+              <MyAnimePageList watchingStatus={WatchingStatusEnum.Watching} />
+              {/* "You aren't watching any anime currently..." */}
             </Box>
           </TabPanel>
           <TabPanel>
             <Box m={5}>
               <Heading>Planning to Watch</Heading>
-              {PlanningResult?.data?.allUserAnimes?.nodes.length === 0 ? (
-                "You aren't planning to watch any anime..."
-              ) : (
-                <MyAnimePageList
-                  animes={PlanningResult?.data?.allUserAnimes?.nodes}
-                />
-              )}
+
+              {/* "You aren't planning to watch any anime..." */}
+              <MyAnimePageList
+                watchingStatus={WatchingStatusEnum.PlanToWatch}
+              />
             </Box>
           </TabPanel>
           <TabPanel>
             <Box m={5}>
               <Heading>Completed</Heading>
-              {CompletedResult?.data?.allUserAnimes?.nodes.length === 0 ? (
-                "You don't have any completed anime..."
-              ) : (
-                <MyAnimePageList
-                  animes={CompletedResult?.data?.allUserAnimes?.nodes}
-                />
-              )}
+
+              {/* "You don't have any completed anime..." */}
+
+              <MyAnimePageList watchingStatus={WatchingStatusEnum.Completed} />
             </Box>
           </TabPanel>
         </TabPanels>
         <TabPanel>2</TabPanel>
       </Tabs>
-      {/* <Box m={5}>
-        <Heading>My Animes Page</Heading>
-        <Box>
-          <WeeklyGrid />
-        </Box>
-        <MyAnimePageList animes={UserResult?.data?.user?.userAnimes?.nodes} />
-      </Box> */}
     </Box>
   );
 };

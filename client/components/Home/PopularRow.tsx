@@ -1,26 +1,9 @@
 import HorizontalScroll from "@/components/Home/HorizontalScroll";
-import { Heading, Box } from "@chakra-ui/react";
-import { useQuery } from "urql";
-
-const HIGHEST_RATED_ANIMES = `
-  query HighestRatedAnimes($limit: Int!) {
-    allAnimesTiles(first: $limit) {
-      nodes {
-        id
-        title
-        url
-        season
-        averageWatcherRating
-        airingStatusType
-        likes
-      }
-    }
-  }
-`;
+import { useHighestRatedAnimesQuery } from "@/graphql";
+import { Box, Heading } from "@chakra-ui/react";
 
 const PopularRow = () => {
-  const [highestRatedResult, queryHighestRated] = useQuery({
-    query: HIGHEST_RATED_ANIMES,
+  const [highestRatedResult, queryHighestRated] = useHighestRatedAnimesQuery({
     variables: { limit: 30 },
   });
 

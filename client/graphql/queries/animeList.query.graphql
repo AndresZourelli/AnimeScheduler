@@ -6,3 +6,57 @@ query AnimeListQuery($userId: String!) {
     }
   }
 }
+
+query CurrentlyAiringContinued($limit: Int!, $currentSeason: String!) {
+  allAnimesTiles(
+    first: $limit
+    filter: {
+      airingStatusType: { equalTo: "Currently Airing" }
+      and: { season: { notEqualTo: $currentSeason } }
+    }
+  ) {
+    nodes {
+      id
+      title
+      url
+      season
+      averageWatcherRating
+      airingStatusType
+      likes
+    }
+  }
+}
+
+query CurrentlyAiring($limit: Int!, $currentSeason: String!) {
+  allAnimesTiles(
+    first: $limit
+    filter: {
+      airingStatusType: { equalTo: "Currently Airing" }
+      and: { season: { equalTo: $currentSeason } }
+    }
+  ) {
+    nodes {
+      id
+      title
+      url
+      season
+      averageWatcherRating
+      airingStatusType
+      likes
+    }
+  }
+}
+
+query HighestRatedAnimes($limit: Int!) {
+  allAnimesTiles(first: $limit) {
+    nodes {
+      id
+      title
+      url
+      season
+      averageWatcherRating
+      airingStatusType
+      likes
+    }
+  }
+}

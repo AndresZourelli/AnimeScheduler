@@ -50,8 +50,16 @@ const SEARCH_FOR_ANIME = `
     }
   }
 `;
-
+interface Search {
+  variables?: Variable;
+}
+interface Variable {
+  SearchInput: string;
+  PageInput: number;
+  LimitInput: number;
+}
 const Nav = () => {
+  const [searchAnimes, setSearchAnimes] = useState<Search>({});
   const [search, setSearch] = useState("");
   const [openPopover, setOpenPopover] = useState(false);
 
@@ -104,7 +112,7 @@ const Nav = () => {
   };
 
   const updateQuery = () => {
-    searchAnimes({
+    setSearchAnimes({
       variables: { SearchInput: search, PageInput: 1, LimitInput: 6 },
     });
     setOpenPopover(true);
@@ -154,7 +162,7 @@ const Nav = () => {
             onClose={onPopoverClose}
             placement="bottom"
             autoFocus={false}
-            gutter="0"
+            gutter={0}
           >
             <PopoverTrigger>
               <InputGroup>
@@ -221,6 +229,7 @@ const Nav = () => {
         <Box>
           {buttons}
           <IconButton
+            aria-label="color mode button"
             onClick={toggleColorMode}
             icon={colorMode === "light" ? <MoonIcon /> : <SunIcon />}
           />
@@ -234,7 +243,7 @@ const Nav = () => {
           <NextLink href="/">
             <Link mr="4">Home</Link>
           </NextLink>
-          <NextLink Link href="/Anime">
+          <NextLink href="/Anime">
             <Link mr="4">Animé</Link>
           </NextLink>
           {signedIn ? (

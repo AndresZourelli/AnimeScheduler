@@ -1,0 +1,71 @@
+query Watching($watchingStatus: WatchingStatusEnum) {
+  allUserAnimes(condition: { watchingStatus: $watchingStatus }) {
+    nodes {
+      id
+      listId
+      listName
+      title
+      url
+      watchingStatus
+    }
+  }
+}
+
+query UserWatchingLists($watchingStatus: WatchingStatusEnum) {
+  userAnimeLists {
+    nodes {
+      animeList {
+        id
+        title
+        userAnimeLists(condition: { watchingStatus: $watchingStatus }) {
+          nodes {
+            anime {
+              title
+              id
+            }
+          }
+        }
+      }
+      watchingStatus
+    }
+  }
+}
+
+query CurrentlyWatching {
+  allUserAnimes(condition: { watchingStatus: WATCHING }) {
+    nodes {
+      id
+      listId
+      listName
+      title
+      url
+      watchingStatus
+    }
+  }
+}
+
+query PlanToWatch {
+  allUserAnimes(condition: { watchingStatus: PLAN_TO_WATCH }) {
+    nodes {
+      id
+      listId
+      listName
+      title
+      url
+      watchingStatus
+    }
+  }
+}
+
+query PlanToWatchCompleted {
+  allUserAnimes(condition: { watchingStatus: COMPLETED }) {
+    nodes {
+      id
+      listId
+      listName
+      title
+      url
+      watchingStatus
+    }
+  }
+}

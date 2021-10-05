@@ -57,6 +57,7 @@
     "postgraphile": "^4.12.3",
     "postgraphile-plugin-connection-filter": "^2.2.2",
     "postgraphile-remove-foreign-key-fields-plugin": "^1.2.0",
+    "postgraphile-upsert-plugin": "^2.1.0",
     "uuid": "^8.3.2",
     "yup": "^0.32.9"
   }

@@ -1,46 +1,10 @@
-import { useEffect, useState } from "react";
-import { useMutation, useQuery, gql } from "urql";
-import { useAuth } from "@/lib/Auth/FirebaseAuth";
 import {
   useAddAnimeToUserAnimeListMutation,
-  useDeleteAnimeFromListMutation,
   useAnimeListQueryQuery,
+  useDeleteAnimeFromListMutation,
 } from "@/graphql";
-
-const ADD_ANIME_TO_USER = gql`
-  mutation AddAnimeToUserAnimeList($animeListId: UUID!, $animeId: UUID!) {
-    createUserAnimeList(
-      input: { userAnimeList: { animeListId: $animeListId, animeId: $animeId } }
-    ) {
-      animeList {
-        id
-      }
-    }
-  }
-`;
-
-const GET_USER_ANIME_LISTS = gql`
-  query AnimeListQuery($userId: String!) {
-    animeLists(condition: { userId: $userId }) {
-      nodes {
-        title
-        id
-      }
-    }
-  }
-`;
-
-const REMOVE_ANIME_TO_USER = gql`
-  mutation DeleteAnimeFromList($animeListId: UUID!, $animeId: UUID!) {
-    deleteUserAnimeListByAnimeListIdAndAnimeId(
-      input: { animeListId: $animeListId, animeId: $animeId }
-    ) {
-      animeList {
-        id
-      }
-    }
-  }
-`;
+import { useAuth } from "@/lib/Auth/FirebaseAuth";
+import { useEffect, useState } from "react";
 
 const useAnimeList = () => {
   const { user } = useAuth();

@@ -1,25 +1,24 @@
 import {
   Box,
+  Button,
+  CloseButton,
   Flex,
   FormControl,
-  FormLabel,
   FormErrorMessage,
-  FormHelperText,
-  Input,
-  Button,
+  FormLabel,
   Heading,
-  Select,
-  InputRightElement,
+  Input,
   InputGroup,
-  CloseButton,
+  InputRightElement,
+  NumberDecrementStepper,
+  NumberIncrementStepper,
   NumberInput,
   NumberInputField,
   NumberInputStepper,
-  NumberIncrementStepper,
-  NumberDecrementStepper,
+  Select,
   Text,
 } from "@chakra-ui/react";
-import { FieldArray, Field, getIn } from "formik";
+import { Field, FieldArray, getIn } from "formik";
 import moment from "moment";
 
 const GeneralInfoTab = ({

@@ -2,12 +2,10 @@ import { AddIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
-  CloseButton,
   Flex,
   FormControl,
   FormLabel,
   Input,
-  InputRightElement,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -15,10 +13,7 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Text,
-  Textarea,
   useDisclosure,
-  Checkbox,
 } from "@chakra-ui/react";
 import { useState } from "react";
 

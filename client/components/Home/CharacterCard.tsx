@@ -1,6 +1,6 @@
-import { Box, Heading, Text, HStack, Stack } from "@chakra-ui/react";
-import NextLink from "next/link";
 import ImageLoader from "@/components/Common/ImageLoader";
+import { Box, HStack, Stack, Text } from "@chakra-ui/react";
+import NextLink from "next/link";
 
 const CharacterCard = ({ character, role, actor, language }) => {
   return (

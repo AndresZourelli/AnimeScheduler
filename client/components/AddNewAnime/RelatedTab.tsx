@@ -9,13 +9,16 @@ const CharacterTab = ({
   handleChange,
   inputSpacingCommon,
   setFieldValue,
+  push,
 }) => {
   return (
     <>
       <InfoSearchTab
+        newItem={null}
         values={values}
         setFieldValue={setFieldValue}
         placeholder="Search For Existing Media"
+        push={push}
       />
       <Heading>Added Related Material</Heading>
       <Flex wrap="wrap">

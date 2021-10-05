@@ -1,25 +1,21 @@
-import { v4 as uuidv4 } from "uuid";
-import { useState, useEffect } from "react";
-
+import CharacterCard from "@/components/Home/CharacterCard";
+import StaffCard from "@/components/Home/StaffCard";
 import {
-  Spinner,
   Box,
+  Button,
+  Divider,
+  Flex,
+  Grid,
   Heading,
   Tag,
   TagLabel,
-  Flex,
   Text,
-  Button,
-  Divider,
-  HStack,
-  Grid,
 } from "@chakra-ui/react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGripfire } from "@fortawesome/free-brands-svg-icons";
 import { faEye } from "@fortawesome/free-regular-svg-icons";
-import CharacterCard from "@/components/Home/CharacterCard";
-import ActorCard from "@/components/Home/ActorCard";
-import StaffCard from "@/components/Home/StaffCard";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useEffect, useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 
 const AnimePageMain = ({
   title,

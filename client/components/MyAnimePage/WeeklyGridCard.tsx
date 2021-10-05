@@ -1,25 +1,22 @@
+import CountDownTimer from "@/components/Common/CountDown";
+import ImageLoader from "@/components/Common/ImageLoader";
+import PopupMenuButton from "@/components/Common/PopupMenuButton";
+import useAnimeList from "@/components/Hooks/useAnimeList";
 import {
+  Badge,
   Box,
+  Center,
   Flex,
+  Grid,
   Heading,
+  IconButton,
+  Spacer,
+  Tag,
   Text,
   VStack,
-  Tag,
-  useDisclosure,
-  Badge,
-  Spacer,
-  Center,
-  Grid,
-  GridItem,
-  IconButton,
 } from "@chakra-ui/react";
 import NextLink from "next/link";
-import { useState } from "react";
-import { BsEye, BsEyeSlash, BsPlus, BsX, BsXCircle } from "react-icons/bs";
-import ImageLoader from "@/components/Common/ImageLoader";
-import CountDownTimer from "@/components/Common/CountDown";
-import useAnimeList from "@/components/Hooks/useAnimeList";
-import PopupMenuButton from "@/components/Common/PopupMenuButton";
+import { BsPlus, BsX } from "react-icons/bs";
 
 const tagColors = [
   "whiteAlpha",

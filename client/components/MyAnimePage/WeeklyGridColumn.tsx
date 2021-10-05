@@ -1,5 +1,5 @@
-import { GridItem, Heading, Box } from "@chakra-ui/react";
 import WeeklyGridCard from "@/components/MyAnimePage/WeeklyGridCard";
+import { Box, Heading } from "@chakra-ui/react";
 import moment from "moment";
 
 const WeeklyGridColumn = ({ index, anime }) => {

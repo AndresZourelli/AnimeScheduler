@@ -6604,6 +6604,68 @@ export type Mutation = {
   updateUserAnimeListByAnimeListIdAndAnimeId?: Maybe<UpdateUserAnimeListPayload>;
   /** Updates a single `User` using its globally unique id and a patch. */
   updateUserByNodeId?: Maybe<UpdateUserPayload>;
+  /** Upserts a single `AgeRatingType`. */
+  upsertAgeRatingType?: Maybe<UpsertAgeRatingTypePayload>;
+  /** Upserts a single `AiringStatusType`. */
+  upsertAiringStatusType?: Maybe<UpsertAiringStatusTypePayload>;
+  /** Upserts a single `AlternateAnimeName`. */
+  upsertAlternateAnimeName?: Maybe<UpsertAlternateAnimeNamePayload>;
+  /** Upserts a single `Anime`. */
+  upsertAnime?: Maybe<UpsertAnimePayload>;
+  /** Upserts a single `AnimeCharacter`. */
+  upsertAnimeCharacter?: Maybe<UpsertAnimeCharacterPayload>;
+  /** Upserts a single `AnimeGenre`. */
+  upsertAnimeGenre?: Maybe<UpsertAnimeGenrePayload>;
+  /** Upserts a single `AnimeImage`. */
+  upsertAnimeImage?: Maybe<UpsertAnimeImagePayload>;
+  /** Upserts a single `AnimeLicensor`. */
+  upsertAnimeLicensor?: Maybe<UpsertAnimeLicensorPayload>;
+  /** Upserts a single `AnimeList`. */
+  upsertAnimeList?: Maybe<UpsertAnimeListPayload>;
+  /** Upserts a single `AnimeProducer`. */
+  upsertAnimeProducer?: Maybe<UpsertAnimeProducerPayload>;
+  /** Upserts a single `AnimeStaff`. */
+  upsertAnimeStaff?: Maybe<UpsertAnimeStaffPayload>;
+  /** Upserts a single `AnimeStudio`. */
+  upsertAnimeStudio?: Maybe<UpsertAnimeStudioPayload>;
+  /** Upserts a single `AnimeUserScore`. */
+  upsertAnimeUserScore?: Maybe<UpsertAnimeUserScorePayload>;
+  /** Upserts a single `Character`. */
+  upsertCharacter?: Maybe<UpsertCharacterPayload>;
+  /** Upserts a single `CharacterImage`. */
+  upsertCharacterImage?: Maybe<UpsertCharacterImagePayload>;
+  /** Upserts a single `CharacterRole`. */
+  upsertCharacterRole?: Maybe<UpsertCharacterRolePayload>;
+  /** Upserts a single `Genre`. */
+  upsertGenre?: Maybe<UpsertGenrePayload>;
+  /** Upserts a single `Image`. */
+  upsertImage?: Maybe<UpsertImagePayload>;
+  /** Upserts a single `Language`. */
+  upsertLanguage?: Maybe<UpsertLanguagePayload>;
+  /** Upserts a single `Licensor`. */
+  upsertLicensor?: Maybe<UpsertLicensorPayload>;
+  /** Upserts a single `MediaType`. */
+  upsertMediaType?: Maybe<UpsertMediaTypePayload>;
+  /** Upserts a single `Person`. */
+  upsertPerson?: Maybe<UpsertPersonPayload>;
+  /** Upserts a single `PersonImage`. */
+  upsertPersonImage?: Maybe<UpsertPersonImagePayload>;
+  /** Upserts a single `Producer`. */
+  upsertProducer?: Maybe<UpsertProducerPayload>;
+  /** Upserts a single `Season`. */
+  upsertSeason?: Maybe<UpsertSeasonPayload>;
+  /** Upserts a single `SourceMaterialType`. */
+  upsertSourceMaterialType?: Maybe<UpsertSourceMaterialTypePayload>;
+  /** Upserts a single `StaffRole`. */
+  upsertStaffRole?: Maybe<UpsertStaffRolePayload>;
+  /** Upserts a single `Studio`. */
+  upsertStudio?: Maybe<UpsertStudioPayload>;
+  /** Upserts a single `User`. */
+  upsertUser?: Maybe<UpsertUserPayload>;
+  /** Upserts a single `UserAnime`. */
+  upsertUserAnime?: Maybe<UpsertUserAnimePayload>;
+  /** Upserts a single `UserAnimeList`. */
+  upsertUserAnimeList?: Maybe<UpsertUserAnimeListPayload>;
 };
 
 
@@ -7708,6 +7770,223 @@ export type MutationUpdateUserAnimeListByAnimeListIdAndAnimeIdArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpdateUserByNodeIdArgs = {
   input: UpdateUserByNodeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpsertAgeRatingTypeArgs = {
+  input: UpsertAgeRatingTypeInput;
+  where?: Maybe<UpsertAgeRatingTypeWhere>;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpsertAiringStatusTypeArgs = {
+  input: UpsertAiringStatusTypeInput;
+  where?: Maybe<UpsertAiringStatusTypeWhere>;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpsertAlternateAnimeNameArgs = {
+  input: UpsertAlternateAnimeNameInput;
+  where?: Maybe<UpsertAlternateAnimeNameWhere>;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpsertAnimeArgs = {
+  input: UpsertAnimeInput;
+  where?: Maybe<UpsertAnimeWhere>;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpsertAnimeCharacterArgs = {
+  input: UpsertAnimeCharacterInput;
+  where?: Maybe<UpsertAnimeCharacterWhere>;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpsertAnimeGenreArgs = {
+  input: UpsertAnimeGenreInput;
+  where?: Maybe<UpsertAnimeGenreWhere>;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpsertAnimeImageArgs = {
+  input: UpsertAnimeImageInput;
+  where?: Maybe<UpsertAnimeImageWhere>;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpsertAnimeLicensorArgs = {
+  input: UpsertAnimeLicensorInput;
+  where?: Maybe<UpsertAnimeLicensorWhere>;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpsertAnimeListArgs = {
+  input: UpsertAnimeListInput;
+  where?: Maybe<UpsertAnimeListWhere>;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpsertAnimeProducerArgs = {
+  input: UpsertAnimeProducerInput;
+  where?: Maybe<UpsertAnimeProducerWhere>;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpsertAnimeStaffArgs = {
+  input: UpsertAnimeStaffInput;
+  where?: Maybe<UpsertAnimeStaffWhere>;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpsertAnimeStudioArgs = {
+  input: UpsertAnimeStudioInput;
+  where?: Maybe<UpsertAnimeStudioWhere>;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpsertAnimeUserScoreArgs = {
+  input: UpsertAnimeUserScoreInput;
+  where?: Maybe<UpsertAnimeUserScoreWhere>;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpsertCharacterArgs = {
+  input: UpsertCharacterInput;
+  where?: Maybe<UpsertCharacterWhere>;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpsertCharacterImageArgs = {
+  input: UpsertCharacterImageInput;
+  where?: Maybe<UpsertCharacterImageWhere>;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpsertCharacterRoleArgs = {
+  input: UpsertCharacterRoleInput;
+  where?: Maybe<UpsertCharacterRoleWhere>;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpsertGenreArgs = {
+  input: UpsertGenreInput;
+  where?: Maybe<UpsertGenreWhere>;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpsertImageArgs = {
+  input: UpsertImageInput;
+  where?: Maybe<UpsertImageWhere>;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpsertLanguageArgs = {
+  input: UpsertLanguageInput;
+  where?: Maybe<UpsertLanguageWhere>;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpsertLicensorArgs = {
+  input: UpsertLicensorInput;
+  where?: Maybe<UpsertLicensorWhere>;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpsertMediaTypeArgs = {
+  input: UpsertMediaTypeInput;
+  where?: Maybe<UpsertMediaTypeWhere>;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpsertPersonArgs = {
+  input: UpsertPersonInput;
+  where?: Maybe<UpsertPersonWhere>;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpsertPersonImageArgs = {
+  input: UpsertPersonImageInput;
+  where?: Maybe<UpsertPersonImageWhere>;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpsertProducerArgs = {
+  input: UpsertProducerInput;
+  where?: Maybe<UpsertProducerWhere>;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpsertSeasonArgs = {
+  input: UpsertSeasonInput;
+  where?: Maybe<UpsertSeasonWhere>;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpsertSourceMaterialTypeArgs = {
+  input: UpsertSourceMaterialTypeInput;
+  where?: Maybe<UpsertSourceMaterialTypeWhere>;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpsertStaffRoleArgs = {
+  input: UpsertStaffRoleInput;
+  where?: Maybe<UpsertStaffRoleWhere>;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpsertStudioArgs = {
+  input: UpsertStudioInput;
+  where?: Maybe<UpsertStudioWhere>;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpsertUserArgs = {
+  input: UpsertUserInput;
+  where?: Maybe<UpsertUserWhere>;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpsertUserAnimeArgs = {
+  input: UpsertUserAnimeInput;
+  where?: Maybe<UpsertUserAnimeWhere>;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpsertUserAnimeListArgs = {
+  input: UpsertUserAnimeListInput;
+  where?: Maybe<UpsertUserAnimeListWhere>;
 };
 
 /** An object with a globally unique `ID`. */
@@ -11606,6 +11885,1106 @@ export type UpdateUserPayloadUserEdgeArgs = {
   orderBy?: Maybe<Array<UsersOrderBy>>;
 };
 
+/** All input for the upsert `AgeRatingType` mutation. */
+export type UpsertAgeRatingTypeInput = {
+  /** The `AgeRatingType` to be upserted by this mutation. */
+  ageRatingType: AgeRatingTypeInput;
+  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
+  clientMutationId?: Maybe<Scalars['String']>;
+};
+
+/** The output of our upsert `AgeRatingType` mutation. */
+export type UpsertAgeRatingTypePayload = {
+  __typename?: 'UpsertAgeRatingTypePayload';
+  /** The `AgeRatingType` that was upserted by this mutation. */
+  ageRatingType?: Maybe<AgeRatingType>;
+  /** An edge for our `AgeRatingType`. May be used by Relay 1. */
+  ageRatingTypeEdge?: Maybe<AgeRatingTypesEdge>;
+  /** The exact same `clientMutationId` that was provided in the mutation input, unchanged and unused. May be used by a client to track mutations. */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
+
+/** The output of our upsert `AgeRatingType` mutation. */
+export type UpsertAgeRatingTypePayloadAgeRatingTypeEdgeArgs = {
+  orderBy?: Maybe<Array<AgeRatingTypesOrderBy>>;
+};
+
+/** Where conditions for the upsert `AgeRatingType` mutation. */
+export type UpsertAgeRatingTypeWhere = {
+  ageRatingType?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['UUID']>;
+};
+
+/** All input for the upsert `AiringStatusType` mutation. */
+export type UpsertAiringStatusTypeInput = {
+  /** The `AiringStatusType` to be upserted by this mutation. */
+  airingStatusType: AiringStatusTypeInput;
+  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
+  clientMutationId?: Maybe<Scalars['String']>;
+};
+
+/** The output of our upsert `AiringStatusType` mutation. */
+export type UpsertAiringStatusTypePayload = {
+  __typename?: 'UpsertAiringStatusTypePayload';
+  /** The `AiringStatusType` that was upserted by this mutation. */
+  airingStatusType?: Maybe<AiringStatusType>;
+  /** An edge for our `AiringStatusType`. May be used by Relay 1. */
+  airingStatusTypeEdge?: Maybe<AiringStatusTypesEdge>;
+  /** The exact same `clientMutationId` that was provided in the mutation input, unchanged and unused. May be used by a client to track mutations. */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
+
+/** The output of our upsert `AiringStatusType` mutation. */
+export type UpsertAiringStatusTypePayloadAiringStatusTypeEdgeArgs = {
+  orderBy?: Maybe<Array<AiringStatusTypesOrderBy>>;
+};
+
+/** Where conditions for the upsert `AiringStatusType` mutation. */
+export type UpsertAiringStatusTypeWhere = {
+  airingStatusType?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['UUID']>;
+};
+
+/** All input for the upsert `AlternateAnimeName` mutation. */
+export type UpsertAlternateAnimeNameInput = {
+  /** The `AlternateAnimeName` to be upserted by this mutation. */
+  alternateAnimeName: AlternateAnimeNameInput;
+  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
+  clientMutationId?: Maybe<Scalars['String']>;
+};
+
+/** The output of our upsert `AlternateAnimeName` mutation. */
+export type UpsertAlternateAnimeNamePayload = {
+  __typename?: 'UpsertAlternateAnimeNamePayload';
+  /** The `AlternateAnimeName` that was upserted by this mutation. */
+  alternateAnimeName?: Maybe<AlternateAnimeName>;
+  /** An edge for our `AlternateAnimeName`. May be used by Relay 1. */
+  alternateAnimeNameEdge?: Maybe<AlternateAnimeNamesEdge>;
+  /** Reads a single `Anime` that is related to this `AlternateAnimeName`. */
+  anime?: Maybe<Anime>;
+  /** The exact same `clientMutationId` that was provided in the mutation input, unchanged and unused. May be used by a client to track mutations. */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
+
+/** The output of our upsert `AlternateAnimeName` mutation. */
+export type UpsertAlternateAnimeNamePayloadAlternateAnimeNameEdgeArgs = {
+  orderBy?: Maybe<Array<AlternateAnimeNamesOrderBy>>;
+};
+
+/** Where conditions for the upsert `AlternateAnimeName` mutation. */
+export type UpsertAlternateAnimeNameWhere = {
+  id?: Maybe<Scalars['UUID']>;
+};
+
+/** All input for the upsert `AnimeCharacter` mutation. */
+export type UpsertAnimeCharacterInput = {
+  /** The `AnimeCharacter` to be upserted by this mutation. */
+  animeCharacter: AnimeCharacterInput;
+  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
+  clientMutationId?: Maybe<Scalars['String']>;
+};
+
+/** The output of our upsert `AnimeCharacter` mutation. */
+export type UpsertAnimeCharacterPayload = {
+  __typename?: 'UpsertAnimeCharacterPayload';
+  /** Reads a single `Anime` that is related to this `AnimeCharacter`. */
+  anime?: Maybe<Anime>;
+  /** The `AnimeCharacter` that was upserted by this mutation. */
+  animeCharacter?: Maybe<AnimeCharacter>;
+  /** An edge for our `AnimeCharacter`. May be used by Relay 1. */
+  animeCharacterEdge?: Maybe<AnimeCharactersEdge>;
+  /** Reads a single `Character` that is related to this `AnimeCharacter`. */
+  character?: Maybe<Character>;
+  /** Reads a single `CharacterRole` that is related to this `AnimeCharacter`. */
+  characterRole?: Maybe<CharacterRole>;
+  /** The exact same `clientMutationId` that was provided in the mutation input, unchanged and unused. May be used by a client to track mutations. */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Reads a single `Language` that is related to this `AnimeCharacter`. */
+  language?: Maybe<Language>;
+  /** Reads a single `Person` that is related to this `AnimeCharacter`. */
+  person?: Maybe<Person>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
+
+/** The output of our upsert `AnimeCharacter` mutation. */
+export type UpsertAnimeCharacterPayloadAnimeCharacterEdgeArgs = {
+  orderBy?: Maybe<Array<AnimeCharactersOrderBy>>;
+};
+
+/** Where conditions for the upsert `AnimeCharacter` mutation. */
+export type UpsertAnimeCharacterWhere = {
+  animeId?: Maybe<Scalars['UUID']>;
+  characterId?: Maybe<Scalars['UUID']>;
+  languageId?: Maybe<Scalars['UUID']>;
+  personId?: Maybe<Scalars['UUID']>;
+};
+
+/** All input for the upsert `AnimeGenre` mutation. */
+export type UpsertAnimeGenreInput = {
+  /** The `AnimeGenre` to be upserted by this mutation. */
+  animeGenre: AnimeGenreInput;
+  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
+  clientMutationId?: Maybe<Scalars['String']>;
+};
+
+/** The output of our upsert `AnimeGenre` mutation. */
+export type UpsertAnimeGenrePayload = {
+  __typename?: 'UpsertAnimeGenrePayload';
+  /** Reads a single `Anime` that is related to this `AnimeGenre`. */
+  anime?: Maybe<Anime>;
+  /** The `AnimeGenre` that was upserted by this mutation. */
+  animeGenre?: Maybe<AnimeGenre>;
+  /** An edge for our `AnimeGenre`. May be used by Relay 1. */
+  animeGenreEdge?: Maybe<AnimeGenresEdge>;
+  /** The exact same `clientMutationId` that was provided in the mutation input, unchanged and unused. May be used by a client to track mutations. */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Reads a single `Genre` that is related to this `AnimeGenre`. */
+  genre?: Maybe<Genre>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
+
+/** The output of our upsert `AnimeGenre` mutation. */
+export type UpsertAnimeGenrePayloadAnimeGenreEdgeArgs = {
+  orderBy?: Maybe<Array<AnimeGenresOrderBy>>;
+};
+
+/** Where conditions for the upsert `AnimeGenre` mutation. */
+export type UpsertAnimeGenreWhere = {
+  animeId?: Maybe<Scalars['UUID']>;
+  genreId?: Maybe<Scalars['UUID']>;
+};
+
+/** All input for the upsert `AnimeImage` mutation. */
+export type UpsertAnimeImageInput = {
+  /** The `AnimeImage` to be upserted by this mutation. */
+  animeImage: AnimeImageInput;
+  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
+  clientMutationId?: Maybe<Scalars['String']>;
+};
+
+/** The output of our upsert `AnimeImage` mutation. */
+export type UpsertAnimeImagePayload = {
+  __typename?: 'UpsertAnimeImagePayload';
+  /** Reads a single `Anime` that is related to this `AnimeImage`. */
+  anime?: Maybe<Anime>;
+  /** The `AnimeImage` that was upserted by this mutation. */
+  animeImage?: Maybe<AnimeImage>;
+  /** An edge for our `AnimeImage`. May be used by Relay 1. */
+  animeImageEdge?: Maybe<AnimeImagesEdge>;
+  /** The exact same `clientMutationId` that was provided in the mutation input, unchanged and unused. May be used by a client to track mutations. */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Reads a single `Image` that is related to this `AnimeImage`. */
+  image?: Maybe<Image>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
+
+/** The output of our upsert `AnimeImage` mutation. */
+export type UpsertAnimeImagePayloadAnimeImageEdgeArgs = {
+  orderBy?: Maybe<Array<AnimeImagesOrderBy>>;
+};
+
+/** Where conditions for the upsert `AnimeImage` mutation. */
+export type UpsertAnimeImageWhere = {
+  animeId?: Maybe<Scalars['UUID']>;
+  imageId?: Maybe<Scalars['UUID']>;
+};
+
+/** All input for the upsert `Anime` mutation. */
+export type UpsertAnimeInput = {
+  /** The `Anime` to be upserted by this mutation. */
+  anime: AnimeInput;
+  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
+  clientMutationId?: Maybe<Scalars['String']>;
+};
+
+/** All input for the upsert `AnimeLicensor` mutation. */
+export type UpsertAnimeLicensorInput = {
+  /** The `AnimeLicensor` to be upserted by this mutation. */
+  animeLicensor: AnimeLicensorInput;
+  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
+  clientMutationId?: Maybe<Scalars['String']>;
+};
+
+/** The output of our upsert `AnimeLicensor` mutation. */
+export type UpsertAnimeLicensorPayload = {
+  __typename?: 'UpsertAnimeLicensorPayload';
+  /** Reads a single `Anime` that is related to this `AnimeLicensor`. */
+  anime?: Maybe<Anime>;
+  /** The `AnimeLicensor` that was upserted by this mutation. */
+  animeLicensor?: Maybe<AnimeLicensor>;
+  /** An edge for our `AnimeLicensor`. May be used by Relay 1. */
+  animeLicensorEdge?: Maybe<AnimeLicensorsEdge>;
+  /** The exact same `clientMutationId` that was provided in the mutation input, unchanged and unused. May be used by a client to track mutations. */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Reads a single `Licensor` that is related to this `AnimeLicensor`. */
+  licensor?: Maybe<Licensor>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
+
+/** The output of our upsert `AnimeLicensor` mutation. */
+export type UpsertAnimeLicensorPayloadAnimeLicensorEdgeArgs = {
+  orderBy?: Maybe<Array<AnimeLicensorsOrderBy>>;
+};
+
+/** Where conditions for the upsert `AnimeLicensor` mutation. */
+export type UpsertAnimeLicensorWhere = {
+  animeId?: Maybe<Scalars['UUID']>;
+  licensorId?: Maybe<Scalars['UUID']>;
+};
+
+/** All input for the upsert `AnimeList` mutation. */
+export type UpsertAnimeListInput = {
+  /** The `AnimeList` to be upserted by this mutation. */
+  animeList: AnimeListInput;
+  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
+  clientMutationId?: Maybe<Scalars['String']>;
+};
+
+/** The output of our upsert `AnimeList` mutation. */
+export type UpsertAnimeListPayload = {
+  __typename?: 'UpsertAnimeListPayload';
+  /** The `AnimeList` that was upserted by this mutation. */
+  animeList?: Maybe<AnimeList>;
+  /** An edge for our `AnimeList`. May be used by Relay 1. */
+  animeListEdge?: Maybe<AnimeListsEdge>;
+  /** The exact same `clientMutationId` that was provided in the mutation input, unchanged and unused. May be used by a client to track mutations. */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** Reads a single `User` that is related to this `AnimeList`. */
+  user?: Maybe<User>;
+};
+
+
+/** The output of our upsert `AnimeList` mutation. */
+export type UpsertAnimeListPayloadAnimeListEdgeArgs = {
+  orderBy?: Maybe<Array<AnimeListsOrderBy>>;
+};
+
+/** Where conditions for the upsert `AnimeList` mutation. */
+export type UpsertAnimeListWhere = {
+  id?: Maybe<Scalars['UUID']>;
+  title?: Maybe<Scalars['String']>;
+  userId?: Maybe<Scalars['String']>;
+};
+
+/** The output of our upsert `Anime` mutation. */
+export type UpsertAnimePayload = {
+  __typename?: 'UpsertAnimePayload';
+  /** Reads a single `AgeRatingType` that is related to this `Anime`. */
+  ageRating?: Maybe<AgeRatingType>;
+  /** Reads a single `AiringStatusType` that is related to this `Anime`. */
+  airingStatus?: Maybe<AiringStatusType>;
+  /** The `Anime` that was upserted by this mutation. */
+  anime?: Maybe<Anime>;
+  /** An edge for our `Anime`. May be used by Relay 1. */
+  animeEdge?: Maybe<AnimeEdge>;
+  /** The exact same `clientMutationId` that was provided in the mutation input, unchanged and unused. May be used by a client to track mutations. */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Reads a single `MediaType` that is related to this `Anime`. */
+  mediaType?: Maybe<MediaType>;
+  /** Reads a single `Image` that is related to this `Anime`. */
+  profileImage?: Maybe<Image>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** Reads a single `Season` that is related to this `Anime`. */
+  season?: Maybe<Season>;
+  /** Reads a single `SourceMaterialType` that is related to this `Anime`. */
+  sourceMaterial?: Maybe<SourceMaterialType>;
+};
+
+
+/** The output of our upsert `Anime` mutation. */
+export type UpsertAnimePayloadAnimeEdgeArgs = {
+  orderBy?: Maybe<Array<AnimeOrderBy>>;
+};
+
+/** All input for the upsert `AnimeProducer` mutation. */
+export type UpsertAnimeProducerInput = {
+  /** The `AnimeProducer` to be upserted by this mutation. */
+  animeProducer: AnimeProducerInput;
+  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
+  clientMutationId?: Maybe<Scalars['String']>;
+};
+
+/** The output of our upsert `AnimeProducer` mutation. */
+export type UpsertAnimeProducerPayload = {
+  __typename?: 'UpsertAnimeProducerPayload';
+  /** Reads a single `Anime` that is related to this `AnimeProducer`. */
+  anime?: Maybe<Anime>;
+  /** The `AnimeProducer` that was upserted by this mutation. */
+  animeProducer?: Maybe<AnimeProducer>;
+  /** An edge for our `AnimeProducer`. May be used by Relay 1. */
+  animeProducerEdge?: Maybe<AnimeProducersEdge>;
+  /** The exact same `clientMutationId` that was provided in the mutation input, unchanged and unused. May be used by a client to track mutations. */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Reads a single `Producer` that is related to this `AnimeProducer`. */
+  producer?: Maybe<Producer>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
+
+/** The output of our upsert `AnimeProducer` mutation. */
+export type UpsertAnimeProducerPayloadAnimeProducerEdgeArgs = {
+  orderBy?: Maybe<Array<AnimeProducersOrderBy>>;
+};
+
+/** Where conditions for the upsert `AnimeProducer` mutation. */
+export type UpsertAnimeProducerWhere = {
+  animeId?: Maybe<Scalars['UUID']>;
+  producerId?: Maybe<Scalars['UUID']>;
+};
+
+/** All input for the upsert `AnimeStaff` mutation. */
+export type UpsertAnimeStaffInput = {
+  /** The `AnimeStaff` to be upserted by this mutation. */
+  animeStaff: AnimeStaffInput;
+  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
+  clientMutationId?: Maybe<Scalars['String']>;
+};
+
+/** The output of our upsert `AnimeStaff` mutation. */
+export type UpsertAnimeStaffPayload = {
+  __typename?: 'UpsertAnimeStaffPayload';
+  /** Reads a single `Anime` that is related to this `AnimeStaff`. */
+  anime?: Maybe<Anime>;
+  /** The `AnimeStaff` that was upserted by this mutation. */
+  animeStaff?: Maybe<AnimeStaff>;
+  /** An edge for our `AnimeStaff`. May be used by Relay 1. */
+  animeStaffEdge?: Maybe<AnimeStaffEdge>;
+  /** The exact same `clientMutationId` that was provided in the mutation input, unchanged and unused. May be used by a client to track mutations. */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Reads a single `Person` that is related to this `AnimeStaff`. */
+  person?: Maybe<Person>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** Reads a single `StaffRole` that is related to this `AnimeStaff`. */
+  staffRole?: Maybe<StaffRole>;
+};
+
+
+/** The output of our upsert `AnimeStaff` mutation. */
+export type UpsertAnimeStaffPayloadAnimeStaffEdgeArgs = {
+  orderBy?: Maybe<Array<AnimeStaffOrderBy>>;
+};
+
+/** Where conditions for the upsert `AnimeStaff` mutation. */
+export type UpsertAnimeStaffWhere = {
+  animeId?: Maybe<Scalars['UUID']>;
+  personId?: Maybe<Scalars['UUID']>;
+  staffRoleId?: Maybe<Scalars['UUID']>;
+};
+
+/** All input for the upsert `AnimeStudio` mutation. */
+export type UpsertAnimeStudioInput = {
+  /** The `AnimeStudio` to be upserted by this mutation. */
+  animeStudio: AnimeStudioInput;
+  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
+  clientMutationId?: Maybe<Scalars['String']>;
+};
+
+/** The output of our upsert `AnimeStudio` mutation. */
+export type UpsertAnimeStudioPayload = {
+  __typename?: 'UpsertAnimeStudioPayload';
+  /** Reads a single `Anime` that is related to this `AnimeStudio`. */
+  anime?: Maybe<Anime>;
+  /** The `AnimeStudio` that was upserted by this mutation. */
+  animeStudio?: Maybe<AnimeStudio>;
+  /** An edge for our `AnimeStudio`. May be used by Relay 1. */
+  animeStudioEdge?: Maybe<AnimeStudiosEdge>;
+  /** The exact same `clientMutationId` that was provided in the mutation input, unchanged and unused. May be used by a client to track mutations. */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** Reads a single `Studio` that is related to this `AnimeStudio`. */
+  studio?: Maybe<Studio>;
+};
+
+
+/** The output of our upsert `AnimeStudio` mutation. */
+export type UpsertAnimeStudioPayloadAnimeStudioEdgeArgs = {
+  orderBy?: Maybe<Array<AnimeStudiosOrderBy>>;
+};
+
+/** Where conditions for the upsert `AnimeStudio` mutation. */
+export type UpsertAnimeStudioWhere = {
+  animeId?: Maybe<Scalars['UUID']>;
+  studioId?: Maybe<Scalars['UUID']>;
+};
+
+/** All input for the upsert `AnimeUserScore` mutation. */
+export type UpsertAnimeUserScoreInput = {
+  /** The `AnimeUserScore` to be upserted by this mutation. */
+  animeUserScore: AnimeUserScoreInput;
+  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
+  clientMutationId?: Maybe<Scalars['String']>;
+};
+
+/** The output of our upsert `AnimeUserScore` mutation. */
+export type UpsertAnimeUserScorePayload = {
+  __typename?: 'UpsertAnimeUserScorePayload';
+  /** Reads a single `Anime` that is related to this `AnimeUserScore`. */
+  anime?: Maybe<Anime>;
+  /** The `AnimeUserScore` that was upserted by this mutation. */
+  animeUserScore?: Maybe<AnimeUserScore>;
+  /** An edge for our `AnimeUserScore`. May be used by Relay 1. */
+  animeUserScoreEdge?: Maybe<AnimeUserScoresEdge>;
+  /** The exact same `clientMutationId` that was provided in the mutation input, unchanged and unused. May be used by a client to track mutations. */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** Reads a single `User` that is related to this `AnimeUserScore`. */
+  user?: Maybe<User>;
+};
+
+
+/** The output of our upsert `AnimeUserScore` mutation. */
+export type UpsertAnimeUserScorePayloadAnimeUserScoreEdgeArgs = {
+  orderBy?: Maybe<Array<AnimeUserScoresOrderBy>>;
+};
+
+/** Where conditions for the upsert `AnimeUserScore` mutation. */
+export type UpsertAnimeUserScoreWhere = {
+  animeId?: Maybe<Scalars['UUID']>;
+  userId?: Maybe<Scalars['String']>;
+};
+
+/** Where conditions for the upsert `Anime` mutation. */
+export type UpsertAnimeWhere = {
+  id?: Maybe<Scalars['UUID']>;
+  malId?: Maybe<Scalars['Int']>;
+};
+
+/** All input for the upsert `CharacterImage` mutation. */
+export type UpsertCharacterImageInput = {
+  /** The `CharacterImage` to be upserted by this mutation. */
+  characterImage: CharacterImageInput;
+  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
+  clientMutationId?: Maybe<Scalars['String']>;
+};
+
+/** The output of our upsert `CharacterImage` mutation. */
+export type UpsertCharacterImagePayload = {
+  __typename?: 'UpsertCharacterImagePayload';
+  /** Reads a single `Character` that is related to this `CharacterImage`. */
+  character?: Maybe<Character>;
+  /** The `CharacterImage` that was upserted by this mutation. */
+  characterImage?: Maybe<CharacterImage>;
+  /** An edge for our `CharacterImage`. May be used by Relay 1. */
+  characterImageEdge?: Maybe<CharacterImagesEdge>;
+  /** The exact same `clientMutationId` that was provided in the mutation input, unchanged and unused. May be used by a client to track mutations. */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Reads a single `Image` that is related to this `CharacterImage`. */
+  image?: Maybe<Image>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
+
+/** The output of our upsert `CharacterImage` mutation. */
+export type UpsertCharacterImagePayloadCharacterImageEdgeArgs = {
+  orderBy?: Maybe<Array<CharacterImagesOrderBy>>;
+};
+
+/** Where conditions for the upsert `CharacterImage` mutation. */
+export type UpsertCharacterImageWhere = {
+  characterId?: Maybe<Scalars['UUID']>;
+  imageId?: Maybe<Scalars['UUID']>;
+};
+
+/** All input for the upsert `Character` mutation. */
+export type UpsertCharacterInput = {
+  /** The `Character` to be upserted by this mutation. */
+  character: CharacterInput;
+  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
+  clientMutationId?: Maybe<Scalars['String']>;
+};
+
+/** The output of our upsert `Character` mutation. */
+export type UpsertCharacterPayload = {
+  __typename?: 'UpsertCharacterPayload';
+  /** The `Character` that was upserted by this mutation. */
+  character?: Maybe<Character>;
+  /** An edge for our `Character`. May be used by Relay 1. */
+  characterEdge?: Maybe<CharactersEdge>;
+  /** Reads a single `Image` that is related to this `Character`. */
+  characterImage?: Maybe<Image>;
+  /** The exact same `clientMutationId` that was provided in the mutation input, unchanged and unused. May be used by a client to track mutations. */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
+
+/** The output of our upsert `Character` mutation. */
+export type UpsertCharacterPayloadCharacterEdgeArgs = {
+  orderBy?: Maybe<Array<CharactersOrderBy>>;
+};
+
+/** All input for the upsert `CharacterRole` mutation. */
+export type UpsertCharacterRoleInput = {
+  /** The `CharacterRole` to be upserted by this mutation. */
+  characterRole: CharacterRoleInput;
+  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
+  clientMutationId?: Maybe<Scalars['String']>;
+};
+
+/** The output of our upsert `CharacterRole` mutation. */
+export type UpsertCharacterRolePayload = {
+  __typename?: 'UpsertCharacterRolePayload';
+  /** The `CharacterRole` that was upserted by this mutation. */
+  characterRole?: Maybe<CharacterRole>;
+  /** An edge for our `CharacterRole`. May be used by Relay 1. */
+  characterRoleEdge?: Maybe<CharacterRolesEdge>;
+  /** The exact same `clientMutationId` that was provided in the mutation input, unchanged and unused. May be used by a client to track mutations. */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
+
+/** The output of our upsert `CharacterRole` mutation. */
+export type UpsertCharacterRolePayloadCharacterRoleEdgeArgs = {
+  orderBy?: Maybe<Array<CharacterRolesOrderBy>>;
+};
+
+/** Where conditions for the upsert `CharacterRole` mutation. */
+export type UpsertCharacterRoleWhere = {
+  id?: Maybe<Scalars['UUID']>;
+  role?: Maybe<Scalars['String']>;
+};
+
+/** Where conditions for the upsert `Character` mutation. */
+export type UpsertCharacterWhere = {
+  id?: Maybe<Scalars['UUID']>;
+  malId?: Maybe<Scalars['String']>;
+};
+
+/** All input for the upsert `Genre` mutation. */
+export type UpsertGenreInput = {
+  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** The `Genre` to be upserted by this mutation. */
+  genre: GenreInput;
+};
+
+/** The output of our upsert `Genre` mutation. */
+export type UpsertGenrePayload = {
+  __typename?: 'UpsertGenrePayload';
+  /** The exact same `clientMutationId` that was provided in the mutation input, unchanged and unused. May be used by a client to track mutations. */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** The `Genre` that was upserted by this mutation. */
+  genre?: Maybe<Genre>;
+  /** An edge for our `Genre`. May be used by Relay 1. */
+  genreEdge?: Maybe<GenresEdge>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
+
+/** The output of our upsert `Genre` mutation. */
+export type UpsertGenrePayloadGenreEdgeArgs = {
+  orderBy?: Maybe<Array<GenresOrderBy>>;
+};
+
+/** Where conditions for the upsert `Genre` mutation. */
+export type UpsertGenreWhere = {
+  genre?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['UUID']>;
+};
+
+/** All input for the upsert `Image` mutation. */
+export type UpsertImageInput = {
+  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** The `Image` to be upserted by this mutation. */
+  image: ImageInput;
+};
+
+/** The output of our upsert `Image` mutation. */
+export type UpsertImagePayload = {
+  __typename?: 'UpsertImagePayload';
+  /** The exact same `clientMutationId` that was provided in the mutation input, unchanged and unused. May be used by a client to track mutations. */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** The `Image` that was upserted by this mutation. */
+  image?: Maybe<Image>;
+  /** An edge for our `Image`. May be used by Relay 1. */
+  imageEdge?: Maybe<ImagesEdge>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
+
+/** The output of our upsert `Image` mutation. */
+export type UpsertImagePayloadImageEdgeArgs = {
+  orderBy?: Maybe<Array<ImagesOrderBy>>;
+};
+
+/** Where conditions for the upsert `Image` mutation. */
+export type UpsertImageWhere = {
+  id?: Maybe<Scalars['UUID']>;
+};
+
+/** All input for the upsert `Language` mutation. */
+export type UpsertLanguageInput = {
+  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** The `Language` to be upserted by this mutation. */
+  language: LanguageInput;
+};
+
+/** The output of our upsert `Language` mutation. */
+export type UpsertLanguagePayload = {
+  __typename?: 'UpsertLanguagePayload';
+  /** The exact same `clientMutationId` that was provided in the mutation input, unchanged and unused. May be used by a client to track mutations. */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** The `Language` that was upserted by this mutation. */
+  language?: Maybe<Language>;
+  /** An edge for our `Language`. May be used by Relay 1. */
+  languageEdge?: Maybe<LanguagesEdge>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
+
+/** The output of our upsert `Language` mutation. */
+export type UpsertLanguagePayloadLanguageEdgeArgs = {
+  orderBy?: Maybe<Array<LanguagesOrderBy>>;
+};
+
+/** Where conditions for the upsert `Language` mutation. */
+export type UpsertLanguageWhere = {
+  id?: Maybe<Scalars['UUID']>;
+  language?: Maybe<Scalars['String']>;
+};
+
+/** All input for the upsert `Licensor` mutation. */
+export type UpsertLicensorInput = {
+  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** The `Licensor` to be upserted by this mutation. */
+  licensor: LicensorInput;
+};
+
+/** The output of our upsert `Licensor` mutation. */
+export type UpsertLicensorPayload = {
+  __typename?: 'UpsertLicensorPayload';
+  /** The exact same `clientMutationId` that was provided in the mutation input, unchanged and unused. May be used by a client to track mutations. */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** The `Licensor` that was upserted by this mutation. */
+  licensor?: Maybe<Licensor>;
+  /** An edge for our `Licensor`. May be used by Relay 1. */
+  licensorEdge?: Maybe<LicensorsEdge>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
+
+/** The output of our upsert `Licensor` mutation. */
+export type UpsertLicensorPayloadLicensorEdgeArgs = {
+  orderBy?: Maybe<Array<LicensorsOrderBy>>;
+};
+
+/** Where conditions for the upsert `Licensor` mutation. */
+export type UpsertLicensorWhere = {
+  id?: Maybe<Scalars['UUID']>;
+  licensor?: Maybe<Scalars['String']>;
+};
+
+/** All input for the upsert `MediaType` mutation. */
+export type UpsertMediaTypeInput = {
+  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** The `MediaType` to be upserted by this mutation. */
+  mediaType: MediaTypeInput;
+};
+
+/** The output of our upsert `MediaType` mutation. */
+export type UpsertMediaTypePayload = {
+  __typename?: 'UpsertMediaTypePayload';
+  /** The exact same `clientMutationId` that was provided in the mutation input, unchanged and unused. May be used by a client to track mutations. */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** The `MediaType` that was upserted by this mutation. */
+  mediaType?: Maybe<MediaType>;
+  /** An edge for our `MediaType`. May be used by Relay 1. */
+  mediaTypeEdge?: Maybe<MediaTypesEdge>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
+
+/** The output of our upsert `MediaType` mutation. */
+export type UpsertMediaTypePayloadMediaTypeEdgeArgs = {
+  orderBy?: Maybe<Array<MediaTypesOrderBy>>;
+};
+
+/** Where conditions for the upsert `MediaType` mutation. */
+export type UpsertMediaTypeWhere = {
+  id?: Maybe<Scalars['UUID']>;
+  mediaType?: Maybe<Scalars['String']>;
+};
+
+/** All input for the upsert `PersonImage` mutation. */
+export type UpsertPersonImageInput = {
+  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** The `PersonImage` to be upserted by this mutation. */
+  personImage: PersonImageInput;
+};
+
+/** The output of our upsert `PersonImage` mutation. */
+export type UpsertPersonImagePayload = {
+  __typename?: 'UpsertPersonImagePayload';
+  /** The exact same `clientMutationId` that was provided in the mutation input, unchanged and unused. May be used by a client to track mutations. */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Reads a single `Image` that is related to this `PersonImage`. */
+  image?: Maybe<Image>;
+  /** Reads a single `Person` that is related to this `PersonImage`. */
+  person?: Maybe<Person>;
+  /** The `PersonImage` that was upserted by this mutation. */
+  personImage?: Maybe<PersonImage>;
+  /** An edge for our `PersonImage`. May be used by Relay 1. */
+  personImageEdge?: Maybe<PersonImagesEdge>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
+
+/** The output of our upsert `PersonImage` mutation. */
+export type UpsertPersonImagePayloadPersonImageEdgeArgs = {
+  orderBy?: Maybe<Array<PersonImagesOrderBy>>;
+};
+
+/** Where conditions for the upsert `PersonImage` mutation. */
+export type UpsertPersonImageWhere = {
+  imageId?: Maybe<Scalars['UUID']>;
+  personId?: Maybe<Scalars['UUID']>;
+};
+
+/** All input for the upsert `Person` mutation. */
+export type UpsertPersonInput = {
+  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** The `Person` to be upserted by this mutation. */
+  person: PersonInput;
+};
+
+/** The output of our upsert `Person` mutation. */
+export type UpsertPersonPayload = {
+  __typename?: 'UpsertPersonPayload';
+  /** The exact same `clientMutationId` that was provided in the mutation input, unchanged and unused. May be used by a client to track mutations. */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** The `Person` that was upserted by this mutation. */
+  person?: Maybe<Person>;
+  /** An edge for our `Person`. May be used by Relay 1. */
+  personEdge?: Maybe<PeopleEdge>;
+  /** Reads a single `Image` that is related to this `Person`. */
+  personImage?: Maybe<Image>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
+
+/** The output of our upsert `Person` mutation. */
+export type UpsertPersonPayloadPersonEdgeArgs = {
+  orderBy?: Maybe<Array<PeopleOrderBy>>;
+};
+
+/** Where conditions for the upsert `Person` mutation. */
+export type UpsertPersonWhere = {
+  id?: Maybe<Scalars['UUID']>;
+  malId?: Maybe<Scalars['String']>;
+};
+
+/** All input for the upsert `Producer` mutation. */
+export type UpsertProducerInput = {
+  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** The `Producer` to be upserted by this mutation. */
+  producer: ProducerInput;
+};
+
+/** The output of our upsert `Producer` mutation. */
+export type UpsertProducerPayload = {
+  __typename?: 'UpsertProducerPayload';
+  /** The exact same `clientMutationId` that was provided in the mutation input, unchanged and unused. May be used by a client to track mutations. */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** The `Producer` that was upserted by this mutation. */
+  producer?: Maybe<Producer>;
+  /** An edge for our `Producer`. May be used by Relay 1. */
+  producerEdge?: Maybe<ProducersEdge>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
+
+/** The output of our upsert `Producer` mutation. */
+export type UpsertProducerPayloadProducerEdgeArgs = {
+  orderBy?: Maybe<Array<ProducersOrderBy>>;
+};
+
+/** Where conditions for the upsert `Producer` mutation. */
+export type UpsertProducerWhere = {
+  id?: Maybe<Scalars['UUID']>;
+  producer?: Maybe<Scalars['String']>;
+};
+
+/** All input for the upsert `Season` mutation. */
+export type UpsertSeasonInput = {
+  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** The `Season` to be upserted by this mutation. */
+  season: SeasonInput;
+};
+
+/** The output of our upsert `Season` mutation. */
+export type UpsertSeasonPayload = {
+  __typename?: 'UpsertSeasonPayload';
+  /** The exact same `clientMutationId` that was provided in the mutation input, unchanged and unused. May be used by a client to track mutations. */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** The `Season` that was upserted by this mutation. */
+  season?: Maybe<Season>;
+  /** An edge for our `Season`. May be used by Relay 1. */
+  seasonEdge?: Maybe<SeasonsEdge>;
+};
+
+
+/** The output of our upsert `Season` mutation. */
+export type UpsertSeasonPayloadSeasonEdgeArgs = {
+  orderBy?: Maybe<Array<SeasonsOrderBy>>;
+};
+
+/** Where conditions for the upsert `Season` mutation. */
+export type UpsertSeasonWhere = {
+  id?: Maybe<Scalars['UUID']>;
+  season?: Maybe<Scalars['String']>;
+};
+
+/** All input for the upsert `SourceMaterialType` mutation. */
+export type UpsertSourceMaterialTypeInput = {
+  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** The `SourceMaterialType` to be upserted by this mutation. */
+  sourceMaterialType: SourceMaterialTypeInput;
+};
+
+/** The output of our upsert `SourceMaterialType` mutation. */
+export type UpsertSourceMaterialTypePayload = {
+  __typename?: 'UpsertSourceMaterialTypePayload';
+  /** The exact same `clientMutationId` that was provided in the mutation input, unchanged and unused. May be used by a client to track mutations. */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** The `SourceMaterialType` that was upserted by this mutation. */
+  sourceMaterialType?: Maybe<SourceMaterialType>;
+  /** An edge for our `SourceMaterialType`. May be used by Relay 1. */
+  sourceMaterialTypeEdge?: Maybe<SourceMaterialTypesEdge>;
+};
+
+
+/** The output of our upsert `SourceMaterialType` mutation. */
+export type UpsertSourceMaterialTypePayloadSourceMaterialTypeEdgeArgs = {
+  orderBy?: Maybe<Array<SourceMaterialTypesOrderBy>>;
+};
+
+/** Where conditions for the upsert `SourceMaterialType` mutation. */
+export type UpsertSourceMaterialTypeWhere = {
+  id?: Maybe<Scalars['UUID']>;
+  sourceMaterialType?: Maybe<Scalars['String']>;
+};
+
+/** All input for the upsert `StaffRole` mutation. */
+export type UpsertStaffRoleInput = {
+  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** The `StaffRole` to be upserted by this mutation. */
+  staffRole: StaffRoleInput;
+};
+
+/** The output of our upsert `StaffRole` mutation. */
+export type UpsertStaffRolePayload = {
+  __typename?: 'UpsertStaffRolePayload';
+  /** The exact same `clientMutationId` that was provided in the mutation input, unchanged and unused. May be used by a client to track mutations. */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** The `StaffRole` that was upserted by this mutation. */
+  staffRole?: Maybe<StaffRole>;
+  /** An edge for our `StaffRole`. May be used by Relay 1. */
+  staffRoleEdge?: Maybe<StaffRolesEdge>;
+};
+
+
+/** The output of our upsert `StaffRole` mutation. */
+export type UpsertStaffRolePayloadStaffRoleEdgeArgs = {
+  orderBy?: Maybe<Array<StaffRolesOrderBy>>;
+};
+
+/** Where conditions for the upsert `StaffRole` mutation. */
+export type UpsertStaffRoleWhere = {
+  id?: Maybe<Scalars['UUID']>;
+  role?: Maybe<Scalars['String']>;
+};
+
+/** All input for the upsert `Studio` mutation. */
+export type UpsertStudioInput = {
+  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** The `Studio` to be upserted by this mutation. */
+  studio: StudioInput;
+};
+
+/** The output of our upsert `Studio` mutation. */
+export type UpsertStudioPayload = {
+  __typename?: 'UpsertStudioPayload';
+  /** The exact same `clientMutationId` that was provided in the mutation input, unchanged and unused. May be used by a client to track mutations. */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** The `Studio` that was upserted by this mutation. */
+  studio?: Maybe<Studio>;
+  /** An edge for our `Studio`. May be used by Relay 1. */
+  studioEdge?: Maybe<StudiosEdge>;
+};
+
+
+/** The output of our upsert `Studio` mutation. */
+export type UpsertStudioPayloadStudioEdgeArgs = {
+  orderBy?: Maybe<Array<StudiosOrderBy>>;
+};
+
+/** Where conditions for the upsert `Studio` mutation. */
+export type UpsertStudioWhere = {
+  id?: Maybe<Scalars['UUID']>;
+  studio?: Maybe<Scalars['String']>;
+};
+
+/** All input for the upsert `UserAnime` mutation. */
+export type UpsertUserAnimeInput = {
+  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** The `UserAnime` to be upserted by this mutation. */
+  userAnime: UserAnimeInput;
+};
+
+/** All input for the upsert `UserAnimeList` mutation. */
+export type UpsertUserAnimeListInput = {
+  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** The `UserAnimeList` to be upserted by this mutation. */
+  userAnimeList: UserAnimeListInput;
+};
+
+/** The output of our upsert `UserAnimeList` mutation. */
+export type UpsertUserAnimeListPayload = {
+  __typename?: 'UpsertUserAnimeListPayload';
+  /** Reads a single `Anime` that is related to this `UserAnimeList`. */
+  anime?: Maybe<Anime>;
+  /** Reads a single `AnimeList` that is related to this `UserAnimeList`. */
+  animeList?: Maybe<AnimeList>;
+  /** The exact same `clientMutationId` that was provided in the mutation input, unchanged and unused. May be used by a client to track mutations. */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** The `UserAnimeList` that was upserted by this mutation. */
+  userAnimeList?: Maybe<UserAnimeList>;
+  /** An edge for our `UserAnimeList`. May be used by Relay 1. */
+  userAnimeListEdge?: Maybe<UserAnimeListsEdge>;
+};
+
+
+/** The output of our upsert `UserAnimeList` mutation. */
+export type UpsertUserAnimeListPayloadUserAnimeListEdgeArgs = {
+  orderBy?: Maybe<Array<UserAnimeListsOrderBy>>;
+};
+
+/** Where conditions for the upsert `UserAnimeList` mutation. */
+export type UpsertUserAnimeListWhere = {
+  animeId?: Maybe<Scalars['UUID']>;
+  animeListId?: Maybe<Scalars['UUID']>;
+};
+
+/** The output of our upsert `UserAnime` mutation. */
+export type UpsertUserAnimePayload = {
+  __typename?: 'UpsertUserAnimePayload';
+  /** Reads a single `Anime` that is related to this `UserAnime`. */
+  anime?: Maybe<Anime>;
+  /** The exact same `clientMutationId` that was provided in the mutation input, unchanged and unused. May be used by a client to track mutations. */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** Reads a single `User` that is related to this `UserAnime`. */
+  user?: Maybe<User>;
+  /** The `UserAnime` that was upserted by this mutation. */
+  userAnime?: Maybe<UserAnime>;
+  /** An edge for our `UserAnime`. May be used by Relay 1. */
+  userAnimeEdge?: Maybe<UserAnimeEdge>;
+};
+
+
+/** The output of our upsert `UserAnime` mutation. */
+export type UpsertUserAnimePayloadUserAnimeEdgeArgs = {
+  orderBy?: Maybe<Array<UserAnimeOrderBy>>;
+};
+
+/** Where conditions for the upsert `UserAnime` mutation. */
+export type UpsertUserAnimeWhere = {
+  animeId?: Maybe<Scalars['UUID']>;
+  userId?: Maybe<Scalars['String']>;
+};
+
+/** All input for the upsert `User` mutation. */
+export type UpsertUserInput = {
+  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** The `User` to be upserted by this mutation. */
+  user: UserInput;
+};
+
+/** The output of our upsert `User` mutation. */
+export type UpsertUserPayload = {
+  __typename?: 'UpsertUserPayload';
+  /** The exact same `clientMutationId` that was provided in the mutation input, unchanged and unused. May be used by a client to track mutations. */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** The `User` that was upserted by this mutation. */
+  user?: Maybe<User>;
+  /** An edge for our `User`. May be used by Relay 1. */
+  userEdge?: Maybe<UsersEdge>;
+};
+
+
+/** The output of our upsert `User` mutation. */
+export type UpsertUserPayloadUserEdgeArgs = {
+  orderBy?: Maybe<Array<UsersOrderBy>>;
+};
+
+/** Where conditions for the upsert `User` mutation. */
+export type UpsertUserWhere = {
+  id?: Maybe<Scalars['String']>;
+};
+
 export type User = Node & {
   __typename?: 'User';
   /** Reads and enables pagination through a set of `AnimeList`. */
@@ -12093,6 +13472,8 @@ export type WatchingStatusEnumFilter = {
   notIn?: Maybe<Array<WatchingStatusEnum>>;
 };
 
+export type AnimeListFragmentFragment = { __typename?: 'AnimeList', title: string, id: any };
+
 export type AddAnimeToUserAnimeListMutationVariables = Exact<{
   animeListId: Scalars['UUID'];
   animeId: Scalars['UUID'];
@@ -12109,6 +13490,28 @@ export type DeleteAnimeFromListMutationVariables = Exact<{
 
 export type DeleteAnimeFromListMutation = { __typename?: 'Mutation', deleteUserAnimeListByAnimeListIdAndAnimeId?: Maybe<{ __typename?: 'DeleteUserAnimeListPayload', animeList?: Maybe<{ __typename?: 'AnimeList', id: any }> }> };
 
+export type AddAnimeToListMutationVariables = Exact<{
+  animeListId: Scalars['UUID'];
+  animeId: Scalars['UUID'];
+  watchingStatus?: Maybe<WatchingStatusEnum>;
+}>;
+
+
+export type AddAnimeToListMutation = { __typename?: 'Mutation', upsertUserAnimeList?: Maybe<{ __typename?: 'UpsertUserAnimeListPayload', userAnimeList?: Maybe<{ __typename?: 'UserAnimeList', watchingStatus: WatchingStatusEnum, animeList?: Maybe<{ __typename?: 'AnimeList', title: string, id: any }> }> }> };
+
+export type CreateNewListMutationVariables = Exact<{
+  userId: Scalars['String'];
+  title: Scalars['String'];
+}>;
+
+
+export type CreateNewListMutation = { __typename?: 'Mutation', createAnimeList?: Maybe<{ __typename?: 'CreateAnimeListPayload', animeList?: Maybe<{ __typename?: 'AnimeList', id: any, title: string }> }> };
+
+export type WeeklyAnimesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type WeeklyAnimesQuery = { __typename?: 'Query', allAnimesTiles?: Maybe<{ __typename?: 'AllAnimesTilesConnection', nodes: Array<Maybe<{ __typename?: 'AllAnimesTile', id?: Maybe<any>, title?: Maybe<string>, season?: Maybe<string>, airingStatusType?: Maybe<string>, averageWatcherRating?: Maybe<any>, startBroadcastDatetime?: Maybe<any>, url?: Maybe<string>, description?: Maybe<string>, genres?: Maybe<Array<Maybe<string>>>, mediaType?: Maybe<string>, numberOfEpisodes?: Maybe<number>, studios?: Maybe<Array<Maybe<string>>>, likes?: Maybe<boolean> }>> }> };
+
 export type AnimeListQueryQueryVariables = Exact<{
   userId: Scalars['String'];
 }>;
@@ -12116,7 +13519,64 @@ export type AnimeListQueryQueryVariables = Exact<{
 
 export type AnimeListQueryQuery = { __typename?: 'Query', animeLists?: Maybe<{ __typename?: 'AnimeListsConnection', nodes: Array<Maybe<{ __typename?: 'AnimeList', title: string, id: any }>> }> };
 
+export type CurrentlyAiringContinuedQueryVariables = Exact<{
+  limit: Scalars['Int'];
+  currentSeason: Scalars['String'];
+}>;
 
+
+export type CurrentlyAiringContinuedQuery = { __typename?: 'Query', allAnimesTiles?: Maybe<{ __typename?: 'AllAnimesTilesConnection', nodes: Array<Maybe<{ __typename?: 'AllAnimesTile', id?: Maybe<any>, title?: Maybe<string>, url?: Maybe<string>, season?: Maybe<string>, averageWatcherRating?: Maybe<any>, airingStatusType?: Maybe<string>, likes?: Maybe<boolean> }>> }> };
+
+export type CurrentlyAiringQueryVariables = Exact<{
+  limit: Scalars['Int'];
+  currentSeason: Scalars['String'];
+}>;
+
+
+export type CurrentlyAiringQuery = { __typename?: 'Query', allAnimesTiles?: Maybe<{ __typename?: 'AllAnimesTilesConnection', nodes: Array<Maybe<{ __typename?: 'AllAnimesTile', id?: Maybe<any>, title?: Maybe<string>, url?: Maybe<string>, season?: Maybe<string>, averageWatcherRating?: Maybe<any>, airingStatusType?: Maybe<string>, likes?: Maybe<boolean> }>> }> };
+
+export type HighestRatedAnimesQueryVariables = Exact<{
+  limit: Scalars['Int'];
+}>;
+
+
+export type HighestRatedAnimesQuery = { __typename?: 'Query', allAnimesTiles?: Maybe<{ __typename?: 'AllAnimesTilesConnection', nodes: Array<Maybe<{ __typename?: 'AllAnimesTile', id?: Maybe<any>, title?: Maybe<string>, url?: Maybe<string>, season?: Maybe<string>, averageWatcherRating?: Maybe<any>, airingStatusType?: Maybe<string>, likes?: Maybe<boolean> }>> }> };
+
+export type WatchingQueryVariables = Exact<{
+  watchingStatus?: Maybe<WatchingStatusEnum>;
+}>;
+
+
+export type WatchingQuery = { __typename?: 'Query', allUserAnimes?: Maybe<{ __typename?: 'AllUserAnimeConnection', nodes: Array<Maybe<{ __typename?: 'AllUserAnime', id?: Maybe<any>, listId?: Maybe<any>, listName?: Maybe<string>, title?: Maybe<string>, url?: Maybe<string>, watchingStatus?: Maybe<WatchingStatusEnum> }>> }> };
+
+export type UserWatchingListsQueryVariables = Exact<{
+  watchingStatus?: Maybe<WatchingStatusEnum>;
+}>;
+
+
+export type UserWatchingListsQuery = { __typename?: 'Query', userAnimeLists?: Maybe<{ __typename?: 'UserAnimeListsConnection', nodes: Array<Maybe<{ __typename?: 'UserAnimeList', watchingStatus: WatchingStatusEnum, animeList?: Maybe<{ __typename?: 'AnimeList', id: any, title: string, userAnimeLists: { __typename?: 'UserAnimeListsConnection', nodes: Array<Maybe<{ __typename?: 'UserAnimeList', anime?: Maybe<{ __typename?: 'Anime', title: string, id: any }> }>> } }> }>> }> };
+
+export type CurrentlyWatchingQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type CurrentlyWatchingQuery = { __typename?: 'Query', allUserAnimes?: Maybe<{ __typename?: 'AllUserAnimeConnection', nodes: Array<Maybe<{ __typename?: 'AllUserAnime', id?: Maybe<any>, listId?: Maybe<any>, listName?: Maybe<string>, title?: Maybe<string>, url?: Maybe<string>, watchingStatus?: Maybe<WatchingStatusEnum> }>> }> };
+
+export type PlanToWatchQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type PlanToWatchQuery = { __typename?: 'Query', allUserAnimes?: Maybe<{ __typename?: 'AllUserAnimeConnection', nodes: Array<Maybe<{ __typename?: 'AllUserAnime', id?: Maybe<any>, listId?: Maybe<any>, listName?: Maybe<string>, title?: Maybe<string>, url?: Maybe<string>, watchingStatus?: Maybe<WatchingStatusEnum> }>> }> };
+
+export type PlanToWatchCompletedQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type PlanToWatchCompletedQuery = { __typename?: 'Query', allUserAnimes?: Maybe<{ __typename?: 'AllUserAnimeConnection', nodes: Array<Maybe<{ __typename?: 'AllUserAnime', id?: Maybe<any>, listId?: Maybe<any>, listName?: Maybe<string>, title?: Maybe<string>, url?: Maybe<string>, watchingStatus?: Maybe<WatchingStatusEnum> }>> }> };
+
+export const AnimeListFragmentFragmentDoc = gql`
+    fragment AnimeListFragment on AnimeList {
+  title
+  id
+}
+    `;
 export const AddAnimeToUserAnimeListDocument = gql`
     mutation AddAnimeToUserAnimeList($animeListId: UUID!, $animeId: UUID!) {
   createUserAnimeList(
@@ -12147,6 +13607,65 @@ export const DeleteAnimeFromListDocument = gql`
 export function useDeleteAnimeFromListMutation() {
   return Urql.useMutation<DeleteAnimeFromListMutation, DeleteAnimeFromListMutationVariables>(DeleteAnimeFromListDocument);
 };
+export const AddAnimeToListDocument = gql`
+    mutation AddAnimeToList($animeListId: UUID!, $animeId: UUID!, $watchingStatus: WatchingStatusEnum) {
+  upsertUserAnimeList(
+    input: {userAnimeList: {animeListId: $animeListId, animeId: $animeId, watchingStatus: $watchingStatus}}
+    where: {animeId: $animeId, animeListId: $animeListId}
+  ) {
+    userAnimeList {
+      animeList {
+        title
+        id
+      }
+      watchingStatus
+    }
+  }
+}
+    `;
+
+export function useAddAnimeToListMutation() {
+  return Urql.useMutation<AddAnimeToListMutation, AddAnimeToListMutationVariables>(AddAnimeToListDocument);
+};
+export const CreateNewListDocument = gql`
+    mutation CreateNewList($userId: String!, $title: String!) {
+  createAnimeList(input: {animeList: {userId: $userId, title: $title}}) {
+    animeList {
+      id
+      title
+    }
+  }
+}
+    `;
+
+export function useCreateNewListMutation() {
+  return Urql.useMutation<CreateNewListMutation, CreateNewListMutationVariables>(CreateNewListDocument);
+};
+export const WeeklyAnimesDocument = gql`
+    query WeeklyAnimes {
+  allAnimesTiles(filter: {airingStatusType: {equalTo: "Currently Airing"}}) {
+    nodes {
+      id
+      title
+      season
+      airingStatusType
+      averageWatcherRating
+      startBroadcastDatetime
+      url
+      description
+      genres
+      mediaType
+      numberOfEpisodes
+      studios
+      likes
+    }
+  }
+}
+    `;
+
+export function useWeeklyAnimesQuery(options: Omit<Urql.UseQueryArgs<WeeklyAnimesQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<WeeklyAnimesQuery>({ query: WeeklyAnimesDocument, ...options });
+};
 export const AnimeListQueryDocument = gql`
     query AnimeListQuery($userId: String!) {
   animeLists(condition: {userId: $userId}) {
@@ -12160,6 +13679,166 @@ export const AnimeListQueryDocument = gql`
 
 export function useAnimeListQueryQuery(options: Omit<Urql.UseQueryArgs<AnimeListQueryQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<AnimeListQueryQuery>({ query: AnimeListQueryDocument, ...options });
+};
+export const CurrentlyAiringContinuedDocument = gql`
+    query CurrentlyAiringContinued($limit: Int!, $currentSeason: String!) {
+  allAnimesTiles(
+    first: $limit
+    filter: {airingStatusType: {equalTo: "Currently Airing"}, and: {season: {notEqualTo: $currentSeason}}}
+  ) {
+    nodes {
+      id
+      title
+      url
+      season
+      averageWatcherRating
+      airingStatusType
+      likes
+    }
+  }
+}
+    `;
+
+export function useCurrentlyAiringContinuedQuery(options: Omit<Urql.UseQueryArgs<CurrentlyAiringContinuedQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<CurrentlyAiringContinuedQuery>({ query: CurrentlyAiringContinuedDocument, ...options });
+};
+export const CurrentlyAiringDocument = gql`
+    query CurrentlyAiring($limit: Int!, $currentSeason: String!) {
+  allAnimesTiles(
+    first: $limit
+    filter: {airingStatusType: {equalTo: "Currently Airing"}, and: {season: {equalTo: $currentSeason}}}
+  ) {
+    nodes {
+      id
+      title
+      url
+      season
+      averageWatcherRating
+      airingStatusType
+      likes
+    }
+  }
+}
+    `;
+
+export function useCurrentlyAiringQuery(options: Omit<Urql.UseQueryArgs<CurrentlyAiringQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<CurrentlyAiringQuery>({ query: CurrentlyAiringDocument, ...options });
+};
+export const HighestRatedAnimesDocument = gql`
+    query HighestRatedAnimes($limit: Int!) {
+  allAnimesTiles(first: $limit) {
+    nodes {
+      id
+      title
+      url
+      season
+      averageWatcherRating
+      airingStatusType
+      likes
+    }
+  }
+}
+    `;
+
+export function useHighestRatedAnimesQuery(options: Omit<Urql.UseQueryArgs<HighestRatedAnimesQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<HighestRatedAnimesQuery>({ query: HighestRatedAnimesDocument, ...options });
+};
+export const WatchingDocument = gql`
+    query Watching($watchingStatus: WatchingStatusEnum) {
+  allUserAnimes(condition: {watchingStatus: $watchingStatus}) {
+    nodes {
+      id
+      listId
+      listName
+      title
+      url
+      watchingStatus
+    }
+  }
+}
+    `;
+
+export function useWatchingQuery(options: Omit<Urql.UseQueryArgs<WatchingQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<WatchingQuery>({ query: WatchingDocument, ...options });
+};
+export const UserWatchingListsDocument = gql`
+    query UserWatchingLists($watchingStatus: WatchingStatusEnum) {
+  userAnimeLists {
+    nodes {
+      animeList {
+        id
+        title
+        userAnimeLists(condition: {watchingStatus: $watchingStatus}) {
+          nodes {
+            anime {
+              title
+              id
+            }
+          }
+        }
+      }
+      watchingStatus
+    }
+  }
+}
+    `;
+
+export function useUserWatchingListsQuery(options: Omit<Urql.UseQueryArgs<UserWatchingListsQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<UserWatchingListsQuery>({ query: UserWatchingListsDocument, ...options });
+};
+export const CurrentlyWatchingDocument = gql`
+    query CurrentlyWatching {
+  allUserAnimes(condition: {watchingStatus: WATCHING}) {
+    nodes {
+      id
+      listId
+      listName
+      title
+      url
+      watchingStatus
+    }
+  }
+}
+    `;
+
+export function useCurrentlyWatchingQuery(options: Omit<Urql.UseQueryArgs<CurrentlyWatchingQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<CurrentlyWatchingQuery>({ query: CurrentlyWatchingDocument, ...options });
+};
+export const PlanToWatchDocument = gql`
+    query PlanToWatch {
+  allUserAnimes(condition: {watchingStatus: PLAN_TO_WATCH}) {
+    nodes {
+      id
+      listId
+      listName
+      title
+      url
+      watchingStatus
+    }
+  }
+}
+    `;
+
+export function usePlanToWatchQuery(options: Omit<Urql.UseQueryArgs<PlanToWatchQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<PlanToWatchQuery>({ query: PlanToWatchDocument, ...options });
+};
+export const PlanToWatchCompletedDocument = gql`
+    query PlanToWatchCompleted {
+  allUserAnimes(condition: {watchingStatus: COMPLETED}) {
+    nodes {
+      id
+      listId
+      listName
+      title
+      url
+      watchingStatus
+    }
+  }
+}
+    `;
+
+export function usePlanToWatchCompletedQuery(options: Omit<Urql.UseQueryArgs<PlanToWatchCompletedQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<PlanToWatchCompletedQuery>({ query: PlanToWatchCompletedDocument, ...options });
 };
 import { IntrospectionQuery } from 'graphql';
 export default {
@@ -26506,6 +28185,843 @@ export default {
                 }
               }
             ]
+          },
+          {
+            "name": "upsertAgeRatingType",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UpsertAgeRatingTypePayload",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "input",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              },
+              {
+                "name": "where",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              }
+            ]
+          },
+          {
+            "name": "upsertAiringStatusType",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UpsertAiringStatusTypePayload",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "input",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              },
+              {
+                "name": "where",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              }
+            ]
+          },
+          {
+            "name": "upsertAlternateAnimeName",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UpsertAlternateAnimeNamePayload",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "input",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              },
+              {
+                "name": "where",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              }
+            ]
+          },
+          {
+            "name": "upsertAnime",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UpsertAnimePayload",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "input",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              },
+              {
+                "name": "where",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              }
+            ]
+          },
+          {
+            "name": "upsertAnimeCharacter",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UpsertAnimeCharacterPayload",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "input",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              },
+              {
+                "name": "where",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              }
+            ]
+          },
+          {
+            "name": "upsertAnimeGenre",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UpsertAnimeGenrePayload",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "input",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              },
+              {
+                "name": "where",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              }
+            ]
+          },
+          {
+            "name": "upsertAnimeImage",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UpsertAnimeImagePayload",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "input",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              },
+              {
+                "name": "where",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              }
+            ]
+          },
+          {
+            "name": "upsertAnimeLicensor",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UpsertAnimeLicensorPayload",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "input",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              },
+              {
+                "name": "where",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              }
+            ]
+          },
+          {
+            "name": "upsertAnimeList",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UpsertAnimeListPayload",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "input",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              },
+              {
+                "name": "where",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              }
+            ]
+          },
+          {
+            "name": "upsertAnimeProducer",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UpsertAnimeProducerPayload",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "input",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              },
+              {
+                "name": "where",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              }
+            ]
+          },
+          {
+            "name": "upsertAnimeStaff",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UpsertAnimeStaffPayload",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "input",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              },
+              {
+                "name": "where",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              }
+            ]
+          },
+          {
+            "name": "upsertAnimeStudio",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UpsertAnimeStudioPayload",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "input",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              },
+              {
+                "name": "where",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              }
+            ]
+          },
+          {
+            "name": "upsertAnimeUserScore",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UpsertAnimeUserScorePayload",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "input",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              },
+              {
+                "name": "where",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              }
+            ]
+          },
+          {
+            "name": "upsertCharacter",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UpsertCharacterPayload",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "input",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              },
+              {
+                "name": "where",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              }
+            ]
+          },
+          {
+            "name": "upsertCharacterImage",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UpsertCharacterImagePayload",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "input",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              },
+              {
+                "name": "where",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              }
+            ]
+          },
+          {
+            "name": "upsertCharacterRole",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UpsertCharacterRolePayload",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "input",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              },
+              {
+                "name": "where",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              }
+            ]
+          },
+          {
+            "name": "upsertGenre",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UpsertGenrePayload",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "input",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              },
+              {
+                "name": "where",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              }
+            ]
+          },
+          {
+            "name": "upsertImage",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UpsertImagePayload",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "input",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              },
+              {
+                "name": "where",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              }
+            ]
+          },
+          {
+            "name": "upsertLanguage",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UpsertLanguagePayload",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "input",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              },
+              {
+                "name": "where",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              }
+            ]
+          },
+          {
+            "name": "upsertLicensor",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UpsertLicensorPayload",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "input",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              },
+              {
+                "name": "where",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              }
+            ]
+          },
+          {
+            "name": "upsertMediaType",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UpsertMediaTypePayload",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "input",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              },
+              {
+                "name": "where",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              }
+            ]
+          },
+          {
+            "name": "upsertPerson",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UpsertPersonPayload",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "input",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              },
+              {
+                "name": "where",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              }
+            ]
+          },
+          {
+            "name": "upsertPersonImage",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UpsertPersonImagePayload",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "input",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              },
+              {
+                "name": "where",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              }
+            ]
+          },
+          {
+            "name": "upsertProducer",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UpsertProducerPayload",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "input",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              },
+              {
+                "name": "where",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              }
+            ]
+          },
+          {
+            "name": "upsertSeason",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UpsertSeasonPayload",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "input",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              },
+              {
+                "name": "where",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              }
+            ]
+          },
+          {
+            "name": "upsertSourceMaterialType",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UpsertSourceMaterialTypePayload",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "input",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              },
+              {
+                "name": "where",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              }
+            ]
+          },
+          {
+            "name": "upsertStaffRole",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UpsertStaffRolePayload",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "input",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              },
+              {
+                "name": "where",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              }
+            ]
+          },
+          {
+            "name": "upsertStudio",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UpsertStudioPayload",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "input",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              },
+              {
+                "name": "where",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              }
+            ]
+          },
+          {
+            "name": "upsertUser",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UpsertUserPayload",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "input",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              },
+              {
+                "name": "where",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              }
+            ]
+          },
+          {
+            "name": "upsertUserAnime",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UpsertUserAnimePayload",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "input",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              },
+              {
+                "name": "where",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              }
+            ]
+          },
+          {
+            "name": "upsertUserAnimeList",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UpsertUserAnimeListPayload",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "input",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              },
+              {
+                "name": "where",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              }
+            ]
           }
         ],
         "interfaces": []
@@ -34996,6 +37512,2084 @@ export default {
       {
         "kind": "OBJECT",
         "name": "UpdateUserPayload",
+        "fields": [
+          {
+            "name": "clientMutationId",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "query",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Query",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "user",
+            "type": {
+              "kind": "OBJECT",
+              "name": "User",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "userEdge",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UsersEdge",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "orderBy",
+                "type": {
+                  "kind": "LIST",
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "Any"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "UpsertAgeRatingTypePayload",
+        "fields": [
+          {
+            "name": "ageRatingType",
+            "type": {
+              "kind": "OBJECT",
+              "name": "AgeRatingType",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "ageRatingTypeEdge",
+            "type": {
+              "kind": "OBJECT",
+              "name": "AgeRatingTypesEdge",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "orderBy",
+                "type": {
+                  "kind": "LIST",
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "Any"
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "clientMutationId",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "query",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Query",
+              "ofType": null
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "UpsertAiringStatusTypePayload",
+        "fields": [
+          {
+            "name": "airingStatusType",
+            "type": {
+              "kind": "OBJECT",
+              "name": "AiringStatusType",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "airingStatusTypeEdge",
+            "type": {
+              "kind": "OBJECT",
+              "name": "AiringStatusTypesEdge",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "orderBy",
+                "type": {
+                  "kind": "LIST",
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "Any"
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "clientMutationId",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "query",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Query",
+              "ofType": null
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "UpsertAlternateAnimeNamePayload",
+        "fields": [
+          {
+            "name": "alternateAnimeName",
+            "type": {
+              "kind": "OBJECT",
+              "name": "AlternateAnimeName",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "alternateAnimeNameEdge",
+            "type": {
+              "kind": "OBJECT",
+              "name": "AlternateAnimeNamesEdge",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "orderBy",
+                "type": {
+                  "kind": "LIST",
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "Any"
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "anime",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Anime",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "clientMutationId",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "query",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Query",
+              "ofType": null
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "UpsertAnimeCharacterPayload",
+        "fields": [
+          {
+            "name": "anime",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Anime",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "animeCharacter",
+            "type": {
+              "kind": "OBJECT",
+              "name": "AnimeCharacter",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "animeCharacterEdge",
+            "type": {
+              "kind": "OBJECT",
+              "name": "AnimeCharactersEdge",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "orderBy",
+                "type": {
+                  "kind": "LIST",
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "Any"
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "character",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Character",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "characterRole",
+            "type": {
+              "kind": "OBJECT",
+              "name": "CharacterRole",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "clientMutationId",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "language",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Language",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "person",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Person",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "query",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Query",
+              "ofType": null
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "UpsertAnimeGenrePayload",
+        "fields": [
+          {
+            "name": "anime",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Anime",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "animeGenre",
+            "type": {
+              "kind": "OBJECT",
+              "name": "AnimeGenre",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "animeGenreEdge",
+            "type": {
+              "kind": "OBJECT",
+              "name": "AnimeGenresEdge",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "orderBy",
+                "type": {
+                  "kind": "LIST",
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "Any"
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "clientMutationId",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "genre",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Genre",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "query",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Query",
+              "ofType": null
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "UpsertAnimeImagePayload",
+        "fields": [
+          {
+            "name": "anime",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Anime",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "animeImage",
+            "type": {
+              "kind": "OBJECT",
+              "name": "AnimeImage",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "animeImageEdge",
+            "type": {
+              "kind": "OBJECT",
+              "name": "AnimeImagesEdge",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "orderBy",
+                "type": {
+                  "kind": "LIST",
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "Any"
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "clientMutationId",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "image",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Image",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "query",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Query",
+              "ofType": null
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "UpsertAnimeLicensorPayload",
+        "fields": [
+          {
+            "name": "anime",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Anime",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "animeLicensor",
+            "type": {
+              "kind": "OBJECT",
+              "name": "AnimeLicensor",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "animeLicensorEdge",
+            "type": {
+              "kind": "OBJECT",
+              "name": "AnimeLicensorsEdge",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "orderBy",
+                "type": {
+                  "kind": "LIST",
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "Any"
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "clientMutationId",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "licensor",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Licensor",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "query",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Query",
+              "ofType": null
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "UpsertAnimeListPayload",
+        "fields": [
+          {
+            "name": "animeList",
+            "type": {
+              "kind": "OBJECT",
+              "name": "AnimeList",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "animeListEdge",
+            "type": {
+              "kind": "OBJECT",
+              "name": "AnimeListsEdge",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "orderBy",
+                "type": {
+                  "kind": "LIST",
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "Any"
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "clientMutationId",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "query",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Query",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "user",
+            "type": {
+              "kind": "OBJECT",
+              "name": "User",
+              "ofType": null
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "UpsertAnimePayload",
+        "fields": [
+          {
+            "name": "ageRating",
+            "type": {
+              "kind": "OBJECT",
+              "name": "AgeRatingType",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "airingStatus",
+            "type": {
+              "kind": "OBJECT",
+              "name": "AiringStatusType",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "anime",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Anime",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "animeEdge",
+            "type": {
+              "kind": "OBJECT",
+              "name": "AnimeEdge",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "orderBy",
+                "type": {
+                  "kind": "LIST",
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "Any"
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "clientMutationId",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "mediaType",
+            "type": {
+              "kind": "OBJECT",
+              "name": "MediaType",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "profileImage",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Image",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "query",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Query",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "season",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Season",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "sourceMaterial",
+            "type": {
+              "kind": "OBJECT",
+              "name": "SourceMaterialType",
+              "ofType": null
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "UpsertAnimeProducerPayload",
+        "fields": [
+          {
+            "name": "anime",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Anime",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "animeProducer",
+            "type": {
+              "kind": "OBJECT",
+              "name": "AnimeProducer",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "animeProducerEdge",
+            "type": {
+              "kind": "OBJECT",
+              "name": "AnimeProducersEdge",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "orderBy",
+                "type": {
+                  "kind": "LIST",
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "Any"
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "clientMutationId",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "producer",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Producer",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "query",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Query",
+              "ofType": null
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "UpsertAnimeStaffPayload",
+        "fields": [
+          {
+            "name": "anime",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Anime",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "animeStaff",
+            "type": {
+              "kind": "OBJECT",
+              "name": "AnimeStaff",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "animeStaffEdge",
+            "type": {
+              "kind": "OBJECT",
+              "name": "AnimeStaffEdge",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "orderBy",
+                "type": {
+                  "kind": "LIST",
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "Any"
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "clientMutationId",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "person",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Person",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "query",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Query",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "staffRole",
+            "type": {
+              "kind": "OBJECT",
+              "name": "StaffRole",
+              "ofType": null
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "UpsertAnimeStudioPayload",
+        "fields": [
+          {
+            "name": "anime",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Anime",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "animeStudio",
+            "type": {
+              "kind": "OBJECT",
+              "name": "AnimeStudio",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "animeStudioEdge",
+            "type": {
+              "kind": "OBJECT",
+              "name": "AnimeStudiosEdge",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "orderBy",
+                "type": {
+                  "kind": "LIST",
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "Any"
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "clientMutationId",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "query",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Query",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "studio",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Studio",
+              "ofType": null
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "UpsertAnimeUserScorePayload",
+        "fields": [
+          {
+            "name": "anime",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Anime",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "animeUserScore",
+            "type": {
+              "kind": "OBJECT",
+              "name": "AnimeUserScore",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "animeUserScoreEdge",
+            "type": {
+              "kind": "OBJECT",
+              "name": "AnimeUserScoresEdge",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "orderBy",
+                "type": {
+                  "kind": "LIST",
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "Any"
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "clientMutationId",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "query",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Query",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "user",
+            "type": {
+              "kind": "OBJECT",
+              "name": "User",
+              "ofType": null
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "UpsertCharacterImagePayload",
+        "fields": [
+          {
+            "name": "character",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Character",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "characterImage",
+            "type": {
+              "kind": "OBJECT",
+              "name": "CharacterImage",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "characterImageEdge",
+            "type": {
+              "kind": "OBJECT",
+              "name": "CharacterImagesEdge",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "orderBy",
+                "type": {
+                  "kind": "LIST",
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "Any"
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "clientMutationId",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "image",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Image",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "query",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Query",
+              "ofType": null
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "UpsertCharacterPayload",
+        "fields": [
+          {
+            "name": "character",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Character",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "characterEdge",
+            "type": {
+              "kind": "OBJECT",
+              "name": "CharactersEdge",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "orderBy",
+                "type": {
+                  "kind": "LIST",
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "Any"
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "characterImage",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Image",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "clientMutationId",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "query",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Query",
+              "ofType": null
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "UpsertCharacterRolePayload",
+        "fields": [
+          {
+            "name": "characterRole",
+            "type": {
+              "kind": "OBJECT",
+              "name": "CharacterRole",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "characterRoleEdge",
+            "type": {
+              "kind": "OBJECT",
+              "name": "CharacterRolesEdge",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "orderBy",
+                "type": {
+                  "kind": "LIST",
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "Any"
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "clientMutationId",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "query",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Query",
+              "ofType": null
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "UpsertGenrePayload",
+        "fields": [
+          {
+            "name": "clientMutationId",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "genre",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Genre",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "genreEdge",
+            "type": {
+              "kind": "OBJECT",
+              "name": "GenresEdge",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "orderBy",
+                "type": {
+                  "kind": "LIST",
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "Any"
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "query",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Query",
+              "ofType": null
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "UpsertImagePayload",
+        "fields": [
+          {
+            "name": "clientMutationId",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "image",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Image",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "imageEdge",
+            "type": {
+              "kind": "OBJECT",
+              "name": "ImagesEdge",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "orderBy",
+                "type": {
+                  "kind": "LIST",
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "Any"
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "query",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Query",
+              "ofType": null
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "UpsertLanguagePayload",
+        "fields": [
+          {
+            "name": "clientMutationId",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "language",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Language",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "languageEdge",
+            "type": {
+              "kind": "OBJECT",
+              "name": "LanguagesEdge",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "orderBy",
+                "type": {
+                  "kind": "LIST",
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "Any"
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "query",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Query",
+              "ofType": null
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "UpsertLicensorPayload",
+        "fields": [
+          {
+            "name": "clientMutationId",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "licensor",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Licensor",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "licensorEdge",
+            "type": {
+              "kind": "OBJECT",
+              "name": "LicensorsEdge",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "orderBy",
+                "type": {
+                  "kind": "LIST",
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "Any"
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "query",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Query",
+              "ofType": null
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "UpsertMediaTypePayload",
+        "fields": [
+          {
+            "name": "clientMutationId",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "mediaType",
+            "type": {
+              "kind": "OBJECT",
+              "name": "MediaType",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "mediaTypeEdge",
+            "type": {
+              "kind": "OBJECT",
+              "name": "MediaTypesEdge",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "orderBy",
+                "type": {
+                  "kind": "LIST",
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "Any"
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "query",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Query",
+              "ofType": null
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "UpsertPersonImagePayload",
+        "fields": [
+          {
+            "name": "clientMutationId",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "image",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Image",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "person",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Person",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "personImage",
+            "type": {
+              "kind": "OBJECT",
+              "name": "PersonImage",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "personImageEdge",
+            "type": {
+              "kind": "OBJECT",
+              "name": "PersonImagesEdge",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "orderBy",
+                "type": {
+                  "kind": "LIST",
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "Any"
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "query",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Query",
+              "ofType": null
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "UpsertPersonPayload",
+        "fields": [
+          {
+            "name": "clientMutationId",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "person",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Person",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "personEdge",
+            "type": {
+              "kind": "OBJECT",
+              "name": "PeopleEdge",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "orderBy",
+                "type": {
+                  "kind": "LIST",
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "Any"
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "personImage",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Image",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "query",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Query",
+              "ofType": null
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "UpsertProducerPayload",
+        "fields": [
+          {
+            "name": "clientMutationId",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "producer",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Producer",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "producerEdge",
+            "type": {
+              "kind": "OBJECT",
+              "name": "ProducersEdge",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "orderBy",
+                "type": {
+                  "kind": "LIST",
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "Any"
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "query",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Query",
+              "ofType": null
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "UpsertSeasonPayload",
+        "fields": [
+          {
+            "name": "clientMutationId",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "query",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Query",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "season",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Season",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "seasonEdge",
+            "type": {
+              "kind": "OBJECT",
+              "name": "SeasonsEdge",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "orderBy",
+                "type": {
+                  "kind": "LIST",
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "Any"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "UpsertSourceMaterialTypePayload",
+        "fields": [
+          {
+            "name": "clientMutationId",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "query",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Query",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "sourceMaterialType",
+            "type": {
+              "kind": "OBJECT",
+              "name": "SourceMaterialType",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "sourceMaterialTypeEdge",
+            "type": {
+              "kind": "OBJECT",
+              "name": "SourceMaterialTypesEdge",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "orderBy",
+                "type": {
+                  "kind": "LIST",
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "Any"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "UpsertStaffRolePayload",
+        "fields": [
+          {
+            "name": "clientMutationId",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "query",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Query",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "staffRole",
+            "type": {
+              "kind": "OBJECT",
+              "name": "StaffRole",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "staffRoleEdge",
+            "type": {
+              "kind": "OBJECT",
+              "name": "StaffRolesEdge",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "orderBy",
+                "type": {
+                  "kind": "LIST",
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "Any"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "UpsertStudioPayload",
+        "fields": [
+          {
+            "name": "clientMutationId",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "query",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Query",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "studio",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Studio",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "studioEdge",
+            "type": {
+              "kind": "OBJECT",
+              "name": "StudiosEdge",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "orderBy",
+                "type": {
+                  "kind": "LIST",
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "Any"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "UpsertUserAnimeListPayload",
+        "fields": [
+          {
+            "name": "anime",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Anime",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "animeList",
+            "type": {
+              "kind": "OBJECT",
+              "name": "AnimeList",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "clientMutationId",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "query",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Query",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "userAnimeList",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UserAnimeList",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "userAnimeListEdge",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UserAnimeListsEdge",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "orderBy",
+                "type": {
+                  "kind": "LIST",
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "Any"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "UpsertUserAnimePayload",
+        "fields": [
+          {
+            "name": "anime",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Anime",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "clientMutationId",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "query",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Query",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "user",
+            "type": {
+              "kind": "OBJECT",
+              "name": "User",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "userAnime",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UserAnime",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "userAnimeEdge",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UserAnimeEdge",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "orderBy",
+                "type": {
+                  "kind": "LIST",
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "Any"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "UpsertUserPayload",
         "fields": [
           {
             "name": "clientMutationId",

@@ -1,0 +1,4 @@
+fragment AnimeListFragment on AnimeList {
+  title
+  id
+}

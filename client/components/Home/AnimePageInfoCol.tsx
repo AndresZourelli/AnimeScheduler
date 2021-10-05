@@ -1,25 +1,24 @@
-import moment from "moment-timezone";
-import { v4 as uuidv4 } from "uuid";
-import { useState, useRef, useEffect } from "react";
+import ImageLoader from "@/components/Common/ImageLoader";
+import { ChevronDownIcon } from "@chakra-ui/icons";
 import {
-  Spinner,
   Box,
-  Heading,
-  Text,
-  IconButton,
   Button,
   ButtonGroup,
+  Divider,
+  Heading,
+  IconButton,
   Menu,
   MenuButton,
-  MenuList,
   MenuItem,
+  MenuList,
   Stat,
-  StatNumber,
   StatHelpText,
-  Divider,
+  StatNumber,
+  Text,
 } from "@chakra-ui/react";
-import { ChevronDownIcon } from "@chakra-ui/icons";
-import ImageLoader from "@/components/Common/ImageLoader";
+import moment from "moment-timezone";
+import { useEffect, useRef, useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 
 const AnimePageInfoCol = ({
   ageRating,

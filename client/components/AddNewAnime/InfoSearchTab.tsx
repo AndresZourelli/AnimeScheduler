@@ -1,31 +1,20 @@
+import { Search2Icon } from "@chakra-ui/icons";
 import {
   Box,
   Flex,
-  FormControl,
-  FormLabel,
-  FormErrorMessage,
-  FormHelperText,
   Input,
-  Button,
-  Heading,
-  Select,
-  InputRightElement,
   InputGroup,
-  CloseButton,
-  Spacer,
   InputLeftElement,
-  Text,
   Popover,
-  PopoverTrigger,
+  PopoverArrow,
+  PopoverBody,
+  PopoverCloseButton,
   PopoverContent,
   PopoverHeader,
-  PopoverBody,
-  PopoverFooter,
-  PopoverArrow,
-  PopoverCloseButton,
+  PopoverTrigger,
+  Spacer,
 } from "@chakra-ui/react";
-import { Search2Icon, AddIcon } from "@chakra-ui/icons";
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const InfoSearchTab = ({
   push,
@@ -97,7 +86,7 @@ const InfoSearchTab = ({
           )}
         </Popover>
         <Spacer />
-        {newItem}
+        {newItem ? newItem : null}
       </Flex>
     </Box>
   );
