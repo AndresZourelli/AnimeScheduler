@@ -6,6 +6,7 @@ import {
   UserAnimeList,
   Maybe,
 } from "@/graphql";
+import { useAuth } from "@/lib/Auth/FirebaseAuth";
 import { Box, Button, Grid, Heading } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 
@@ -14,13 +15,15 @@ interface MyAnimePageListInterface {
 }
 
 const MyAnimePageList = ({ watchingStatus }: MyAnimePageListInterface) => {
+  const { user } = useAuth();
   const [animesResult, fetchAnimes] = useUserWatchingListsQuery({
     variables: {
       watchingStatus: watchingStatus,
+      userId: user.uid,
     },
     requestPolicy: "network-only",
+    pause: !user?.uid,
   });
-  console.log(animesResult.data?.userAnimeLists.nodes);
   const [animeLists, setAnimeLists] = useState([]);
   const [hasMoreAnimes, setHasMoreAnimes] = useState(false);
 
@@ -28,8 +31,8 @@ const MyAnimePageList = ({ watchingStatus }: MyAnimePageListInterface) => {
   const [currentAnimesDisplayed, setAnimesDisplayed] = useState(10);
 
   useEffect(() => {
-    if (!animesResult.fetching && animesResult.data?.userAnimeLists) {
-      setAnimeLists(animesResult.data.userAnimeLists.nodes);
+    if (!animesResult.fetching && animesResult.data?.animeLists) {
+      setAnimeLists(animesResult.data.animeLists.nodes);
     }
   }, [animesResult]);
 
@@ -48,27 +51,34 @@ const MyAnimePageList = ({ watchingStatus }: MyAnimePageListInterface) => {
   return (
     <Box position="relative" justifySelf="end" mt="8" mx="3">
       <Box my="3" mr="16">
-        <Grid
+        <Box
           templateColumns="repeat(5, 225px)"
           gridAutoRows="minmax(225px, auto)"
           gap={4}
         >
-          {animesResult.data?.userAnimeLists.nodes?.map((list) => {
+          {animesResult.data?.animeLists.nodes?.map((list) => {
             return (
               <>
-                <Heading>{list}</Heading>
-                {list.animeList.userAnimeLists.nodes.map((anime) => (
-                  <AnimeCard
-                    key={anime.anime.id + "-" + anime.listId}
-                    url={anime.url}
-                    {...anime}
-                    userSection
-                  />
-                ))}
+                <Heading w="full">{list.title}</Heading>
+                <Grid
+                  templateColumns="repeat(5, 225px)"
+                  gridAutoRows="minmax(225px, auto)"
+                  gap={4}
+                >
+                  {list.userAnimeLists.nodes.map((anime) => (
+                    <AnimeCard
+                      key={anime.anime.id + "-" + list.id}
+                      url={anime.anime.profileImage.url}
+                      id={anime.anime.id}
+                      {...anime}
+                      userSection
+                    />
+                  ))}
+                </Grid>
               </>
             );
           })}
-        </Grid>
+        </Box>
         <Box display="flex">
           {hasMoreAnimes ? (
             <Button m="auto" onClick={animesShowMore} size="sm">

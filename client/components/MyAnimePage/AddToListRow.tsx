@@ -8,7 +8,9 @@ const AddToListRow = ({
   animeId,
   listId,
   userAnimeList,
+  watchStatus,
 }) => {
+  console.log(animeTitle, listTitle, watchStatus);
   const [selectValue, setSelectValue] = useState(WatchingStatusEnum.Watching);
   const [addToAnimeListResult, runAddToAnimeList] = useAddAnimeToListMutation();
   const toast = useToast();
@@ -47,16 +49,24 @@ const AddToListRow = ({
     <Tr>
       <Td>{listTitle}</Td>
       <Td display="flex" justifyContent="flex-end">
-        <Select size="sm" w="70%" mr="2%" onChange={onSelectChange}>
-          <option defaultValue={WatchingStatusEnum.Watching}>Watching</option>
+        <Select
+          size="sm"
+          w="70%"
+          mr="2%"
+          onChange={onSelectChange}
+          defaultValue={watchStatus ?? ""}
+        >
+          <option value="">Please select a watching status...</option>
+          <option value={WatchingStatusEnum.Watching}>Watching</option>
           <option value={WatchingStatusEnum.PlanToWatch}>Plan to watch</option>
           <option value={WatchingStatusEnum.Paused}>Paused</option>
           <option value={WatchingStatusEnum.Completed}>Completed</option>
           <option value={WatchingStatusEnum.Dropped}>Dropped</option>
           <option value={WatchingStatusEnum.Rewatching}>Rewatching</option>
         </Select>
+
         <Button size="sm" onClick={() => addAnimeToListCall(listId)}>
-          Add to List
+          {watchStatus ? "Update Status" : "Add to List"}
         </Button>
       </Td>
     </Tr>

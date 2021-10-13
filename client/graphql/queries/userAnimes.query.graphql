@@ -11,22 +11,26 @@ query Watching($watchingStatus: WatchingStatusEnum) {
   }
 }
 
-query UserWatchingLists($watchingStatus: WatchingStatusEnum) {
-  userAnimeLists {
+query UserWatchingLists(
+  $userId: String!
+  $watchingStatus: WatchingStatusEnum!
+) {
+  animeLists(condition: { userId: $userId }) {
     nodes {
-      animeList {
-        id
-        title
-        userAnimeLists(condition: { watchingStatus: $watchingStatus }) {
-          nodes {
-            anime {
-              title
-              id
+      title
+      id
+      userAnimeLists(condition: { watchingStatus: $watchingStatus }) {
+        nodes {
+          anime {
+            id
+            title
+            profileImage {
+              url
             }
           }
+          watchingStatus
         }
       }
-      watchingStatus
     }
   }
 }

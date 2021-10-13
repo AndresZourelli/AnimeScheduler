@@ -2,7 +2,7 @@ import LoadImage from "@/components/Common/ImageLoader";
 import PopupMenuButton from "@/components/Common/PopupMenuButton";
 import useAnimeList from "@/components/Hooks/useAnimeList";
 import AddToListRow from "@/components/MyAnimePage/AddToListRow";
-import { useAnimeListQueryQuery, useCreateNewListMutation } from "@/graphql";
+import { useAnimeInCustomListQuery, useCreateNewListMutation } from "@/graphql";
 import {
   Badge,
   Box,
@@ -31,9 +31,9 @@ import { BsPlus, BsX } from "react-icons/bs";
 import { IoMdListBox } from "react-icons/io";
 
 const AnimeCard = ({
-  title,
-  url,
-  score,
+  title = null,
+  url = null,
+  score = null,
   id,
   likes = null,
   userSection = null,
@@ -53,13 +53,15 @@ const AnimeCard = ({
     user,
     error,
     userAnimeLists,
-  } = useAnimeList();
+  } = useAnimeList({ inputAnimeId: id });
+  console.log(id);
   const getNewListName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewListName((e.target as HTMLInputElement).value);
   };
-  const [userList, getUserList] = useAnimeListQueryQuery({
-    variables: { userId: user.uid },
+  const [userList, getUserList] = useAnimeInCustomListQuery({
+    variables: { animeId: id },
   });
+  console.log(userList.data?.animeInCustomList.nodes);
   const [createNewListResult, runCreateNewList] = useCreateNewListMutation();
   const redirectToAnime = (e) => {
     router.push(`/anime/${id}`);
@@ -222,26 +224,29 @@ const AnimeCard = ({
             <ModalBody maxH="80vh" overflow="auto">
               <Table w="full" size="md">
                 <Tbody>
-                  {userList.data?.animeLists.nodes
+                  {userList.data?.animeInCustomList.nodes
                     .sort((a, b) => {
-                      if (a.title === "default") {
+                      if (a.listName === "default") {
                         return -1;
                       }
-                      if (b.title === "default") {
+                      if (b.listName === "default") {
                         return 1;
                       }
                       return 0;
                     })
-                    .map((node) => (
-                      <AddToListRow
-                        listId={node.id}
-                        animeId={id}
-                        key={node.id}
-                        animeTitle={title}
-                        listTitle={node.title}
-                        userAnimeList={userList.data.animeLists.nodes}
-                      />
-                    ))}
+                    .map((node) => {
+                      return (
+                        <AddToListRow
+                          listId={node.listId}
+                          animeId={id}
+                          key={node.listId}
+                          animeTitle={title}
+                          listTitle={node.listName}
+                          watchStatus={node.watchingStatus}
+                          userAnimeList={userList.data.animeInCustomList.nodes}
+                        />
+                      );
+                    })}
                 </Tbody>
               </Table>
             </ModalBody>

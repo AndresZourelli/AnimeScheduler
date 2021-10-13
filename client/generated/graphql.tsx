@@ -984,6 +984,60 @@ export type AnimeConnection = {
   totalCount: Scalars['Int'];
 };
 
+export type AnimeCustomList = {
+  __typename?: 'AnimeCustomList';
+  animeId?: Maybe<Scalars['UUID']>;
+  animeTitle?: Maybe<Scalars['String']>;
+  listId?: Maybe<Scalars['UUID']>;
+  listName?: Maybe<Scalars['String']>;
+  privacy?: Maybe<Scalars['String']>;
+  watchingStatus?: Maybe<WatchingStatusEnum>;
+};
+
+/** A filter to be used against `AnimeCustomList` object types. All fields are combined with a logical ‘and.’ */
+export type AnimeCustomListFilter = {
+  /** Checks for all expressions in this list. */
+  and?: Maybe<Array<AnimeCustomListFilter>>;
+  /** Filter by the object’s `animeId` field. */
+  animeId?: Maybe<UuidFilter>;
+  /** Filter by the object’s `animeTitle` field. */
+  animeTitle?: Maybe<StringFilter>;
+  /** Filter by the object’s `listId` field. */
+  listId?: Maybe<UuidFilter>;
+  /** Filter by the object’s `listName` field. */
+  listName?: Maybe<StringFilter>;
+  /** Negates the expression. */
+  not?: Maybe<AnimeCustomListFilter>;
+  /** Checks for any expressions in this list. */
+  or?: Maybe<Array<AnimeCustomListFilter>>;
+  /** Filter by the object’s `privacy` field. */
+  privacy?: Maybe<StringFilter>;
+  /** Filter by the object’s `watchingStatus` field. */
+  watchingStatus?: Maybe<WatchingStatusEnumFilter>;
+};
+
+/** A connection to a list of `AnimeCustomList` values. */
+export type AnimeCustomListsConnection = {
+  __typename?: 'AnimeCustomListsConnection';
+  /** A list of edges which contains the `AnimeCustomList` and cursor to aid in pagination. */
+  edges: Array<AnimeCustomListsEdge>;
+  /** A list of `AnimeCustomList` objects. */
+  nodes: Array<Maybe<AnimeCustomList>>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `AnimeCustomList` you could get from the connection. */
+  totalCount: Scalars['Int'];
+};
+
+/** A `AnimeCustomList` edge in the connection. */
+export type AnimeCustomListsEdge = {
+  __typename?: 'AnimeCustomListsEdge';
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>;
+  /** The `AnimeCustomList` at the end of the edge. */
+  node?: Maybe<AnimeCustomList>;
+};
+
 /** A `Anime` edge in the connection. */
 export type AnimeEdge = {
   __typename?: 'AnimeEdge';
@@ -8431,6 +8485,8 @@ export type Query = Node & {
   animeImageByNodeId?: Maybe<AnimeImage>;
   /** Reads and enables pagination through a set of `AnimeImage`. */
   animeImages?: Maybe<AnimeImagesConnection>;
+  /** Reads and enables pagination through a set of `AnimeCustomList`. */
+  animeInCustomList?: Maybe<AnimeCustomListsConnection>;
   /** Reads and enables pagination through a set of `AnimeInfo`. */
   animeInfos?: Maybe<AnimeInfosConnection>;
   animeLicensor?: Maybe<AnimeLicensor>;
@@ -8788,6 +8844,18 @@ export type QueryAnimeImagesArgs = {
   last?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
   orderBy?: Maybe<Array<AnimeImagesOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryAnimeInCustomListArgs = {
+  after?: Maybe<Scalars['Cursor']>;
+  before?: Maybe<Scalars['Cursor']>;
+  filter?: Maybe<AnimeCustomListFilter>;
+  first?: Maybe<Scalars['Int']>;
+  inputAnimeId?: Maybe<Scalars['UUID']>;
+  last?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
 };
 
 
@@ -13512,12 +13580,12 @@ export type WeeklyAnimesQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type WeeklyAnimesQuery = { __typename?: 'Query', allAnimesTiles?: Maybe<{ __typename?: 'AllAnimesTilesConnection', nodes: Array<Maybe<{ __typename?: 'AllAnimesTile', id?: Maybe<any>, title?: Maybe<string>, season?: Maybe<string>, airingStatusType?: Maybe<string>, averageWatcherRating?: Maybe<any>, startBroadcastDatetime?: Maybe<any>, url?: Maybe<string>, description?: Maybe<string>, genres?: Maybe<Array<Maybe<string>>>, mediaType?: Maybe<string>, numberOfEpisodes?: Maybe<number>, studios?: Maybe<Array<Maybe<string>>>, likes?: Maybe<boolean> }>> }> };
 
-export type AnimeListQueryQueryVariables = Exact<{
-  userId: Scalars['String'];
+export type AnimeInCustomListQueryVariables = Exact<{
+  animeId: Scalars['UUID'];
 }>;
 
 
-export type AnimeListQueryQuery = { __typename?: 'Query', animeLists?: Maybe<{ __typename?: 'AnimeListsConnection', nodes: Array<Maybe<{ __typename?: 'AnimeList', title: string, id: any }>> }> };
+export type AnimeInCustomListQuery = { __typename?: 'Query', animeInCustomList?: Maybe<{ __typename?: 'AnimeCustomListsConnection', nodes: Array<Maybe<{ __typename?: 'AnimeCustomList', animeId?: Maybe<any>, listId?: Maybe<any>, listName?: Maybe<string>, privacy?: Maybe<string>, watchingStatus?: Maybe<WatchingStatusEnum>, animeTitle?: Maybe<string> }>> }> };
 
 export type CurrentlyAiringContinuedQueryVariables = Exact<{
   limit: Scalars['Int'];
@@ -13550,11 +13618,12 @@ export type WatchingQueryVariables = Exact<{
 export type WatchingQuery = { __typename?: 'Query', allUserAnimes?: Maybe<{ __typename?: 'AllUserAnimeConnection', nodes: Array<Maybe<{ __typename?: 'AllUserAnime', id?: Maybe<any>, listId?: Maybe<any>, listName?: Maybe<string>, title?: Maybe<string>, url?: Maybe<string>, watchingStatus?: Maybe<WatchingStatusEnum> }>> }> };
 
 export type UserWatchingListsQueryVariables = Exact<{
-  watchingStatus?: Maybe<WatchingStatusEnum>;
+  userId: Scalars['String'];
+  watchingStatus: WatchingStatusEnum;
 }>;
 
 
-export type UserWatchingListsQuery = { __typename?: 'Query', userAnimeLists?: Maybe<{ __typename?: 'UserAnimeListsConnection', nodes: Array<Maybe<{ __typename?: 'UserAnimeList', watchingStatus: WatchingStatusEnum, animeList?: Maybe<{ __typename?: 'AnimeList', id: any, title: string, userAnimeLists: { __typename?: 'UserAnimeListsConnection', nodes: Array<Maybe<{ __typename?: 'UserAnimeList', anime?: Maybe<{ __typename?: 'Anime', title: string, id: any }> }>> } }> }>> }> };
+export type UserWatchingListsQuery = { __typename?: 'Query', animeLists?: Maybe<{ __typename?: 'AnimeListsConnection', nodes: Array<Maybe<{ __typename?: 'AnimeList', title: string, id: any, userAnimeLists: { __typename?: 'UserAnimeListsConnection', nodes: Array<Maybe<{ __typename?: 'UserAnimeList', watchingStatus: WatchingStatusEnum, anime?: Maybe<{ __typename?: 'Anime', id: any, title: string, profileImage?: Maybe<{ __typename?: 'Image', url: string }> }> }>> } }>> }> };
 
 export type CurrentlyWatchingQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -13666,19 +13735,23 @@ export const WeeklyAnimesDocument = gql`
 export function useWeeklyAnimesQuery(options: Omit<Urql.UseQueryArgs<WeeklyAnimesQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<WeeklyAnimesQuery>({ query: WeeklyAnimesDocument, ...options });
 };
-export const AnimeListQueryDocument = gql`
-    query AnimeListQuery($userId: String!) {
-  animeLists(condition: {userId: $userId}) {
+export const AnimeInCustomListDocument = gql`
+    query AnimeInCustomList($animeId: UUID!) {
+  animeInCustomList(inputAnimeId: $animeId) {
     nodes {
-      title
-      id
+      animeId
+      listId
+      listName
+      privacy
+      watchingStatus
+      animeTitle
     }
   }
 }
     `;
 
-export function useAnimeListQueryQuery(options: Omit<Urql.UseQueryArgs<AnimeListQueryQueryVariables>, 'query'> = {}) {
-  return Urql.useQuery<AnimeListQueryQuery>({ query: AnimeListQueryDocument, ...options });
+export function useAnimeInCustomListQuery(options: Omit<Urql.UseQueryArgs<AnimeInCustomListQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<AnimeInCustomListQuery>({ query: AnimeInCustomListDocument, ...options });
 };
 export const CurrentlyAiringContinuedDocument = gql`
     query CurrentlyAiringContinued($limit: Int!, $currentSeason: String!) {
@@ -13762,22 +13835,23 @@ export function useWatchingQuery(options: Omit<Urql.UseQueryArgs<WatchingQueryVa
   return Urql.useQuery<WatchingQuery>({ query: WatchingDocument, ...options });
 };
 export const UserWatchingListsDocument = gql`
-    query UserWatchingLists($watchingStatus: WatchingStatusEnum) {
-  userAnimeLists {
+    query UserWatchingLists($userId: String!, $watchingStatus: WatchingStatusEnum!) {
+  animeLists(condition: {userId: $userId}) {
     nodes {
-      animeList {
-        id
-        title
-        userAnimeLists(condition: {watchingStatus: $watchingStatus}) {
-          nodes {
-            anime {
-              title
-              id
+      title
+      id
+      userAnimeLists(condition: {watchingStatus: $watchingStatus}) {
+        nodes {
+          anime {
+            id
+            title
+            profileImage {
+              url
             }
           }
+          watchingStatus
         }
       }
-      watchingStatus
     }
   }
 }
@@ -16002,6 +16076,148 @@ export default {
                 "kind": "SCALAR",
                 "name": "Any"
               }
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "AnimeCustomList",
+        "fields": [
+          {
+            "name": "animeId",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "animeTitle",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "listId",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "listName",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "privacy",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "watchingStatus",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "AnimeCustomListsConnection",
+        "fields": [
+          {
+            "name": "edges",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "LIST",
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "AnimeCustomListsEdge",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "nodes",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "LIST",
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "AnimeCustomList",
+                  "ofType": null
+                }
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "pageInfo",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "PageInfo",
+                "ofType": null
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "totalCount",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "AnimeCustomListsEdge",
+        "fields": [
+          {
+            "name": "cursor",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "node",
+            "type": {
+              "kind": "OBJECT",
+              "name": "AnimeCustomList",
+              "ofType": null
             },
             "args": []
           }
@@ -30920,6 +31136,65 @@ export default {
                       "name": "Any"
                     }
                   }
+                }
+              }
+            ]
+          },
+          {
+            "name": "animeInCustomList",
+            "type": {
+              "kind": "OBJECT",
+              "name": "AnimeCustomListsConnection",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "after",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "before",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "filter",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "first",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "inputAnimeId",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "last",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "offset",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
                 }
               }
             ]

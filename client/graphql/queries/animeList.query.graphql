@@ -1,8 +1,12 @@
-query AnimeListQuery($userId: String!) {
-  animeLists(condition: { userId: $userId }) {
+query AnimeInCustomList($animeId: UUID!) {
+  animeInCustomList(inputAnimeId: $animeId) {
     nodes {
-      title
-      id
+      animeId
+      listId
+      listName
+      privacy
+      watchingStatus
+      animeTitle
     }
   }
 }

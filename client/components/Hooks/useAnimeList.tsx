@@ -1,19 +1,19 @@
 import {
   useAddAnimeToUserAnimeListMutation,
-  useAnimeListQueryQuery,
   useDeleteAnimeFromListMutation,
+  useAnimeInCustomListQuery,
 } from "@/graphql";
 import { useAuth } from "@/lib/Auth/FirebaseAuth";
 import { useEffect, useState } from "react";
 
-const useAnimeList = () => {
+const useAnimeList = ({ inputAnimeId = null }) => {
   const { user } = useAuth();
   const [userAnimeLists, setUserAnimeLists] = useState([]);
   const [error, setError] = useState(false);
   const [notificationType, setNotification] = useState("none");
 
-  const [userListResult, getAnimeListResult] = useAnimeListQueryQuery({
-    variables: { userId: user?.uid },
+  const [userListResult, getAnimeListResult] = useAnimeInCustomListQuery({
+    variables: { animeId: inputAnimeId },
     pause: true,
   });
   const [addAnimeResult, addAnimeToUser] = useAddAnimeToUserAnimeListMutation();
@@ -23,6 +23,7 @@ const useAnimeList = () => {
   const addAnimeToList = (e, animeId) => {
     e.stopPropagation();
     try {
+      console.log(animeId, userAnimeLists);
       const animeListId = userAnimeLists.filter((item) => {
         return item.title === "default";
       })[0].id;
@@ -41,6 +42,7 @@ const useAnimeList = () => {
       const animeListId = userAnimeLists.filter((item) => {
         return item.title === "default";
       })[0].id;
+      console.log("running", animeListId);
       removeAnimeFromUser({ animeListId, animeId }).then(() => {
         setNotification("anime-removed");
       });
@@ -51,7 +53,7 @@ const useAnimeList = () => {
 
   useEffect(() => {
     if (!userListResult.fetching && userListResult.data) {
-      setUserAnimeLists(userListResult.data.animeLists.nodes);
+      setUserAnimeLists(userListResult.data.animeInCustomList.nodes);
     }
   }, [userListResult]);
 

@@ -60,7 +60,7 @@ const WeeklyGridCard = ({
     addAnimeToList,
     removeAnimeFromList,
     user,
-  } = useAnimeList();
+  } = useAnimeList({ inputAnimeId: id });
   return (
     <Box m={2} borderRadius="xl" w="167px">
       <Flex minH="242px">
