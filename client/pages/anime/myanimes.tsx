@@ -58,8 +58,12 @@ const MyAnimes = (props) => {
               <MyAnimePageList watchingStatus={WatchingStatusEnum.Completed} />
             </Box>
           </TabPanel>
+          <TabPanel>
+            <Box m={5}>
+              <Heading>Custom</Heading>
+            </Box>
+          </TabPanel>
         </TabPanels>
-        <TabPanel>2</TabPanel>
       </Tabs>
     </Box>
   );

@@ -68,7 +68,8 @@ const HorizontalScroll = ({ animes }) => {
         />
         <HStack
           height="100%"
-          width="100%"
+          width="full"
+          overflow="hidden"
           spacing="15px"
           ref={currentRef}
           sx={{ scrollBehavior: "smooth" }}

@@ -1,18 +1,11 @@
-import { createClient, dedupExchange, fetchExchange } from "urql";
-import { cacheExchange } from "@urql/exchange-graphcache";
-import { authExchange } from "@urql/exchange-auth";
-import { auth } from "../../firebase/firebaseInit";
-import { gql } from "@urql/core";
-import { checkTokenExpiration } from "../../utilities/checkTokenExpiration";
-import { makeOperation } from "@urql/core";
+import { AnimeListQueryDocument } from "@/graphql";
+import { gql, makeOperation } from "@urql/core";
 import { devtoolsExchange } from "@urql/devtools";
-import {
-  AnimeListFragmentFragment,
-  AnimeListFragmentFragmentDoc,
-  CreateAnimeListPayload,
-  AnimeListQueryDocument,
-  WatchingDocument,
-} from "@/graphql";
+import { authExchange } from "@urql/exchange-auth";
+import { cacheExchange } from "@urql/exchange-graphcache";
+import { createClient, dedupExchange, fetchExchange } from "urql";
+import { auth } from "../../firebase/firebaseInit";
+import { checkTokenExpiration } from "../../utilities/checkTokenExpiration";
 
 const client = createClient({
   url: "http://localhost:4000/graphql",
@@ -20,6 +13,9 @@ const client = createClient({
     devtoolsExchange,
     dedupExchange,
     cacheExchange({
+      keys: {
+        UserList: (data) => null,
+      },
       updates: {
         Mutation: {
           createUserAnimeList(_result, args: any, cache, _info) {

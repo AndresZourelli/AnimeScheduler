@@ -37,7 +37,7 @@ const PopupMenuButton = ({ onClickInner, ...props }) => {
       <MenuButton
         as={IconButton}
         {...props}
-        // onClick={(e) => e.stopPropagation()}
+        onClick={(e) => e.stopPropagation()}
       />
       <Portal>
         <MenuList>

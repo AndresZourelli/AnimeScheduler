@@ -32,13 +32,14 @@ app.post("/setCustomClaims", addCustomClaims);
 app.use(morgan("dev"));
 
 app.use("/graphql", isAuth);
-
 app.use(
   postgraphile(process.env.POSTGRES_DATABASE_URL, "anime_app_public", {
     watchPg: true,
     graphiql: true,
     enhanceGraphiql: true,
     dynamicJson: true,
+    ownerConnectionString: process.env.POSTGRES_DATABASE_URL_OWNER,
+    retryOnInitFail: true,
     appendPlugins: [
       postgraphilePluginConnectionFilter,
       PgSimplifyInflectorPlugin,
@@ -50,14 +51,16 @@ app.use(
       const settings = {};
       if (req.user) {
         settings["jwt.claims.user_id"] = req.user.id;
-        settings["jwt.role"] = req.user.role;
+        settings["jwt.claims.role"] = req.user.role;
       } else {
-        settings.role = "admin";
+        settings.role = "anime_default";
       }
+      console.log(settings);
       return settings;
     },
   })
 );
+// eslint-disable-next-line no-unused-vars
 app.use((err, req, res, next) => {
   console.log(err);
 });

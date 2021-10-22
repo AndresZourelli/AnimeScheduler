@@ -18,19 +18,9 @@ mutation DeleteAnimeFromList($animeListId: UUID!, $animeId: UUID!) {
   }
 }
 
-mutation AddAnimeToList(
-  $animeListId: UUID!
-  $animeId: UUID!
-  $watchingStatus: WatchingStatusEnum
-) {
+mutation AddAnimeToList($animeListId: UUID!, $animeId: UUID!) {
   upsertUserAnimeList(
-    input: {
-      userAnimeList: {
-        animeListId: $animeListId
-        animeId: $animeId
-        watchingStatus: $watchingStatus
-      }
-    }
+    input: { userAnimeList: { animeListId: $animeListId, animeId: $animeId } }
     where: { animeId: $animeId, animeListId: $animeListId }
   ) {
     userAnimeList {
@@ -38,7 +28,6 @@ mutation AddAnimeToList(
         title
         id
       }
-      watchingStatus
     }
   }
 }
@@ -49,5 +38,46 @@ mutation CreateNewList($userId: String!, $title: String!) {
       id
       title
     }
+  }
+}
+
+mutation updateUserAnimeList($animeListId: UUID!, $animeId: UUID!) {
+  updateUserAnimeListByAnimeListIdAndAnimeId(
+    input: {
+      patch: { animeListId: $animeListId }
+      animeListId: $animeListId
+      animeId: $animeId
+      clientMutationId: "UpdateAnimeList"
+    }
+  ) {
+    clientMutationId
+  }
+}
+
+mutation updateUserAnimeWatchStatus(
+  $userId: String!
+  $animeId: UUID!
+  $watchStatus: WatchingStatusEnum!
+) {
+  updateUserWatchStatus(
+    input: {
+      patch: { watchStatus: $watchStatus }
+      userId: $userId
+      animeId: $animeId
+      clientMutationId: "ChangeAnimeWatchStatus"
+    }
+  ) {
+    clientMutationId
+  }
+}
+
+mutation upsertUserWatchStatus($userId: String!, $animeId: UUID!) {
+  upsertUserWatchStatus(
+    input: {
+      userWatchStatus: { userId: $userId, animeId: $animeId }
+      clientMutationId: "UpsertedAnimeWatchStatus"
+    }
+  ) {
+    clientMutationId
   }
 }

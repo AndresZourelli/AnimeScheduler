@@ -7,6 +7,7 @@ const ImageLoader = ({ image_url, alt, ...props }) => {
   const handleImageLoad = () => {
     setIsLoaded(true);
   };
+
   return (
     <Skeleton width="full" height="full" isLoaded={isLoaded}>
       <NextImage

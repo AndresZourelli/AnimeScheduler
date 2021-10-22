@@ -1,13 +1,7 @@
 import AnimeCard from "@/components/Home/AnimeCard";
-import {
-  useWatchingQuery,
-  WatchingStatusEnum,
-  useUserWatchingListsQuery,
-  UserAnimeList,
-  Maybe,
-} from "@/graphql";
+import { useGetUserAnimeListsQuery, WatchingStatusEnum } from "@/graphql";
 import { useAuth } from "@/lib/Auth/FirebaseAuth";
-import { Box, Button, Grid, Heading } from "@chakra-ui/react";
+import { Box, Button, Grid, Heading, Text } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 
 interface MyAnimePageListInterface {
@@ -16,13 +10,10 @@ interface MyAnimePageListInterface {
 
 const MyAnimePageList = ({ watchingStatus }: MyAnimePageListInterface) => {
   const { user } = useAuth();
-  const [animesResult, fetchAnimes] = useUserWatchingListsQuery({
-    variables: {
-      watchingStatus: watchingStatus,
-      userId: user.uid,
-    },
-    requestPolicy: "network-only",
+  const [animesResult, fetchAnimes] = useGetUserAnimeListsQuery({
+    variables: { watchStatus: watchingStatus },
     pause: !user?.uid,
+    requestPolicy: "network-only",
   });
   const [animeLists, setAnimeLists] = useState([]);
   const [hasMoreAnimes, setHasMoreAnimes] = useState(false);
@@ -30,11 +21,11 @@ const MyAnimePageList = ({ watchingStatus }: MyAnimePageListInterface) => {
   const [numberOfAnimes, setNumberOfAnimes] = useState(animeLists?.length);
   const [currentAnimesDisplayed, setAnimesDisplayed] = useState(10);
 
-  useEffect(() => {
-    if (!animesResult.fetching && animesResult.data?.animeLists) {
-      setAnimeLists(animesResult.data.animeLists.nodes);
-    }
-  }, [animesResult]);
+  // useEffect(() => {
+  //   if (!animesResult.fetching && animesResult.data?.getUserAnimeLists) {
+  //     setAnimeLists(animesResult.data.getUserAnimeLists.nodes);
+  //   }
+  // }, [animesResult]);
 
   useEffect(() => {
     if (currentAnimesDisplayed < numberOfAnimes) {
@@ -48,34 +39,49 @@ const MyAnimePageList = ({ watchingStatus }: MyAnimePageListInterface) => {
     setAnimesDisplayed((prevState) => prevState + 10);
   };
 
+  useEffect(() => {
+    if (
+      !animesResult.fetching &&
+      animesResult.data &&
+      animesResult.data.getUserAnimeLists?.nodes
+    ) {
+      setAnimeLists([
+        ...animesResult.data.getUserAnimeLists?.nodes,
+        ...animeLists,
+      ]);
+    }
+  }, [animesResult]);
+
   return (
     <Box position="relative" justifySelf="end" mt="8" mx="3">
       <Box my="3" mr="16">
         <Box
-          templateColumns="repeat(5, 225px)"
+          gridTemplateColumns="repeat(5, 225px)"
           gridAutoRows="minmax(225px, auto)"
           gap={4}
         >
-          {animesResult.data?.animeLists.nodes?.map((list) => {
+          {animesResult.data?.getUserAnimeLists?.nodes.map((list, idx) => {
+            const test = list.animes.map((anime, idx2) => (
+              <AnimeCard
+                key={anime.id + "-" + list.id}
+                url={anime.url}
+                id={anime.id}
+                {...anime}
+                userSection
+              />
+            ));
             return (
-              <>
+              <Box key={list.id}>
                 <Heading w="full">{list.title}</Heading>
+
                 <Grid
-                  templateColumns="repeat(5, 225px)"
+                  gridTemplateColumns="repeat(5, 225px)"
                   gridAutoRows="minmax(225px, auto)"
                   gap={4}
                 >
-                  {list.userAnimeLists.nodes.map((anime) => (
-                    <AnimeCard
-                      key={anime.anime.id + "-" + list.id}
-                      url={anime.anime.profileImage.url}
-                      id={anime.anime.id}
-                      {...anime}
-                      userSection
-                    />
-                  ))}
+                  {test}
                 </Grid>
-              </>
+              </Box>
             );
           })}
         </Box>

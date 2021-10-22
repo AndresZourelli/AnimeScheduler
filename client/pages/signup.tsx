@@ -16,6 +16,7 @@ import { getRedirectResult } from "firebase/auth";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { FcGoogle } from "react-icons/fc";
+import { auth } from "@/firebase/firebaseInit";
 
 const signup = () => {
   const router = useRouter();
@@ -59,8 +60,9 @@ const signup = () => {
   }, [signupData]);
 
   useEffect(() => {
-    getRedirectResult(user).then((result) => {
-      if (result.user) {
+    getRedirectResult(auth).then((result) => {
+      console.log(result);
+      if (result?.user) {
         router.push("/");
       }
     });

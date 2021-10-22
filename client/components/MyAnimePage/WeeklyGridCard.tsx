@@ -53,7 +53,8 @@ const WeeklyGridCard = ({
   startBroadcastDatetime,
   likes,
 }) => {
-  const timer = CountDownTimer({ endInputDate: startBroadcastDatetime });
+  const timer = null;
+  // const timer = CountDownTimer({ endInputDate: startBroadcastDatetime });
   const {
     addAnimeResult,
     removeAnimeResult,
@@ -173,7 +174,7 @@ const WeeklyGridCard = ({
                   <Text fontSize="sm">Airs at {formattedAirTime}</Text>
                   <Text fontSize="sm">
                     Next Episode in{" "}
-                    {`${timer.days}d ${timer.hours}h ${timer.minutes}m ${timer.seconds}s`}
+                    {`${timer?.days}d ${timer?.hours}h ${timer?.minutes}m ${timer?.seconds}s`}
                   </Text>
                 </Box>
                 <Spacer />

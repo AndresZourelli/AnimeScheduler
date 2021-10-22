@@ -1,2 +1,1 @@
-drop function anime_app_public.anime_in_custom_list;
-drop type anime_app_public.anime_custom_list;
+drop table anime_app_public.user_watch_status;

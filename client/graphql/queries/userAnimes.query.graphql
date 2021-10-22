@@ -1,25 +1,37 @@
-query Watching($watchingStatus: WatchingStatusEnum) {
-  allUserAnimes(condition: { watchingStatus: $watchingStatus }) {
+query Watching {
+  allUserAnimes {
     nodes {
       id
       listId
       listName
       title
       url
-      watchingStatus
     }
   }
 }
 
-query UserWatchingLists(
-  $userId: String!
-  $watchingStatus: WatchingStatusEnum!
-) {
-  animeLists(condition: { userId: $userId }) {
+query GetUserAnimeLists($watchStatus: WatchingStatusEnum) {
+  getUserAnimeLists(watchStatusInput: $watchStatus) {
     nodes {
-      title
       id
-      userAnimeLists(condition: { watchingStatus: $watchingStatus }) {
+      title
+      userId
+      animes {
+        title
+        url
+        watchStatus
+        id
+      }
+    }
+  }
+}
+
+query UserWatchingLists($watchStatus: WatchingStatusEnum) {
+  animeLists {
+    nodes {
+      id
+      title
+      userAnimeLists {
         nodes {
           anime {
             id
@@ -27,49 +39,14 @@ query UserWatchingLists(
             profileImage {
               url
             }
+            userWatchStatuses(condition: { watchStatus: $watchStatus }) {
+              nodes {
+                watchStatus
+              }
+            }
           }
-          watchingStatus
         }
       }
-    }
-  }
-}
-
-query CurrentlyWatching {
-  allUserAnimes(condition: { watchingStatus: WATCHING }) {
-    nodes {
-      id
-      listId
-      listName
-      title
-      url
-      watchingStatus
-    }
-  }
-}
-
-query PlanToWatch {
-  allUserAnimes(condition: { watchingStatus: PLAN_TO_WATCH }) {
-    nodes {
-      id
-      listId
-      listName
-      title
-      url
-      watchingStatus
-    }
-  }
-}
-
-query PlanToWatchCompleted {
-  allUserAnimes(condition: { watchingStatus: COMPLETED }) {
-    nodes {
-      id
-      listId
-      listName
-      title
-      url
-      watchingStatus
     }
   }
 }

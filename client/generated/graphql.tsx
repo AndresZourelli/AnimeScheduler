@@ -25,6 +25,43 @@ export type Scalars = {
   UUID: any;
 };
 
+/** All input for the `addAnimeToList` mutation. */
+export type AddAnimeToListInput = {
+  animeId?: Maybe<Scalars['UUID']>;
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  privacy?: Maybe<AnimeListPrivacy>;
+  title?: Maybe<Scalars['String']>;
+  userId?: Maybe<Scalars['String']>;
+  watchStatus?: Maybe<WatchingStatusEnum>;
+};
+
+/** The output of our `addAnimeToList` mutation. */
+export type AddAnimeToListPayload = {
+  __typename?: 'AddAnimeToListPayload';
+  animeList?: Maybe<AnimeList>;
+  /** An edge for our `AnimeList`. May be used by Relay 1. */
+  animeListEdge?: Maybe<AnimeListsEdge>;
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** Reads a single `User` that is related to this `AnimeList`. */
+  user?: Maybe<User>;
+};
+
+
+/** The output of our `addAnimeToList` mutation. */
+export type AddAnimeToListPayloadAnimeListEdgeArgs = {
+  orderBy?: Maybe<Array<AnimeListsOrderBy>>;
+};
+
 export type AgeRatingType = Node & {
   __typename?: 'AgeRatingType';
   ageRatingType: Scalars['String'];
@@ -361,7 +398,6 @@ export type AllUserAnime = {
   listName?: Maybe<Scalars['String']>;
   title?: Maybe<Scalars['String']>;
   url?: Maybe<Scalars['String']>;
-  watchingStatus?: Maybe<WatchingStatusEnum>;
 };
 
 /**
@@ -383,8 +419,6 @@ export type AllUserAnimeCondition = {
   title?: Maybe<Scalars['String']>;
   /** Checks for equality with the object’s `url` field. */
   url?: Maybe<Scalars['String']>;
-  /** Checks for equality with the object’s `watchingStatus` field. */
-  watchingStatus?: Maybe<WatchingStatusEnum>;
 };
 
 /** A connection to a list of `AllUserAnime` values. */
@@ -431,8 +465,6 @@ export type AllUserAnimeFilter = {
   title?: Maybe<StringFilter>;
   /** Filter by the object’s `url` field. */
   url?: Maybe<StringFilter>;
-  /** Filter by the object’s `watchingStatus` field. */
-  watchingStatus?: Maybe<WatchingStatusEnumFilter>;
 };
 
 /** Methods to use when ordering `AllUserAnime`. */
@@ -451,9 +483,7 @@ export enum AllUserAnimeOrderBy {
   TitleAsc = 'TITLE_ASC',
   TitleDesc = 'TITLE_DESC',
   UrlAsc = 'URL_ASC',
-  UrlDesc = 'URL_DESC',
-  WatchingStatusAsc = 'WATCHING_STATUS_ASC',
-  WatchingStatusDesc = 'WATCHING_STATUS_DESC'
+  UrlDesc = 'URL_DESC'
 }
 
 export type AlternateAnimeName = Node & {
@@ -623,6 +653,8 @@ export type Anime = Node & {
   userAnimeLists: UserAnimeListsConnection;
   /** Reads and enables pagination through a set of `UserAnime`. */
   userAnimes: UserAnimeConnection;
+  /** Reads and enables pagination through a set of `UserWatchStatus`. */
+  userWatchStatuses: UserWatchStatusesConnection;
 };
 
 
@@ -765,6 +797,18 @@ export type AnimeUserAnimesArgs = {
   last?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
   orderBy?: Maybe<Array<UserAnimeOrderBy>>;
+};
+
+
+export type AnimeUserWatchStatusesArgs = {
+  after?: Maybe<Scalars['Cursor']>;
+  before?: Maybe<Scalars['Cursor']>;
+  condition?: Maybe<UserWatchStatusCondition>;
+  filter?: Maybe<UserWatchStatusFilter>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  orderBy?: Maybe<Array<UserWatchStatusesOrderBy>>;
 };
 
 export type AnimeCharacter = {
@@ -982,60 +1026,6 @@ export type AnimeConnection = {
   pageInfo: PageInfo;
   /** The count of *all* `Anime` you could get from the connection. */
   totalCount: Scalars['Int'];
-};
-
-export type AnimeCustomList = {
-  __typename?: 'AnimeCustomList';
-  animeId?: Maybe<Scalars['UUID']>;
-  animeTitle?: Maybe<Scalars['String']>;
-  listId?: Maybe<Scalars['UUID']>;
-  listName?: Maybe<Scalars['String']>;
-  privacy?: Maybe<Scalars['String']>;
-  watchingStatus?: Maybe<WatchingStatusEnum>;
-};
-
-/** A filter to be used against `AnimeCustomList` object types. All fields are combined with a logical ‘and.’ */
-export type AnimeCustomListFilter = {
-  /** Checks for all expressions in this list. */
-  and?: Maybe<Array<AnimeCustomListFilter>>;
-  /** Filter by the object’s `animeId` field. */
-  animeId?: Maybe<UuidFilter>;
-  /** Filter by the object’s `animeTitle` field. */
-  animeTitle?: Maybe<StringFilter>;
-  /** Filter by the object’s `listId` field. */
-  listId?: Maybe<UuidFilter>;
-  /** Filter by the object’s `listName` field. */
-  listName?: Maybe<StringFilter>;
-  /** Negates the expression. */
-  not?: Maybe<AnimeCustomListFilter>;
-  /** Checks for any expressions in this list. */
-  or?: Maybe<Array<AnimeCustomListFilter>>;
-  /** Filter by the object’s `privacy` field. */
-  privacy?: Maybe<StringFilter>;
-  /** Filter by the object’s `watchingStatus` field. */
-  watchingStatus?: Maybe<WatchingStatusEnumFilter>;
-};
-
-/** A connection to a list of `AnimeCustomList` values. */
-export type AnimeCustomListsConnection = {
-  __typename?: 'AnimeCustomListsConnection';
-  /** A list of edges which contains the `AnimeCustomList` and cursor to aid in pagination. */
-  edges: Array<AnimeCustomListsEdge>;
-  /** A list of `AnimeCustomList` objects. */
-  nodes: Array<Maybe<AnimeCustomList>>;
-  /** Information to aid in pagination. */
-  pageInfo: PageInfo;
-  /** The count of *all* `AnimeCustomList` you could get from the connection. */
-  totalCount: Scalars['Int'];
-};
-
-/** A `AnimeCustomList` edge in the connection. */
-export type AnimeCustomListsEdge = {
-  __typename?: 'AnimeCustomListsEdge';
-  /** A cursor for use in pagination. */
-  cursor?: Maybe<Scalars['Cursor']>;
-  /** The `AnimeCustomList` at the end of the edge. */
-  node?: Maybe<AnimeCustomList>;
 };
 
 /** A `Anime` edge in the connection. */
@@ -1838,7 +1828,9 @@ export enum AnimeOrderBy {
   UserAnimeByAnimeIdCountAsc = 'USER_ANIME_BY_ANIME_ID__COUNT_ASC',
   UserAnimeByAnimeIdCountDesc = 'USER_ANIME_BY_ANIME_ID__COUNT_DESC',
   UserAnimeListsByAnimeIdCountAsc = 'USER_ANIME_LISTS_BY_ANIME_ID__COUNT_ASC',
-  UserAnimeListsByAnimeIdCountDesc = 'USER_ANIME_LISTS_BY_ANIME_ID__COUNT_DESC'
+  UserAnimeListsByAnimeIdCountDesc = 'USER_ANIME_LISTS_BY_ANIME_ID__COUNT_DESC',
+  UserWatchStatusesByAnimeIdCountAsc = 'USER_WATCH_STATUSES_BY_ANIME_ID__COUNT_ASC',
+  UserWatchStatusesByAnimeIdCountDesc = 'USER_WATCH_STATUSES_BY_ANIME_ID__COUNT_DESC'
 }
 
 /** Represents an update to a `Anime`. Fields that are set will be updated. */
@@ -4089,6 +4081,43 @@ export type CreateUserPayloadUserEdgeArgs = {
   orderBy?: Maybe<Array<UsersOrderBy>>;
 };
 
+/** All input for the create `UserWatchStatus` mutation. */
+export type CreateUserWatchStatusInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** The `UserWatchStatus` to be created by this mutation. */
+  userWatchStatus: UserWatchStatusInput;
+};
+
+/** The output of our create `UserWatchStatus` mutation. */
+export type CreateUserWatchStatusPayload = {
+  __typename?: 'CreateUserWatchStatusPayload';
+  /** Reads a single `Anime` that is related to this `UserWatchStatus`. */
+  anime?: Maybe<Anime>;
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** Reads a single `User` that is related to this `UserWatchStatus`. */
+  user?: Maybe<User>;
+  /** The `UserWatchStatus` that was created by this mutation. */
+  userWatchStatus?: Maybe<UserWatchStatus>;
+  /** An edge for our `UserWatchStatus`. May be used by Relay 1. */
+  userWatchStatusEdge?: Maybe<UserWatchStatusesEdge>;
+};
+
+
+/** The output of our create `UserWatchStatus` mutation. */
+export type CreateUserWatchStatusPayloadUserWatchStatusEdgeArgs = {
+  orderBy?: Maybe<Array<UserWatchStatusesOrderBy>>;
+};
+
 /** A filter to be used against Datetime fields. All fields are combined with a logical ‘and.’ */
 export type DatetimeFilter = {
   /** Not equal to the specified value, treating null like an ordinary value. */
@@ -5709,6 +5738,55 @@ export type DeleteUserPayloadUserEdgeArgs = {
   orderBy?: Maybe<Array<UsersOrderBy>>;
 };
 
+/** All input for the `deleteUserWatchStatusByNodeId` mutation. */
+export type DeleteUserWatchStatusByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** The globally unique `ID` which will identify a single `UserWatchStatus` to be deleted. */
+  nodeId: Scalars['ID'];
+};
+
+/** All input for the `deleteUserWatchStatus` mutation. */
+export type DeleteUserWatchStatusInput = {
+  animeId: Scalars['UUID'];
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  userId: Scalars['String'];
+};
+
+/** The output of our delete `UserWatchStatus` mutation. */
+export type DeleteUserWatchStatusPayload = {
+  __typename?: 'DeleteUserWatchStatusPayload';
+  /** Reads a single `Anime` that is related to this `UserWatchStatus`. */
+  anime?: Maybe<Anime>;
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  deletedUserWatchStatusNodeId?: Maybe<Scalars['ID']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** Reads a single `User` that is related to this `UserWatchStatus`. */
+  user?: Maybe<User>;
+  /** The `UserWatchStatus` that was deleted by this mutation. */
+  userWatchStatus?: Maybe<UserWatchStatus>;
+  /** An edge for our `UserWatchStatus`. May be used by Relay 1. */
+  userWatchStatusEdge?: Maybe<UserWatchStatusesEdge>;
+};
+
+
+/** The output of our delete `UserWatchStatus` mutation. */
+export type DeleteUserWatchStatusPayloadUserWatchStatusEdgeArgs = {
+  orderBy?: Maybe<Array<UserWatchStatusesOrderBy>>;
+};
+
 export type Genre = Node & {
   __typename?: 'Genre';
   /** Reads and enables pagination through a set of `AnimeGenre`. */
@@ -6291,6 +6369,7 @@ export enum MediaTypesOrderBy {
 /** The root mutation type which contains root level fields which mutate data. */
 export type Mutation = {
   __typename?: 'Mutation';
+  addAnimeToList?: Maybe<AddAnimeToListPayload>;
   /** Creates a single `AgeRatingType`. */
   createAgeRatingType?: Maybe<CreateAgeRatingTypePayload>;
   /** Creates a single `AiringStatusType`. */
@@ -6353,6 +6432,8 @@ export type Mutation = {
   createUserAnime?: Maybe<CreateUserAnimePayload>;
   /** Creates a single `UserAnimeList`. */
   createUserAnimeList?: Maybe<CreateUserAnimeListPayload>;
+  /** Creates a single `UserWatchStatus`. */
+  createUserWatchStatus?: Maybe<CreateUserWatchStatusPayload>;
   /** Deletes a single `AgeRatingType` using a unique key. */
   deleteAgeRatingType?: Maybe<DeleteAgeRatingTypePayload>;
   /** Deletes a single `AgeRatingType` using a unique key. */
@@ -6505,6 +6586,10 @@ export type Mutation = {
   deleteUserAnimeListByAnimeListIdAndAnimeId?: Maybe<DeleteUserAnimeListPayload>;
   /** Deletes a single `User` using its globally unique id. */
   deleteUserByNodeId?: Maybe<DeleteUserPayload>;
+  /** Deletes a single `UserWatchStatus` using a unique key. */
+  deleteUserWatchStatus?: Maybe<DeleteUserWatchStatusPayload>;
+  /** Deletes a single `UserWatchStatus` using its globally unique id. */
+  deleteUserWatchStatusByNodeId?: Maybe<DeleteUserWatchStatusPayload>;
   registerUser?: Maybe<RegisterUserPayload>;
   /** Updates a single `AgeRatingType` using a unique key and a patch. */
   updateAgeRatingType?: Maybe<UpdateAgeRatingTypePayload>;
@@ -6658,6 +6743,10 @@ export type Mutation = {
   updateUserAnimeListByAnimeListIdAndAnimeId?: Maybe<UpdateUserAnimeListPayload>;
   /** Updates a single `User` using its globally unique id and a patch. */
   updateUserByNodeId?: Maybe<UpdateUserPayload>;
+  /** Updates a single `UserWatchStatus` using a unique key and a patch. */
+  updateUserWatchStatus?: Maybe<UpdateUserWatchStatusPayload>;
+  /** Updates a single `UserWatchStatus` using its globally unique id and a patch. */
+  updateUserWatchStatusByNodeId?: Maybe<UpdateUserWatchStatusPayload>;
   /** Upserts a single `AgeRatingType`. */
   upsertAgeRatingType?: Maybe<UpsertAgeRatingTypePayload>;
   /** Upserts a single `AiringStatusType`. */
@@ -6720,6 +6809,14 @@ export type Mutation = {
   upsertUserAnime?: Maybe<UpsertUserAnimePayload>;
   /** Upserts a single `UserAnimeList`. */
   upsertUserAnimeList?: Maybe<UpsertUserAnimeListPayload>;
+  /** Upserts a single `UserWatchStatus`. */
+  upsertUserWatchStatus?: Maybe<UpsertUserWatchStatusPayload>;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationAddAnimeToListArgs = {
+  input: AddAnimeToListInput;
 };
 
 
@@ -6906,6 +7003,12 @@ export type MutationCreateUserAnimeArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationCreateUserAnimeListArgs = {
   input: CreateUserAnimeListInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationCreateUserWatchStatusArgs = {
+  input: CreateUserWatchStatusInput;
 };
 
 
@@ -7362,6 +7465,18 @@ export type MutationDeleteUserAnimeListByAnimeListIdAndAnimeIdArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationDeleteUserByNodeIdArgs = {
   input: DeleteUserByNodeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteUserWatchStatusArgs = {
+  input: DeleteUserWatchStatusInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteUserWatchStatusByNodeIdArgs = {
+  input: DeleteUserWatchStatusByNodeIdInput;
 };
 
 
@@ -7828,6 +7943,18 @@ export type MutationUpdateUserByNodeIdArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateUserWatchStatusArgs = {
+  input: UpdateUserWatchStatusInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateUserWatchStatusByNodeIdArgs = {
+  input: UpdateUserWatchStatusByNodeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpsertAgeRatingTypeArgs = {
   input: UpsertAgeRatingTypeInput;
   where?: Maybe<UpsertAgeRatingTypeWhere>;
@@ -8041,6 +8168,13 @@ export type MutationUpsertUserAnimeArgs = {
 export type MutationUpsertUserAnimeListArgs = {
   input: UpsertUserAnimeListInput;
   where?: Maybe<UpsertUserAnimeListWhere>;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpsertUserWatchStatusArgs = {
+  input: UpsertUserWatchStatusInput;
+  where?: Maybe<UpsertUserWatchStatusWhere>;
 };
 
 /** An object with a globally unique `ID`. */
@@ -8485,8 +8619,6 @@ export type Query = Node & {
   animeImageByNodeId?: Maybe<AnimeImage>;
   /** Reads and enables pagination through a set of `AnimeImage`. */
   animeImages?: Maybe<AnimeImagesConnection>;
-  /** Reads and enables pagination through a set of `AnimeCustomList`. */
-  animeInCustomList?: Maybe<AnimeCustomListsConnection>;
   /** Reads and enables pagination through a set of `AnimeInfo`. */
   animeInfos?: Maybe<AnimeInfosConnection>;
   animeLicensor?: Maybe<AnimeLicensor>;
@@ -8543,6 +8675,7 @@ export type Query = Node & {
   characterRoles?: Maybe<CharacterRolesConnection>;
   /** Reads and enables pagination through a set of `Character`. */
   characters?: Maybe<CharactersConnection>;
+  currentRole?: Maybe<Scalars['String']>;
   currentUser?: Maybe<Scalars['String']>;
   genre?: Maybe<Genre>;
   genreByGenre?: Maybe<Genre>;
@@ -8551,6 +8684,8 @@ export type Query = Node & {
   /** Reads and enables pagination through a set of `Genre`. */
   genres?: Maybe<GenresConnection>;
   getUser?: Maybe<SmallUser>;
+  /** Reads and enables pagination through a set of `UserList`. */
+  getUserAnimeLists?: Maybe<UserListsConnection>;
   image?: Maybe<Image>;
   /** Reads a single `Image` using its globally unique `ID`. */
   imageByNodeId?: Maybe<Image>;
@@ -8635,6 +8770,11 @@ export type Query = Node & {
   userAnimes?: Maybe<UserAnimeConnection>;
   /** Reads a single `User` using its globally unique `ID`. */
   userByNodeId?: Maybe<User>;
+  userWatchStatus?: Maybe<UserWatchStatus>;
+  /** Reads a single `UserWatchStatus` using its globally unique `ID`. */
+  userWatchStatusByNodeId?: Maybe<UserWatchStatus>;
+  /** Reads and enables pagination through a set of `UserWatchStatus`. */
+  userWatchStatuses?: Maybe<UserWatchStatusesConnection>;
   /** Reads and enables pagination through a set of `User`. */
   users?: Maybe<UsersConnection>;
   /** Reads and enables pagination through a set of `VoiceActor`. */
@@ -8844,18 +8984,6 @@ export type QueryAnimeImagesArgs = {
   last?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
   orderBy?: Maybe<Array<AnimeImagesOrderBy>>;
-};
-
-
-/** The root query type which gives access points into the data universe. */
-export type QueryAnimeInCustomListArgs = {
-  after?: Maybe<Scalars['Cursor']>;
-  before?: Maybe<Scalars['Cursor']>;
-  filter?: Maybe<AnimeCustomListFilter>;
-  first?: Maybe<Scalars['Int']>;
-  inputAnimeId?: Maybe<Scalars['UUID']>;
-  last?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
 };
 
 
@@ -9196,6 +9324,18 @@ export type QueryGenresArgs = {
 /** The root query type which gives access points into the data universe. */
 export type QueryGetUserArgs = {
   uId?: Maybe<Scalars['String']>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryGetUserAnimeListsArgs = {
+  after?: Maybe<Scalars['Cursor']>;
+  before?: Maybe<Scalars['Cursor']>;
+  filter?: Maybe<UserListFilter>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  watchStatusInput?: Maybe<WatchingStatusEnum>;
 };
 
 
@@ -9590,6 +9730,32 @@ export type QueryUserAnimesArgs = {
 /** The root query type which gives access points into the data universe. */
 export type QueryUserByNodeIdArgs = {
   nodeId: Scalars['ID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryUserWatchStatusArgs = {
+  animeId: Scalars['UUID'];
+  userId: Scalars['String'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryUserWatchStatusByNodeIdArgs = {
+  nodeId: Scalars['ID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryUserWatchStatusesArgs = {
+  after?: Maybe<Scalars['Cursor']>;
+  before?: Maybe<Scalars['Cursor']>;
+  condition?: Maybe<UserWatchStatusCondition>;
+  filter?: Maybe<UserWatchStatusFilter>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  orderBy?: Maybe<Array<UserWatchStatusesOrderBy>>;
 };
 
 
@@ -11953,6 +12119,58 @@ export type UpdateUserPayloadUserEdgeArgs = {
   orderBy?: Maybe<Array<UsersOrderBy>>;
 };
 
+/** All input for the `updateUserWatchStatusByNodeId` mutation. */
+export type UpdateUserWatchStatusByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** The globally unique `ID` which will identify a single `UserWatchStatus` to be updated. */
+  nodeId: Scalars['ID'];
+  /** An object where the defined keys will be set on the `UserWatchStatus` being updated. */
+  patch: UserWatchStatusPatch;
+};
+
+/** All input for the `updateUserWatchStatus` mutation. */
+export type UpdateUserWatchStatusInput = {
+  animeId: Scalars['UUID'];
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** An object where the defined keys will be set on the `UserWatchStatus` being updated. */
+  patch: UserWatchStatusPatch;
+  userId: Scalars['String'];
+};
+
+/** The output of our update `UserWatchStatus` mutation. */
+export type UpdateUserWatchStatusPayload = {
+  __typename?: 'UpdateUserWatchStatusPayload';
+  /** Reads a single `Anime` that is related to this `UserWatchStatus`. */
+  anime?: Maybe<Anime>;
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** Reads a single `User` that is related to this `UserWatchStatus`. */
+  user?: Maybe<User>;
+  /** The `UserWatchStatus` that was updated by this mutation. */
+  userWatchStatus?: Maybe<UserWatchStatus>;
+  /** An edge for our `UserWatchStatus`. May be used by Relay 1. */
+  userWatchStatusEdge?: Maybe<UserWatchStatusesEdge>;
+};
+
+
+/** The output of our update `UserWatchStatus` mutation. */
+export type UpdateUserWatchStatusPayloadUserWatchStatusEdgeArgs = {
+  orderBy?: Maybe<Array<UserWatchStatusesOrderBy>>;
+};
+
 /** All input for the upsert `AgeRatingType` mutation. */
 export type UpsertAgeRatingTypeInput = {
   /** The `AgeRatingType` to be upserted by this mutation. */
@@ -13048,6 +13266,43 @@ export type UpsertUserPayloadUserEdgeArgs = {
   orderBy?: Maybe<Array<UsersOrderBy>>;
 };
 
+/** All input for the upsert `UserWatchStatus` mutation. */
+export type UpsertUserWatchStatusInput = {
+  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** The `UserWatchStatus` to be upserted by this mutation. */
+  userWatchStatus: UserWatchStatusInput;
+};
+
+/** The output of our upsert `UserWatchStatus` mutation. */
+export type UpsertUserWatchStatusPayload = {
+  __typename?: 'UpsertUserWatchStatusPayload';
+  /** Reads a single `Anime` that is related to this `UserWatchStatus`. */
+  anime?: Maybe<Anime>;
+  /** The exact same `clientMutationId` that was provided in the mutation input, unchanged and unused. May be used by a client to track mutations. */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** Reads a single `User` that is related to this `UserWatchStatus`. */
+  user?: Maybe<User>;
+  /** The `UserWatchStatus` that was upserted by this mutation. */
+  userWatchStatus?: Maybe<UserWatchStatus>;
+  /** An edge for our `UserWatchStatus`. May be used by Relay 1. */
+  userWatchStatusEdge?: Maybe<UserWatchStatusesEdge>;
+};
+
+
+/** The output of our upsert `UserWatchStatus` mutation. */
+export type UpsertUserWatchStatusPayloadUserWatchStatusEdgeArgs = {
+  orderBy?: Maybe<Array<UserWatchStatusesOrderBy>>;
+};
+
+/** Where conditions for the upsert `UserWatchStatus` mutation. */
+export type UpsertUserWatchStatusWhere = {
+  animeId?: Maybe<Scalars['UUID']>;
+  userId?: Maybe<Scalars['String']>;
+};
+
 /** Where conditions for the upsert `User` mutation. */
 export type UpsertUserWhere = {
   id?: Maybe<Scalars['String']>;
@@ -13064,6 +13319,8 @@ export type User = Node & {
   nodeId: Scalars['ID'];
   /** Reads and enables pagination through a set of `UserAnime`. */
   userAnimes: UserAnimeConnection;
+  /** Reads and enables pagination through a set of `UserWatchStatus`. */
+  userWatchStatuses: UserWatchStatusesConnection;
 };
 
 
@@ -13100,6 +13357,18 @@ export type UserUserAnimesArgs = {
   last?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
   orderBy?: Maybe<Array<UserAnimeOrderBy>>;
+};
+
+
+export type UserUserWatchStatusesArgs = {
+  after?: Maybe<Scalars['Cursor']>;
+  before?: Maybe<Scalars['Cursor']>;
+  condition?: Maybe<UserWatchStatusCondition>;
+  filter?: Maybe<UserWatchStatusFilter>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  orderBy?: Maybe<Array<UserWatchStatusesOrderBy>>;
 };
 
 export type UserAnime = Node & {
@@ -13173,7 +13442,6 @@ export type UserAnimeList = {
   anime?: Maybe<Anime>;
   /** Reads a single `AnimeList` that is related to this `UserAnimeList`. */
   animeList?: Maybe<AnimeList>;
-  watchingStatus: WatchingStatusEnum;
 };
 
 /**
@@ -13185,8 +13453,6 @@ export type UserAnimeListCondition = {
   animeId?: Maybe<Scalars['UUID']>;
   /** Checks for equality with the object’s `animeListId` field. */
   animeListId?: Maybe<Scalars['UUID']>;
-  /** Checks for equality with the object’s `watchingStatus` field. */
-  watchingStatus?: Maybe<WatchingStatusEnum>;
 };
 
 /** A filter to be used against `UserAnimeList` object types. All fields are combined with a logical ‘and.’ */
@@ -13201,22 +13467,18 @@ export type UserAnimeListFilter = {
   not?: Maybe<UserAnimeListFilter>;
   /** Checks for any expressions in this list. */
   or?: Maybe<Array<UserAnimeListFilter>>;
-  /** Filter by the object’s `watchingStatus` field. */
-  watchingStatus?: Maybe<WatchingStatusEnumFilter>;
 };
 
 /** An input for mutations affecting `UserAnimeList` */
 export type UserAnimeListInput = {
   animeId: Scalars['UUID'];
   animeListId: Scalars['UUID'];
-  watchingStatus?: Maybe<WatchingStatusEnum>;
 };
 
 /** Represents an update to a `UserAnimeList`. Fields that are set will be updated. */
 export type UserAnimeListPatch = {
   animeId?: Maybe<Scalars['UUID']>;
   animeListId?: Maybe<Scalars['UUID']>;
-  watchingStatus?: Maybe<WatchingStatusEnum>;
 };
 
 /** A connection to a list of `UserAnimeList` values. */
@@ -13285,9 +13547,7 @@ export enum UserAnimeListsOrderBy {
   AnimeListByAnimeListIdUserIdDesc = 'ANIME_LIST_BY_ANIME_LIST_ID__USER_ID_DESC',
   AnimeListIdAsc = 'ANIME_LIST_ID_ASC',
   AnimeListIdDesc = 'ANIME_LIST_ID_DESC',
-  Natural = 'NATURAL',
-  WatchingStatusAsc = 'WATCHING_STATUS_ASC',
-  WatchingStatusDesc = 'WATCHING_STATUS_DESC'
+  Natural = 'NATURAL'
 }
 
 /** Methods to use when ordering `UserAnime`. */
@@ -13362,10 +13622,187 @@ export type UserInput = {
   id: Scalars['String'];
 };
 
+export type UserList = {
+  __typename?: 'UserList';
+  animes?: Maybe<Array<Maybe<UserListAnime>>>;
+  id?: Maybe<Scalars['UUID']>;
+  title?: Maybe<Scalars['String']>;
+  userId?: Maybe<Scalars['String']>;
+};
+
+export type UserListAnime = {
+  __typename?: 'UserListAnime';
+  id?: Maybe<Scalars['UUID']>;
+  title?: Maybe<Scalars['String']>;
+  url?: Maybe<Scalars['String']>;
+  watchStatus?: Maybe<WatchingStatusEnum>;
+};
+
+/** A filter to be used against `UserList` object types. All fields are combined with a logical ‘and.’ */
+export type UserListFilter = {
+  /** Checks for all expressions in this list. */
+  and?: Maybe<Array<UserListFilter>>;
+  /** Filter by the object’s `id` field. */
+  id?: Maybe<UuidFilter>;
+  /** Negates the expression. */
+  not?: Maybe<UserListFilter>;
+  /** Checks for any expressions in this list. */
+  or?: Maybe<Array<UserListFilter>>;
+  /** Filter by the object’s `title` field. */
+  title?: Maybe<StringFilter>;
+  /** Filter by the object’s `userId` field. */
+  userId?: Maybe<StringFilter>;
+};
+
+/** A connection to a list of `UserList` values. */
+export type UserListsConnection = {
+  __typename?: 'UserListsConnection';
+  /** A list of edges which contains the `UserList` and cursor to aid in pagination. */
+  edges: Array<UserListsEdge>;
+  /** A list of `UserList` objects. */
+  nodes: Array<Maybe<UserList>>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `UserList` you could get from the connection. */
+  totalCount: Scalars['Int'];
+};
+
+/** A `UserList` edge in the connection. */
+export type UserListsEdge = {
+  __typename?: 'UserListsEdge';
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>;
+  /** The `UserList` at the end of the edge. */
+  node?: Maybe<UserList>;
+};
+
 /** Represents an update to a `User`. Fields that are set will be updated. */
 export type UserPatch = {
   id?: Maybe<Scalars['String']>;
 };
+
+export type UserWatchStatus = Node & {
+  __typename?: 'UserWatchStatus';
+  /** Reads a single `Anime` that is related to this `UserWatchStatus`. */
+  anime?: Maybe<Anime>;
+  animeId: Scalars['UUID'];
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  nodeId: Scalars['ID'];
+  /** Reads a single `User` that is related to this `UserWatchStatus`. */
+  user?: Maybe<User>;
+  userId: Scalars['String'];
+  watchStatus: WatchingStatusEnum;
+};
+
+/**
+ * A condition to be used against `UserWatchStatus` object types. All fields are
+ * tested for equality and combined with a logical ‘and.’
+ */
+export type UserWatchStatusCondition = {
+  /** Checks for equality with the object’s `animeId` field. */
+  animeId?: Maybe<Scalars['UUID']>;
+  /** Checks for equality with the object’s `userId` field. */
+  userId?: Maybe<Scalars['String']>;
+  /** Checks for equality with the object’s `watchStatus` field. */
+  watchStatus?: Maybe<WatchingStatusEnum>;
+};
+
+/** A filter to be used against `UserWatchStatus` object types. All fields are combined with a logical ‘and.’ */
+export type UserWatchStatusFilter = {
+  /** Checks for all expressions in this list. */
+  and?: Maybe<Array<UserWatchStatusFilter>>;
+  /** Filter by the object’s `animeId` field. */
+  animeId?: Maybe<UuidFilter>;
+  /** Negates the expression. */
+  not?: Maybe<UserWatchStatusFilter>;
+  /** Checks for any expressions in this list. */
+  or?: Maybe<Array<UserWatchStatusFilter>>;
+  /** Filter by the object’s `userId` field. */
+  userId?: Maybe<StringFilter>;
+  /** Filter by the object’s `watchStatus` field. */
+  watchStatus?: Maybe<WatchingStatusEnumFilter>;
+};
+
+/** An input for mutations affecting `UserWatchStatus` */
+export type UserWatchStatusInput = {
+  animeId: Scalars['UUID'];
+  userId: Scalars['String'];
+  watchStatus?: Maybe<WatchingStatusEnum>;
+};
+
+/** Represents an update to a `UserWatchStatus`. Fields that are set will be updated. */
+export type UserWatchStatusPatch = {
+  animeId?: Maybe<Scalars['UUID']>;
+  userId?: Maybe<Scalars['String']>;
+  watchStatus?: Maybe<WatchingStatusEnum>;
+};
+
+/** A connection to a list of `UserWatchStatus` values. */
+export type UserWatchStatusesConnection = {
+  __typename?: 'UserWatchStatusesConnection';
+  /** A list of edges which contains the `UserWatchStatus` and cursor to aid in pagination. */
+  edges: Array<UserWatchStatusesEdge>;
+  /** A list of `UserWatchStatus` objects. */
+  nodes: Array<Maybe<UserWatchStatus>>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `UserWatchStatus` you could get from the connection. */
+  totalCount: Scalars['Int'];
+};
+
+/** A `UserWatchStatus` edge in the connection. */
+export type UserWatchStatusesEdge = {
+  __typename?: 'UserWatchStatusesEdge';
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>;
+  /** The `UserWatchStatus` at the end of the edge. */
+  node?: Maybe<UserWatchStatus>;
+};
+
+/** Methods to use when ordering `UserWatchStatus`. */
+export enum UserWatchStatusesOrderBy {
+  AnimeByAnimeIdAgeRatingIdAsc = 'ANIME_BY_ANIME_ID__AGE_RATING_ID_ASC',
+  AnimeByAnimeIdAgeRatingIdDesc = 'ANIME_BY_ANIME_ID__AGE_RATING_ID_DESC',
+  AnimeByAnimeIdAiringStatusIdAsc = 'ANIME_BY_ANIME_ID__AIRING_STATUS_ID_ASC',
+  AnimeByAnimeIdAiringStatusIdDesc = 'ANIME_BY_ANIME_ID__AIRING_STATUS_ID_DESC',
+  AnimeByAnimeIdAverageWatcherRatingAsc = 'ANIME_BY_ANIME_ID__AVERAGE_WATCHER_RATING_ASC',
+  AnimeByAnimeIdAverageWatcherRatingDesc = 'ANIME_BY_ANIME_ID__AVERAGE_WATCHER_RATING_DESC',
+  AnimeByAnimeIdDescriptionAsc = 'ANIME_BY_ANIME_ID__DESCRIPTION_ASC',
+  AnimeByAnimeIdDescriptionDesc = 'ANIME_BY_ANIME_ID__DESCRIPTION_DESC',
+  AnimeByAnimeIdDurationAsc = 'ANIME_BY_ANIME_ID__DURATION_ASC',
+  AnimeByAnimeIdDurationDesc = 'ANIME_BY_ANIME_ID__DURATION_DESC',
+  AnimeByAnimeIdEndBroadcastDatetimeAsc = 'ANIME_BY_ANIME_ID__END_BROADCAST_DATETIME_ASC',
+  AnimeByAnimeIdEndBroadcastDatetimeDesc = 'ANIME_BY_ANIME_ID__END_BROADCAST_DATETIME_DESC',
+  AnimeByAnimeIdIdAsc = 'ANIME_BY_ANIME_ID__ID_ASC',
+  AnimeByAnimeIdIdDesc = 'ANIME_BY_ANIME_ID__ID_DESC',
+  AnimeByAnimeIdMalIdAsc = 'ANIME_BY_ANIME_ID__MAL_ID_ASC',
+  AnimeByAnimeIdMalIdDesc = 'ANIME_BY_ANIME_ID__MAL_ID_DESC',
+  AnimeByAnimeIdMediaTypeIdAsc = 'ANIME_BY_ANIME_ID__MEDIA_TYPE_ID_ASC',
+  AnimeByAnimeIdMediaTypeIdDesc = 'ANIME_BY_ANIME_ID__MEDIA_TYPE_ID_DESC',
+  AnimeByAnimeIdNumberOfEpisodesAsc = 'ANIME_BY_ANIME_ID__NUMBER_OF_EPISODES_ASC',
+  AnimeByAnimeIdNumberOfEpisodesDesc = 'ANIME_BY_ANIME_ID__NUMBER_OF_EPISODES_DESC',
+  AnimeByAnimeIdProfileImageIdAsc = 'ANIME_BY_ANIME_ID__PROFILE_IMAGE_ID_ASC',
+  AnimeByAnimeIdProfileImageIdDesc = 'ANIME_BY_ANIME_ID__PROFILE_IMAGE_ID_DESC',
+  AnimeByAnimeIdSeasonIdAsc = 'ANIME_BY_ANIME_ID__SEASON_ID_ASC',
+  AnimeByAnimeIdSeasonIdDesc = 'ANIME_BY_ANIME_ID__SEASON_ID_DESC',
+  AnimeByAnimeIdSourceMaterialIdAsc = 'ANIME_BY_ANIME_ID__SOURCE_MATERIAL_ID_ASC',
+  AnimeByAnimeIdSourceMaterialIdDesc = 'ANIME_BY_ANIME_ID__SOURCE_MATERIAL_ID_DESC',
+  AnimeByAnimeIdStartBroadcastDatetimeAsc = 'ANIME_BY_ANIME_ID__START_BROADCAST_DATETIME_ASC',
+  AnimeByAnimeIdStartBroadcastDatetimeDesc = 'ANIME_BY_ANIME_ID__START_BROADCAST_DATETIME_DESC',
+  AnimeByAnimeIdTitleAsc = 'ANIME_BY_ANIME_ID__TITLE_ASC',
+  AnimeByAnimeIdTitleDesc = 'ANIME_BY_ANIME_ID__TITLE_DESC',
+  AnimeIdAsc = 'ANIME_ID_ASC',
+  AnimeIdDesc = 'ANIME_ID_DESC',
+  Natural = 'NATURAL',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  UserByUserIdIdAsc = 'USER_BY_USER_ID__ID_ASC',
+  UserByUserIdIdDesc = 'USER_BY_USER_ID__ID_DESC',
+  UserIdAsc = 'USER_ID_ASC',
+  UserIdDesc = 'USER_ID_DESC',
+  WatchStatusAsc = 'WATCH_STATUS_ASC',
+  WatchStatusDesc = 'WATCH_STATUS_DESC'
+}
 
 /** A connection to a list of `User` values. */
 export type UsersConnection = {
@@ -13401,7 +13838,9 @@ export enum UsersOrderBy {
   PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
   PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
   UserAnimeByUserIdCountAsc = 'USER_ANIME_BY_USER_ID__COUNT_ASC',
-  UserAnimeByUserIdCountDesc = 'USER_ANIME_BY_USER_ID__COUNT_DESC'
+  UserAnimeByUserIdCountDesc = 'USER_ANIME_BY_USER_ID__COUNT_DESC',
+  UserWatchStatusesByUserIdCountAsc = 'USER_WATCH_STATUSES_BY_USER_ID__COUNT_ASC',
+  UserWatchStatusesByUserIdCountDesc = 'USER_WATCH_STATUSES_BY_USER_ID__COUNT_DESC'
 }
 
 export type VoiceActor = {
@@ -13561,11 +14000,10 @@ export type DeleteAnimeFromListMutation = { __typename?: 'Mutation', deleteUserA
 export type AddAnimeToListMutationVariables = Exact<{
   animeListId: Scalars['UUID'];
   animeId: Scalars['UUID'];
-  watchingStatus?: Maybe<WatchingStatusEnum>;
 }>;
 
 
-export type AddAnimeToListMutation = { __typename?: 'Mutation', upsertUserAnimeList?: Maybe<{ __typename?: 'UpsertUserAnimeListPayload', userAnimeList?: Maybe<{ __typename?: 'UserAnimeList', watchingStatus: WatchingStatusEnum, animeList?: Maybe<{ __typename?: 'AnimeList', title: string, id: any }> }> }> };
+export type AddAnimeToListMutation = { __typename?: 'Mutation', upsertUserAnimeList?: Maybe<{ __typename?: 'UpsertUserAnimeListPayload', userAnimeList?: Maybe<{ __typename?: 'UserAnimeList', animeList?: Maybe<{ __typename?: 'AnimeList', title: string, id: any }> }> }> };
 
 export type CreateNewListMutationVariables = Exact<{
   userId: Scalars['String'];
@@ -13575,17 +14013,40 @@ export type CreateNewListMutationVariables = Exact<{
 
 export type CreateNewListMutation = { __typename?: 'Mutation', createAnimeList?: Maybe<{ __typename?: 'CreateAnimeListPayload', animeList?: Maybe<{ __typename?: 'AnimeList', id: any, title: string }> }> };
 
+export type UpdateUserAnimeListMutationVariables = Exact<{
+  animeListId: Scalars['UUID'];
+  animeId: Scalars['UUID'];
+}>;
+
+
+export type UpdateUserAnimeListMutation = { __typename?: 'Mutation', updateUserAnimeListByAnimeListIdAndAnimeId?: Maybe<{ __typename?: 'UpdateUserAnimeListPayload', clientMutationId?: Maybe<string> }> };
+
+export type UpdateUserAnimeWatchStatusMutationVariables = Exact<{
+  userId: Scalars['String'];
+  animeId: Scalars['UUID'];
+  watchStatus: WatchingStatusEnum;
+}>;
+
+
+export type UpdateUserAnimeWatchStatusMutation = { __typename?: 'Mutation', updateUserWatchStatus?: Maybe<{ __typename?: 'UpdateUserWatchStatusPayload', clientMutationId?: Maybe<string> }> };
+
+export type UpsertUserWatchStatusMutationVariables = Exact<{
+  userId: Scalars['String'];
+  animeId: Scalars['UUID'];
+}>;
+
+
+export type UpsertUserWatchStatusMutation = { __typename?: 'Mutation', upsertUserWatchStatus?: Maybe<{ __typename?: 'UpsertUserWatchStatusPayload', clientMutationId?: Maybe<string> }> };
+
 export type WeeklyAnimesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type WeeklyAnimesQuery = { __typename?: 'Query', allAnimesTiles?: Maybe<{ __typename?: 'AllAnimesTilesConnection', nodes: Array<Maybe<{ __typename?: 'AllAnimesTile', id?: Maybe<any>, title?: Maybe<string>, season?: Maybe<string>, airingStatusType?: Maybe<string>, averageWatcherRating?: Maybe<any>, startBroadcastDatetime?: Maybe<any>, url?: Maybe<string>, description?: Maybe<string>, genres?: Maybe<Array<Maybe<string>>>, mediaType?: Maybe<string>, numberOfEpisodes?: Maybe<number>, studios?: Maybe<Array<Maybe<string>>>, likes?: Maybe<boolean> }>> }> };
 
-export type AnimeInCustomListQueryVariables = Exact<{
-  animeId: Scalars['UUID'];
-}>;
+export type UserListsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type AnimeInCustomListQuery = { __typename?: 'Query', animeInCustomList?: Maybe<{ __typename?: 'AnimeCustomListsConnection', nodes: Array<Maybe<{ __typename?: 'AnimeCustomList', animeId?: Maybe<any>, listId?: Maybe<any>, listName?: Maybe<string>, privacy?: Maybe<string>, watchingStatus?: Maybe<WatchingStatusEnum>, animeTitle?: Maybe<string> }>> }> };
+export type UserListsQuery = { __typename?: 'Query', animeLists?: Maybe<{ __typename?: 'AnimeListsConnection', nodes: Array<Maybe<{ __typename?: 'AnimeList', id: any, privacy: AnimeListPrivacy, title: string }>> }> };
 
 export type CurrentlyAiringContinuedQueryVariables = Exact<{
   limit: Scalars['Int'];
@@ -13610,35 +14071,24 @@ export type HighestRatedAnimesQueryVariables = Exact<{
 
 export type HighestRatedAnimesQuery = { __typename?: 'Query', allAnimesTiles?: Maybe<{ __typename?: 'AllAnimesTilesConnection', nodes: Array<Maybe<{ __typename?: 'AllAnimesTile', id?: Maybe<any>, title?: Maybe<string>, url?: Maybe<string>, season?: Maybe<string>, averageWatcherRating?: Maybe<any>, airingStatusType?: Maybe<string>, likes?: Maybe<boolean> }>> }> };
 
-export type WatchingQueryVariables = Exact<{
-  watchingStatus?: Maybe<WatchingStatusEnum>;
+export type WatchingQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type WatchingQuery = { __typename?: 'Query', allUserAnimes?: Maybe<{ __typename?: 'AllUserAnimeConnection', nodes: Array<Maybe<{ __typename?: 'AllUserAnime', id?: Maybe<any>, listId?: Maybe<any>, listName?: Maybe<string>, title?: Maybe<string>, url?: Maybe<string> }>> }> };
+
+export type GetUserAnimeListsQueryVariables = Exact<{
+  watchStatus?: Maybe<WatchingStatusEnum>;
 }>;
 
 
-export type WatchingQuery = { __typename?: 'Query', allUserAnimes?: Maybe<{ __typename?: 'AllUserAnimeConnection', nodes: Array<Maybe<{ __typename?: 'AllUserAnime', id?: Maybe<any>, listId?: Maybe<any>, listName?: Maybe<string>, title?: Maybe<string>, url?: Maybe<string>, watchingStatus?: Maybe<WatchingStatusEnum> }>> }> };
+export type GetUserAnimeListsQuery = { __typename?: 'Query', getUserAnimeLists?: Maybe<{ __typename?: 'UserListsConnection', nodes: Array<Maybe<{ __typename?: 'UserList', id?: Maybe<any>, title?: Maybe<string>, userId?: Maybe<string>, animes?: Maybe<Array<Maybe<{ __typename?: 'UserListAnime', title?: Maybe<string>, url?: Maybe<string>, watchStatus?: Maybe<WatchingStatusEnum>, id?: Maybe<any> }>>> }>> }> };
 
 export type UserWatchingListsQueryVariables = Exact<{
-  userId: Scalars['String'];
-  watchingStatus: WatchingStatusEnum;
+  watchStatus?: Maybe<WatchingStatusEnum>;
 }>;
 
 
-export type UserWatchingListsQuery = { __typename?: 'Query', animeLists?: Maybe<{ __typename?: 'AnimeListsConnection', nodes: Array<Maybe<{ __typename?: 'AnimeList', title: string, id: any, userAnimeLists: { __typename?: 'UserAnimeListsConnection', nodes: Array<Maybe<{ __typename?: 'UserAnimeList', watchingStatus: WatchingStatusEnum, anime?: Maybe<{ __typename?: 'Anime', id: any, title: string, profileImage?: Maybe<{ __typename?: 'Image', url: string }> }> }>> } }>> }> };
-
-export type CurrentlyWatchingQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type CurrentlyWatchingQuery = { __typename?: 'Query', allUserAnimes?: Maybe<{ __typename?: 'AllUserAnimeConnection', nodes: Array<Maybe<{ __typename?: 'AllUserAnime', id?: Maybe<any>, listId?: Maybe<any>, listName?: Maybe<string>, title?: Maybe<string>, url?: Maybe<string>, watchingStatus?: Maybe<WatchingStatusEnum> }>> }> };
-
-export type PlanToWatchQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type PlanToWatchQuery = { __typename?: 'Query', allUserAnimes?: Maybe<{ __typename?: 'AllUserAnimeConnection', nodes: Array<Maybe<{ __typename?: 'AllUserAnime', id?: Maybe<any>, listId?: Maybe<any>, listName?: Maybe<string>, title?: Maybe<string>, url?: Maybe<string>, watchingStatus?: Maybe<WatchingStatusEnum> }>> }> };
-
-export type PlanToWatchCompletedQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type PlanToWatchCompletedQuery = { __typename?: 'Query', allUserAnimes?: Maybe<{ __typename?: 'AllUserAnimeConnection', nodes: Array<Maybe<{ __typename?: 'AllUserAnime', id?: Maybe<any>, listId?: Maybe<any>, listName?: Maybe<string>, title?: Maybe<string>, url?: Maybe<string>, watchingStatus?: Maybe<WatchingStatusEnum> }>> }> };
+export type UserWatchingListsQuery = { __typename?: 'Query', animeLists?: Maybe<{ __typename?: 'AnimeListsConnection', nodes: Array<Maybe<{ __typename?: 'AnimeList', id: any, title: string, userAnimeLists: { __typename?: 'UserAnimeListsConnection', nodes: Array<Maybe<{ __typename?: 'UserAnimeList', anime?: Maybe<{ __typename?: 'Anime', id: any, title: string, profileImage?: Maybe<{ __typename?: 'Image', url: string }>, userWatchStatuses: { __typename?: 'UserWatchStatusesConnection', nodes: Array<Maybe<{ __typename?: 'UserWatchStatus', watchStatus: WatchingStatusEnum }>> } }> }>> } }>> }> };
 
 export const AnimeListFragmentFragmentDoc = gql`
     fragment AnimeListFragment on AnimeList {
@@ -13677,9 +14127,9 @@ export function useDeleteAnimeFromListMutation() {
   return Urql.useMutation<DeleteAnimeFromListMutation, DeleteAnimeFromListMutationVariables>(DeleteAnimeFromListDocument);
 };
 export const AddAnimeToListDocument = gql`
-    mutation AddAnimeToList($animeListId: UUID!, $animeId: UUID!, $watchingStatus: WatchingStatusEnum) {
+    mutation AddAnimeToList($animeListId: UUID!, $animeId: UUID!) {
   upsertUserAnimeList(
-    input: {userAnimeList: {animeListId: $animeListId, animeId: $animeId, watchingStatus: $watchingStatus}}
+    input: {userAnimeList: {animeListId: $animeListId, animeId: $animeId}}
     where: {animeId: $animeId, animeListId: $animeListId}
   ) {
     userAnimeList {
@@ -13687,7 +14137,6 @@ export const AddAnimeToListDocument = gql`
         title
         id
       }
-      watchingStatus
     }
   }
 }
@@ -13709,6 +14158,45 @@ export const CreateNewListDocument = gql`
 
 export function useCreateNewListMutation() {
   return Urql.useMutation<CreateNewListMutation, CreateNewListMutationVariables>(CreateNewListDocument);
+};
+export const UpdateUserAnimeListDocument = gql`
+    mutation updateUserAnimeList($animeListId: UUID!, $animeId: UUID!) {
+  updateUserAnimeListByAnimeListIdAndAnimeId(
+    input: {patch: {animeListId: $animeListId}, animeListId: $animeListId, animeId: $animeId, clientMutationId: "UpdateAnimeList"}
+  ) {
+    clientMutationId
+  }
+}
+    `;
+
+export function useUpdateUserAnimeListMutation() {
+  return Urql.useMutation<UpdateUserAnimeListMutation, UpdateUserAnimeListMutationVariables>(UpdateUserAnimeListDocument);
+};
+export const UpdateUserAnimeWatchStatusDocument = gql`
+    mutation updateUserAnimeWatchStatus($userId: String!, $animeId: UUID!, $watchStatus: WatchingStatusEnum!) {
+  updateUserWatchStatus(
+    input: {patch: {watchStatus: $watchStatus}, userId: $userId, animeId: $animeId, clientMutationId: "ChangeAnimeWatchStatus"}
+  ) {
+    clientMutationId
+  }
+}
+    `;
+
+export function useUpdateUserAnimeWatchStatusMutation() {
+  return Urql.useMutation<UpdateUserAnimeWatchStatusMutation, UpdateUserAnimeWatchStatusMutationVariables>(UpdateUserAnimeWatchStatusDocument);
+};
+export const UpsertUserWatchStatusDocument = gql`
+    mutation upsertUserWatchStatus($userId: String!, $animeId: UUID!) {
+  upsertUserWatchStatus(
+    input: {userWatchStatus: {userId: $userId, animeId: $animeId}, clientMutationId: "UpsertedAnimeWatchStatus"}
+  ) {
+    clientMutationId
+  }
+}
+    `;
+
+export function useUpsertUserWatchStatusMutation() {
+  return Urql.useMutation<UpsertUserWatchStatusMutation, UpsertUserWatchStatusMutationVariables>(UpsertUserWatchStatusDocument);
 };
 export const WeeklyAnimesDocument = gql`
     query WeeklyAnimes {
@@ -13735,23 +14223,20 @@ export const WeeklyAnimesDocument = gql`
 export function useWeeklyAnimesQuery(options: Omit<Urql.UseQueryArgs<WeeklyAnimesQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<WeeklyAnimesQuery>({ query: WeeklyAnimesDocument, ...options });
 };
-export const AnimeInCustomListDocument = gql`
-    query AnimeInCustomList($animeId: UUID!) {
-  animeInCustomList(inputAnimeId: $animeId) {
+export const UserListsDocument = gql`
+    query userLists {
+  animeLists {
     nodes {
-      animeId
-      listId
-      listName
+      id
       privacy
-      watchingStatus
-      animeTitle
+      title
     }
   }
 }
     `;
 
-export function useAnimeInCustomListQuery(options: Omit<Urql.UseQueryArgs<AnimeInCustomListQueryVariables>, 'query'> = {}) {
-  return Urql.useQuery<AnimeInCustomListQuery>({ query: AnimeInCustomListDocument, ...options });
+export function useUserListsQuery(options: Omit<Urql.UseQueryArgs<UserListsQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<UserListsQuery>({ query: UserListsDocument, ...options });
 };
 export const CurrentlyAiringContinuedDocument = gql`
     query CurrentlyAiringContinued($limit: Int!, $currentSeason: String!) {
@@ -13817,15 +14302,14 @@ export function useHighestRatedAnimesQuery(options: Omit<Urql.UseQueryArgs<Highe
   return Urql.useQuery<HighestRatedAnimesQuery>({ query: HighestRatedAnimesDocument, ...options });
 };
 export const WatchingDocument = gql`
-    query Watching($watchingStatus: WatchingStatusEnum) {
-  allUserAnimes(condition: {watchingStatus: $watchingStatus}) {
+    query Watching {
+  allUserAnimes {
     nodes {
       id
       listId
       listName
       title
       url
-      watchingStatus
     }
   }
 }
@@ -13834,13 +14318,34 @@ export const WatchingDocument = gql`
 export function useWatchingQuery(options: Omit<Urql.UseQueryArgs<WatchingQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<WatchingQuery>({ query: WatchingDocument, ...options });
 };
-export const UserWatchingListsDocument = gql`
-    query UserWatchingLists($userId: String!, $watchingStatus: WatchingStatusEnum!) {
-  animeLists(condition: {userId: $userId}) {
+export const GetUserAnimeListsDocument = gql`
+    query GetUserAnimeLists($watchStatus: WatchingStatusEnum) {
+  getUserAnimeLists(watchStatusInput: $watchStatus) {
     nodes {
-      title
       id
-      userAnimeLists(condition: {watchingStatus: $watchingStatus}) {
+      title
+      userId
+      animes {
+        title
+        url
+        watchStatus
+        id
+      }
+    }
+  }
+}
+    `;
+
+export function useGetUserAnimeListsQuery(options: Omit<Urql.UseQueryArgs<GetUserAnimeListsQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<GetUserAnimeListsQuery>({ query: GetUserAnimeListsDocument, ...options });
+};
+export const UserWatchingListsDocument = gql`
+    query UserWatchingLists($watchStatus: WatchingStatusEnum) {
+  animeLists {
+    nodes {
+      id
+      title
+      userAnimeLists {
         nodes {
           anime {
             id
@@ -13848,8 +14353,12 @@ export const UserWatchingListsDocument = gql`
             profileImage {
               url
             }
+            userWatchStatuses(condition: {watchStatus: $watchStatus}) {
+              nodes {
+                watchStatus
+              }
+            }
           }
-          watchingStatus
         }
       }
     }
@@ -13859,60 +14368,6 @@ export const UserWatchingListsDocument = gql`
 
 export function useUserWatchingListsQuery(options: Omit<Urql.UseQueryArgs<UserWatchingListsQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<UserWatchingListsQuery>({ query: UserWatchingListsDocument, ...options });
-};
-export const CurrentlyWatchingDocument = gql`
-    query CurrentlyWatching {
-  allUserAnimes(condition: {watchingStatus: WATCHING}) {
-    nodes {
-      id
-      listId
-      listName
-      title
-      url
-      watchingStatus
-    }
-  }
-}
-    `;
-
-export function useCurrentlyWatchingQuery(options: Omit<Urql.UseQueryArgs<CurrentlyWatchingQueryVariables>, 'query'> = {}) {
-  return Urql.useQuery<CurrentlyWatchingQuery>({ query: CurrentlyWatchingDocument, ...options });
-};
-export const PlanToWatchDocument = gql`
-    query PlanToWatch {
-  allUserAnimes(condition: {watchingStatus: PLAN_TO_WATCH}) {
-    nodes {
-      id
-      listId
-      listName
-      title
-      url
-      watchingStatus
-    }
-  }
-}
-    `;
-
-export function usePlanToWatchQuery(options: Omit<Urql.UseQueryArgs<PlanToWatchQueryVariables>, 'query'> = {}) {
-  return Urql.useQuery<PlanToWatchQuery>({ query: PlanToWatchDocument, ...options });
-};
-export const PlanToWatchCompletedDocument = gql`
-    query PlanToWatchCompleted {
-  allUserAnimes(condition: {watchingStatus: COMPLETED}) {
-    nodes {
-      id
-      listId
-      listName
-      title
-      url
-      watchingStatus
-    }
-  }
-}
-    `;
-
-export function usePlanToWatchCompletedQuery(options: Omit<Urql.UseQueryArgs<PlanToWatchCompletedQueryVariables>, 'query'> = {}) {
-  return Urql.useQuery<PlanToWatchCompletedQuery>({ query: PlanToWatchCompletedDocument, ...options });
 };
 import { IntrospectionQuery } from 'graphql';
 export default {
@@ -13925,6 +14380,71 @@ export default {
     },
     "subscriptionType": null,
     "types": [
+      {
+        "kind": "OBJECT",
+        "name": "AddAnimeToListPayload",
+        "fields": [
+          {
+            "name": "animeList",
+            "type": {
+              "kind": "OBJECT",
+              "name": "AnimeList",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "animeListEdge",
+            "type": {
+              "kind": "OBJECT",
+              "name": "AnimeListsEdge",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "orderBy",
+                "type": {
+                  "kind": "LIST",
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "Any"
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "clientMutationId",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "query",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Query",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "user",
+            "type": {
+              "kind": "OBJECT",
+              "name": "User",
+              "ofType": null
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
       {
         "kind": "OBJECT",
         "name": "AgeRatingType",
@@ -14600,14 +15120,6 @@ export default {
           },
           {
             "name": "url",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          },
-          {
-            "name": "watchingStatus",
             "type": {
               "kind": "SCALAR",
               "name": "Any"
@@ -15871,6 +16383,81 @@ export default {
                 }
               }
             ]
+          },
+          {
+            "name": "userWatchStatuses",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "UserWatchStatusesConnection",
+                "ofType": null
+              }
+            },
+            "args": [
+              {
+                "name": "after",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "before",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "condition",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "filter",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "first",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "last",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "offset",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "orderBy",
+                "type": {
+                  "kind": "LIST",
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "Any"
+                    }
+                  }
+                }
+              }
+            ]
           }
         ],
         "interfaces": [
@@ -16076,148 +16663,6 @@ export default {
                 "kind": "SCALAR",
                 "name": "Any"
               }
-            },
-            "args": []
-          }
-        ],
-        "interfaces": []
-      },
-      {
-        "kind": "OBJECT",
-        "name": "AnimeCustomList",
-        "fields": [
-          {
-            "name": "animeId",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          },
-          {
-            "name": "animeTitle",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          },
-          {
-            "name": "listId",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          },
-          {
-            "name": "listName",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          },
-          {
-            "name": "privacy",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          },
-          {
-            "name": "watchingStatus",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          }
-        ],
-        "interfaces": []
-      },
-      {
-        "kind": "OBJECT",
-        "name": "AnimeCustomListsConnection",
-        "fields": [
-          {
-            "name": "edges",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "LIST",
-                "ofType": {
-                  "kind": "NON_NULL",
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "AnimeCustomListsEdge",
-                    "ofType": null
-                  }
-                }
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "nodes",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "LIST",
-                "ofType": {
-                  "kind": "OBJECT",
-                  "name": "AnimeCustomList",
-                  "ofType": null
-                }
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "pageInfo",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "PageInfo",
-                "ofType": null
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "totalCount",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Any"
-              }
-            },
-            "args": []
-          }
-        ],
-        "interfaces": []
-      },
-      {
-        "kind": "OBJECT",
-        "name": "AnimeCustomListsEdge",
-        "fields": [
-          {
-            "name": "cursor",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          },
-          {
-            "name": "node",
-            "type": {
-              "kind": "OBJECT",
-              "name": "AnimeCustomList",
-              "ofType": null
             },
             "args": []
           }
@@ -20973,6 +21418,80 @@ export default {
       },
       {
         "kind": "OBJECT",
+        "name": "CreateUserWatchStatusPayload",
+        "fields": [
+          {
+            "name": "anime",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Anime",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "clientMutationId",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "query",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Query",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "user",
+            "type": {
+              "kind": "OBJECT",
+              "name": "User",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "userWatchStatus",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UserWatchStatus",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "userWatchStatusEdge",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UserWatchStatusesEdge",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "orderBy",
+                "type": {
+                  "kind": "LIST",
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "Any"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
         "name": "DeleteAgeRatingTypePayload",
         "fields": [
           {
@@ -23299,6 +23818,88 @@ export default {
       },
       {
         "kind": "OBJECT",
+        "name": "DeleteUserWatchStatusPayload",
+        "fields": [
+          {
+            "name": "anime",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Anime",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "clientMutationId",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "deletedUserWatchStatusNodeId",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "query",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Query",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "user",
+            "type": {
+              "kind": "OBJECT",
+              "name": "User",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "userWatchStatus",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UserWatchStatus",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "userWatchStatusEdge",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UserWatchStatusesEdge",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "orderBy",
+                "type": {
+                  "kind": "LIST",
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "Any"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
         "name": "Genre",
         "fields": [
           {
@@ -24723,6 +25324,26 @@ export default {
         "name": "Mutation",
         "fields": [
           {
+            "name": "addAnimeToList",
+            "type": {
+              "kind": "OBJECT",
+              "name": "AddAnimeToListPayload",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "input",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              }
+            ]
+          },
+          {
             "name": "createAgeRatingType",
             "type": {
               "kind": "OBJECT",
@@ -25327,6 +25948,26 @@ export default {
             "type": {
               "kind": "OBJECT",
               "name": "CreateUserAnimeListPayload",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "input",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "createUserWatchStatus",
+            "type": {
+              "kind": "OBJECT",
+              "name": "CreateUserWatchStatusPayload",
               "ofType": null
             },
             "args": [
@@ -26847,6 +27488,46 @@ export default {
             "type": {
               "kind": "OBJECT",
               "name": "DeleteUserPayload",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "input",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "deleteUserWatchStatus",
+            "type": {
+              "kind": "OBJECT",
+              "name": "DeleteUserWatchStatusPayload",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "input",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "deleteUserWatchStatusByNodeId",
+            "type": {
+              "kind": "OBJECT",
+              "name": "DeleteUserWatchStatusPayload",
               "ofType": null
             },
             "args": [
@@ -28403,6 +29084,46 @@ export default {
             ]
           },
           {
+            "name": "updateUserWatchStatus",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UpdateUserWatchStatusPayload",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "input",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "updateUserWatchStatusByNodeId",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UpdateUserWatchStatusPayload",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "input",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              }
+            ]
+          },
+          {
             "name": "upsertAgeRatingType",
             "type": {
               "kind": "OBJECT",
@@ -29238,6 +29959,33 @@ export default {
                 }
               }
             ]
+          },
+          {
+            "name": "upsertUserWatchStatus",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UpsertUserWatchStatusPayload",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "input",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              },
+              {
+                "name": "where",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              }
+            ]
           }
         ],
         "interfaces": []
@@ -29379,6 +30127,10 @@ export default {
           {
             "kind": "OBJECT",
             "name": "UserAnime"
+          },
+          {
+            "kind": "OBJECT",
+            "name": "UserWatchStatus"
           }
         ]
       },
@@ -31141,65 +31893,6 @@ export default {
             ]
           },
           {
-            "name": "animeInCustomList",
-            "type": {
-              "kind": "OBJECT",
-              "name": "AnimeCustomListsConnection",
-              "ofType": null
-            },
-            "args": [
-              {
-                "name": "after",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
-                }
-              },
-              {
-                "name": "before",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
-                }
-              },
-              {
-                "name": "filter",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
-                }
-              },
-              {
-                "name": "first",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
-                }
-              },
-              {
-                "name": "inputAnimeId",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
-                }
-              },
-              {
-                "name": "last",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
-                }
-              },
-              {
-                "name": "offset",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
-                }
-              }
-            ]
-          },
-          {
             "name": "animeInfos",
             "type": {
               "kind": "OBJECT",
@@ -32636,6 +33329,14 @@ export default {
             ]
           },
           {
+            "name": "currentRole",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
             "name": "currentUser",
             "type": {
               "kind": "SCALAR",
@@ -32785,6 +33486,65 @@ export default {
             "args": [
               {
                 "name": "uId",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              }
+            ]
+          },
+          {
+            "name": "getUserAnimeLists",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UserListsConnection",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "after",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "before",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "filter",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "first",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "last",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "offset",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "watchStatusInput",
                 "type": {
                   "kind": "SCALAR",
                   "name": "Any"
@@ -34516,6 +35276,128 @@ export default {
                   "ofType": {
                     "kind": "SCALAR",
                     "name": "Any"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "userWatchStatus",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UserWatchStatus",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "animeId",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              },
+              {
+                "name": "userId",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "userWatchStatusByNodeId",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UserWatchStatus",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "nodeId",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "userWatchStatuses",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UserWatchStatusesConnection",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "after",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "before",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "condition",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "filter",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "first",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "last",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "offset",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "orderBy",
+                "type": {
+                  "kind": "LIST",
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "Any"
+                    }
                   }
                 }
               }
@@ -37842,6 +38724,80 @@ export default {
       },
       {
         "kind": "OBJECT",
+        "name": "UpdateUserWatchStatusPayload",
+        "fields": [
+          {
+            "name": "anime",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Anime",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "clientMutationId",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "query",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Query",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "user",
+            "type": {
+              "kind": "OBJECT",
+              "name": "User",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "userWatchStatus",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UserWatchStatus",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "userWatchStatusEdge",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UserWatchStatusesEdge",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "orderBy",
+                "type": {
+                  "kind": "LIST",
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "Any"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
         "name": "UpsertAgeRatingTypePayload",
         "fields": [
           {
@@ -39920,6 +40876,80 @@ export default {
       },
       {
         "kind": "OBJECT",
+        "name": "UpsertUserWatchStatusPayload",
+        "fields": [
+          {
+            "name": "anime",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Anime",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "clientMutationId",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "query",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Query",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "user",
+            "type": {
+              "kind": "OBJECT",
+              "name": "User",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "userWatchStatus",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UserWatchStatus",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "userWatchStatusEdge",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UserWatchStatusesEdge",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "orderBy",
+                "type": {
+                  "kind": "LIST",
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "Any"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
         "name": "User",
         "fields": [
           {
@@ -40168,6 +41198,81 @@ export default {
                 }
               }
             ]
+          },
+          {
+            "name": "userWatchStatuses",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "UserWatchStatusesConnection",
+                "ofType": null
+              }
+            },
+            "args": [
+              {
+                "name": "after",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "before",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "condition",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "filter",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "first",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "last",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "offset",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "orderBy",
+                "type": {
+                  "kind": "LIST",
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "Any"
+                    }
+                  }
+                }
+              }
+            ]
           }
         ],
         "interfaces": [
@@ -40348,17 +41453,6 @@ export default {
               "ofType": null
             },
             "args": []
-          },
-          {
-            "name": "watchingStatus",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Any"
-              }
-            },
-            "args": []
           }
         ],
         "interfaces": []
@@ -40443,6 +41537,336 @@ export default {
             "type": {
               "kind": "OBJECT",
               "name": "UserAnimeList",
+              "ofType": null
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "UserList",
+        "fields": [
+          {
+            "name": "animes",
+            "type": {
+              "kind": "LIST",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "UserListAnime",
+                "ofType": null
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "id",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "title",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "userId",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "UserListAnime",
+        "fields": [
+          {
+            "name": "id",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "title",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "url",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "watchStatus",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "UserListsConnection",
+        "fields": [
+          {
+            "name": "edges",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "LIST",
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "UserListsEdge",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "nodes",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "LIST",
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "UserList",
+                  "ofType": null
+                }
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "pageInfo",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "PageInfo",
+                "ofType": null
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "totalCount",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "UserListsEdge",
+        "fields": [
+          {
+            "name": "cursor",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "node",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UserList",
+              "ofType": null
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "UserWatchStatus",
+        "fields": [
+          {
+            "name": "anime",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Anime",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "animeId",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "nodeId",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "user",
+            "type": {
+              "kind": "OBJECT",
+              "name": "User",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "userId",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "watchStatus",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          }
+        ],
+        "interfaces": [
+          {
+            "kind": "INTERFACE",
+            "name": "Node"
+          }
+        ]
+      },
+      {
+        "kind": "OBJECT",
+        "name": "UserWatchStatusesConnection",
+        "fields": [
+          {
+            "name": "edges",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "LIST",
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "UserWatchStatusesEdge",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "nodes",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "LIST",
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "UserWatchStatus",
+                  "ofType": null
+                }
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "pageInfo",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "PageInfo",
+                "ofType": null
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "totalCount",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "UserWatchStatusesEdge",
+        "fields": [
+          {
+            "name": "cursor",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "node",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UserWatchStatus",
               "ofType": null
             },
             "args": []

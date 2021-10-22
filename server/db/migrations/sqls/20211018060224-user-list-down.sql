@@ -1,0 +1,3 @@
+drop function anime_app_public.get_user_anime_lists(anime_app_public.watching_status_enum);
+drop type anime_app_public.user_list;
+drop type anime_app_public.user_list_anime;

@@ -1,5 +1,5 @@
 create or replace view anime_app_public.all_user_animes as
-select a.id, a.title, i.url, al.title as list_name, al.id as list_id, ual.watching_status, a.description,
+select a.id, a.title, i.url, al.title as list_name, al.id as list_id, a.description,
 (select 
  array_agg(g.genre) 
  from anime_app_public.genres g 
@@ -39,6 +39,6 @@ ON a.season_id = s.id JOIN anime_app_public.images p
 ON a.profile_image_id = p.id
 join anime_app_public.media_types mt on a.media_type_id=mt.id
 LEFT JOIN (
-    select distinct on (ual.anime_id) al.title, ual.anime_id, ual.watching_status, al.title, al.id as anime_list  from anime_app_public.user_anime_lists ual JOIN anime_app_public.anime_lists al on ual.anime_list_id = al.id where al.user_id = anime_app_public.current_user()
+    select distinct on (ual.anime_id) al.title, ual.anime_id, al.title, al.id as anime_list  from anime_app_public.user_anime_lists ual JOIN anime_app_public.anime_lists al on ual.anime_list_id = al.id where al.user_id = anime_app_public.current_user()
 ) as user_anime on a.id = user_anime.anime_id
 ORDER BY a.average_watcher_rating DESC;

@@ -2,7 +2,8 @@ import LoadImage from "@/components/Common/ImageLoader";
 import PopupMenuButton from "@/components/Common/PopupMenuButton";
 import useAnimeList from "@/components/Hooks/useAnimeList";
 import AddToListRow from "@/components/MyAnimePage/AddToListRow";
-import { useAnimeInCustomListQuery, useCreateNewListMutation } from "@/graphql";
+import { useCreateNewListMutation } from "@/graphql";
+import { ArrowBackIcon } from "@chakra-ui/icons";
 import {
   Badge,
   Box,
@@ -54,14 +55,11 @@ const AnimeCard = ({
     error,
     userAnimeLists,
   } = useAnimeList({ inputAnimeId: id });
-  console.log(id);
+
   const getNewListName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewListName((e.target as HTMLInputElement).value);
   };
-  const [userList, getUserList] = useAnimeInCustomListQuery({
-    variables: { animeId: id },
-  });
-  console.log(userList.data?.animeInCustomList.nodes);
+
   const [createNewListResult, runCreateNewList] = useCreateNewListMutation();
   const redirectToAnime = (e) => {
     router.push(`/anime/${id}`);
@@ -74,12 +72,11 @@ const AnimeCard = ({
 
   const openModal = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.stopPropagation();
-    getUserList();
     onOpen();
   };
 
-  const openCreateNewList = () => {
-    setCreateNewList(true);
+  const toggleCreateNewList = () => {
+    setCreateNewList(!createNewList);
   };
 
   useEffect(() => {
@@ -105,7 +102,6 @@ const AnimeCard = ({
       setNotification("none");
     }
   }, [addAnimeResult, error, title, toast, removeAnimeResult, notification]);
-
   return (
     <>
       <Box
@@ -126,6 +122,7 @@ const AnimeCard = ({
           borderRadius="lg"
           overflow="hidden"
         >
+          <Text>Test</Text>
           <LoadImage image_url={url} alt={title} />
           <Badge
             position="absolute"
@@ -160,22 +157,23 @@ const AnimeCard = ({
               mb="1"
             />
             {likes || userSection ? (
-              <PopupMenuButton
+              <IconButton
+                aria-label="Remove anime from list button"
                 icon={<BsX size="2rem" />}
                 isRound
                 bg="red.300"
-                onClickInner={(e) => removeAnimeFromList(e, id)}
+                onClick={openModal}
                 isLoading={addAnimeResult.fetching}
                 visibility={user ? "visible" : "hidden"}
               />
             ) : (
               <IconButton
-                aria-label="Remove anime from list button"
+                aria-label="Add anime from list button"
                 icon={<BsPlus size="2rem" />}
                 isRound
                 bg="teal"
                 isLoading={removeAnimeResult.fetching}
-                onClick={(e) => addAnimeToList(e, id)}
+                onClick={openModal}
                 visibility={user ? "visible" : "hidden"}
               />
             )}
@@ -197,24 +195,27 @@ const AnimeCard = ({
           {title}
         </Heading>
       </Box>
-      <Modal isOpen={isOpen} onClose={onModalClose} size="lg">
+      <Modal isOpen={isOpen} onClose={onModalClose} size="5xl">
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader display="flex">
-            <Box>User Anime Lists</Box>
+          <ModalHeader display="flex" pr="12">
+            <Box>{title}</Box>
             <Spacer />
-            <Button
-              float="right"
-              size="sm"
-              mr="5%"
-              onClick={openCreateNewList}
-              visibility={createNewList ? "hidden" : "visible"}
-            >
-              Create New List
-            </Button>
+            {createNewList ? (
+              <IconButton
+                aria-label="Go back"
+                onClick={toggleCreateNewList}
+                icon={<ArrowBackIcon />}
+              />
+            ) : (
+              <Button size="sm" onClick={toggleCreateNewList}>
+                Create New List
+              </Button>
+            )}
           </ModalHeader>
 
           <ModalCloseButton />
+
           {createNewList ? (
             <ModalBody display="flex">
               <Text w="45%">New List Name:</Text>
@@ -222,33 +223,7 @@ const AnimeCard = ({
             </ModalBody>
           ) : (
             <ModalBody maxH="80vh" overflow="auto">
-              <Table w="full" size="md">
-                <Tbody>
-                  {userList.data?.animeInCustomList.nodes
-                    .sort((a, b) => {
-                      if (a.listName === "default") {
-                        return -1;
-                      }
-                      if (b.listName === "default") {
-                        return 1;
-                      }
-                      return 0;
-                    })
-                    .map((node) => {
-                      return (
-                        <AddToListRow
-                          listId={node.listId}
-                          animeId={id}
-                          key={node.listId}
-                          animeTitle={title}
-                          listTitle={node.listName}
-                          watchStatus={node.watchingStatus}
-                          userAnimeList={userList.data.animeInCustomList.nodes}
-                        />
-                      );
-                    })}
-                </Tbody>
-              </Table>
+              <AddToListRow animeId={id} />
             </ModalBody>
           )}
           {createNewList ? (

@@ -15,6 +15,7 @@ import {
   signOut,
   verifyPasswordResetCode,
   User,
+  UserCredential,
 } from "firebase/auth";
 import { useRouter } from "next/router";
 import { createContext, useContext, useEffect, useState } from "react";
@@ -98,8 +99,7 @@ export const AppAuthProvider = ({ children }) => {
 
   const signInUser = async (provider, email = null, password = null) => {
     try {
-      const user = auth.currentUser;
-      let response;
+      let response: UserCredential;
       if (provider === "email") {
         response = await signInWithEmailAndPassword(auth, email, password);
       } else if (provider === "google") {
@@ -108,6 +108,7 @@ export const AppAuthProvider = ({ children }) => {
       } else {
         throw new Error("Invalid provider");
       }
+      const user = response.user;
       const idToken = await getIdToken(user);
       const result = await axios.post("http://localhost:4000/setCustomClaims", {
         idToken: idToken,
