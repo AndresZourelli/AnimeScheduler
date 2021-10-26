@@ -3,4 +3,8 @@ module.exports = {
     domains: ["cdn.myanimelist.net"],
   },
   reactStrictMode: true,
+  swcMinify: true,
+  experimental: {
+    esmExternals: false,
+  },
 };

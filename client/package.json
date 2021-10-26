@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev -p 3001",
+    "dev": " next dev -p 3001",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@chakra-ui/icons": "^1.0.5",
-    "@chakra-ui/react": "^1.6.3",
+    "@chakra-ui/react": "^1.6.10",
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
     "@fortawesome/fontawesome-free": "^5.15.2",
@@ -32,15 +32,14 @@
     "lodash": "^4.17.21",
     "moment": "^2.29.1",
     "moment-timezone": "^0.5.33",
-    "next": "^11.0.0",
+    "next": "^12.0.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-dropzone": "^11.3.4",
     "react-icons": "^4.2.0",
     "urql": "^2.0.4",
     "uuid": "^8.3.2",
-    "yup": "^0.32.9",
-    "zustand": "^3.5.9"
+    "yup": "^0.32.9"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "2.2.0",
