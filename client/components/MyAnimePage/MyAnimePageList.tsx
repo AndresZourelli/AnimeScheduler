@@ -13,7 +13,6 @@ const MyAnimePageList = ({ watchingStatus }: MyAnimePageListInterface) => {
   const [animesResult, fetchAnimes] = useGetUserAnimeListsQuery({
     variables: { watchStatus: watchingStatus },
     pause: !user?.uid,
-    requestPolicy: "network-only",
   });
   const [animeLists, setAnimeLists] = useState([]);
   const [hasMoreAnimes, setHasMoreAnimes] = useState(false);
@@ -50,7 +49,7 @@ const MyAnimePageList = ({ watchingStatus }: MyAnimePageListInterface) => {
         ...animeLists,
       ]);
     }
-  }, [animesResult]);
+  }, [animesResult, animeLists]);
 
   return (
     <Box position="relative" justifySelf="end" mt="8" mx="3">

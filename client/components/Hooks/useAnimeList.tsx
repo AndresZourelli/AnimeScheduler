@@ -1,57 +1,113 @@
 import {
+  useAddAnimeToListMutation,
   useAddAnimeToUserAnimeListMutation,
   useDeleteAnimeFromListMutation,
   useUserListsQuery,
   useUpsertUserWatchStatusMutation,
+  useCreateNewListAddAnimeMutation,
 } from "@/graphql";
 import { useAuth } from "@/lib/Auth/FirebaseAuth";
-import { useEffect, useState } from "react";
+import { useToast } from "@chakra-ui/react";
+import { useEffect, useState, MouseEvent } from "react";
 
-const useAnimeList = ({ inputAnimeId = null }) => {
+interface AddAnimeInput {
+  e: MouseEvent;
+  animeId: String;
+}
+
+enum notificationType {
+  none,
+  animeAdded,
+  animeRemoved,
+  animeExists,
+}
+
+const DEFAULT_LIST = "default";
+
+const useAnimeList = ({ inputAnimeId = null, animeTitle }) => {
   const { user } = useAuth();
+  const toast = useToast();
   const [userAnimeLists, setUserAnimeLists] = useState([]);
   const [error, setError] = useState(false);
-  const [notificationType, setNotification] = useState("none");
+  const [notification, setNotification] = useState<notificationType>(
+    notificationType.none
+  );
 
+  const [animeToExisitingList, addAnimeToExisitingList] =
+    useAddAnimeToUserAnimeListMutation();
   const [userListResult, getAnimeListResult] = useUserListsQuery({
     pause: true,
   });
-  const [addAnimeResult, addAnimeToUser] = useAddAnimeToUserAnimeListMutation();
+  const [addAnimeResult, addAnimeToUser] = useAddAnimeToListMutation();
   const [addWatchStatusResult, addWatchStatus] =
     useUpsertUserWatchStatusMutation();
-  const [removeAnimeResult, removeAnimeFromUser] =
+  const [removeAnimeResult, removeAnimeFromList] =
     useDeleteAnimeFromListMutation();
 
-  const addAnimeToList = (e, animeId) => {
-    e.stopPropagation();
-    try {
-      const animeListId = userAnimeLists.filter((item) => {
-        return item.title === "default";
-      })[0].id;
+  const [newListResult, createNewList] = useCreateNewListAddAnimeMutation();
 
-      // addAnimeToUser({ animeListId, animeId }).then(() => {
-      //   addWatchStatus({ animeId: animeId, userId: user?.uid }).then(() => {
-      //     setNotification("anime-added");
-      //   });
-      // });
-    } catch (e) {
-      console.log(e);
-      setError(true);
-    }
+  const AddToExistingList = (
+    e: MouseEvent,
+    animeId: String,
+    animeListId: String
+  ) => {
+    e.stopPropagation();
+
+    addAnimeToExisitingList({
+      animeId: animeId,
+      animeListId: animeListId,
+    }).then((result) => {
+      if (result.error) {
+        setNotification(notificationType.animeExists);
+        setError(true);
+      } else {
+        setNotification(notificationType.animeAdded);
+      }
+    });
   };
 
-  const removeAnimeFromList = (e, animeId) => {
+  const AddToNewList = (e: MouseEvent, animeId: String) => {
     e.stopPropagation();
-    try {
-      const animeListId = userAnimeLists.filter((item) => {
-        return item.title === "default";
-      })[0].id;
-      removeAnimeFromUser({ animeListId, animeId }).then(() => {
-        setNotification("anime-removed");
-      });
-    } catch (e) {
-      console.log(e);
-    }
+
+    createNewList({ animeidinput: animeId }).then((result) => {
+      if (result.error) {
+        setNotification(notificationType.animeExists);
+        setError(true);
+      } else {
+        setNotification(notificationType.animeAdded);
+      }
+    });
+  };
+
+  const addAnimeToList = (e: MouseEvent, animeId: String) => {
+    e.stopPropagation();
+    const animeListId = userAnimeLists.find(
+      (item) => item.title === DEFAULT_LIST
+    ).id;
+    addAnimeToUser({ animeListId, animeId }).then((result) => {
+      if (result.error) {
+        setNotification(notificationType.animeExists);
+        setError(true);
+      } else {
+        setNotification(notificationType.animeAdded);
+      }
+    });
+  };
+
+  const removeAnimeFromListCall = (e: MouseEvent, animeId: String) => {
+    e.stopPropagation();
+
+    const animeListId = userAnimeLists.find(
+      (item) => item.title === DEFAULT_LIST
+    ).id;
+    removeAnimeFromList({ animeListId, animeId }).then((result) => {
+      if (result.error) {
+        setNotification(notificationType.animeExists);
+        setError(true);
+      } else {
+        setNotification(notificationType.animeRemoved);
+      }
+    });
   };
 
   useEffect(() => {
@@ -66,10 +122,45 @@ const useAnimeList = ({ inputAnimeId = null }) => {
     }
   }, [user, getAnimeListResult]);
 
+  useEffect(() => {
+    if (notification === notificationType.animeAdded) {
+      toast({
+        title: `Anime Added!`,
+        description: `${animeTitle} successfully added.`,
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+        position: "bottom-right",
+      });
+      setNotification(notificationType.none);
+    } else if (notification === notificationType.animeRemoved) {
+      toast({
+        title: `Removed Anime!`,
+        description: `${animeTitle} removed from list.`,
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+        position: "bottom-right",
+      });
+      setNotification(notificationType.none);
+    } else if (notification === notificationType.animeExists) {
+      toast({
+        title: `Anime Exists!`,
+        description: `${animeTitle} anime already added.`,
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+        position: "bottom-right",
+      });
+      setNotification(notificationType.none);
+    }
+  }, [addAnimeResult, error, toast, notification, animeTitle]);
+
   return {
     addAnimeToList,
-    removeAnimeFromList,
-    notificationType,
+    removeAnimeFromList: removeAnimeFromListCall,
+    AddToNewList,
+    AddToExistingList,
     addAnimeResult,
     removeAnimeResult,
     user,

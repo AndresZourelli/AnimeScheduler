@@ -35,13 +35,7 @@ const HorizontalScroll = ({ animes }) => {
     }) ?? [];
   return (
     <>
-      <Box
-        position="relative"
-        px="50px"
-        my="15px"
-        height="375px"
-        overflow="hidden"
-      >
+      <Box position="relative" px="50px" my="15px" overflow="hidden">
         <ChevronLeftIcon
           onClick={prevSlide}
           position="absolute"
@@ -67,7 +61,6 @@ const HorizontalScroll = ({ animes }) => {
           visibility={display.length == 0 ? "hidden" : "visible"}
         />
         <HStack
-          height="100%"
           width="full"
           overflow="hidden"
           spacing="15px"

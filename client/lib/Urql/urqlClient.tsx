@@ -49,7 +49,6 @@ const client = createClient({
             });
           },
           createAnimeList(_result: any, args: any, cache, _info) {
-            console.log(_result);
             if (_result.createAnimeList) {
               cache.updateQuery(
                 {
@@ -63,20 +62,17 @@ const client = createClient({
               );
             }
           },
-          AddAnimeToList(_result: any, args: any, cache, _info) {
-            if (_result.allUserAnimes) {
-              console.log(_result);
-              // cache.updateQuery(
-              //   {
-              //     query: WatchingDocument,
-              //     variables: { watchingStatus: args.watchingStatus },
-              //   },
-              //   (data: any) => {
-              //     data.animeLists.nodes.push(_result.allUserAnimes.animeList);
-              //     return data;
-              //   }
-              // );
-            }
+          insertAnimeToUserList(_result: any, args: any, cache, _info) {
+            const fragment = gql`
+              fragment AllAnimesTileFragment on AllAnimesTile {
+                id
+                likes
+              }
+            `;
+            cache.writeFragment(fragment, {
+              id: args.input.animeId,
+              likes: true,
+            });
           },
         },
       },

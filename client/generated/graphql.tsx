@@ -3737,6 +3737,39 @@ export type CreateMediaTypePayloadMediaTypeEdgeArgs = {
   orderBy?: Maybe<Array<MediaTypesOrderBy>>;
 };
 
+/** All input for the `createNewListAddAnime` mutation. */
+export type CreateNewListAddAnimeInput = {
+  animeidinput: Scalars['UUID'];
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+};
+
+/** The output of our `createNewListAddAnime` mutation. */
+export type CreateNewListAddAnimePayload = {
+  __typename?: 'CreateNewListAddAnimePayload';
+  animeList?: Maybe<AnimeList>;
+  /** An edge for our `AnimeList`. May be used by Relay 1. */
+  animeListEdge?: Maybe<AnimeListsEdge>;
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** Reads a single `User` that is related to this `AnimeList`. */
+  user?: Maybe<User>;
+};
+
+
+/** The output of our `createNewListAddAnime` mutation. */
+export type CreateNewListAddAnimePayloadAnimeListEdgeArgs = {
+  orderBy?: Maybe<Array<AnimeListsOrderBy>>;
+};
+
 /** All input for the create `PersonImage` mutation. */
 export type CreatePersonImageInput = {
   /**
@@ -6058,6 +6091,43 @@ export enum ImagesOrderBy {
   UrlDesc = 'URL_DESC'
 }
 
+/** All input for the `insertAnimeToUserList` mutation. */
+export type InsertAnimeToUserListInput = {
+  animeId?: Maybe<Scalars['UUID']>;
+  animeListId?: Maybe<Scalars['UUID']>;
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  watchStatus?: Maybe<WatchingStatusEnum>;
+};
+
+/** The output of our `insertAnimeToUserList` mutation. */
+export type InsertAnimeToUserListPayload = {
+  __typename?: 'InsertAnimeToUserListPayload';
+  /** Reads a single `Anime` that is related to this `UserAnimeList`. */
+  anime?: Maybe<Anime>;
+  /** Reads a single `AnimeList` that is related to this `UserAnimeList`. */
+  animeList?: Maybe<AnimeList>;
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  userAnimeList?: Maybe<UserAnimeList>;
+  /** An edge for our `UserAnimeList`. May be used by Relay 1. */
+  userAnimeListEdge?: Maybe<UserAnimeListsEdge>;
+};
+
+
+/** The output of our `insertAnimeToUserList` mutation. */
+export type InsertAnimeToUserListPayloadUserAnimeListEdgeArgs = {
+  orderBy?: Maybe<Array<UserAnimeListsOrderBy>>;
+};
+
 /** A filter to be used against Int fields. All fields are combined with a logical ‘and.’ */
 export type IntFilter = {
   /** Not equal to the specified value, treating null like an ordinary value. */
@@ -6412,6 +6482,7 @@ export type Mutation = {
   createLicensor?: Maybe<CreateLicensorPayload>;
   /** Creates a single `MediaType`. */
   createMediaType?: Maybe<CreateMediaTypePayload>;
+  createNewListAddAnime?: Maybe<CreateNewListAddAnimePayload>;
   /** Creates a single `Person`. */
   createPerson?: Maybe<CreatePersonPayload>;
   /** Creates a single `PersonImage`. */
@@ -6590,6 +6661,7 @@ export type Mutation = {
   deleteUserWatchStatus?: Maybe<DeleteUserWatchStatusPayload>;
   /** Deletes a single `UserWatchStatus` using its globally unique id. */
   deleteUserWatchStatusByNodeId?: Maybe<DeleteUserWatchStatusPayload>;
+  insertAnimeToUserList?: Maybe<InsertAnimeToUserListPayload>;
   registerUser?: Maybe<RegisterUserPayload>;
   /** Updates a single `AgeRatingType` using a unique key and a patch. */
   updateAgeRatingType?: Maybe<UpdateAgeRatingTypePayload>;
@@ -6943,6 +7015,12 @@ export type MutationCreateLicensorArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationCreateMediaTypeArgs = {
   input: CreateMediaTypeInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationCreateNewListAddAnimeArgs = {
+  input: CreateNewListAddAnimeInput;
 };
 
 
@@ -7477,6 +7555,12 @@ export type MutationDeleteUserWatchStatusArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationDeleteUserWatchStatusByNodeIdArgs = {
   input: DeleteUserWatchStatusByNodeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationInsertAnimeToUserListArgs = {
+  input: InsertAnimeToUserListInput;
 };
 
 
@@ -13947,6 +14031,7 @@ export enum VoiceActorsOrderBy {
 export enum WatchingStatusEnum {
   Completed = 'COMPLETED',
   Dropped = 'DROPPED',
+  NotWatching = 'NOT_WATCHING',
   Paused = 'PAUSED',
   PlanToWatch = 'PLAN_TO_WATCH',
   Rewatching = 'REWATCHING',
@@ -13987,23 +14072,23 @@ export type AddAnimeToUserAnimeListMutationVariables = Exact<{
 }>;
 
 
-export type AddAnimeToUserAnimeListMutation = { __typename?: 'Mutation', createUserAnimeList?: Maybe<{ __typename?: 'CreateUserAnimeListPayload', animeList?: Maybe<{ __typename?: 'AnimeList', id: any }> }> };
+export type AddAnimeToUserAnimeListMutation = { __typename?: 'Mutation', createUserAnimeList?: Maybe<{ __typename?: 'CreateUserAnimeListPayload', animeList?: Maybe<{ __typename?: 'AnimeList', title: string, id: any }> }> };
 
 export type DeleteAnimeFromListMutationVariables = Exact<{
-  animeListId: Scalars['UUID'];
   animeId: Scalars['UUID'];
+  animeListId: Scalars['UUID'];
 }>;
 
 
-export type DeleteAnimeFromListMutation = { __typename?: 'Mutation', deleteUserAnimeListByAnimeListIdAndAnimeId?: Maybe<{ __typename?: 'DeleteUserAnimeListPayload', animeList?: Maybe<{ __typename?: 'AnimeList', id: any }> }> };
+export type DeleteAnimeFromListMutation = { __typename?: 'Mutation', deleteUserAnimeListByAnimeListIdAndAnimeId?: Maybe<{ __typename?: 'DeleteUserAnimeListPayload', clientMutationId?: Maybe<string>, deletedUserAnimeListNodeId?: Maybe<string> }> };
 
 export type AddAnimeToListMutationVariables = Exact<{
-  animeListId: Scalars['UUID'];
-  animeId: Scalars['UUID'];
+  animeId?: Maybe<Scalars['UUID']>;
+  animeListId?: Maybe<Scalars['UUID']>;
 }>;
 
 
-export type AddAnimeToListMutation = { __typename?: 'Mutation', upsertUserAnimeList?: Maybe<{ __typename?: 'UpsertUserAnimeListPayload', userAnimeList?: Maybe<{ __typename?: 'UserAnimeList', animeList?: Maybe<{ __typename?: 'AnimeList', title: string, id: any }> }> }> };
+export type AddAnimeToListMutation = { __typename?: 'Mutation', insertAnimeToUserList?: Maybe<{ __typename?: 'InsertAnimeToUserListPayload', clientMutationId?: Maybe<string> }> };
 
 export type CreateNewListMutationVariables = Exact<{
   userId: Scalars['String'];
@@ -14011,7 +14096,7 @@ export type CreateNewListMutationVariables = Exact<{
 }>;
 
 
-export type CreateNewListMutation = { __typename?: 'Mutation', createAnimeList?: Maybe<{ __typename?: 'CreateAnimeListPayload', animeList?: Maybe<{ __typename?: 'AnimeList', id: any, title: string }> }> };
+export type CreateNewListMutation = { __typename?: 'Mutation', createAnimeList?: Maybe<{ __typename?: 'CreateAnimeListPayload', animeList?: Maybe<{ __typename?: 'AnimeList', title: string, id: any }> }> };
 
 export type UpdateUserAnimeListMutationVariables = Exact<{
   animeListId: Scalars['UUID'];
@@ -14037,6 +14122,13 @@ export type UpsertUserWatchStatusMutationVariables = Exact<{
 
 
 export type UpsertUserWatchStatusMutation = { __typename?: 'Mutation', upsertUserWatchStatus?: Maybe<{ __typename?: 'UpsertUserWatchStatusPayload', clientMutationId?: Maybe<string> }> };
+
+export type CreateNewListAddAnimeMutationVariables = Exact<{
+  animeidinput: Scalars['UUID'];
+}>;
+
+
+export type CreateNewListAddAnimeMutation = { __typename?: 'Mutation', createNewListAddAnime?: Maybe<{ __typename?: 'CreateNewListAddAnimePayload', clientMutationId?: Maybe<string>, user?: Maybe<{ __typename?: 'User', animeLists: { __typename?: 'AnimeListsConnection', nodes: Array<Maybe<{ __typename?: 'AnimeList', title: string, id: any }>> } }> }> };
 
 export type WeeklyAnimesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -14102,23 +14194,22 @@ export const AddAnimeToUserAnimeListDocument = gql`
     input: {userAnimeList: {animeListId: $animeListId, animeId: $animeId}}
   ) {
     animeList {
-      id
+      ...AnimeListFragment
     }
   }
 }
-    `;
+    ${AnimeListFragmentFragmentDoc}`;
 
 export function useAddAnimeToUserAnimeListMutation() {
   return Urql.useMutation<AddAnimeToUserAnimeListMutation, AddAnimeToUserAnimeListMutationVariables>(AddAnimeToUserAnimeListDocument);
 };
 export const DeleteAnimeFromListDocument = gql`
-    mutation DeleteAnimeFromList($animeListId: UUID!, $animeId: UUID!) {
+    mutation DeleteAnimeFromList($animeId: UUID!, $animeListId: UUID!) {
   deleteUserAnimeListByAnimeListIdAndAnimeId(
-    input: {animeListId: $animeListId, animeId: $animeId}
+    input: {animeListId: $animeListId, animeId: $animeId, clientMutationId: "SuccessfulDelete"}
   ) {
-    animeList {
-      id
-    }
+    clientMutationId
+    deletedUserAnimeListNodeId
   }
 }
     `;
@@ -14127,17 +14218,11 @@ export function useDeleteAnimeFromListMutation() {
   return Urql.useMutation<DeleteAnimeFromListMutation, DeleteAnimeFromListMutationVariables>(DeleteAnimeFromListDocument);
 };
 export const AddAnimeToListDocument = gql`
-    mutation AddAnimeToList($animeListId: UUID!, $animeId: UUID!) {
-  upsertUserAnimeList(
-    input: {userAnimeList: {animeListId: $animeListId, animeId: $animeId}}
-    where: {animeId: $animeId, animeListId: $animeListId}
+    mutation AddAnimeToList($animeId: UUID, $animeListId: UUID) {
+  insertAnimeToUserList(
+    input: {animeId: $animeId, animeListId: $animeListId, clientMutationId: "AnimeAddedToList"}
   ) {
-    userAnimeList {
-      animeList {
-        title
-        id
-      }
-    }
+    clientMutationId
   }
 }
     `;
@@ -14149,12 +14234,11 @@ export const CreateNewListDocument = gql`
     mutation CreateNewList($userId: String!, $title: String!) {
   createAnimeList(input: {animeList: {userId: $userId, title: $title}}) {
     animeList {
-      id
-      title
+      ...AnimeListFragment
     }
   }
 }
-    `;
+    ${AnimeListFragmentFragmentDoc}`;
 
 export function useCreateNewListMutation() {
   return Urql.useMutation<CreateNewListMutation, CreateNewListMutationVariables>(CreateNewListDocument);
@@ -14197,6 +14281,26 @@ export const UpsertUserWatchStatusDocument = gql`
 
 export function useUpsertUserWatchStatusMutation() {
   return Urql.useMutation<UpsertUserWatchStatusMutation, UpsertUserWatchStatusMutationVariables>(UpsertUserWatchStatusDocument);
+};
+export const CreateNewListAddAnimeDocument = gql`
+    mutation CreateNewListAddAnime($animeidinput: UUID!) {
+  createNewListAddAnime(
+    input: {animeidinput: $animeidinput, clientMutationId: "NewListCreatedAndAnimeAdded"}
+  ) {
+    user {
+      animeLists {
+        nodes {
+          ...AnimeListFragment
+        }
+      }
+    }
+    clientMutationId
+  }
+}
+    ${AnimeListFragmentFragmentDoc}`;
+
+export function useCreateNewListAddAnimeMutation() {
+  return Urql.useMutation<CreateNewListAddAnimeMutation, CreateNewListAddAnimeMutationVariables>(CreateNewListAddAnimeDocument);
 };
 export const WeeklyAnimesDocument = gql`
     query WeeklyAnimes {
@@ -20795,6 +20899,71 @@ export default {
       },
       {
         "kind": "OBJECT",
+        "name": "CreateNewListAddAnimePayload",
+        "fields": [
+          {
+            "name": "animeList",
+            "type": {
+              "kind": "OBJECT",
+              "name": "AnimeList",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "animeListEdge",
+            "type": {
+              "kind": "OBJECT",
+              "name": "AnimeListsEdge",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "orderBy",
+                "type": {
+                  "kind": "LIST",
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "Any"
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "clientMutationId",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "query",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Query",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "user",
+            "type": {
+              "kind": "OBJECT",
+              "name": "User",
+              "ofType": null
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
         "name": "CreatePersonImagePayload",
         "fields": [
           {
@@ -24700,6 +24869,80 @@ export default {
       },
       {
         "kind": "OBJECT",
+        "name": "InsertAnimeToUserListPayload",
+        "fields": [
+          {
+            "name": "anime",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Anime",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "animeList",
+            "type": {
+              "kind": "OBJECT",
+              "name": "AnimeList",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "clientMutationId",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "query",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Query",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "userAnimeList",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UserAnimeList",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "userAnimeListEdge",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UserAnimeListsEdge",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "orderBy",
+                "type": {
+                  "kind": "LIST",
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "Any"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
         "name": "Language",
         "fields": [
           {
@@ -25748,6 +25991,26 @@ export default {
             "type": {
               "kind": "OBJECT",
               "name": "CreateMediaTypePayload",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "input",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "createNewListAddAnime",
+            "type": {
+              "kind": "OBJECT",
+              "name": "CreateNewListAddAnimePayload",
               "ofType": null
             },
             "args": [
@@ -27528,6 +27791,26 @@ export default {
             "type": {
               "kind": "OBJECT",
               "name": "DeleteUserWatchStatusPayload",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "input",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "insertAnimeToUserList",
+            "type": {
+              "kind": "OBJECT",
+              "name": "InsertAnimeToUserListPayload",
               "ofType": null
             },
             "args": [
