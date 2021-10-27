@@ -162,6 +162,7 @@ export const AppAuthProvider = ({ children }) => {
               user.username = _result?.data?.getUser?.username || null;
               setUser(user);
               setLoading(false);
+              return user;
             });
         });
       }

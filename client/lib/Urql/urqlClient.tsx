@@ -1,4 +1,3 @@
-import { AnimeListQueryDocument } from "@/graphql";
 import { gql, makeOperation } from "@urql/core";
 import { devtoolsExchange } from "@urql/devtools";
 import { authExchange } from "@urql/exchange-auth";
@@ -47,20 +46,6 @@ const client = createClient({
               id: args.input.animeId,
               likes: false,
             });
-          },
-          createAnimeList(_result: any, args: any, cache, _info) {
-            if (_result.createAnimeList) {
-              cache.updateQuery(
-                {
-                  query: AnimeListQueryDocument,
-                  variables: { userId: args.input.animeList.userId },
-                },
-                (data: any) => {
-                  data.animeLists.nodes.push(_result.createAnimeList.animeList);
-                  return data;
-                }
-              );
-            }
           },
           insertAnimeToUserList(_result: any, args: any, cache, _info) {
             const fragment = gql`
