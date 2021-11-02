@@ -2,8 +2,12 @@ import { HStack, Box, Heading } from "@chakra-ui/react";
 import AnimeCard from "@/components/Home/AnimeCard";
 import { useRef } from "react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
+import { AllAnimesTile } from "@/graphql";
+interface HorizontalScrollInterface {
+  animes: AllAnimesTile[];
+}
 
-const HorizontalScroll = ({ animes }) => {
+const HorizontalScroll = ({ animes }: HorizontalScrollInterface) => {
   const currentRef = useRef(null);
 
   const prevSlide = () => {
@@ -28,8 +32,10 @@ const HorizontalScroll = ({ animes }) => {
           url={anime.url}
           score={anime.averageWatcherRating}
           id={anime.id}
-          likes={anime.likes}
+          likes={anime.userLiked}
           key={anime.id}
+          numOfEpisodes={anime.numberOfEpisodes}
+          animeInfo={anime}
         />
       );
     }) ?? [];

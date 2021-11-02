@@ -1,0 +1,52 @@
+mutation UpdateWatchStatus(
+  $watchStatus: WatchingStatusEnum!
+  $userId: String!
+  $animeId: UUID!
+) {
+  updateUserWatchStatus(
+    input: {
+      patch: { animeId: $animeId, userId: $userId, watchStatus: $watchStatus }
+      userId: $userId
+      animeId: $animeId
+      clientMutationId: "UpdatedWatchStatus"
+    }
+  ) {
+    clientMutationId
+  }
+}
+
+mutation UpdateUserAnimeScore($animeId: UUID!, $userScore: Int!) {
+  insertOrUpdateAnimeUserScore(
+    input: {
+      inputAnimeId: $animeId
+      inputUserScore: $userScore
+      clientMutationId: "test"
+    }
+  ) {
+    clientMutationId
+  }
+}
+
+mutation UpdateUserEpisodeCount(
+  $animeId: UUID!
+  $userEpisodesWatched: Int!
+  $userId: String!
+) {
+  updateUserWatchStatus(
+    input: {
+      patch: { userEpisodesWatched: $userEpisodesWatched }
+      userId: $userId
+      animeId: $animeId
+      clientMutationId: "UpdatedUserEpisodeCount"
+    }
+  ) {
+    query {
+      allAnimesTiles(filter: { id: { equalTo: $animeId } }) {
+        nodes {
+          ...AllAnimesTileFragment
+        }
+      }
+    }
+    clientMutationId
+  }
+}

@@ -3,19 +3,7 @@ query WeeklyAnimes {
     filter: { airingStatusType: { equalTo: "Currently Airing" } }
   ) {
     nodes {
-      id
-      title
-      season
-      airingStatusType
-      averageWatcherRating
-      startBroadcastDatetime
-      url
-      description
-      genres
-      mediaType
-      numberOfEpisodes
-      studios
-      likes
+      ...AllAnimesTileFragment
     }
   }
 }

@@ -10,10 +10,12 @@ interface MyAnimePageListInterface {
 
 const MyAnimePageList = ({ watchingStatus }: MyAnimePageListInterface) => {
   const { user } = useAuth();
+  const [dataLoaded, setDataLoaded] = useState(false);
   const [animesResult, fetchAnimes] = useGetUserAnimeListsQuery({
     variables: { watchStatus: watchingStatus },
     pause: !user?.uid,
   });
+  console.log(animesResult);
   const [animeLists, setAnimeLists] = useState([]);
   const [hasMoreAnimes, setHasMoreAnimes] = useState(false);
 
@@ -42,15 +44,16 @@ const MyAnimePageList = ({ watchingStatus }: MyAnimePageListInterface) => {
     if (
       !animesResult.fetching &&
       animesResult.data &&
-      animesResult.data.getUserAnimeLists?.nodes
+      animesResult.data.getUserAnimeLists?.nodes &&
+      !dataLoaded
     ) {
       setAnimeLists([
         ...animesResult.data.getUserAnimeLists?.nodes,
         ...animeLists,
       ]);
+      setDataLoaded(true);
     }
-  }, [animesResult, animeLists]);
-
+  }, [animesResult, animeLists, dataLoaded]);
   return (
     <Box position="relative" justifySelf="end" mt="8" mx="3">
       <Box my="3" mr="16">

@@ -5,14 +5,53 @@ import {
   useUserListsQuery,
   useUpsertUserWatchStatusMutation,
   useCreateNewListAddAnimeMutation,
+  AnimeListPrivacy,
+  AddAnimeToListMutation,
+  Exact,
+  DeleteAnimeFromListMutation,
+  WatchingStatusEnum,
+  useUpdateUserAnimeScoreMutation,
+  useUpdateUserEpisodeCountMutation,
 } from "@/graphql";
-import { useAuth } from "@/lib/Auth/FirebaseAuth";
+import { useAuth, ExtendedUser } from "@/lib/Auth/FirebaseAuth";
 import { useToast } from "@chakra-ui/react";
 import { useEffect, useState, MouseEvent } from "react";
+import { OperationContext, UseMutationState } from "urql";
 
-interface AddAnimeInput {
-  e: MouseEvent;
-  animeId: String;
+interface UserAnimeListInterface {
+  id: string;
+  privacy: AnimeListPrivacy;
+  title: string;
+}
+interface UserAnimeListHook {
+  addAnimeToList: (e: MouseEvent, animeId: string) => void;
+  removeAnimeFromList: (e: MouseEvent, animeId: string) => void;
+  AddToNewList: (e: MouseEvent, animeId: string) => void;
+  AddToExistingList: (
+    e: MouseEvent,
+    animeId: string,
+    animeListId: string
+  ) => void;
+  addAnimeResult: UseMutationState<
+    AddAnimeToListMutation,
+    Exact<{
+      animeId?: any;
+      animeListId?: any;
+    }>
+  >;
+  removeAnimeResult: UseMutationState<
+    DeleteAnimeFromListMutation,
+    Exact<{
+      animeId: any;
+      animeListId: any;
+    }>
+  >;
+  user: ExtendedUser | null;
+  error: boolean;
+  userAnimeLists: UserAnimeListInterface[];
+  updateWatchStatus: (animeId: String, watchStatus: WatchingStatusEnum) => void;
+  updateAnimeScore: (animeId: string, userScore: number) => void;
+  updateEpisodeCount: (animeId: string, userEpisodesWatched: number) => void;
 }
 
 enum notificationType {
@@ -24,10 +63,18 @@ enum notificationType {
 
 const DEFAULT_LIST = "default";
 
-const useAnimeList = ({ inputAnimeId = null, animeTitle }) => {
+const useAnimeList = ({
+  inputAnimeId = null,
+  animeTitle,
+}: {
+  inputAnimeId: string | null;
+  animeTitle: string;
+}): UserAnimeListHook => {
   const { user } = useAuth();
   const toast = useToast();
-  const [userAnimeLists, setUserAnimeLists] = useState([]);
+  const [userAnimeLists, setUserAnimeLists] = useState<
+    UserAnimeListInterface[]
+  >([]);
   const [error, setError] = useState(false);
   const [notification, setNotification] = useState<notificationType>(
     notificationType.none
@@ -43,8 +90,35 @@ const useAnimeList = ({ inputAnimeId = null, animeTitle }) => {
     useUpsertUserWatchStatusMutation();
   const [removeAnimeResult, removeAnimeFromList] =
     useDeleteAnimeFromListMutation();
+  const [userAnimeScoreResult, mutationUserAnimeScore] =
+    useUpdateUserAnimeScoreMutation();
+  const [userEpisodeCountResult, mutationUserEpisodeCount] =
+    useUpdateUserEpisodeCountMutation();
 
   const [newListResult, createNewList] = useCreateNewListAddAnimeMutation();
+
+  const updateEpisodeCount = (animeId: string, userEpisodesWatched: number) => {
+    mutationUserEpisodeCount({
+      animeId,
+      userEpisodesWatched,
+      userId: user.uid,
+    });
+  };
+
+  const updateAnimeScore = (animeId: string, userScore: number) => {
+    mutationUserAnimeScore({ animeId, userScore });
+  };
+
+  const updateWatchStatus = (
+    animeId: String,
+    watchStatus: WatchingStatusEnum
+  ) => {
+    addWatchStatus({
+      animeId: animeId,
+      userId: user.uid,
+      watchStatus: watchStatus,
+    });
+  };
 
   const AddToExistingList = (
     e: MouseEvent,
@@ -155,17 +229,19 @@ const useAnimeList = ({ inputAnimeId = null, animeTitle }) => {
       setNotification(notificationType.none);
     }
   }, [addAnimeResult, error, toast, notification, animeTitle]);
-
   return {
     addAnimeToList,
     removeAnimeFromList: removeAnimeFromListCall,
     AddToNewList,
     AddToExistingList,
+    updateWatchStatus,
     addAnimeResult,
     removeAnimeResult,
     user,
     error,
     userAnimeLists,
+    updateEpisodeCount,
+    updateAnimeScore,
   };
 };
 

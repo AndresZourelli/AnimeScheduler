@@ -18,6 +18,13 @@ mutation DeleteAnimeFromList($animeId: UUID!, $animeListId: UUID!) {
   ) {
     clientMutationId
     deletedUserAnimeListNodeId
+    query {
+      allAnimesTiles(condition: { id: $animeId }) {
+        nodes {
+          ...AllAnimesTileFragment
+        }
+      }
+    }
   }
 }
 
@@ -30,6 +37,13 @@ mutation AddAnimeToList($animeId: UUID, $animeListId: UUID) {
     }
   ) {
     clientMutationId
+    query {
+      allAnimesTiles(condition: { id: $animeId }) {
+        nodes {
+          ...AllAnimesTileFragment
+        }
+      }
+    }
   }
 }
 
@@ -71,14 +85,29 @@ mutation updateUserAnimeWatchStatus(
   }
 }
 
-mutation upsertUserWatchStatus($userId: String!, $animeId: UUID!) {
+mutation UpsertUserWatchStatus(
+  $watchStatus: WatchingStatusEnum!
+  $userId: String!
+  $animeId: UUID!
+) {
   upsertUserWatchStatus(
     input: {
-      userWatchStatus: { userId: $userId, animeId: $animeId }
-      clientMutationId: "UpsertedAnimeWatchStatus"
+      userWatchStatus: {
+        userId: $userId
+        animeId: $animeId
+        watchStatus: $watchStatus
+      }
+      clientMutationId: "upsertUserWatchStatus"
     }
   ) {
     clientMutationId
+    query {
+      allAnimesTiles(filter: { id: { equalTo: $animeId } }) {
+        nodes {
+          ...AllAnimesTileFragment
+        }
+      }
+    }
   }
 }
 

@@ -1,4 +1,3 @@
-import CountDownTimer from "@/components/Common/CountDown";
 import ImageLoader from "@/components/Common/ImageLoader";
 import PopupMenuButton from "@/components/Common/PopupMenuButton";
 import useAnimeList from "@/components/Hooks/useAnimeList";
@@ -61,7 +60,10 @@ const WeeklyGridCard = ({
     addAnimeToList,
     removeAnimeFromList,
     user,
-  } = useAnimeList({ inputAnimeId: id });
+    userAnimeLists,
+    AddToNewList,
+    AddToExistingList,
+  } = useAnimeList({ inputAnimeId: id, animeTitle: title });
   return (
     <Box m={2} borderRadius="xl" w="167px">
       <Flex minH="242px">
@@ -89,18 +91,18 @@ const WeeklyGridCard = ({
                     borderRightRadius: "0px",
                   }}
                 >
-                  <ImageLoader image_url={url} alt={title} />
+                  <ImageLoader
+                    image_url={url}
+                    alt={title}
+                    w="167px"
+                    minH="242px"
+                  />
                   {likes ? (
                     <PopupMenuButton
-                      position="absolute"
-                      icon={<BsX size="2rem" />}
-                      isRound
-                      bg="red.300"
-                      bottom="3%"
-                      right="3%"
-                      onClickInner={(e) => removeAnimeFromList(e, id)}
-                      isLoading={addAnimeResult.fetching}
-                      visibility={user ? "visible" : "hidden"}
+                      customList={userAnimeLists}
+                      animeId={id}
+                      addToNewList={AddToNewList}
+                      addToExistingList={AddToExistingList}
                     />
                   ) : (
                     <IconButton
@@ -187,7 +189,7 @@ const WeeklyGridCard = ({
                   px="2"
                   pt="2"
                 >
-                  {genres.map((item, i) => (
+                  {genres?.map((item, i) => (
                     <Tag
                       borderRadius="full"
                       size="sm"

@@ -21,9 +21,30 @@ import { useRouter } from "next/router";
 import { createContext, useContext, useEffect, useState } from "react";
 import { useClient, useMutation } from "urql";
 
-interface ExtendedUser extends User {
+export interface ExtendedUser extends User {
   role?: string | null;
   username?: string | null;
+}
+
+interface FirebaseAuthInterface {
+  loading: boolean;
+  user: ExtendedUser | null;
+  registerUser: (
+    provider: Provider,
+    username?: string | null,
+    email?: string | null,
+    password?: string | null
+  ) => Promise<void>;
+  signInUser: (
+    provider: Provider,
+    email?: string | null,
+    password?: string | null
+  ) => Promise<void>;
+  getToken: () => Promise<string>;
+  logoutUser: () => Promise<void>;
+  resetPasswordSendEmail: (email: string) => Promise<void>;
+  verifyResetPasswordEmailCode: (code: string) => Promise<string>;
+  resetPassword: (code: string, password: string) => Promise<void>;
 }
 
 const REGISTER_USER = `
@@ -47,16 +68,23 @@ const GET_USER = `
 }
 `;
 
-const AuthContext = createContext({});
+const AuthContext = createContext<FirebaseAuthInterface>(
+  {} as FirebaseAuthInterface
+);
+
+enum Provider {
+  GOOGLE = "google",
+  EMAIL = "email",
+}
 
 export const AppAuthProvider = ({ children }) => {
   const router = useRouter();
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<ExtendedUser | null>(null);
   const [loading, setLoading] = useState(true);
   const [registerUserResult, registerUserCall] = useMutation(REGISTER_USER);
   const client = useClient();
 
-  const getToken = async () => {
+  const getToken = async (): Promise<string> => {
     const user = auth.currentUser;
     if (user) {
       const token = await getIdToken(user);
@@ -67,16 +95,16 @@ export const AppAuthProvider = ({ children }) => {
   };
 
   const registerUser = async (
-    provider,
-    username = null,
-    email = null,
-    password = null
-  ) => {
+    provider: Provider,
+    username: string | null = null,
+    email: string | null = null,
+    password: string | null = null
+  ): Promise<void> => {
     try {
       let response;
-      if (provider === "email") {
+      if (provider === Provider.EMAIL) {
         response = await createUserWithEmailAndPassword(auth, email, password);
-      } else if (provider === "google") {
+      } else if (provider === Provider.GOOGLE) {
         const googleProvider = new GoogleAuthProvider();
         response = await signInWithRedirect(auth, googleProvider);
       } else {
@@ -97,7 +125,11 @@ export const AppAuthProvider = ({ children }) => {
     }
   };
 
-  const signInUser = async (provider, email = null, password = null) => {
+  const signInUser = async (
+    provider: Provider,
+    email: string | null = null,
+    password: string | null = null
+  ): Promise<void> => {
     try {
       let response: UserCredential;
       if (provider === "email") {
@@ -122,19 +154,22 @@ export const AppAuthProvider = ({ children }) => {
     }
   };
 
-  const logoutUser = () => {
+  const logoutUser = (): Promise<void> => {
     return signOut(auth);
   };
 
-  const resetPasswordSendEmail = (email) => {
+  const resetPasswordSendEmail = (email: string): Promise<void> => {
     return sendPasswordResetEmail(auth, email);
   };
 
-  const verifyResetPasswordEmailCode = (code) => {
+  const verifyResetPasswordEmailCode = (code: string): Promise<string> => {
     return verifyPasswordResetCode(auth, code);
   };
 
-  const resetPassword = async (code, password) => {
+  const resetPassword = async (
+    code: string,
+    password: string
+  ): Promise<void> => {
     return confirmPasswordReset(auth, code, password);
   };
 
@@ -219,4 +254,4 @@ export const AppAuthProvider = ({ children }) => {
   );
 };
 
-export const useAuth = (): any => useContext(AuthContext);
+export const useAuth = () => useContext(AuthContext);

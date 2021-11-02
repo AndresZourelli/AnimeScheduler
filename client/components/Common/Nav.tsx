@@ -148,7 +148,12 @@ const Nav = () => {
         layerStyle={colorMode === "light" ? "header_light" : "header_dark"}
       >
         <Box mr="4" width="40px" height="40px" position="relative">
-          <ImageLoader image_url="/coffee_jelly3.svg" alt="Coffee Jelly Logo" />
+          <ImageLoader
+            image_url="/coffee_jelly3.svg"
+            alt="Coffee Jelly Logo"
+            w="40px"
+            minH="40px"
+          />
         </Box>
         <Box>
           <Heading size="md" mr="4" textStyle="h2">
@@ -213,6 +218,8 @@ const Nav = () => {
                                 <ImageLoader
                                   image_url={anime.url}
                                   alt={anime.title}
+                                  w="70px"
+                                  minH="100px"
                                 />
                               </Box>
                             </Td>

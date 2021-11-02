@@ -39,7 +39,12 @@ const ActorCard = ({
           {actor_name}
         </Heading>
         <Box width="125px" height="194px" position="relative" display="block">
-          <ImageLoader image_url={image_url} alt={actor_name} />
+          <ImageLoader
+            image_url={image_url}
+            alt={actor_name}
+            w="125px"
+            minH="194px"
+          />
         </Box>
         <Text fontSize="sm">Language: {language_name}</Text>
         <Text fontSize="sm">

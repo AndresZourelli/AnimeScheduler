@@ -6,7 +6,6 @@ const PopularRow = () => {
   const [highestRatedResult, queryHighestRated] = useHighestRatedAnimesQuery({
     variables: { limit: 30 },
   });
-
   return (
     <Box>
       <Heading mt="25px" ml="50px">

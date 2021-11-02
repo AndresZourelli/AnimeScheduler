@@ -17,13 +17,7 @@ query CurrentlyAiringContinued($limit: Int!, $currentSeason: String!) {
     }
   ) {
     nodes {
-      id
-      title
-      url
-      season
-      averageWatcherRating
-      airingStatusType
-      likes
+      ...AllAnimesTileFragment
     }
   }
 }
@@ -37,13 +31,7 @@ query CurrentlyAiring($limit: Int!, $currentSeason: String!) {
     }
   ) {
     nodes {
-      id
-      title
-      url
-      season
-      averageWatcherRating
-      airingStatusType
-      likes
+      ...AllAnimesTileFragment
     }
   }
 }
@@ -51,13 +39,7 @@ query CurrentlyAiring($limit: Int!, $currentSeason: String!) {
 query HighestRatedAnimes($limit: Int!) {
   allAnimesTiles(first: $limit) {
     nodes {
-      id
-      title
-      url
-      season
-      averageWatcherRating
-      airingStatusType
-      likes
+      ...AllAnimesTileFragment
     }
   }
 }

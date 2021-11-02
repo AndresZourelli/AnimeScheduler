@@ -20,7 +20,7 @@ const MyAnimes = (props) => {
 
   return (
     <Box>
-      <Tabs orientation="vertical">
+      <Tabs orientation="vertical" isLazy>
         <TabList>
           <Tab>Currently Airing</Tab>
           <Tab>Watching</Tab>

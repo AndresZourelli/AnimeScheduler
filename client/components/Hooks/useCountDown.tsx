@@ -1,7 +1,21 @@
 import { useState, useEffect, useRef } from "react";
 import moment from "moment";
 
-const CountDown = ({ endInputDate }) => {
+const useCountDown = ({ endInputDate = null }) => {
+  const [rDays, setRDays] = useState("00");
+  const [rHours, setRHours] = useState("00");
+  const [rMinutes, setRMinutes] = useState("00");
+  const [rSeconds, setRSeconds] = useState("00");
+  const [timeLeft, setTimeLeft] = useState({
+    days: "00",
+    hours: "00",
+    minutes: "00",
+    seconds: "00",
+  });
+
+  if (!endInputDate) {
+    return timeLeft;
+  }
   const startDate = moment();
   const airDate = moment(endInputDate);
   let endDate = moment()
@@ -13,16 +27,6 @@ const CountDown = ({ endInputDate }) => {
     endDate.add(1, "week");
   }
 
-  const [rDays, setRDays] = useState("00");
-  const [rHours, setRHours] = useState("00");
-  const [rMinutes, setRMinutes] = useState("00");
-  const [rSeconds, setRSeconds] = useState("00");
-  const [timeLeft, setTimeLeft] = useState({
-    days: "00",
-    hours: "00",
-    minutes: "00",
-    seconds: "00",
-  });
   const getFormatDigit = (digit) => {
     const value = Math.floor(digit);
 
@@ -67,7 +71,7 @@ const CountDown = ({ endInputDate }) => {
   useEffect(() => {
     interval.current = setInterval(() => {
       setTimeLeft(calculateTimeLeft());
-    }, 1000);
+    }, 10000);
     return () => {
       clearInterval(interval.current as NodeJS.Timeout);
     };
@@ -76,4 +80,4 @@ const CountDown = ({ endInputDate }) => {
   return timeLeft;
 };
 
-export default CountDown;
+export default useCountDown;

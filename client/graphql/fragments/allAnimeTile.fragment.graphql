@@ -1,0 +1,13 @@
+fragment AllAnimesTileFragment on AllAnimesTile {
+  id
+  title
+  url
+  numberOfEpisodes
+  averageWatcherRating
+  userLiked
+  userRating
+  userWatchStatus
+  userEpisodeCount
+  startBroadcastDatetime
+  airingStatusType
+}
