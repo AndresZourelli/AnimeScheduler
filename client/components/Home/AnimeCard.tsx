@@ -236,14 +236,13 @@ const AnimeCard = ({
         <Box
           width="full"
           position="relative"
-          minH="346px"
           w="225px"
           overflow="hidden"
           onClick={redirectToAnime}
           cursor="pointer"
           role="group"
         >
-          <LoadImage image_url={url} alt={title} minH="346px" w="225px" />
+          <LoadImage image_url={url} alt={title} maxW="225px" />
 
           <Box
             position="absolute"

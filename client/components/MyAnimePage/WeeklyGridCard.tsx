@@ -91,12 +91,7 @@ const WeeklyGridCard = ({
                     borderRightRadius: "0px",
                   }}
                 >
-                  <ImageLoader
-                    image_url={url}
-                    alt={title}
-                    w="167px"
-                    minH="242px"
-                  />
+                  <ImageLoader image_url={url} alt={title} maxW="167px" />
                   {likes ? (
                     <PopupMenuButton
                       customList={userAnimeLists}

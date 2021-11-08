@@ -1,0 +1,23 @@
+mutation UpdateListIndex(
+  $animeId: UUID!
+  $animeListId: UUID!
+  $animeIndex: String!
+) {
+  updateUserAnimeListByAnimeListIdAndAnimeId(
+    input: {
+      patch: { animeIndex: $animeIndex }
+      animeListId: $animeListId
+      animeId: $animeId
+      clientMutationId: "UpdatedUserCustomAnimeList"
+    }
+  ) {
+    query {
+      userCustomAnimeList {
+        nodes {
+          ...CustomAnimeListFragment
+        }
+      }
+    }
+    clientMutationId
+  }
+}

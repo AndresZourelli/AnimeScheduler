@@ -12,11 +12,14 @@ import {
   WatchingStatusEnum,
   useUpdateUserAnimeScoreMutation,
   useUpdateUserEpisodeCountMutation,
+  useGetLastItemInCustomListQuery,
+  GetLastItemInCustomListDocument,
 } from "@/graphql";
 import { useAuth, ExtendedUser } from "@/lib/Auth/FirebaseAuth";
 import { useToast } from "@chakra-ui/react";
 import { useEffect, useState, MouseEvent } from "react";
-import { OperationContext, UseMutationState } from "urql";
+import { useClient, UseMutationState } from "urql";
+import { Lexico } from "@/utilities/lexicoHelperFunctions";
 
 interface UserAnimeListInterface {
   id: string;
@@ -35,8 +38,8 @@ interface UserAnimeListHook {
   addAnimeResult: UseMutationState<
     AddAnimeToListMutation,
     Exact<{
-      animeId?: any;
-      animeListId?: any;
+      inputAnimeId: any;
+      inputAnimeListId: any;
     }>
   >;
   removeAnimeResult: UseMutationState<
@@ -63,13 +66,16 @@ enum notificationType {
 
 const DEFAULT_LIST = "default";
 
+interface UseAnimeListInterface {
+  inputAnimeId?: string | null;
+  animeTitle?: string | null;
+}
+
 const useAnimeList = ({
   inputAnimeId = null,
-  animeTitle,
-}: {
-  inputAnimeId: string | null;
-  animeTitle: string;
-}): UserAnimeListHook => {
+  animeTitle = null,
+}: UseAnimeListInterface): UserAnimeListHook => {
+  const client = useClient();
   const { user } = useAuth();
   const toast = useToast();
   const [userAnimeLists, setUserAnimeLists] = useState<
@@ -94,6 +100,9 @@ const useAnimeList = ({
     useUpdateUserAnimeScoreMutation();
   const [userEpisodeCountResult, mutationUserEpisodeCount] =
     useUpdateUserEpisodeCountMutation();
+  const [lastItemInList, queryLastItemInList] = useGetLastItemInCustomListQuery(
+    { variables: { animeListId: null } }
+  );
 
   const [newListResult, createNewList] = useCreateNewListAddAnimeMutation();
 
@@ -158,14 +167,33 @@ const useAnimeList = ({
     const animeListId = userAnimeLists.find(
       (item) => item.title === DEFAULT_LIST
     ).id;
-    addAnimeToUser({ animeListId, animeId }).then((result) => {
-      if (result.error) {
-        setNotification(notificationType.animeExists);
-        setError(true);
-      } else {
-        setNotification(notificationType.animeAdded);
-      }
-    });
+    client
+      .query(
+        GetLastItemInCustomListDocument,
+        { animeListId: animeListId },
+        { requestPolicy: "network-only" }
+      )
+      .toPromise()
+      .then((lastResult) => {
+        let newIndex = Lexico.positionBefore(Lexico.FIRST_POSITION);
+        if (lastResult.data?.userAnimeLists?.nodes[0]?.animeIndex) {
+          newIndex = Lexico.positionAfter(
+            lastResult.data.userAnimeLists.nodes[0].animeIndex
+          );
+        }
+        return addAnimeToUser({
+          inputAnimeListId: animeListId,
+          inputAnimeId: animeId,
+          inputAnimeIndex: newIndex,
+        }).then((result) => {
+          if (result.error) {
+            setNotification(notificationType.animeExists);
+            setError(true);
+          } else {
+            setNotification(notificationType.animeAdded);
+          }
+        });
+      });
   };
 
   const removeAnimeFromListCall = (e: MouseEvent, animeId: String) => {

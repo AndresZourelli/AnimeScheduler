@@ -4175,6 +4175,78 @@ export type CreateUserWatchStatusPayloadUserWatchStatusEdgeArgs = {
   orderBy?: Maybe<Array<UserWatchStatusesOrderBy>>;
 };
 
+export type CustomAnimeList = {
+  __typename?: 'CustomAnimeList';
+  animeId?: Maybe<Scalars['UUID']>;
+  animeIndex?: Maybe<Scalars['String']>;
+  averageWatcherRating?: Maybe<Scalars['BigFloat']>;
+  id?: Maybe<Scalars['String']>;
+  imageUrl?: Maybe<Scalars['String']>;
+  listName?: Maybe<Scalars['String']>;
+  mediaType?: Maybe<Scalars['String']>;
+  numberOfEpisodes?: Maybe<Scalars['Int']>;
+  title?: Maybe<Scalars['String']>;
+  userEpisodesWatched?: Maybe<Scalars['Int']>;
+  userScore?: Maybe<Scalars['BigFloat']>;
+  watchStatus?: Maybe<WatchingStatusEnum>;
+};
+
+/** A filter to be used against `CustomAnimeList` object types. All fields are combined with a logical ‘and.’ */
+export type CustomAnimeListFilter = {
+  /** Checks for all expressions in this list. */
+  and?: Maybe<Array<CustomAnimeListFilter>>;
+  /** Filter by the object’s `animeId` field. */
+  animeId?: Maybe<UuidFilter>;
+  /** Filter by the object’s `animeIndex` field. */
+  animeIndex?: Maybe<StringFilter>;
+  /** Filter by the object’s `averageWatcherRating` field. */
+  averageWatcherRating?: Maybe<BigFloatFilter>;
+  /** Filter by the object’s `id` field. */
+  id?: Maybe<StringFilter>;
+  /** Filter by the object’s `imageUrl` field. */
+  imageUrl?: Maybe<StringFilter>;
+  /** Filter by the object’s `listName` field. */
+  listName?: Maybe<StringFilter>;
+  /** Filter by the object’s `mediaType` field. */
+  mediaType?: Maybe<StringFilter>;
+  /** Negates the expression. */
+  not?: Maybe<CustomAnimeListFilter>;
+  /** Filter by the object’s `numberOfEpisodes` field. */
+  numberOfEpisodes?: Maybe<IntFilter>;
+  /** Checks for any expressions in this list. */
+  or?: Maybe<Array<CustomAnimeListFilter>>;
+  /** Filter by the object’s `title` field. */
+  title?: Maybe<StringFilter>;
+  /** Filter by the object’s `userEpisodesWatched` field. */
+  userEpisodesWatched?: Maybe<IntFilter>;
+  /** Filter by the object’s `userScore` field. */
+  userScore?: Maybe<BigFloatFilter>;
+  /** Filter by the object’s `watchStatus` field. */
+  watchStatus?: Maybe<WatchingStatusEnumFilter>;
+};
+
+/** A connection to a list of `CustomAnimeList` values. */
+export type CustomAnimeListsConnection = {
+  __typename?: 'CustomAnimeListsConnection';
+  /** A list of edges which contains the `CustomAnimeList` and cursor to aid in pagination. */
+  edges: Array<CustomAnimeListsEdge>;
+  /** A list of `CustomAnimeList` objects. */
+  nodes: Array<Maybe<CustomAnimeList>>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `CustomAnimeList` you could get from the connection. */
+  totalCount: Scalars['Int'];
+};
+
+/** A `CustomAnimeList` edge in the connection. */
+export type CustomAnimeListsEdge = {
+  __typename?: 'CustomAnimeListsEdge';
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>;
+  /** The `CustomAnimeList` at the end of the edge. */
+  node?: Maybe<CustomAnimeList>;
+};
+
 /** A filter to be used against Datetime fields. All fields are combined with a logical ‘and.’ */
 export type DatetimeFilter = {
   /** Not equal to the specified value, treating null like an ordinary value. */
@@ -6117,14 +6189,15 @@ export enum ImagesOrderBy {
 
 /** All input for the `insertAnimeToUserList` mutation. */
 export type InsertAnimeToUserListInput = {
-  animeId?: Maybe<Scalars['UUID']>;
-  animeListId?: Maybe<Scalars['UUID']>;
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: Maybe<Scalars['String']>;
-  watchStatus?: Maybe<WatchingStatusEnum>;
+  inputAnimeId?: Maybe<Scalars['UUID']>;
+  inputAnimeIndex?: Maybe<Scalars['String']>;
+  inputAnimeListId?: Maybe<Scalars['UUID']>;
+  inputWatchStatus?: Maybe<WatchingStatusEnum>;
 };
 
 /** The output of our `insertAnimeToUserList` mutation. */
@@ -8921,6 +8994,8 @@ export type Query = Node & {
   userAnimes?: Maybe<UserAnimeConnection>;
   /** Reads a single `User` using its globally unique `ID`. */
   userByNodeId?: Maybe<User>;
+  /** Reads and enables pagination through a set of `CustomAnimeList`. */
+  userCustomAnimeList?: Maybe<CustomAnimeListsConnection>;
   userWatchStatus?: Maybe<UserWatchStatus>;
   /** Reads a single `UserWatchStatus` using its globally unique `ID`. */
   userWatchStatusByNodeId?: Maybe<UserWatchStatus>;
@@ -9881,6 +9956,18 @@ export type QueryUserAnimesArgs = {
 /** The root query type which gives access points into the data universe. */
 export type QueryUserByNodeIdArgs = {
   nodeId: Scalars['ID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryUserCustomAnimeListArgs = {
+  after?: Maybe<Scalars['Cursor']>;
+  before?: Maybe<Scalars['Cursor']>;
+  filter?: Maybe<CustomAnimeListFilter>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+  listId?: Maybe<Scalars['UUID']>;
+  offset?: Maybe<Scalars['Int']>;
 };
 
 
@@ -13591,6 +13678,7 @@ export type UserAnimeList = {
   __typename?: 'UserAnimeList';
   /** Reads a single `Anime` that is related to this `UserAnimeList`. */
   anime?: Maybe<Anime>;
+  animeIndex: Scalars['String'];
   /** Reads a single `AnimeList` that is related to this `UserAnimeList`. */
   animeList?: Maybe<AnimeList>;
 };
@@ -13602,6 +13690,8 @@ export type UserAnimeList = {
 export type UserAnimeListCondition = {
   /** Checks for equality with the object’s `animeId` field. */
   animeId?: Maybe<Scalars['UUID']>;
+  /** Checks for equality with the object’s `animeIndex` field. */
+  animeIndex?: Maybe<Scalars['String']>;
   /** Checks for equality with the object’s `animeListId` field. */
   animeListId?: Maybe<Scalars['UUID']>;
 };
@@ -13612,6 +13702,8 @@ export type UserAnimeListFilter = {
   and?: Maybe<Array<UserAnimeListFilter>>;
   /** Filter by the object’s `animeId` field. */
   animeId?: Maybe<UuidFilter>;
+  /** Filter by the object’s `animeIndex` field. */
+  animeIndex?: Maybe<StringFilter>;
   /** Filter by the object’s `animeListId` field. */
   animeListId?: Maybe<UuidFilter>;
   /** Negates the expression. */
@@ -13623,12 +13715,14 @@ export type UserAnimeListFilter = {
 /** An input for mutations affecting `UserAnimeList` */
 export type UserAnimeListInput = {
   animeId: Scalars['UUID'];
+  animeIndex?: Maybe<Scalars['String']>;
   animeListId: Scalars['UUID'];
 };
 
 /** Represents an update to a `UserAnimeList`. Fields that are set will be updated. */
 export type UserAnimeListPatch = {
   animeId?: Maybe<Scalars['UUID']>;
+  animeIndex?: Maybe<Scalars['String']>;
   animeListId?: Maybe<Scalars['UUID']>;
 };
 
@@ -13688,6 +13782,8 @@ export enum UserAnimeListsOrderBy {
   AnimeByAnimeIdTitleDesc = 'ANIME_BY_ANIME_ID__TITLE_DESC',
   AnimeIdAsc = 'ANIME_ID_ASC',
   AnimeIdDesc = 'ANIME_ID_DESC',
+  AnimeIndexAsc = 'ANIME_INDEX_ASC',
+  AnimeIndexDesc = 'ANIME_INDEX_DESC',
   AnimeListByAnimeListIdIdAsc = 'ANIME_LIST_BY_ANIME_LIST_ID__ID_ASC',
   AnimeListByAnimeListIdIdDesc = 'ANIME_LIST_BY_ANIME_LIST_ID__ID_DESC',
   AnimeListByAnimeListIdPrivacyAsc = 'ANIME_LIST_BY_ANIME_LIST_ID__PRIVACY_ASC',
@@ -14144,6 +14240,8 @@ export type AllAnimesTileFragmentFragment = { __typename?: 'AllAnimesTile', id?:
 
 export type AnimeListFragmentFragment = { __typename?: 'AnimeList', title: string, id: any };
 
+export type CustomAnimeListFragmentFragment = { __typename?: 'CustomAnimeList', id?: string | null | undefined, animeId?: any | null | undefined, averageWatcherRating?: any | null | undefined, imageUrl?: string | null | undefined, listName?: string | null | undefined, mediaType?: string | null | undefined, numberOfEpisodes?: number | null | undefined, title?: string | null | undefined, userEpisodesWatched?: number | null | undefined, userScore?: any | null | undefined, watchStatus?: WatchingStatusEnum | null | undefined, animeIndex?: string | null | undefined };
+
 export type UpdateWatchStatusMutationVariables = Exact<{
   watchStatus: WatchingStatusEnum;
   userId: Scalars['String'];
@@ -14187,8 +14285,9 @@ export type DeleteAnimeFromListMutationVariables = Exact<{
 export type DeleteAnimeFromListMutation = { __typename?: 'Mutation', deleteUserAnimeListByAnimeListIdAndAnimeId?: { __typename?: 'DeleteUserAnimeListPayload', clientMutationId?: string | null | undefined, deletedUserAnimeListNodeId?: string | null | undefined, query?: { __typename?: 'Query', allAnimesTiles?: { __typename?: 'AllAnimesTilesConnection', nodes: Array<{ __typename?: 'AllAnimesTile', id?: any | null | undefined, title?: string | null | undefined, url?: string | null | undefined, numberOfEpisodes?: number | null | undefined, averageWatcherRating?: any | null | undefined, userLiked?: boolean | null | undefined, userRating?: any | null | undefined, userWatchStatus?: WatchingStatusEnum | null | undefined, userEpisodeCount?: any | null | undefined, startBroadcastDatetime?: any | null | undefined, airingStatusType?: string | null | undefined } | null | undefined> } | null | undefined } | null | undefined } | null | undefined };
 
 export type AddAnimeToListMutationVariables = Exact<{
-  animeId?: Maybe<Scalars['UUID']>;
-  animeListId?: Maybe<Scalars['UUID']>;
+  inputAnimeId: Scalars['UUID'];
+  inputAnimeListId: Scalars['UUID'];
+  inputAnimeIndex: Scalars['String'];
 }>;
 
 
@@ -14235,6 +14334,15 @@ export type CreateNewListAddAnimeMutationVariables = Exact<{
 
 export type CreateNewListAddAnimeMutation = { __typename?: 'Mutation', createNewListAddAnime?: { __typename?: 'CreateNewListAddAnimePayload', clientMutationId?: string | null | undefined, user?: { __typename?: 'User', animeLists: { __typename?: 'AnimeListsConnection', nodes: Array<{ __typename?: 'AnimeList', title: string, id: any } | null | undefined> } } | null | undefined } | null | undefined };
 
+export type UpdateListIndexMutationVariables = Exact<{
+  animeId: Scalars['UUID'];
+  animeListId: Scalars['UUID'];
+  animeIndex: Scalars['String'];
+}>;
+
+
+export type UpdateListIndexMutation = { __typename?: 'Mutation', updateUserAnimeListByAnimeListIdAndAnimeId?: { __typename?: 'UpdateUserAnimeListPayload', clientMutationId?: string | null | undefined, query?: { __typename?: 'Query', userCustomAnimeList?: { __typename?: 'CustomAnimeListsConnection', nodes: Array<{ __typename?: 'CustomAnimeList', id?: string | null | undefined, animeId?: any | null | undefined, averageWatcherRating?: any | null | undefined, imageUrl?: string | null | undefined, listName?: string | null | undefined, mediaType?: string | null | undefined, numberOfEpisodes?: number | null | undefined, title?: string | null | undefined, userEpisodesWatched?: number | null | undefined, userScore?: any | null | undefined, watchStatus?: WatchingStatusEnum | null | undefined, animeIndex?: string | null | undefined } | null | undefined> } | null | undefined } | null | undefined } | null | undefined };
+
 export type WeeklyAnimesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -14267,6 +14375,20 @@ export type HighestRatedAnimesQueryVariables = Exact<{
 
 
 export type HighestRatedAnimesQuery = { __typename?: 'Query', allAnimesTiles?: { __typename?: 'AllAnimesTilesConnection', nodes: Array<{ __typename?: 'AllAnimesTile', id?: any | null | undefined, title?: string | null | undefined, url?: string | null | undefined, numberOfEpisodes?: number | null | undefined, averageWatcherRating?: any | null | undefined, userLiked?: boolean | null | undefined, userRating?: any | null | undefined, userWatchStatus?: WatchingStatusEnum | null | undefined, userEpisodeCount?: any | null | undefined, startBroadcastDatetime?: any | null | undefined, airingStatusType?: string | null | undefined } | null | undefined> } | null | undefined };
+
+export type UserCustomAnimeListQueryVariables = Exact<{
+  listId: Scalars['UUID'];
+}>;
+
+
+export type UserCustomAnimeListQuery = { __typename?: 'Query', userCustomAnimeList?: { __typename?: 'CustomAnimeListsConnection', nodes: Array<{ __typename?: 'CustomAnimeList', id?: string | null | undefined, animeId?: any | null | undefined, averageWatcherRating?: any | null | undefined, imageUrl?: string | null | undefined, listName?: string | null | undefined, mediaType?: string | null | undefined, numberOfEpisodes?: number | null | undefined, title?: string | null | undefined, userEpisodesWatched?: number | null | undefined, userScore?: any | null | undefined, watchStatus?: WatchingStatusEnum | null | undefined, animeIndex?: string | null | undefined } | null | undefined> } | null | undefined };
+
+export type GetLastItemInCustomListQueryVariables = Exact<{
+  animeListId: Scalars['UUID'];
+}>;
+
+
+export type GetLastItemInCustomListQuery = { __typename?: 'Query', userAnimeLists?: { __typename?: 'UserAnimeListsConnection', nodes: Array<{ __typename?: 'UserAnimeList', animeIndex: string } | null | undefined> } | null | undefined };
 
 export type WatchingQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -14306,6 +14428,22 @@ export const AnimeListFragmentFragmentDoc = gql`
     fragment AnimeListFragment on AnimeList {
   title
   id
+}
+    `;
+export const CustomAnimeListFragmentFragmentDoc = gql`
+    fragment CustomAnimeListFragment on CustomAnimeList {
+  id
+  animeId
+  averageWatcherRating
+  imageUrl
+  listName
+  mediaType
+  numberOfEpisodes
+  title
+  userEpisodesWatched
+  userScore
+  watchStatus
+  animeIndex
 }
     `;
 export const UpdateWatchStatusDocument = gql`
@@ -14391,13 +14529,13 @@ export function useDeleteAnimeFromListMutation() {
   return Urql.useMutation<DeleteAnimeFromListMutation, DeleteAnimeFromListMutationVariables>(DeleteAnimeFromListDocument);
 };
 export const AddAnimeToListDocument = gql`
-    mutation AddAnimeToList($animeId: UUID, $animeListId: UUID) {
+    mutation AddAnimeToList($inputAnimeId: UUID!, $inputAnimeListId: UUID!, $inputAnimeIndex: String!) {
   insertAnimeToUserList(
-    input: {animeId: $animeId, animeListId: $animeListId, clientMutationId: "AnimeAddedToList"}
+    input: {clientMutationId: "AnimeAddedToList", inputAnimeId: $inputAnimeId, inputAnimeListId: $inputAnimeListId, inputAnimeIndex: $inputAnimeIndex}
   ) {
     clientMutationId
     query {
-      allAnimesTiles(condition: {id: $animeId}) {
+      allAnimesTiles(condition: {id: $inputAnimeId}) {
         nodes {
           ...AllAnimesTileFragment
         }
@@ -14489,6 +14627,26 @@ export const CreateNewListAddAnimeDocument = gql`
 export function useCreateNewListAddAnimeMutation() {
   return Urql.useMutation<CreateNewListAddAnimeMutation, CreateNewListAddAnimeMutationVariables>(CreateNewListAddAnimeDocument);
 };
+export const UpdateListIndexDocument = gql`
+    mutation UpdateListIndex($animeId: UUID!, $animeListId: UUID!, $animeIndex: String!) {
+  updateUserAnimeListByAnimeListIdAndAnimeId(
+    input: {patch: {animeIndex: $animeIndex}, animeListId: $animeListId, animeId: $animeId, clientMutationId: "UpdatedUserCustomAnimeList"}
+  ) {
+    query {
+      userCustomAnimeList {
+        nodes {
+          ...CustomAnimeListFragment
+        }
+      }
+    }
+    clientMutationId
+  }
+}
+    ${CustomAnimeListFragmentFragmentDoc}`;
+
+export function useUpdateListIndexMutation() {
+  return Urql.useMutation<UpdateListIndexMutation, UpdateListIndexMutationVariables>(UpdateListIndexDocument);
+};
 export const WeeklyAnimesDocument = gql`
     query WeeklyAnimes {
   allAnimesTiles(filter: {airingStatusType: {equalTo: "Currently Airing"}}) {
@@ -14561,6 +14719,36 @@ export const HighestRatedAnimesDocument = gql`
 
 export function useHighestRatedAnimesQuery(options: Omit<Urql.UseQueryArgs<HighestRatedAnimesQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<HighestRatedAnimesQuery>({ query: HighestRatedAnimesDocument, ...options });
+};
+export const UserCustomAnimeListDocument = gql`
+    query UserCustomAnimeList($listId: UUID!) {
+  userCustomAnimeList(listId: $listId) {
+    nodes {
+      ...CustomAnimeListFragment
+    }
+  }
+}
+    ${CustomAnimeListFragmentFragmentDoc}`;
+
+export function useUserCustomAnimeListQuery(options: Omit<Urql.UseQueryArgs<UserCustomAnimeListQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<UserCustomAnimeListQuery>({ query: UserCustomAnimeListDocument, ...options });
+};
+export const GetLastItemInCustomListDocument = gql`
+    query GetLastItemInCustomList($animeListId: UUID!) {
+  userAnimeLists(
+    first: 1
+    orderBy: ANIME_INDEX_DESC
+    condition: {animeListId: $animeListId}
+  ) {
+    nodes {
+      animeIndex
+    }
+  }
+}
+    `;
+
+export function useGetLastItemInCustomListQuery(options: Omit<Urql.UseQueryArgs<GetLastItemInCustomListQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<GetLastItemInCustomListQuery>({ query: GetLastItemInCustomListDocument, ...options });
 };
 export const WatchingDocument = gql`
     query Watching {
@@ -21876,6 +22064,196 @@ export default {
                 }
               }
             ]
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "CustomAnimeList",
+        "fields": [
+          {
+            "name": "animeId",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "animeIndex",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "averageWatcherRating",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "id",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "imageUrl",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "listName",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "mediaType",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "numberOfEpisodes",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "title",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "userEpisodesWatched",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "userScore",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "watchStatus",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "CustomAnimeListsConnection",
+        "fields": [
+          {
+            "name": "edges",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "LIST",
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "CustomAnimeListsEdge",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "nodes",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "LIST",
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "CustomAnimeList",
+                  "ofType": null
+                }
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "pageInfo",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "PageInfo",
+                "ofType": null
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "totalCount",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "CustomAnimeListsEdge",
+        "fields": [
+          {
+            "name": "cursor",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "node",
+            "type": {
+              "kind": "OBJECT",
+              "name": "CustomAnimeList",
+              "ofType": null
+            },
+            "args": []
           }
         ],
         "interfaces": []
@@ -35880,6 +36258,65 @@ export default {
             ]
           },
           {
+            "name": "userCustomAnimeList",
+            "type": {
+              "kind": "OBJECT",
+              "name": "CustomAnimeListsConnection",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "after",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "before",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "filter",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "first",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "last",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "listId",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "offset",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              }
+            ]
+          },
+          {
             "name": "userWatchStatus",
             "type": {
               "kind": "OBJECT",
@@ -42040,6 +42477,17 @@ export default {
               "kind": "OBJECT",
               "name": "Anime",
               "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "animeIndex",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
             },
             "args": []
           },

@@ -28,17 +28,22 @@ mutation DeleteAnimeFromList($animeId: UUID!, $animeListId: UUID!) {
   }
 }
 
-mutation AddAnimeToList($animeId: UUID, $animeListId: UUID) {
+mutation AddAnimeToList(
+  $inputAnimeId: UUID!
+  $inputAnimeListId: UUID!
+  $inputAnimeIndex: String!
+) {
   insertAnimeToUserList(
     input: {
-      animeId: $animeId
-      animeListId: $animeListId
       clientMutationId: "AnimeAddedToList"
+      inputAnimeId: $inputAnimeId
+      inputAnimeListId: $inputAnimeListId
+      inputAnimeIndex: $inputAnimeIndex
     }
   ) {
     clientMutationId
     query {
-      allAnimesTiles(condition: { id: $animeId }) {
+      allAnimesTiles(condition: { id: $inputAnimeId }) {
         nodes {
           ...AllAnimesTileFragment
         }

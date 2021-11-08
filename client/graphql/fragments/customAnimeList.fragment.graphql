@@ -1,0 +1,14 @@
+fragment CustomAnimeListFragment on CustomAnimeList {
+  id
+  animeId
+  averageWatcherRating
+  imageUrl
+  listName
+  mediaType
+  numberOfEpisodes
+  title
+  userEpisodesWatched
+  userScore
+  watchStatus
+  animeIndex
+}

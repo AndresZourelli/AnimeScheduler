@@ -3,7 +3,7 @@
     "browser": true,
     "es2021": true
   },
-  "extends": ["plugin:react/recommended", "next", "prettier"],
+  "extends": ["next", "prettier"],
   "parserOptions": {
     "ecmaFeatures": {
       "jsx": true
@@ -11,12 +11,12 @@
     "ecmaVersion": 12,
     "sourceType": "module"
   },
-  "plugins": ["react"],
+  "plugins": [],
   "rules": {
     "react/self-closing-comp": "error",
     "no-restricted-imports": "warn",
     "no-restricted-modules": "warn",
-    "react/no-children-prop":"off"
+    "react/no-children-prop": "off"
   },
   "settings": {
     "react": { "version": "latest" },

@@ -1,0 +1,19 @@
+query UserCustomAnimeList($listId: UUID!) {
+  userCustomAnimeList(listId: $listId) {
+    nodes {
+      ...CustomAnimeListFragment
+    }
+  }
+}
+
+query GetLastItemInCustomList($animeListId: UUID!) {
+  userAnimeLists(
+    first: 1
+    orderBy: ANIME_INDEX_DESC
+    condition: { animeListId: $animeListId }
+  ) {
+    nodes {
+      animeIndex
+    }
+  }
+}

@@ -1,3 +1,5 @@
+import useAnimeList from "@/components/Hooks/useAnimeList";
+import CustomList from "@/components/MyAnimePage/CustomList";
 import MyAnimePageList from "@/components/MyAnimePage/MyAnimePageList";
 import WeeklyGrid from "@/components/MyAnimePage/WeeklyGrid";
 import { useWatchingQuery, WatchingStatusEnum } from "@/graphql";
@@ -11,13 +13,14 @@ import {
   TabPanel,
   TabPanels,
   Tabs,
+  Divider,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 
 const MyAnimes = (props) => {
   const { user } = useAuth();
   const router = useRouter();
-
+  const { userAnimeLists } = useAnimeList({});
   return (
     <Box>
       <Tabs orientation="vertical" isLazy>
@@ -26,7 +29,13 @@ const MyAnimes = (props) => {
           <Tab>Watching</Tab>
           <Tab>Planning to watch</Tab>
           <Tab>Completed</Tab>
-          <Tab>Custom Lists</Tab>
+          <Box fontSize="md" textAlign="center" px="2" py="3">
+            Custom Lists
+          </Box>
+          <Divider ml={2} />
+          {userAnimeLists.map((list) => (
+            <Tab key={list.id}>{list.title}</Tab>
+          ))}
         </TabList>
         <TabPanels>
           <TabPanel>
@@ -58,11 +67,14 @@ const MyAnimes = (props) => {
               <MyAnimePageList watchingStatus={WatchingStatusEnum.Completed} />
             </Box>
           </TabPanel>
-          <TabPanel>
-            <Box m={5}>
-              <Heading>Custom</Heading>
-            </Box>
-          </TabPanel>
+
+          {userAnimeLists.map((list) => (
+            <TabPanel key={list.id}>
+              <Box m={5}>
+                <CustomList listId={list.id} listTitle={list.title} />
+              </Box>
+            </TabPanel>
+          ))}
         </TabPanels>
       </Tabs>
     </Box>
