@@ -12,12 +12,11 @@ import {
   WatchingStatusEnum,
   useUpdateUserAnimeScoreMutation,
   useUpdateUserEpisodeCountMutation,
-  useGetLastItemInCustomListQuery,
   GetLastItemInCustomListDocument,
 } from "@/graphql";
 import { useAuth, ExtendedUser } from "@/lib/Auth/FirebaseAuth";
 import { useToast } from "@chakra-ui/react";
-import { useEffect, useState, MouseEvent } from "react";
+import { useEffect, useState } from "react";
 import { useClient, UseMutationState } from "urql";
 import { Lexico } from "@/utilities/lexicoHelperFunctions";
 
@@ -27,11 +26,11 @@ interface UserAnimeListInterface {
   title: string;
 }
 interface UserAnimeListHook {
-  addAnimeToList: (e: MouseEvent, animeId: string) => void;
-  removeAnimeFromList: (e: MouseEvent, animeId: string) => void;
-  AddToNewList: (e: MouseEvent, animeId: string) => void;
+  addAnimeToList: (e: React.MouseEvent, animeId: string) => void;
+  removeAnimeFromList: (e: React.MouseEvent, animeId: string) => void;
+  AddToNewList: (e: React.MouseEvent, animeId: string) => void;
   AddToExistingList: (
-    e: MouseEvent,
+    e: React.MouseEvent,
     animeId: string,
     animeListId: string
   ) => void;
@@ -55,6 +54,27 @@ interface UserAnimeListHook {
   updateWatchStatus: (animeId: String, watchStatus: WatchingStatusEnum) => void;
   updateAnimeScore: (animeId: string, userScore: number) => void;
   updateEpisodeCount: (animeId: string, userEpisodesWatched: number) => void;
+  onClickUserEpisodeCount: (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    numOfEpisodes: number,
+    id: string
+  ) => void;
+  onChangeAnimeWatchStatus: (
+    event: React.ChangeEvent<HTMLSelectElement>,
+    id: string
+  ) => void;
+  onChangeUserAnimeRating: (
+    event: React.ChangeEvent<HTMLSelectElement>,
+    id: string
+  ) => void;
+  userEpisodeCount: number;
+  userAnimeWatchStatus: WatchingStatusEnum;
+  userAnimeRating: number;
+  setUserEpisodeCount: React.Dispatch<React.SetStateAction<number>>;
+  setUserAnimeWatchStatus: React.Dispatch<
+    React.SetStateAction<WatchingStatusEnum>
+  >;
+  setUserAnimeRating: React.Dispatch<React.SetStateAction<number>>;
 }
 
 enum notificationType {
@@ -85,6 +105,11 @@ const useAnimeList = ({
   const [notification, setNotification] = useState<notificationType>(
     notificationType.none
   );
+  const [userEpisodeCount, setUserEpisodeCount] = useState<number>(0);
+  const [userAnimeWatchStatus, setUserAnimeWatchStatus] = useState(
+    WatchingStatusEnum.NotWatching
+  );
+  const [userAnimeRating, setUserAnimeRating] = useState(-1);
 
   const [animeToExisitingList, addAnimeToExisitingList] =
     useAddAnimeToUserAnimeListMutation();
@@ -100,9 +125,6 @@ const useAnimeList = ({
     useUpdateUserAnimeScoreMutation();
   const [userEpisodeCountResult, mutationUserEpisodeCount] =
     useUpdateUserEpisodeCountMutation();
-  const [lastItemInList, queryLastItemInList] = useGetLastItemInCustomListQuery(
-    { variables: { animeListId: null } }
-  );
 
   const [newListResult, createNewList] = useCreateNewListAddAnimeMutation();
 
@@ -129,8 +151,56 @@ const useAnimeList = ({
     });
   };
 
+  const onClickUserEpisodeCount = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    numOfEpisodes: number,
+    id: string
+  ) => {
+    e.stopPropagation();
+    const target = e.currentTarget;
+    let newCount = 0;
+    if (target.name === "episodeIncrease") {
+      let updatedCount = Number(userEpisodeCount) + 1;
+      if (numOfEpisodes && updatedCount >= numOfEpisodes) {
+        newCount = numOfEpisodes;
+      } else {
+        newCount = updatedCount;
+      }
+    } else if (target.name === "episodeDecrease") {
+      let updatedCount = Number(userEpisodeCount) - 1;
+      if (updatedCount <= 0 || !updatedCount) {
+        newCount = 0;
+      } else {
+        newCount = updatedCount;
+      }
+    }
+    setUserEpisodeCount(newCount);
+    updateEpisodeCount(id, newCount);
+  };
+
+  const onChangeAnimeWatchStatus = (
+    event: React.ChangeEvent<HTMLSelectElement>,
+    id: string
+  ) => {
+    if (event.currentTarget.value != userAnimeWatchStatus) {
+      setUserAnimeWatchStatus(event.currentTarget.value as WatchingStatusEnum);
+      updateWatchStatus(id, event.currentTarget.value as WatchingStatusEnum);
+    }
+  };
+
+  const onChangeUserAnimeRating = (
+    event: React.ChangeEvent<HTMLSelectElement>,
+    id: string
+  ) => {
+    const rawUserScore = Number(event.currentTarget.value);
+    if (rawUserScore != userAnimeRating) {
+      setUserAnimeRating(rawUserScore);
+      updateAnimeScore(id, rawUserScore);
+    }
+  };
+
   const AddToExistingList = (
-    e: MouseEvent,
+    e: React.MouseEvent,
     animeId: String,
     animeListId: String
   ) => {
@@ -149,7 +219,7 @@ const useAnimeList = ({
     });
   };
 
-  const AddToNewList = (e: MouseEvent, animeId: String) => {
+  const AddToNewList = (e: React.MouseEvent, animeId: String) => {
     e.stopPropagation();
 
     createNewList({ animeidinput: animeId }).then((result) => {
@@ -162,7 +232,7 @@ const useAnimeList = ({
     });
   };
 
-  const addAnimeToList = (e: MouseEvent, animeId: String) => {
+  const addAnimeToList = (e: React.MouseEvent, animeId: String) => {
     e.stopPropagation();
     const animeListId = userAnimeLists.find(
       (item) => item.title === DEFAULT_LIST
@@ -196,7 +266,7 @@ const useAnimeList = ({
       });
   };
 
-  const removeAnimeFromListCall = (e: MouseEvent, animeId: String) => {
+  const removeAnimeFromListCall = (e: React.MouseEvent, animeId: String) => {
     e.stopPropagation();
 
     const animeListId = userAnimeLists.find(
@@ -270,6 +340,15 @@ const useAnimeList = ({
     userAnimeLists,
     updateEpisodeCount,
     updateAnimeScore,
+    onClickUserEpisodeCount,
+    onChangeUserAnimeRating,
+    onChangeAnimeWatchStatus,
+    userEpisodeCount,
+    userAnimeWatchStatus,
+    userAnimeRating,
+    setUserEpisodeCount,
+    setUserAnimeWatchStatus,
+    setUserAnimeRating,
   };
 };
 

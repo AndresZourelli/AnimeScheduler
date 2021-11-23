@@ -100,12 +100,6 @@ const AddToListRow = ({ animeId }: AddToListRowInterface) => {
   const onSelectListIdChange = (e) => {
     setSelectListId(e.target.value);
   };
-  const submitListId = () => {
-    runUpdateToAnimeList({
-      animeId: animeId,
-      animeListId: selectListId,
-    });
-  };
 
   return (
     <Formik

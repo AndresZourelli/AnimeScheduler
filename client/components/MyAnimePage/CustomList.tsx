@@ -17,6 +17,10 @@ import {
   TableCaption,
   Skeleton,
   AspectRatio,
+  Select,
+  Text,
+  IconButton,
+  Tooltip,
 } from "@chakra-ui/react";
 import {
   useUserCustomAnimeListQuery,
@@ -33,6 +37,8 @@ import {
 } from "react-beautiful-dnd";
 import { reorder } from "@/utilities/helperFunctions";
 import { Lexico } from "@/utilities/lexicoHelperFunctions";
+import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
+import CustomListRow from "./CustomListRow";
 
 interface CustomListInterface {
   listId: string;
@@ -55,14 +61,11 @@ interface AnimeItemInterface {
 }
 
 const CustomList = ({ listId, listTitle }: CustomListInterface) => {
-  const [imageLoaded, setImageLoaded] = useState(false);
   const [animeItems, setAnimeItems] = useState<AnimeItemInterface[]>([]);
   const [userCustomListResult, queryUserCustomList] =
     useUserCustomAnimeListQuery({ variables: { listId: listId } });
   const [, mutationUpdateCustomListIndex] = useUpdateListIndexMutation();
-  const imagedLoading = () => {
-    setImageLoaded(true);
-  };
+
   const onDragEnd = (result: DropResult) => {
     if (!result.destination) {
       return;
@@ -93,7 +96,6 @@ const CustomList = ({ listId, listTitle }: CustomListInterface) => {
         );
       }
     }
-
     mutationUpdateCustomListIndex({
       animeId: animeItems[result.source.index].animeId,
       animeListId: listId,
@@ -143,34 +145,11 @@ const CustomList = ({ listId, listTitle }: CustomListInterface) => {
                         index={index}
                       >
                         {(drag_provided, drag_snapshot) => (
-                          <Tr
-                            key={anime.id}
-                            ref={drag_provided.innerRef}
-                            {...drag_provided.dragHandleProps}
-                            {...drag_provided.draggableProps}
-                          >
-                            <Td>{index + 1}</Td>
-                            <Td w="150px">
-                              <Skeleton isLoaded={imageLoaded} maxW="50px">
-                                <AspectRatio ratio={2 / 3} maxW="50px">
-                                  <NextImage
-                                    layout="fill"
-                                    src={anime.imageUrl}
-                                    onLoadingComplete={imagedLoading}
-                                  />
-                                </AspectRatio>
-                              </Skeleton>
-                            </Td>
-                            <Td w="250px">{anime.title}</Td>
-                            <Td w="250px">{anime.mediaType}</Td>
-                            <Td w="250px">
-                              {anime.userEpisodesWatched}/
-                              {anime.numberOfEpisodes ?? "???"}
-                            </Td>
-                            <Td w="250px">{anime.watchStatus}</Td>
-                            <Td w="250px">{anime.userScore}</Td>
-                            <Td w="250px">{anime.averageWatcherRating}</Td>
-                          </Tr>
+                          <CustomListRow
+                            dragProvided={drag_provided}
+                            {...anime}
+                            index={index}
+                          />
                         )}
                       </Draggable>
                     ))}

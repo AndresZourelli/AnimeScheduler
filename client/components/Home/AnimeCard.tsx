@@ -65,53 +65,13 @@ const AnimeCard = ({
     updateWatchStatus,
     updateAnimeScore,
     updateEpisodeCount,
+    onChangeAnimeWatchStatus,
+    onChangeUserAnimeRating,
+    onClickUserEpisodeCount,
   } = useAnimeList({ inputAnimeId: id, animeTitle: title });
   const { days, hours, minutes } = useCountDown({
     endInputDate: animeInfo?.startBroadcastDatetime,
   });
-  const onClickUserEpisodeCount = (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
-    e.stopPropagation();
-    const target = e.currentTarget;
-    let newCount = 0;
-    if (target.name === "episodeIncrease") {
-      let updatedCount = Number(userEpisodeCount) + 1;
-      if (numOfEpisodes && updatedCount >= numOfEpisodes) {
-        newCount = numOfEpisodes;
-      } else {
-        newCount = updatedCount;
-      }
-    } else if (target.name === "episodeDecrease") {
-      let updatedCount = Number(userEpisodeCount) - 1;
-      if (updatedCount <= 0 || !updatedCount) {
-        newCount = 0;
-      } else {
-        newCount = updatedCount;
-      }
-    }
-    setUserEpisodeCount(newCount);
-    updateEpisodeCount(id, newCount);
-  };
-
-  const onChangeAnimeWatchStatus = (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    if (event.currentTarget.value != userAnimeWatchStatus) {
-      setUserAnimeWatchStatus(event.currentTarget.value as WatchingStatusEnum);
-      updateWatchStatus(id, event.currentTarget.value as WatchingStatusEnum);
-    }
-  };
-
-  const onChangeUserAnimeRating = (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    const rawUserScore = Number(event.currentTarget.value);
-    if (rawUserScore != userAnimeRating) {
-      setUserAnimeRating(rawUserScore);
-      updateAnimeScore(id, rawUserScore);
-    }
-  };
 
   const redirectToAnime = (e) => {
     router.push(`/anime/${id}`);
@@ -175,7 +135,7 @@ const AnimeCard = ({
                     size="sm"
                     variant="unstyled"
                     textAlign="center"
-                    onChange={onChangeAnimeWatchStatus}
+                    onChange={(e) => onChangeAnimeWatchStatus(e, id)}
                     value={userAnimeWatchStatus}
                   >
                     <option value={WatchingStatusEnum.NotWatching}>
@@ -205,7 +165,7 @@ const AnimeCard = ({
                     variant="unstyled"
                     w="full"
                     textAlign="center"
-                    onChange={onChangeUserAnimeRating}
+                    onChange={(e) => onChangeUserAnimeRating(e, id)}
                     value={userAnimeRating}
                     visibility={
                       userAnimeWatchStatus === WatchingStatusEnum.NotWatching ||
@@ -273,7 +233,9 @@ const AnimeCard = ({
                     icon={<AiOutlineMinus />}
                     size="xs"
                     name="episodeDecrease"
-                    onClick={onClickUserEpisodeCount}
+                    onClick={(e) =>
+                      onClickUserEpisodeCount(e, numOfEpisodes, id)
+                    }
                   />
                 </Tooltip>
                 <Tooltip label="Number of episodes you have watched">
@@ -292,7 +254,9 @@ const AnimeCard = ({
                     icon={<AiOutlinePlus />}
                     size="xs"
                     name="episodeIncrease"
-                    onClick={onClickUserEpisodeCount}
+                    onClick={(e) =>
+                      onClickUserEpisodeCount(e, numOfEpisodes, id)
+                    }
                   />
                 </Tooltip>
               </Box>
@@ -308,11 +272,7 @@ const AnimeCard = ({
               bottom="0"
               right="0"
             >
-              <TagLeftIcon
-                as={AiFillHeart}
-                mr="0"
-                color={"red.300"}
-              ></TagLeftIcon>
+              <TagLeftIcon as={AiFillHeart} mr="0" color={"red.300"} />
             </Tag>
           ) : null}
           <Flex
