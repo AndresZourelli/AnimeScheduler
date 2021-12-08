@@ -2,9 +2,23 @@ import { HStack, Box, Heading } from "@chakra-ui/react";
 import AnimeCard from "@/components/Home/AnimeCard";
 import { useRef } from "react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
-import { AllAnimesTile } from "@/graphql";
+import { AiringStatusTypes, Anime, WatchingStatusEnum } from "@/graphql";
+
+interface IAnime {
+  id: any;
+  title: string;
+  coverImage?: string;
+  numberOfEpisodes?: number;
+  averageWatcherRating?: any;
+  userLiked?: boolean;
+  userRating?: any;
+  userWatchStatus?: WatchingStatusEnum;
+  userEpisodeCount?: any;
+  startBroadcastDatetime?: any;
+  airingStatusType?: AiringStatusTypes;
+}
 interface HorizontalScrollInterface {
-  animes: AllAnimesTile[];
+  animes: IAnime[];
 }
 
 const HorizontalScroll = ({ animes }: HorizontalScrollInterface) => {
@@ -29,7 +43,7 @@ const HorizontalScroll = ({ animes }: HorizontalScrollInterface) => {
       return (
         <AnimeCard
           title={anime.title}
-          url={anime.url}
+          url={anime.coverImage}
           score={anime.averageWatcherRating}
           id={anime.id}
           likes={anime.userLiked}

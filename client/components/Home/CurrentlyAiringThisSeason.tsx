@@ -1,5 +1,5 @@
 import HorizontalScroll from "@/components/Home/HorizontalScroll";
-import { useCurrentlyAiringQuery } from "@/graphql";
+import { useCurrentlyAiringQuery, Season } from "@/graphql";
 import { Box, Heading } from "@chakra-ui/react";
 
 const CurrentlyAiringThisSeason = () => {
@@ -18,16 +18,24 @@ const CurrentlyAiringThisSeason = () => {
     12: "Fall",
   };
 
+  const seasonEnum = {
+    Winter: Season.Winter,
+    Fall: Season.Fall,
+    Spring: Season.Spring,
+    Summer: Season.Summer,
+    Unknown: Season.Unknown,
+  };
+
   const date = new Date();
   const month = date.getMonth() + 1;
   const year = date.getFullYear();
 
   const currentSeason = `${seasons[month]} ${year}`;
-
   const [currentAiringResult, queryCurrentAiring] = useCurrentlyAiringQuery({
     variables: {
       limit: 30,
-      currentSeason,
+      currentSeason: seasonEnum[seasons[month]],
+      seasonYear: year,
     },
   });
   return (
@@ -35,9 +43,7 @@ const CurrentlyAiringThisSeason = () => {
       <Heading mt="25px" ml="50px">
         Currently Airing {currentSeason}
       </Heading>
-      <HorizontalScroll
-        animes={currentAiringResult?.data?.allAnimesTiles?.nodes}
-      />
+      <HorizontalScroll animes={currentAiringResult?.data?.animes?.nodes} />
     </Box>
   );
 };

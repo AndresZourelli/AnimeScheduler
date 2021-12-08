@@ -1,11 +1,12 @@
-query Watching {
+query UserAnimeLists {
   allUserAnimes {
     nodes {
       id
       listId
       listName
       title
-      url
+      coverImage
+      privacy
     }
   }
 }
@@ -21,31 +22,6 @@ query GetUserAnimeLists($watchStatus: WatchingStatusEnum) {
         url
         watchStatus
         id
-      }
-    }
-  }
-}
-
-query UserWatchingLists($watchStatus: WatchingStatusEnum) {
-  animeLists {
-    nodes {
-      id
-      title
-      userAnimeLists {
-        nodes {
-          anime {
-            id
-            title
-            profileImage {
-              url
-            }
-            userWatchStatuses(condition: { watchStatus: $watchStatus }) {
-              nodes {
-                watchStatus
-              }
-            }
-          }
-        }
       }
     }
   }

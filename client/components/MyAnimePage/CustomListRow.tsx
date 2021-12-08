@@ -24,8 +24,9 @@ import {
 } from "@chakra-ui/react";
 import {
   useUserCustomAnimeListQuery,
-  WatchingStatusEnum,
   useUpdateListIndexMutation,
+  CustomAnimeList,
+  WatchStatusTypes,
 } from "@/graphql";
 import NextImage from "next/image";
 import { useState, useEffect } from "react";
@@ -40,18 +41,7 @@ import { Lexico } from "@/utilities/lexicoHelperFunctions";
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 import useAnimeList from "../Hooks/useAnimeList";
 
-interface AnimeItemInterface {
-  id?: string;
-  animeId?: any;
-  imageUrl?: string;
-  listName?: string;
-  mediaType?: string;
-  numberOfEpisodes?: number;
-  title?: string;
-  userEpisodesWatched?: number;
-  userScore?: any;
-  watchStatus?: WatchingStatusEnum;
-  averageWatcherRating?: any;
+interface AnimeItemInterface extends CustomAnimeList {
   animeIndex?: string;
   index?: number;
   dragProvided?: any;
@@ -171,13 +161,13 @@ const CustomListRow = ({
           value={userAnimeWatchStatus}
           onChange={(e) => onChangeAnimeWatchStatus(e, animeId)}
         >
-          <option value={WatchingStatusEnum.NotWatching}>Not Watched</option>
-          <option value={WatchingStatusEnum.PlanToWatch}>Plan to Watch</option>
-          <option value={WatchingStatusEnum.Watching}>Watching</option>
-          <option value={WatchingStatusEnum.Paused}>Paused</option>
-          <option value={WatchingStatusEnum.Completed}>Completed</option>
-          <option value={WatchingStatusEnum.Dropped}>Dropped</option>
-          <option value={WatchingStatusEnum.Rewatching}>Rewatching</option>
+          <option value={WatchStatusTypes.NotWatched}>Not Watched</option>
+          <option value={WatchStatusTypes.PlanToWatch}>Plan to Watch</option>
+          <option value={WatchStatusTypes.Watching}>Watching</option>
+          <option value={WatchStatusTypes.Paused}>Paused</option>
+          <option value={WatchStatusTypes.Completed}>Completed</option>
+          <option value={WatchStatusTypes.Dropped}>Dropped</option>
+          <option value={WatchStatusTypes.Rewatching}>Rewatching</option>
         </Select>
       </Td>
       <Td w="250px">
@@ -189,8 +179,8 @@ const CustomListRow = ({
           value={userAnimeRating}
           onChange={(e) => onChangeUserAnimeRating(e, animeId)}
           disabled={
-            watchStatus === WatchingStatusEnum.NotWatching ||
-            watchStatus === WatchingStatusEnum.PlanToWatch
+            watchStatus === WatchStatusTypes.NotWatched ||
+            watchStatus === WatchStatusTypes.PlanToWatch
           }
         >
           <option value={-1}>Rate me</option>

@@ -2,10 +2,12 @@
 anime*.json
 pg-data
 mongodb_data_container
-*.json
+
 .env
 *.pyc
 *log.txt
+*dump.sql
+*dumpall.sql
 
 .yarn/*
 !.yarn/cache

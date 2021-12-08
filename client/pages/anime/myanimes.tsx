@@ -2,7 +2,7 @@ import useAnimeList from "@/components/Hooks/useAnimeList";
 import CustomList from "@/components/MyAnimePage/CustomList";
 import MyAnimePageList from "@/components/MyAnimePage/MyAnimePageList";
 import WeeklyGrid from "@/components/MyAnimePage/WeeklyGrid";
-import { useWatchingQuery, WatchingStatusEnum } from "@/graphql";
+import { WatchingStatusEnum } from "@/graphql";
 import { useAuth } from "@/lib/Auth/FirebaseAuth";
 import { withAuthPrivate } from "@/lib/Auth/withAuth";
 import {

@@ -11,9 +11,7 @@ const PopularRow = () => {
       <Heading mt="25px" ml="50px">
         Popular Animes
       </Heading>
-      <HorizontalScroll
-        animes={highestRatedResult?.data?.allAnimesTiles?.nodes}
-      />
+      <HorizontalScroll animes={highestRatedResult?.data?.animes?.nodes} />
     </Box>
   );
 };

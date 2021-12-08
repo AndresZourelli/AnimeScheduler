@@ -24,8 +24,8 @@ import {
 } from "@chakra-ui/react";
 import {
   useUserCustomAnimeListQuery,
-  WatchingStatusEnum,
   useUpdateListIndexMutation,
+  CustomAnimeList,
 } from "@/graphql";
 import NextImage from "next/image";
 import { useState, useEffect } from "react";
@@ -45,23 +45,8 @@ interface CustomListInterface {
   listTitle: string;
 }
 
-interface AnimeItemInterface {
-  id?: string;
-  animeId?: any;
-  imageUrl?: string;
-  listName?: string;
-  mediaType?: string;
-  numberOfEpisodes?: number;
-  title?: string;
-  userEpisodesWatched?: number;
-  userScore?: any;
-  watchStatus?: WatchingStatusEnum;
-  averageWatcherRating?: any;
-  animeIndex?: string;
-}
-
 const CustomList = ({ listId, listTitle }: CustomListInterface) => {
-  const [animeItems, setAnimeItems] = useState<AnimeItemInterface[]>([]);
+  const [animeItems, setAnimeItems] = useState<CustomAnimeList[]>([]);
   const [userCustomListResult, queryUserCustomList] =
     useUserCustomAnimeListQuery({ variables: { listId: listId } });
   const [, mutationUpdateCustomListIndex] = useUpdateListIndexMutation();
@@ -70,7 +55,7 @@ const CustomList = ({ listId, listTitle }: CustomListInterface) => {
     if (!result.destination) {
       return;
     }
-    const newItems: AnimeItemInterface[] = reorder(
+    const newItems: CustomAnimeList[] = reorder(
       animeItems,
       result.source.index,
       result.destination.index
@@ -105,12 +90,13 @@ const CustomList = ({ listId, listTitle }: CustomListInterface) => {
   };
   useEffect(() => {
     if (!userCustomListResult.fetching && userCustomListResult.data) {
-      let tempList: AnimeItemInterface[] = [
+      let tempList: CustomAnimeList[] = [
         ...userCustomListResult.data.userCustomAnimeList.nodes,
       ];
       tempList.sort((a, b) =>
         Lexico.comparePositions(a.animeIndex, b.animeIndex)
       );
+      console.log(tempList);
       setAnimeItems(tempList);
     }
   }, [userCustomListResult.fetching, userCustomListResult.data]);

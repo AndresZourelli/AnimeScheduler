@@ -1,0 +1,13 @@
+fragment AnimeCardFragment on Anime {
+  id
+  title
+  coverImage
+  numberOfEpisodes
+  averageWatcherRating
+  userLiked
+  userRating
+  userWatchStatus
+  userEpisodeCount
+  startBroadcastDatetime
+  airingStatusType
+}

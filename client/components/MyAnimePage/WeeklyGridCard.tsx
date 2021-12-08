@@ -37,21 +37,28 @@ const tagColors = [
   "twitter",
   "telegram",
 ];
+import { Anime } from "@/graphql";
+
+interface AnimeExtended extends Anime {
+  formattedAirTime?: any;
+  genres?: string[];
+  studios?: string;
+}
 
 const WeeklyGridCard = ({
   title,
-  url,
+  coverImage,
   id,
-  formattedAirTime,
   description,
-  genres,
   mediaType,
   averageWatcherRating,
-  studios,
   numberOfEpisodes,
   startBroadcastDatetime,
-  likes,
-}) => {
+  userLiked,
+  formattedAirTime,
+  genres = [],
+  studios = "",
+}: AnimeExtended) => {
   const timer = null;
   // const timer = CountDownTimer({ endInputDate: startBroadcastDatetime });
   const {
@@ -91,8 +98,12 @@ const WeeklyGridCard = ({
                     borderRightRadius: "0px",
                   }}
                 >
-                  <ImageLoader image_url={url} alt={title} maxW="167px" />
-                  {likes ? (
+                  <ImageLoader
+                    image_url={coverImage}
+                    alt={title}
+                    maxW="167px"
+                  />
+                  {userLiked ? (
                     <PopupMenuButton
                       customList={userAnimeLists}
                       animeId={id}
@@ -156,9 +167,9 @@ const WeeklyGridCard = ({
                     <Center fontSize=".75rem" borderWidth="0px 0px 2px 0">
                       Episodes
                     </Center>
-                    <Center fontSize=".5rem" borderWidth="0px 2px 0px 0px">
-                      {studios}
-                    </Center>
+                    {/* <Center fontSize=".5rem" borderWidth="0px 2px 0px 0px">
+                      {studios ?? null}
+                    </Center> */}
                     <Center fontSize=".5rem" borderWidth="0px 2px 0px 0">
                       {mediaType}
                     </Center>
@@ -175,7 +186,7 @@ const WeeklyGridCard = ({
                   </Text>
                 </Box>
                 <Spacer />
-                <Flex
+                {/* <Flex
                   mt="auto"
                   wrap="wrap"
                   justifySelf="flex-end"
@@ -198,7 +209,7 @@ const WeeklyGridCard = ({
                       {item}
                     </Tag>
                   ))}
-                </Flex>
+                </Flex> */}
               </VStack>
             </Box>
             <Heading fontSize="lg" py="3">

@@ -1,9 +1,7 @@
 query WeeklyAnimes {
-  allAnimesTiles(
-    filter: { airingStatusType: { equalTo: "Currently Airing" } }
-  ) {
+  animes(filter: { airingStatusType: { equalTo: CURRENTLY_AIRING } }) {
     nodes {
-      ...AllAnimesTileFragment
+      ...AnimeCardFragment
     }
   }
 }

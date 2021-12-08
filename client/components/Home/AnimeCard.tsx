@@ -21,9 +21,21 @@ import {
   AiOutlinePlus,
   AiOutlineMinus,
 } from "react-icons/ai";
-import { WatchingStatusEnum, AllAnimesTile } from "@/graphql";
+import { WatchStatusTypes, Anime, AiringStatusTypes } from "@/graphql";
 import useCountDown from "../Hooks/useCountDown";
-
+interface IAnime {
+  id: any;
+  title: string;
+  coverImage?: string;
+  numberOfEpisodes?: number;
+  averageWatcherRating?: any;
+  userLiked?: boolean;
+  userRating?: any;
+  userWatchStatus?: WatchStatusTypes;
+  userEpisodeCount?: any;
+  startBroadcastDatetime?: any;
+  airingStatusType?: AiringStatusTypes;
+}
 interface AnimeCard {
   title?: string;
   url: string;
@@ -32,7 +44,7 @@ interface AnimeCard {
   likes?: boolean;
   userSection?: any;
   numOfEpisodes?: number | null;
-  animeInfo?: AllAnimesTile;
+  animeInfo?: IAnime;
 }
 
 const AnimeCard = ({
@@ -48,9 +60,8 @@ const AnimeCard = ({
   const router = useRouter();
 
   const [userEpisodeCount, setUserEpisodeCount] = useState<number>(0);
-  const [userAnimeWatchStatus, setUserAnimeWatchStatus] = useState(
-    WatchingStatusEnum.NotWatching
-  );
+  const [userAnimeWatchStatus, setUserAnimeWatchStatus] =
+    useState<WatchStatusTypes>(WatchStatusTypes.NotWatched);
   const [userAnimeRating, setUserAnimeRating] = useState(-1);
 
   const {
@@ -120,7 +131,8 @@ const AnimeCard = ({
       >
         {user ? (
           <>
-            {animeInfo?.airingStatusType === "Currently Airing" ? (
+            {animeInfo?.airingStatusType ===
+            AiringStatusTypes.CurrentlyAiring ? (
               <Box
                 w="full"
                 bg="gray.600"
@@ -138,21 +150,19 @@ const AnimeCard = ({
                     onChange={(e) => onChangeAnimeWatchStatus(e, id)}
                     value={userAnimeWatchStatus}
                   >
-                    <option value={WatchingStatusEnum.NotWatching}>
+                    <option value={WatchStatusTypes.NotWatched}>
                       Not Watched
                     </option>
-                    <option value={WatchingStatusEnum.PlanToWatch}>
+                    <option value={WatchStatusTypes.PlanToWatch}>
                       Plan to Watch
                     </option>
-                    <option value={WatchingStatusEnum.Watching}>
-                      Watching
-                    </option>
-                    <option value={WatchingStatusEnum.Paused}>Paused</option>
-                    <option value={WatchingStatusEnum.Completed}>
+                    <option value={WatchStatusTypes.Watching}>Watching</option>
+                    <option value={WatchStatusTypes.Paused}>Paused</option>
+                    <option value={WatchStatusTypes.Completed}>
                       Completed
                     </option>
-                    <option value={WatchingStatusEnum.Dropped}>Dropped</option>
-                    <option value={WatchingStatusEnum.Rewatching}>
+                    <option value={WatchStatusTypes.Dropped}>Dropped</option>
+                    <option value={WatchStatusTypes.Rewatching}>
                       Rewatching
                     </option>
                   </Select>
@@ -168,8 +178,8 @@ const AnimeCard = ({
                     onChange={(e) => onChangeUserAnimeRating(e, id)}
                     value={userAnimeRating}
                     visibility={
-                      userAnimeWatchStatus === WatchingStatusEnum.NotWatching ||
-                      userAnimeWatchStatus === WatchingStatusEnum.PlanToWatch
+                      userAnimeWatchStatus === WatchStatusTypes.NotWatched ||
+                      userAnimeWatchStatus === WatchStatusTypes.PlanToWatch
                         ? "hidden"
                         : "visible"
                     }

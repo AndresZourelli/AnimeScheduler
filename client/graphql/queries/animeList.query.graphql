@@ -1,45 +1,59 @@
+query CurrentlyAiringContinued(
+  $limit: Int!
+  $currentSeason: Season!
+  $seasonYear: Int!
+) {
+  animes(
+    first: $limit
+    filter: {
+      and: {
+        airingStatusType: { equalTo: CURRENTLY_AIRING }
+        seasonYear: { notEqualTo: $seasonYear }
+        season: { notEqualTo: $currentSeason }
+      }
+    }
+  ) {
+    nodes {
+      ...AnimeCardFragment
+    }
+  }
+}
+
+query CurrentlyAiring(
+  $limit: Int!
+  $currentSeason: Season!
+  $seasonYear: Int!
+) {
+  animes(
+    first: $limit
+    filter: {
+      and: {
+        airingStatusType: { equalTo: CURRENTLY_AIRING }
+        seasonYear: { equalTo: $seasonYear }
+        season: { equalTo: $currentSeason }
+      }
+    }
+  ) {
+    nodes {
+      ...AnimeCardFragment
+    }
+  }
+}
+
+query HighestRatedAnimes($limit: Int!) {
+  animes(first: $limit, orderBy: AVERAGE_WATCHER_RATING_DESC) {
+    nodes {
+      ...AnimeCardFragment
+    }
+  }
+}
+
 query userLists {
   animeLists {
     nodes {
       id
       privacy
       title
-    }
-  }
-}
-
-query CurrentlyAiringContinued($limit: Int!, $currentSeason: String!) {
-  allAnimesTiles(
-    first: $limit
-    filter: {
-      airingStatusType: { equalTo: "Currently Airing" }
-      and: { season: { notEqualTo: $currentSeason } }
-    }
-  ) {
-    nodes {
-      ...AllAnimesTileFragment
-    }
-  }
-}
-
-query CurrentlyAiring($limit: Int!, $currentSeason: String!) {
-  allAnimesTiles(
-    first: $limit
-    filter: {
-      airingStatusType: { equalTo: "Currently Airing" }
-      and: { season: { equalTo: $currentSeason } }
-    }
-  ) {
-    nodes {
-      ...AllAnimesTileFragment
-    }
-  }
-}
-
-query HighestRatedAnimes($limit: Int!) {
-  allAnimesTiles(first: $limit) {
-    nodes {
-      ...AllAnimesTileFragment
     }
   }
 }

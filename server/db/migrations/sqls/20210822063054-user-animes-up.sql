@@ -1,5 +1,5 @@
 create or replace view anime_app_public.all_user_animes as
-select a.id, a.title, i.url, al.title as list_name, al.id as list_id, a.description,
+select a.id, a.title, a.coverImage, al.title as list_name, al.id as list_id, a.description,
 (select 
  array_agg(g.genre) 
  from anime_app_public.genres g 
@@ -9,7 +9,6 @@ where a.id = ag.anime_id
 from anime_app_public.anime_lists al 
 join anime_app_public.user_anime_lists ual on al.id = ual.anime_list_id
 join anime_app_public.animes a on ual.anime_id = a.id
-join anime_app_public.images i on a.profile_image_id = i.id
 where al.user_id = anime_app_public.current_user();
 
 CREATE or replace VIEW anime_app_public.all_animes_tile AS 

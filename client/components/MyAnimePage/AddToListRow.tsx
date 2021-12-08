@@ -1,9 +1,9 @@
 import {
   useAddAnimeToListMutation,
-  WatchingStatusEnum,
   useUserListsQuery,
   useUpdateUserAnimeListMutation,
   useUpdateUserAnimeWatchStatusMutation,
+  WatchStatusTypes,
 } from "@/graphql";
 import { useAuth } from "@/lib/Auth/FirebaseAuth";
 import {
@@ -40,15 +40,15 @@ const AddToListRow = ({ animeId }: AddToListRowInterface) => {
     listId: userLists.data?.animeLists.nodes.find(
       (list) => list.title === "default"
     ).id,
-    watchStatus: WatchingStatusEnum.PlanToWatch,
+    watchStatus: WatchStatusTypes.PlanToWatch,
     userScore: 0,
     episodesWatched: 0,
     startDate: moment().local(true).format("YYYY-MM-DD"),
     endDate: "",
     totalRewatched: 0,
   };
-  const [selectWatchStatus, setSelectWatchStatus] = useState(
-    WatchingStatusEnum.Watching
+  const [selectWatchStatus, setSelectWatchStatus] = useState<WatchStatusTypes>(
+    WatchStatusTypes.Watching
   );
   const [selectListId, setSelectListId] = useState("");
 
@@ -149,22 +149,20 @@ const AddToListRow = ({ animeId }: AddToListRowInterface) => {
                         <option value="">
                           Please select a watching status...
                         </option>
-                        <option value={WatchingStatusEnum.Watching}>
+                        <option value={WatchStatusTypes.Watching}>
                           Watching
                         </option>
-                        <option value={WatchingStatusEnum.PlanToWatch}>
+                        <option value={WatchStatusTypes.PlanToWatch}>
                           Plan to watch
                         </option>
-                        <option value={WatchingStatusEnum.Paused}>
-                          Paused
-                        </option>
-                        <option value={WatchingStatusEnum.Completed}>
+                        <option value={WatchStatusTypes.Paused}>Paused</option>
+                        <option value={WatchStatusTypes.Completed}>
                           Completed
                         </option>
-                        <option value={WatchingStatusEnum.Dropped}>
+                        <option value={WatchStatusTypes.Dropped}>
                           Dropped
                         </option>
-                        <option value={WatchingStatusEnum.Rewatching}>
+                        <option value={WatchStatusTypes.Rewatching}>
                           Rewatching
                         </option>
                       </Select>

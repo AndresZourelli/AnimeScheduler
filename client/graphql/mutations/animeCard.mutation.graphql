@@ -1,5 +1,5 @@
 mutation UpdateWatchStatus(
-  $watchStatus: WatchingStatusEnum!
+  $watchStatus: WatchStatusTypes!
   $userId: String!
   $animeId: UUID!
 ) {
@@ -41,9 +41,9 @@ mutation UpdateUserEpisodeCount(
     }
   ) {
     query {
-      allAnimesTiles(filter: { id: { equalTo: $animeId } }) {
+      animes(filter: { id: { equalTo: $animeId } }) {
         nodes {
-          ...AllAnimesTileFragment
+          ...AnimeCardFragment
         }
       }
     }

@@ -9,10 +9,10 @@ import {
   AddAnimeToListMutation,
   Exact,
   DeleteAnimeFromListMutation,
-  WatchingStatusEnum,
   useUpdateUserAnimeScoreMutation,
   useUpdateUserEpisodeCountMutation,
   GetLastItemInCustomListDocument,
+  WatchStatusTypes,
 } from "@/graphql";
 import { useAuth, ExtendedUser } from "@/lib/Auth/FirebaseAuth";
 import { useToast } from "@chakra-ui/react";
@@ -21,9 +21,12 @@ import { useClient, UseMutationState } from "urql";
 import { Lexico } from "@/utilities/lexicoHelperFunctions";
 
 interface UserAnimeListInterface {
-  id: string;
-  privacy: AnimeListPrivacy;
-  title: string;
+  id?: string;
+  privacy?: AnimeListPrivacy;
+  title?: string;
+  listId?: string;
+  listName?: string;
+  coverImage?: string;
 }
 interface UserAnimeListHook {
   addAnimeToList: (e: React.MouseEvent, animeId: string) => void;
@@ -51,7 +54,7 @@ interface UserAnimeListHook {
   user: ExtendedUser | null;
   error: boolean;
   userAnimeLists: UserAnimeListInterface[];
-  updateWatchStatus: (animeId: String, watchStatus: WatchingStatusEnum) => void;
+  updateWatchStatus: (animeId: String, watchStatus: WatchStatusTypes) => void;
   updateAnimeScore: (animeId: string, userScore: number) => void;
   updateEpisodeCount: (animeId: string, userEpisodesWatched: number) => void;
   onClickUserEpisodeCount: (
@@ -68,12 +71,10 @@ interface UserAnimeListHook {
     id: string
   ) => void;
   userEpisodeCount: number;
-  userAnimeWatchStatus: WatchingStatusEnum;
+  userAnimeWatchStatus: WatchStatusTypes;
   userAnimeRating: number;
   setUserEpisodeCount: React.Dispatch<React.SetStateAction<number>>;
-  setUserAnimeWatchStatus: React.Dispatch<
-    React.SetStateAction<WatchingStatusEnum>
-  >;
+  setUserAnimeWatchStatus: React.Dispatch<React.SetStateAction<string>>;
   setUserAnimeRating: React.Dispatch<React.SetStateAction<number>>;
 }
 
@@ -107,7 +108,7 @@ const useAnimeList = ({
   );
   const [userEpisodeCount, setUserEpisodeCount] = useState<number>(0);
   const [userAnimeWatchStatus, setUserAnimeWatchStatus] = useState(
-    WatchingStatusEnum.NotWatching
+    WatchStatusTypes.NotWatched
   );
   const [userAnimeRating, setUserAnimeRating] = useState(-1);
 
@@ -142,7 +143,7 @@ const useAnimeList = ({
 
   const updateWatchStatus = (
     animeId: String,
-    watchStatus: WatchingStatusEnum
+    watchStatus: WatchStatusTypes
   ) => {
     addWatchStatus({
       animeId: animeId,
@@ -183,8 +184,8 @@ const useAnimeList = ({
     id: string
   ) => {
     if (event.currentTarget.value != userAnimeWatchStatus) {
-      setUserAnimeWatchStatus(event.currentTarget.value as WatchingStatusEnum);
-      updateWatchStatus(id, event.currentTarget.value as WatchingStatusEnum);
+      setUserAnimeWatchStatus(event.currentTarget.value as WatchStatusTypes);
+      updateWatchStatus(id, event.currentTarget.value as WatchStatusTypes);
     }
   };
 

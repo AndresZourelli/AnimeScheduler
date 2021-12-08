@@ -7,7 +7,7 @@ import WeeklyGridColumn from "./WeeklyGridColumn";
 
 const WeeklyGrid = () => {
   const [animeResults, fetchAnimes] = useWeeklyAnimesQuery();
-  const animes = animeResults.data?.allAnimesTiles?.nodes;
+  const animes = animeResults.data?.animes?.nodes;
   const WEEK = [
     "Sunday",
     "Monday",

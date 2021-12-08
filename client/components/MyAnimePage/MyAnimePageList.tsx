@@ -63,6 +63,7 @@ const MyAnimePageList = ({ watchingStatus }: MyAnimePageListInterface) => {
           gap={4}
         >
           {animesResult.data?.getUserAnimeLists?.nodes.map((list, idx) => {
+            console.log(list);
             const test = list.animes.map((anime, idx2) => (
               <AnimeCard
                 key={anime.id + "-" + list.id}
