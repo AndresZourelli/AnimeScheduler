@@ -1,0 +1,13 @@
+fragment UserListAnimeFragment on UserListAnime {
+  id
+  title
+  coverImage
+  averageWatcherRating
+  airingStatusType
+  numberOfEpisodes
+  startBroadcastDatetime
+  userEpisodeCount
+  userLiked
+  userRating
+  userWatchStatus
+}

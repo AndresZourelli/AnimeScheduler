@@ -284,6 +284,7 @@ const useAnimeList = ({
   };
 
   useEffect(() => {
+    console.log(userListResult?.data?.animeLists?.nodes?.length);
     if (!userListResult.fetching && userListResult.data) {
       setUserAnimeLists(userListResult.data.animeLists.nodes);
     }

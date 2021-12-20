@@ -2,7 +2,7 @@ import useAnimeList from "@/components/Hooks/useAnimeList";
 import CustomList from "@/components/MyAnimePage/CustomList";
 import MyAnimePageList from "@/components/MyAnimePage/MyAnimePageList";
 import WeeklyGrid from "@/components/MyAnimePage/WeeklyGrid";
-import { WatchingStatusEnum } from "@/graphql";
+import { WatchStatusTypes } from "@/graphql";
 import { useAuth } from "@/lib/Auth/FirebaseAuth";
 import { withAuthPrivate } from "@/lib/Auth/withAuth";
 import {
@@ -33,8 +33,10 @@ const MyAnimes = (props) => {
             Custom Lists
           </Box>
           <Divider ml={2} />
-          {userAnimeLists.map((list) => (
-            <Tab key={list.id}>{list.title}</Tab>
+          {userAnimeLists.map((list, idx) => (
+            <Tab key={list.id}>
+              {idx + 1} {list.title}
+            </Tab>
           ))}
         </TabList>
         <TabPanels>
@@ -44,7 +46,7 @@ const MyAnimes = (props) => {
           <TabPanel>
             <Box m={5}>
               <Heading>Currently Watching</Heading>
-              <MyAnimePageList watchingStatus={WatchingStatusEnum.Watching} />
+              <MyAnimePageList watchingStatus={WatchStatusTypes.Watching} />
               {/* "You aren't watching any anime currently..." */}
             </Box>
           </TabPanel>
@@ -53,9 +55,7 @@ const MyAnimes = (props) => {
               <Heading>Planning to Watch</Heading>
 
               {/* "You aren't planning to watch any anime..." */}
-              <MyAnimePageList
-                watchingStatus={WatchingStatusEnum.PlanToWatch}
-              />
+              <MyAnimePageList watchingStatus={WatchStatusTypes.PlanToWatch} />
             </Box>
           </TabPanel>
           <TabPanel>
@@ -64,7 +64,7 @@ const MyAnimes = (props) => {
 
               {/* "You don't have any completed anime..." */}
 
-              <MyAnimePageList watchingStatus={WatchingStatusEnum.Completed} />
+              <MyAnimePageList watchingStatus={WatchStatusTypes.Completed} />
             </Box>
           </TabPanel>
 

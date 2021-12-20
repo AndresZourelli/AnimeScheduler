@@ -11,17 +11,14 @@ query UserAnimeLists {
   }
 }
 
-query GetUserAnimeLists($watchStatus: WatchingStatusEnum) {
+query GetUserAnimeLists($watchStatus: String!) {
   getUserAnimeLists(watchStatusInput: $watchStatus) {
     nodes {
       id
       title
       userId
       animes {
-        title
-        url
-        watchStatus
-        id
+        ...UserListAnimeFragment
       }
     }
   }

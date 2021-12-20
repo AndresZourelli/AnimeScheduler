@@ -37,25 +37,30 @@ interface IAnime {
   airingStatusType?: AiringStatusTypes;
 }
 interface AnimeCard {
+  id?: any;
   title?: string;
-  url: string;
-  score?: number;
-  id: string;
-  likes?: boolean;
-  userSection?: any;
-  numOfEpisodes?: number | null;
-  animeInfo?: IAnime;
+  coverImage?: string;
+  numberOfEpisodes?: number;
+  averageWatcherRating?: any;
+  userLiked?: boolean;
+  userRating?: any;
+  userWatchStatus?: string;
+  userEpisodeCount?: any;
+  startBroadcastDatetime?: any;
+  airingStatusType?: string;
+  animeInfo?: any;
 }
 
 const AnimeCard = ({
   title = null,
-  url = null,
+  coverImage = null,
   id,
-  score = null,
-  likes = null,
-  userSection = null,
-  numOfEpisodes = null,
-  animeInfo = null,
+  averageWatcherRating = null,
+  userLiked = null,
+  numberOfEpisodes = null,
+  userWatchStatus = null,
+  startBroadcastDatetime = null,
+  airingStatusType = null,
 }: AnimeCard) => {
   const router = useRouter();
 
@@ -81,7 +86,7 @@ const AnimeCard = ({
     onClickUserEpisodeCount,
   } = useAnimeList({ inputAnimeId: id, animeTitle: title });
   const { days, hours, minutes } = useCountDown({
-    endInputDate: animeInfo?.startBroadcastDatetime,
+    endInputDate: startBroadcastDatetime,
   });
 
   const redirectToAnime = (e) => {
@@ -104,22 +109,22 @@ const AnimeCard = ({
   };
 
   useEffect(() => {
-    if (animeInfo && animeInfo.userWatchStatus) {
-      setUserAnimeWatchStatus(animeInfo.userWatchStatus);
+    if (userWatchStatus) {
+      setUserAnimeWatchStatus(userWatchStatus as WatchStatusTypes);
     }
-  }, [animeInfo]);
+  }, [userWatchStatus]);
 
   useEffect(() => {
-    if (animeInfo && animeInfo.userRating) {
-      setUserAnimeRating(animeInfo.userRating);
+    if (userAnimeRating) {
+      setUserAnimeRating(userAnimeRating);
     }
-  }, [animeInfo]);
+  }, [userAnimeRating]);
 
   useEffect(() => {
-    if (animeInfo && animeInfo.userEpisodeCount) {
-      setUserEpisodeCount(animeInfo.userEpisodeCount);
+    if (userEpisodeCount) {
+      setUserEpisodeCount(userEpisodeCount);
     }
-  }, [animeInfo]);
+  }, [userEpisodeCount]);
   return (
     <>
       <Box
@@ -131,7 +136,7 @@ const AnimeCard = ({
       >
         {user ? (
           <>
-            {animeInfo?.airingStatusType ===
+            {(airingStatusType as AiringStatusTypes) ===
             AiringStatusTypes.CurrentlyAiring ? (
               <Box
                 w="full"
@@ -212,7 +217,7 @@ const AnimeCard = ({
           cursor="pointer"
           role="group"
         >
-          <LoadImage image_url={url} alt={title} maxW="225px" />
+          <LoadImage image_url={coverImage} alt={title} maxW="225px" />
 
           <Box
             position="absolute"
@@ -244,14 +249,14 @@ const AnimeCard = ({
                     size="xs"
                     name="episodeDecrease"
                     onClick={(e) =>
-                      onClickUserEpisodeCount(e, numOfEpisodes, id)
+                      onClickUserEpisodeCount(e, numberOfEpisodes, id)
                     }
                   />
                 </Tooltip>
                 <Tooltip label="Number of episodes you have watched">
                   <Text textAlign="center" fontSize="small" px="2">
                     {`${userEpisodeCount}/${
-                      numOfEpisodes ? numOfEpisodes : "???"
+                      numberOfEpisodes ? numberOfEpisodes : "???"
                     }`}{" "}
                     eps watched
                   </Text>
@@ -265,14 +270,14 @@ const AnimeCard = ({
                     size="xs"
                     name="episodeIncrease"
                     onClick={(e) =>
-                      onClickUserEpisodeCount(e, numOfEpisodes, id)
+                      onClickUserEpisodeCount(e, numberOfEpisodes, id)
                     }
                   />
                 </Tooltip>
               </Box>
             </Box>
           </Box>
-          {likes ? (
+          {userLiked ? (
             <Tag
               zIndex="75"
               position="absolute"
@@ -305,7 +310,7 @@ const AnimeCard = ({
               addToExistingList={AddToExistingList}
             />
 
-            {animeInfo?.userLiked || userSection ? (
+            {userLiked ? (
               <Tooltip label="Remove anime from list">
                 <IconButton
                   aria-label="Remove anime from list button"
@@ -333,7 +338,7 @@ const AnimeCard = ({
           </Flex>
         </Box>
         <Box d="flex" w="full" pt="3">
-          <Badge>{score}</Badge>
+          <Badge>{averageWatcherRating}</Badge>
           <Heading
             display="inline-block"
             width="calc(100%)"

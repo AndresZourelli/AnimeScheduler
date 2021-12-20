@@ -15,52 +15,6 @@ const client = createClient({
       keys: {
         UserList: (data) => null,
       },
-      updates: {
-        Mutation: {
-          createUserAnimeList(_result, args: any, cache, _info) {
-            const fragment = gql`
-              fragment AllAnimesTileFragment on AllAnimesTile {
-                id
-                likes
-              }
-            `;
-            cache.writeFragment(fragment, {
-              id: args.input.userAnimeList.animeId,
-              likes: true,
-            });
-          },
-          deleteUserAnimeListByAnimeListIdAndAnimeId(
-            _result,
-            args: any,
-            cache,
-            _info
-          ) {
-            const fragment = gql`
-              fragment AllAnimesTileFragment on AllAnimesTile {
-                id
-                likes
-              }
-            `;
-
-            cache.writeFragment(fragment, {
-              id: args.input.animeId,
-              likes: false,
-            });
-          },
-          insertAnimeToUserList(_result: any, args: any, cache, _info) {
-            const fragment = gql`
-              fragment AllAnimesTileFragment on AllAnimesTile {
-                id
-                likes
-              }
-            `;
-            cache.writeFragment(fragment, {
-              id: args.input.animeId,
-              likes: true,
-            });
-          },
-        },
-      },
     }),
     authExchange({
       getAuth: async ({ authState }) => {

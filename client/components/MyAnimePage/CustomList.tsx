@@ -1,44 +1,35 @@
 import {
+  CustomAnimeList,
+  useUpdateListIndexMutation,
+  useUserCustomAnimeListQuery,
+  useDeleteUserAnimeListMutation,
+  useUpdateUserAnimeListTitleMutation,
+} from "@/graphql";
+import { reorder } from "@/utilities/helperFunctions";
+import { Lexico } from "@/utilities/lexicoHelperFunctions";
+import {
   Box,
   Heading,
-  Tab,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Tabs,
-  Divider,
   Table,
-  Thead,
   Tbody,
-  Tfoot,
-  Tr,
   Th,
-  Td,
-  TableCaption,
-  Skeleton,
-  AspectRatio,
-  Select,
-  Text,
+  Thead,
+  Tr,
+  Button,
+  Flex,
+  useToast,
   IconButton,
-  Tooltip,
+  Input,
 } from "@chakra-ui/react";
-import {
-  useUserCustomAnimeListQuery,
-  useUpdateListIndexMutation,
-  CustomAnimeList,
-} from "@/graphql";
-import NextImage from "next/image";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   DragDropContext,
   Draggable,
   Droppable,
   DropResult,
 } from "react-beautiful-dnd";
-import { reorder } from "@/utilities/helperFunctions";
-import { Lexico } from "@/utilities/lexicoHelperFunctions";
-import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 import CustomListRow from "./CustomListRow";
+import { FiEdit, FiXSquare, FiSave } from "react-icons/fi";
 
 interface CustomListInterface {
   listId: string;
@@ -47,10 +38,15 @@ interface CustomListInterface {
 
 const CustomList = ({ listId, listTitle }: CustomListInterface) => {
   const [animeItems, setAnimeItems] = useState<CustomAnimeList[]>([]);
+  const [editTitle, setEditTitle] = useState<boolean>(false);
+  const [editTitleValue, setEditTitleValue] = useState<string>();
+  const [editNewTitleValue, setEditNewTitleValue] = useState<string>();
   const [userCustomListResult, queryUserCustomList] =
     useUserCustomAnimeListQuery({ variables: { listId: listId } });
   const [, mutationUpdateCustomListIndex] = useUpdateListIndexMutation();
-
+  const [, mutationDeleteUserList] = useDeleteUserAnimeListMutation();
+  const [, mutationUpdateUserListTitle] = useUpdateUserAnimeListTitleMutation();
+  const toast = useToast();
   const onDragEnd = (result: DropResult) => {
     if (!result.destination) {
       return;
@@ -88,6 +84,77 @@ const CustomList = ({ listId, listTitle }: CustomListInterface) => {
     });
     setAnimeItems(newItems);
   };
+
+  const deleteUserList = async () => {
+    try {
+      const { error } = await mutationDeleteUserList({ listId: listId });
+      if (error) {
+        throw new Error(error.message);
+      }
+      toast({
+        title: `${listTitle} deleted.`,
+        description: `List successfully deleted.`,
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+        position: "bottom-right",
+      });
+    } catch (e) {
+      toast({
+        title: `Unable to delete ${listTitle}`,
+        description: `Could not delete list.`,
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+        position: "bottom-right",
+      });
+    }
+  };
+
+  const onChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEditNewTitleValue(e.target.value);
+  };
+
+  const onClickCloseTitle = () => {
+    setEditTitle(!editTitle);
+    setEditNewTitleValue(listTitle);
+  };
+
+  const onClickEditTitle = () => {
+    setEditTitle(!editTitle);
+  };
+
+  const onClickSaveTitle = async () => {
+    try {
+      const { error } = await mutationUpdateUserListTitle({
+        listId: listId,
+        title: editNewTitleValue,
+      });
+      if (error) {
+        throw new Error();
+      }
+      setEditTitle(!editTitle);
+      setEditTitleValue(editNewTitleValue);
+      toast({
+        title: `Title changed successfully.`,
+        description: `List renamed to ${editNewTitleValue}`,
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+        position: "bottom-right",
+      });
+    } catch (e) {
+      toast({
+        title: `Unable to change list title.`,
+        description: `Could not edit list.`,
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+        position: "bottom-right",
+      });
+    }
+  };
+
   useEffect(() => {
     if (!userCustomListResult.fetching && userCustomListResult.data) {
       let tempList: CustomAnimeList[] = [
@@ -96,15 +163,55 @@ const CustomList = ({ listId, listTitle }: CustomListInterface) => {
       tempList.sort((a, b) =>
         Lexico.comparePositions(a.animeIndex, b.animeIndex)
       );
-      console.log(tempList);
       setAnimeItems(tempList);
     }
   }, [userCustomListResult.fetching, userCustomListResult.data]);
+
+  useEffect(() => {
+    if (listTitle) {
+      setEditTitleValue(listTitle);
+      setEditNewTitleValue(listTitle);
+    }
+  }, [listTitle]);
+
   return (
     <Box>
-      <Box h="15vh">
-        <Heading>{listTitle}</Heading>
-      </Box>
+      <Flex h="15vh" justifyContent="space-between">
+        <Flex alignItems="center">
+          {editTitle ? (
+            <Input mr="3" value={editNewTitleValue} onChange={onChangeTitle} />
+          ) : (
+            <Heading mr="3">{editTitleValue}</Heading>
+          )}
+          {editTitle ? (
+            <>
+              <IconButton
+                aria-label="Save new list name"
+                icon={<FiSave />}
+                size="sm"
+                onClick={onClickSaveTitle}
+                mr="3"
+              />
+              <IconButton
+                aria-label="Cancel edit list name"
+                icon={<FiXSquare />}
+                size="sm"
+                onClick={onClickCloseTitle}
+              />
+            </>
+          ) : (
+            <IconButton
+              aria-label="Edit list name"
+              icon={<FiEdit />}
+              size="sm"
+              onClick={onClickEditTitle}
+            />
+          )}
+        </Flex>
+        <Button onClick={deleteUserList} colorScheme="blue">
+          Delete List
+        </Button>
+      </Flex>
       <Box>
         <DragDropContext onDragEnd={onDragEnd}>
           <Table>

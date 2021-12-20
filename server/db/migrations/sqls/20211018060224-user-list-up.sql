@@ -3,6 +3,7 @@ create type anime_app_public.user_list_anime as (
     id uuid,
     watch_status anime_app_public.watching_status_enum,
     url text
+    average_watcher_rating numeric
 );
 
 create type anime_app_public.user_list as (

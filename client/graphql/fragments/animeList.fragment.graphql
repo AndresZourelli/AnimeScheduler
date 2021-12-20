@@ -1,4 +1,6 @@
 fragment AnimeListFragment on AnimeList {
-  title
   id
+  nodeId
+  privacy
+  title
 }

@@ -36,7 +36,7 @@ export type AddAnimeToListInput = {
   privacy?: Maybe<AnimeListPrivacy>;
   title?: Maybe<Scalars['String']>;
   userId?: Maybe<Scalars['String']>;
-  watchStatus?: Maybe<WatchingStatusEnum>;
+  watchStatus?: Maybe<Scalars['String']>;
 };
 
 /** The output of our `addAnimeToList` mutation. */
@@ -294,7 +294,7 @@ export type Anime = Node & {
   userEpisodeCount?: Maybe<Scalars['BigFloat']>;
   userLiked?: Maybe<Scalars['Boolean']>;
   userRating?: Maybe<Scalars['BigFloat']>;
-  userWatchStatus?: Maybe<WatchingStatusEnum>;
+  userWatchStatus?: Maybe<Scalars['String']>;
   /** Reads and enables pagination through a set of `UserWatchStatus`. */
   userWatchStatuses: UserWatchStatusesConnection;
 };
@@ -730,7 +730,7 @@ export type AnimeFilter = {
   /** Filter by the object’s `userRating` field. */
   userRating?: Maybe<BigFloatFilter>;
   /** Filter by the object’s `userWatchStatus` field. */
-  userWatchStatus?: Maybe<WatchingStatusEnumFilter>;
+  userWatchStatus?: Maybe<StringFilter>;
 };
 
 export type AnimeGenre = Node & {
@@ -1111,7 +1111,9 @@ export enum AnimeLicensorsOrderBy {
 
 export type AnimeList = Node & {
   __typename?: 'AnimeList';
+  createdAt?: Maybe<Scalars['Datetime']>;
   id: Scalars['UUID'];
+  isDefault?: Maybe<Scalars['Boolean']>;
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID'];
   privacy: AnimeListPrivacy;
@@ -1139,8 +1141,12 @@ export type AnimeListUserAnimeListsArgs = {
  * for equality and combined with a logical ‘and.’
  */
 export type AnimeListCondition = {
+  /** Checks for equality with the object’s `createdAt` field. */
+  createdAt?: Maybe<Scalars['Datetime']>;
   /** Checks for equality with the object’s `id` field. */
   id?: Maybe<Scalars['UUID']>;
+  /** Checks for equality with the object’s `isDefault` field. */
+  isDefault?: Maybe<Scalars['Boolean']>;
   /** Checks for equality with the object’s `privacy` field. */
   privacy?: Maybe<AnimeListPrivacy>;
   /** Checks for equality with the object’s `title` field. */
@@ -1153,8 +1159,12 @@ export type AnimeListCondition = {
 export type AnimeListFilter = {
   /** Checks for all expressions in this list. */
   and?: Maybe<Array<AnimeListFilter>>;
+  /** Filter by the object’s `createdAt` field. */
+  createdAt?: Maybe<DatetimeFilter>;
   /** Filter by the object’s `id` field. */
   id?: Maybe<UuidFilter>;
+  /** Filter by the object’s `isDefault` field. */
+  isDefault?: Maybe<BooleanFilter>;
   /** Negates the expression. */
   not?: Maybe<AnimeListFilter>;
   /** Checks for any expressions in this list. */
@@ -1169,7 +1179,9 @@ export type AnimeListFilter = {
 
 /** An input for mutations affecting `AnimeList` */
 export type AnimeListInput = {
+  createdAt?: Maybe<Scalars['Datetime']>;
   id?: Maybe<Scalars['UUID']>;
+  isDefault?: Maybe<Scalars['Boolean']>;
   privacy?: Maybe<AnimeListPrivacy>;
   title?: Maybe<Scalars['String']>;
   userId: Scalars['String'];
@@ -1177,7 +1189,9 @@ export type AnimeListInput = {
 
 /** Represents an update to a `AnimeList`. Fields that are set will be updated. */
 export type AnimeListPatch = {
+  createdAt?: Maybe<Scalars['Datetime']>;
   id?: Maybe<Scalars['UUID']>;
+  isDefault?: Maybe<Scalars['Boolean']>;
   privacy?: Maybe<AnimeListPrivacy>;
   title?: Maybe<Scalars['String']>;
   userId?: Maybe<Scalars['String']>;
@@ -1239,8 +1253,12 @@ export type AnimeListsEdge = {
 
 /** Methods to use when ordering `AnimeList`. */
 export enum AnimeListsOrderBy {
+  CreatedAtAsc = 'CREATED_AT_ASC',
+  CreatedAtDesc = 'CREATED_AT_DESC',
   IdAsc = 'ID_ASC',
   IdDesc = 'ID_DESC',
+  IsDefaultAsc = 'IS_DEFAULT_ASC',
+  IsDefaultDesc = 'IS_DEFAULT_DESC',
   Natural = 'NATURAL',
   PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
   PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
@@ -3738,17 +3756,6 @@ export type DeleteAnimeListByNodeIdInput = {
   nodeId: Scalars['ID'];
 };
 
-/** All input for the `deleteAnimeListByUserIdAndTitle` mutation. */
-export type DeleteAnimeListByUserIdAndTitleInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>;
-  title: Scalars['String'];
-  userId: Scalars['String'];
-};
-
 /** All input for the `deleteAnimeList` mutation. */
 export type DeleteAnimeListInput = {
   /**
@@ -5083,7 +5090,7 @@ export type InsertAnimeToUserListInput = {
   inputAnimeId?: Maybe<Scalars['UUID']>;
   inputAnimeIndex?: Maybe<Scalars['String']>;
   inputAnimeListId?: Maybe<Scalars['UUID']>;
-  inputWatchStatus?: Maybe<WatchingStatusEnum>;
+  inputWatchStatus?: Maybe<Scalars['String']>;
 };
 
 /** The output of our `insertAnimeToUserList` mutation. */
@@ -5482,8 +5489,6 @@ export type Mutation = {
   deleteAnimeList?: Maybe<DeleteAnimeListPayload>;
   /** Deletes a single `AnimeList` using its globally unique id. */
   deleteAnimeListByNodeId?: Maybe<DeleteAnimeListPayload>;
-  /** Deletes a single `AnimeList` using a unique key. */
-  deleteAnimeListByUserIdAndTitle?: Maybe<DeleteAnimeListPayload>;
   /** Deletes a single `AnimeProducer` using a unique key. */
   deleteAnimeProducer?: Maybe<DeleteAnimeProducerPayload>;
   /** Deletes a single `AnimeProducer` using its globally unique id. */
@@ -5611,8 +5616,6 @@ export type Mutation = {
   updateAnimeList?: Maybe<UpdateAnimeListPayload>;
   /** Updates a single `AnimeList` using its globally unique id and a patch. */
   updateAnimeListByNodeId?: Maybe<UpdateAnimeListPayload>;
-  /** Updates a single `AnimeList` using a unique key and a patch. */
-  updateAnimeListByUserIdAndTitle?: Maybe<UpdateAnimeListPayload>;
   /** Updates a single `AnimeProducer` using a unique key and a patch. */
   updateAnimeProducer?: Maybe<UpdateAnimeProducerPayload>;
   /** Updates a single `AnimeProducer` using its globally unique id and a patch. */
@@ -6025,12 +6028,6 @@ export type MutationDeleteAnimeListByNodeIdArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteAnimeListByUserIdAndTitleArgs = {
-  input: DeleteAnimeListByUserIdAndTitleInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
 export type MutationDeleteAnimeProducerArgs = {
   input: DeleteAnimeProducerInput;
 };
@@ -6417,12 +6414,6 @@ export type MutationUpdateAnimeListArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpdateAnimeListByNodeIdArgs = {
   input: UpdateAnimeListByNodeIdInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateAnimeListByUserIdAndTitleArgs = {
-  input: UpdateAnimeListByUserIdAndTitleInput;
 };
 
 
@@ -7338,7 +7329,6 @@ export type Query = Node & {
   animeList?: Maybe<AnimeList>;
   /** Reads a single `AnimeList` using its globally unique `ID`. */
   animeListByNodeId?: Maybe<AnimeList>;
-  animeListByUserIdAndTitle?: Maybe<AnimeList>;
   /** Reads and enables pagination through a set of `AnimeList`. */
   animeLists?: Maybe<AnimeListsConnection>;
   animeProducer?: Maybe<AnimeProducer>;
@@ -7640,13 +7630,6 @@ export type QueryAnimeListByNodeIdArgs = {
 
 
 /** The root query type which gives access points into the data universe. */
-export type QueryAnimeListByUserIdAndTitleArgs = {
-  title: Scalars['String'];
-  userId: Scalars['String'];
-};
-
-
-/** The root query type which gives access points into the data universe. */
 export type QueryAnimeListsArgs = {
   after?: Maybe<Scalars['Cursor']>;
   before?: Maybe<Scalars['Cursor']>;
@@ -7923,7 +7906,7 @@ export type QueryGetUserAnimeListsArgs = {
   first?: Maybe<Scalars['Int']>;
   last?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
-  watchStatusInput?: Maybe<WatchingStatusEnum>;
+  watchStatusInput?: Maybe<Scalars['String']>;
 };
 
 
@@ -9055,19 +9038,6 @@ export type UpdateAnimeListByNodeIdInput = {
   nodeId: Scalars['ID'];
   /** An object where the defined keys will be set on the `AnimeList` being updated. */
   patch: AnimeListPatch;
-};
-
-/** All input for the `updateAnimeListByUserIdAndTitle` mutation. */
-export type UpdateAnimeListByUserIdAndTitleInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>;
-  /** An object where the defined keys will be set on the `AnimeList` being updated. */
-  patch: AnimeListPatch;
-  title: Scalars['String'];
-  userId: Scalars['String'];
 };
 
 /** All input for the `updateAnimeList` mutation. */
@@ -10445,8 +10415,6 @@ export type UpsertAnimeListPayloadAnimeListEdgeArgs = {
 /** Where conditions for the upsert `AnimeList` mutation. */
 export type UpsertAnimeListWhere = {
   id?: Maybe<Scalars['UUID']>;
-  title?: Maybe<Scalars['String']>;
-  userId?: Maybe<Scalars['String']>;
 };
 
 /** The output of our upsert `Anime` mutation. */
@@ -11469,8 +11437,12 @@ export enum UserAnimeListsOrderBy {
   AnimeIdDesc = 'ANIME_ID_DESC',
   AnimeIndexAsc = 'ANIME_INDEX_ASC',
   AnimeIndexDesc = 'ANIME_INDEX_DESC',
+  AnimeListByAnimeListIdCreatedAtAsc = 'ANIME_LIST_BY_ANIME_LIST_ID__CREATED_AT_ASC',
+  AnimeListByAnimeListIdCreatedAtDesc = 'ANIME_LIST_BY_ANIME_LIST_ID__CREATED_AT_DESC',
   AnimeListByAnimeListIdIdAsc = 'ANIME_LIST_BY_ANIME_LIST_ID__ID_ASC',
   AnimeListByAnimeListIdIdDesc = 'ANIME_LIST_BY_ANIME_LIST_ID__ID_DESC',
+  AnimeListByAnimeListIdIsDefaultAsc = 'ANIME_LIST_BY_ANIME_LIST_ID__IS_DEFAULT_ASC',
+  AnimeListByAnimeListIdIsDefaultDesc = 'ANIME_LIST_BY_ANIME_LIST_ID__IS_DEFAULT_DESC',
   AnimeListByAnimeListIdPrivacyAsc = 'ANIME_LIST_BY_ANIME_LIST_ID__PRIVACY_ASC',
   AnimeListByAnimeListIdPrivacyDesc = 'ANIME_LIST_BY_ANIME_LIST_ID__PRIVACY_DESC',
   AnimeListByAnimeListIdTitleAsc = 'ANIME_LIST_BY_ANIME_LIST_ID__TITLE_ASC',
@@ -11566,10 +11538,17 @@ export type UserList = {
 
 export type UserListAnime = {
   __typename?: 'UserListAnime';
+  airingStatusType?: Maybe<Scalars['String']>;
+  averageWatcherRating?: Maybe<Scalars['BigFloat']>;
+  coverImage?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['UUID']>;
+  numberOfEpisodes?: Maybe<Scalars['BigFloat']>;
+  startBroadcastDatetime?: Maybe<Scalars['Datetime']>;
   title?: Maybe<Scalars['String']>;
-  url?: Maybe<Scalars['String']>;
-  watchStatus?: Maybe<WatchingStatusEnum>;
+  userEpisodeCount?: Maybe<Scalars['BigFloat']>;
+  userLiked?: Maybe<Scalars['Boolean']>;
+  userRating?: Maybe<Scalars['BigFloat']>;
+  userWatchStatus?: Maybe<Scalars['String']>;
 };
 
 /** A filter to be used against `UserList` object types. All fields are combined with a logical ‘and.’ */
@@ -11925,47 +11904,13 @@ export type WatchStatusTypesFilter = {
   notIn?: Maybe<Array<WatchStatusTypes>>;
 };
 
-export enum WatchingStatusEnum {
-  Completed = 'COMPLETED',
-  Dropped = 'DROPPED',
-  NotWatching = 'NOT_WATCHING',
-  Paused = 'PAUSED',
-  PlanToWatch = 'PLAN_TO_WATCH',
-  Rewatching = 'REWATCHING',
-  Watching = 'WATCHING'
-}
+export type AnimeCardFragmentFragment = { __typename?: 'Anime', id: any, title: string, coverImage?: string | null | undefined, numberOfEpisodes?: number | null | undefined, averageWatcherRating?: any | null | undefined, userLiked?: boolean | null | undefined, userRating?: any | null | undefined, userWatchStatus?: string | null | undefined, userEpisodeCount?: any | null | undefined, startBroadcastDatetime?: any | null | undefined, airingStatusType?: AiringStatusTypes | null | undefined };
 
-/** A filter to be used against WatchingStatusEnum fields. All fields are combined with a logical ‘and.’ */
-export type WatchingStatusEnumFilter = {
-  /** Not equal to the specified value, treating null like an ordinary value. */
-  distinctFrom?: Maybe<WatchingStatusEnum>;
-  /** Equal to the specified value. */
-  equalTo?: Maybe<WatchingStatusEnum>;
-  /** Greater than the specified value. */
-  greaterThan?: Maybe<WatchingStatusEnum>;
-  /** Greater than or equal to the specified value. */
-  greaterThanOrEqualTo?: Maybe<WatchingStatusEnum>;
-  /** Included in the specified list. */
-  in?: Maybe<Array<WatchingStatusEnum>>;
-  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
-  isNull?: Maybe<Scalars['Boolean']>;
-  /** Less than the specified value. */
-  lessThan?: Maybe<WatchingStatusEnum>;
-  /** Less than or equal to the specified value. */
-  lessThanOrEqualTo?: Maybe<WatchingStatusEnum>;
-  /** Equal to the specified value, treating null like an ordinary value. */
-  notDistinctFrom?: Maybe<WatchingStatusEnum>;
-  /** Not equal to the specified value. */
-  notEqualTo?: Maybe<WatchingStatusEnum>;
-  /** Not included in the specified list. */
-  notIn?: Maybe<Array<WatchingStatusEnum>>;
-};
-
-export type AnimeCardFragmentFragment = { __typename?: 'Anime', id: any, title: string, coverImage?: string | null | undefined, numberOfEpisodes?: number | null | undefined, averageWatcherRating?: any | null | undefined, userLiked?: boolean | null | undefined, userRating?: any | null | undefined, userWatchStatus?: WatchingStatusEnum | null | undefined, userEpisodeCount?: any | null | undefined, startBroadcastDatetime?: any | null | undefined, airingStatusType?: AiringStatusTypes | null | undefined };
-
-export type AnimeListFragmentFragment = { __typename?: 'AnimeList', title: string, id: any };
+export type AnimeListFragmentFragment = { __typename?: 'AnimeList', id: any, nodeId: string, privacy: AnimeListPrivacy, title: string };
 
 export type CustomAnimeListFragmentFragment = { __typename?: 'CustomAnimeList', id?: string | null | undefined, animeId?: any | null | undefined, averageWatcherRating?: any | null | undefined, imageUrl?: string | null | undefined, listName?: string | null | undefined, mediaType?: string | null | undefined, numberOfEpisodes?: number | null | undefined, title?: string | null | undefined, userEpisodesWatched?: number | null | undefined, userScore?: any | null | undefined, watchStatus?: string | null | undefined, animeIndex?: string | null | undefined };
+
+export type UserListAnimeFragmentFragment = { __typename?: 'UserListAnime', id?: any | null | undefined, title?: string | null | undefined, coverImage?: string | null | undefined, averageWatcherRating?: any | null | undefined, airingStatusType?: string | null | undefined, numberOfEpisodes?: any | null | undefined, startBroadcastDatetime?: any | null | undefined, userEpisodeCount?: any | null | undefined, userLiked?: boolean | null | undefined, userRating?: any | null | undefined, userWatchStatus?: string | null | undefined };
 
 export type UpdateWatchStatusMutationVariables = Exact<{
   watchStatus: WatchStatusTypes;
@@ -11991,7 +11936,7 @@ export type UpdateUserEpisodeCountMutationVariables = Exact<{
 }>;
 
 
-export type UpdateUserEpisodeCountMutation = { __typename?: 'Mutation', updateUserWatchStatus?: { __typename?: 'UpdateUserWatchStatusPayload', clientMutationId?: string | null | undefined, query?: { __typename?: 'Query', animes?: { __typename?: 'AnimeConnection', nodes: Array<{ __typename?: 'Anime', id: any, title: string, coverImage?: string | null | undefined, numberOfEpisodes?: number | null | undefined, averageWatcherRating?: any | null | undefined, userLiked?: boolean | null | undefined, userRating?: any | null | undefined, userWatchStatus?: WatchingStatusEnum | null | undefined, userEpisodeCount?: any | null | undefined, startBroadcastDatetime?: any | null | undefined, airingStatusType?: AiringStatusTypes | null | undefined }> } | null | undefined } | null | undefined } | null | undefined };
+export type UpdateUserEpisodeCountMutation = { __typename?: 'Mutation', updateUserWatchStatus?: { __typename?: 'UpdateUserWatchStatusPayload', clientMutationId?: string | null | undefined, query?: { __typename?: 'Query', animes?: { __typename?: 'AnimeConnection', nodes: Array<{ __typename?: 'Anime', id: any, title: string, coverImage?: string | null | undefined, numberOfEpisodes?: number | null | undefined, averageWatcherRating?: any | null | undefined, userLiked?: boolean | null | undefined, userRating?: any | null | undefined, userWatchStatus?: string | null | undefined, userEpisodeCount?: any | null | undefined, startBroadcastDatetime?: any | null | undefined, airingStatusType?: AiringStatusTypes | null | undefined }> } | null | undefined } | null | undefined } | null | undefined };
 
 export type AddAnimeToUserAnimeListMutationVariables = Exact<{
   animeListId: Scalars['UUID'];
@@ -11999,7 +11944,7 @@ export type AddAnimeToUserAnimeListMutationVariables = Exact<{
 }>;
 
 
-export type AddAnimeToUserAnimeListMutation = { __typename?: 'Mutation', createUserAnimeList?: { __typename?: 'CreateUserAnimeListPayload', animeList?: { __typename?: 'AnimeList', title: string, id: any } | null | undefined } | null | undefined };
+export type AddAnimeToUserAnimeListMutation = { __typename?: 'Mutation', createUserAnimeList?: { __typename?: 'CreateUserAnimeListPayload', animeList?: { __typename?: 'AnimeList', id: any, nodeId: string, privacy: AnimeListPrivacy, title: string } | null | undefined } | null | undefined };
 
 export type DeleteAnimeFromListMutationVariables = Exact<{
   animeId: Scalars['UUID'];
@@ -12007,7 +11952,7 @@ export type DeleteAnimeFromListMutationVariables = Exact<{
 }>;
 
 
-export type DeleteAnimeFromListMutation = { __typename?: 'Mutation', deleteUserAnimeListByAnimeListIdAndAnimeId?: { __typename?: 'DeleteUserAnimeListPayload', clientMutationId?: string | null | undefined, deletedUserAnimeListNodeId?: string | null | undefined, query?: { __typename?: 'Query', animes?: { __typename?: 'AnimeConnection', nodes: Array<{ __typename?: 'Anime', id: any, title: string, coverImage?: string | null | undefined, numberOfEpisodes?: number | null | undefined, averageWatcherRating?: any | null | undefined, userLiked?: boolean | null | undefined, userRating?: any | null | undefined, userWatchStatus?: WatchingStatusEnum | null | undefined, userEpisodeCount?: any | null | undefined, startBroadcastDatetime?: any | null | undefined, airingStatusType?: AiringStatusTypes | null | undefined }> } | null | undefined } | null | undefined } | null | undefined };
+export type DeleteAnimeFromListMutation = { __typename?: 'Mutation', deleteUserAnimeListByAnimeListIdAndAnimeId?: { __typename?: 'DeleteUserAnimeListPayload', clientMutationId?: string | null | undefined, deletedUserAnimeListNodeId?: string | null | undefined, query?: { __typename?: 'Query', animes?: { __typename?: 'AnimeConnection', nodes: Array<{ __typename?: 'Anime', id: any, title: string, coverImage?: string | null | undefined, numberOfEpisodes?: number | null | undefined, averageWatcherRating?: any | null | undefined, userLiked?: boolean | null | undefined, userRating?: any | null | undefined, userWatchStatus?: string | null | undefined, userEpisodeCount?: any | null | undefined, startBroadcastDatetime?: any | null | undefined, airingStatusType?: AiringStatusTypes | null | undefined }> } | null | undefined } | null | undefined } | null | undefined };
 
 export type AddAnimeToListMutationVariables = Exact<{
   inputAnimeId: Scalars['UUID'];
@@ -12016,7 +11961,7 @@ export type AddAnimeToListMutationVariables = Exact<{
 }>;
 
 
-export type AddAnimeToListMutation = { __typename?: 'Mutation', insertAnimeToUserList?: { __typename?: 'InsertAnimeToUserListPayload', clientMutationId?: string | null | undefined, query?: { __typename?: 'Query', animes?: { __typename?: 'AnimeConnection', nodes: Array<{ __typename?: 'Anime', id: any, title: string, coverImage?: string | null | undefined, numberOfEpisodes?: number | null | undefined, averageWatcherRating?: any | null | undefined, userLiked?: boolean | null | undefined, userRating?: any | null | undefined, userWatchStatus?: WatchingStatusEnum | null | undefined, userEpisodeCount?: any | null | undefined, startBroadcastDatetime?: any | null | undefined, airingStatusType?: AiringStatusTypes | null | undefined }> } | null | undefined } | null | undefined } | null | undefined };
+export type AddAnimeToListMutation = { __typename?: 'Mutation', insertAnimeToUserList?: { __typename?: 'InsertAnimeToUserListPayload', clientMutationId?: string | null | undefined, query?: { __typename?: 'Query', animes?: { __typename?: 'AnimeConnection', nodes: Array<{ __typename?: 'Anime', id: any, title: string, coverImage?: string | null | undefined, numberOfEpisodes?: number | null | undefined, averageWatcherRating?: any | null | undefined, userLiked?: boolean | null | undefined, userRating?: any | null | undefined, userWatchStatus?: string | null | undefined, userEpisodeCount?: any | null | undefined, startBroadcastDatetime?: any | null | undefined, airingStatusType?: AiringStatusTypes | null | undefined }> } | null | undefined } | null | undefined } | null | undefined };
 
 export type CreateNewListMutationVariables = Exact<{
   userId: Scalars['String'];
@@ -12024,7 +11969,7 @@ export type CreateNewListMutationVariables = Exact<{
 }>;
 
 
-export type CreateNewListMutation = { __typename?: 'Mutation', createAnimeList?: { __typename?: 'CreateAnimeListPayload', animeList?: { __typename?: 'AnimeList', title: string, id: any } | null | undefined } | null | undefined };
+export type CreateNewListMutation = { __typename?: 'Mutation', createAnimeList?: { __typename?: 'CreateAnimeListPayload', animeList?: { __typename?: 'AnimeList', id: any, nodeId: string, privacy: AnimeListPrivacy, title: string } | null | undefined } | null | undefined };
 
 export type UpdateUserAnimeListMutationVariables = Exact<{
   animeListId: Scalars['UUID'];
@@ -12050,14 +11995,14 @@ export type UpsertUserWatchStatusMutationVariables = Exact<{
 }>;
 
 
-export type UpsertUserWatchStatusMutation = { __typename?: 'Mutation', upsertUserWatchStatus?: { __typename?: 'UpsertUserWatchStatusPayload', clientMutationId?: string | null | undefined, query?: { __typename?: 'Query', animes?: { __typename?: 'AnimeConnection', nodes: Array<{ __typename?: 'Anime', id: any, title: string, coverImage?: string | null | undefined, numberOfEpisodes?: number | null | undefined, averageWatcherRating?: any | null | undefined, userLiked?: boolean | null | undefined, userRating?: any | null | undefined, userWatchStatus?: WatchingStatusEnum | null | undefined, userEpisodeCount?: any | null | undefined, startBroadcastDatetime?: any | null | undefined, airingStatusType?: AiringStatusTypes | null | undefined }> } | null | undefined } | null | undefined } | null | undefined };
+export type UpsertUserWatchStatusMutation = { __typename?: 'Mutation', upsertUserWatchStatus?: { __typename?: 'UpsertUserWatchStatusPayload', clientMutationId?: string | null | undefined, query?: { __typename?: 'Query', animes?: { __typename?: 'AnimeConnection', nodes: Array<{ __typename?: 'Anime', id: any, title: string, coverImage?: string | null | undefined, numberOfEpisodes?: number | null | undefined, averageWatcherRating?: any | null | undefined, userLiked?: boolean | null | undefined, userRating?: any | null | undefined, userWatchStatus?: string | null | undefined, userEpisodeCount?: any | null | undefined, startBroadcastDatetime?: any | null | undefined, airingStatusType?: AiringStatusTypes | null | undefined }> } | null | undefined } | null | undefined } | null | undefined };
 
 export type CreateNewListAddAnimeMutationVariables = Exact<{
   animeidinput: Scalars['UUID'];
 }>;
 
 
-export type CreateNewListAddAnimeMutation = { __typename?: 'Mutation', createNewListAddAnime?: { __typename?: 'CreateNewListAddAnimePayload', clientMutationId?: string | null | undefined, user?: { __typename?: 'User', animeLists: { __typename?: 'AnimeListsConnection', nodes: Array<{ __typename?: 'AnimeList', title: string, id: any }> } } | null | undefined } | null | undefined };
+export type CreateNewListAddAnimeMutation = { __typename?: 'Mutation', createNewListAddAnime?: { __typename?: 'CreateNewListAddAnimePayload', clientMutationId?: string | null | undefined, query?: { __typename?: 'Query', animeLists?: { __typename?: 'AnimeListsConnection', nodes: Array<{ __typename?: 'AnimeList', id: any, nodeId: string, privacy: AnimeListPrivacy, title: string }> } | null | undefined } | null | undefined } | null | undefined };
 
 export type UpdateListIndexMutationVariables = Exact<{
   animeId: Scalars['UUID'];
@@ -12068,10 +12013,25 @@ export type UpdateListIndexMutationVariables = Exact<{
 
 export type UpdateListIndexMutation = { __typename?: 'Mutation', updateUserAnimeListByAnimeListIdAndAnimeId?: { __typename?: 'UpdateUserAnimeListPayload', clientMutationId?: string | null | undefined, query?: { __typename?: 'Query', userCustomAnimeList?: { __typename?: 'CustomAnimeListsConnection', nodes: Array<{ __typename?: 'CustomAnimeList', id?: string | null | undefined, animeId?: any | null | undefined, averageWatcherRating?: any | null | undefined, imageUrl?: string | null | undefined, listName?: string | null | undefined, mediaType?: string | null | undefined, numberOfEpisodes?: number | null | undefined, title?: string | null | undefined, userEpisodesWatched?: number | null | undefined, userScore?: any | null | undefined, watchStatus?: string | null | undefined, animeIndex?: string | null | undefined }> } | null | undefined } | null | undefined } | null | undefined };
 
+export type DeleteUserAnimeListMutationVariables = Exact<{
+  listId: Scalars['UUID'];
+}>;
+
+
+export type DeleteUserAnimeListMutation = { __typename?: 'Mutation', deleteAnimeList?: { __typename?: 'DeleteAnimeListPayload', clientMutationId?: string | null | undefined, query?: { __typename?: 'Query', animeLists?: { __typename?: 'AnimeListsConnection', nodes: Array<{ __typename?: 'AnimeList', id: any, nodeId: string, privacy: AnimeListPrivacy, title: string }> } | null | undefined } | null | undefined } | null | undefined };
+
+export type UpdateUserAnimeListTitleMutationVariables = Exact<{
+  listId: Scalars['UUID'];
+  title: Scalars['String'];
+}>;
+
+
+export type UpdateUserAnimeListTitleMutation = { __typename?: 'Mutation', updateAnimeList?: { __typename?: 'UpdateAnimeListPayload', clientMutationId?: string | null | undefined, query?: { __typename?: 'Query', animeLists?: { __typename?: 'AnimeListsConnection', nodes: Array<{ __typename?: 'AnimeList', id: any, nodeId: string, privacy: AnimeListPrivacy, title: string }> } | null | undefined } | null | undefined } | null | undefined };
+
 export type WeeklyAnimesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type WeeklyAnimesQuery = { __typename?: 'Query', animes?: { __typename?: 'AnimeConnection', nodes: Array<{ __typename?: 'Anime', id: any, title: string, coverImage?: string | null | undefined, numberOfEpisodes?: number | null | undefined, averageWatcherRating?: any | null | undefined, userLiked?: boolean | null | undefined, userRating?: any | null | undefined, userWatchStatus?: WatchingStatusEnum | null | undefined, userEpisodeCount?: any | null | undefined, startBroadcastDatetime?: any | null | undefined, airingStatusType?: AiringStatusTypes | null | undefined }> } | null | undefined };
+export type WeeklyAnimesQuery = { __typename?: 'Query', animes?: { __typename?: 'AnimeConnection', nodes: Array<{ __typename?: 'Anime', id: any, title: string, coverImage?: string | null | undefined, numberOfEpisodes?: number | null | undefined, averageWatcherRating?: any | null | undefined, userLiked?: boolean | null | undefined, userRating?: any | null | undefined, userWatchStatus?: string | null | undefined, userEpisodeCount?: any | null | undefined, startBroadcastDatetime?: any | null | undefined, airingStatusType?: AiringStatusTypes | null | undefined }> } | null | undefined };
 
 export type CurrentlyAiringContinuedQueryVariables = Exact<{
   limit: Scalars['Int'];
@@ -12080,7 +12040,7 @@ export type CurrentlyAiringContinuedQueryVariables = Exact<{
 }>;
 
 
-export type CurrentlyAiringContinuedQuery = { __typename?: 'Query', animes?: { __typename?: 'AnimeConnection', nodes: Array<{ __typename?: 'Anime', id: any, title: string, coverImage?: string | null | undefined, numberOfEpisodes?: number | null | undefined, averageWatcherRating?: any | null | undefined, userLiked?: boolean | null | undefined, userRating?: any | null | undefined, userWatchStatus?: WatchingStatusEnum | null | undefined, userEpisodeCount?: any | null | undefined, startBroadcastDatetime?: any | null | undefined, airingStatusType?: AiringStatusTypes | null | undefined }> } | null | undefined };
+export type CurrentlyAiringContinuedQuery = { __typename?: 'Query', animes?: { __typename?: 'AnimeConnection', nodes: Array<{ __typename?: 'Anime', id: any, title: string, coverImage?: string | null | undefined, numberOfEpisodes?: number | null | undefined, averageWatcherRating?: any | null | undefined, userLiked?: boolean | null | undefined, userRating?: any | null | undefined, userWatchStatus?: string | null | undefined, userEpisodeCount?: any | null | undefined, startBroadcastDatetime?: any | null | undefined, airingStatusType?: AiringStatusTypes | null | undefined }> } | null | undefined };
 
 export type CurrentlyAiringQueryVariables = Exact<{
   limit: Scalars['Int'];
@@ -12089,19 +12049,19 @@ export type CurrentlyAiringQueryVariables = Exact<{
 }>;
 
 
-export type CurrentlyAiringQuery = { __typename?: 'Query', animes?: { __typename?: 'AnimeConnection', nodes: Array<{ __typename?: 'Anime', id: any, title: string, coverImage?: string | null | undefined, numberOfEpisodes?: number | null | undefined, averageWatcherRating?: any | null | undefined, userLiked?: boolean | null | undefined, userRating?: any | null | undefined, userWatchStatus?: WatchingStatusEnum | null | undefined, userEpisodeCount?: any | null | undefined, startBroadcastDatetime?: any | null | undefined, airingStatusType?: AiringStatusTypes | null | undefined }> } | null | undefined };
+export type CurrentlyAiringQuery = { __typename?: 'Query', animes?: { __typename?: 'AnimeConnection', nodes: Array<{ __typename?: 'Anime', id: any, title: string, coverImage?: string | null | undefined, numberOfEpisodes?: number | null | undefined, averageWatcherRating?: any | null | undefined, userLiked?: boolean | null | undefined, userRating?: any | null | undefined, userWatchStatus?: string | null | undefined, userEpisodeCount?: any | null | undefined, startBroadcastDatetime?: any | null | undefined, airingStatusType?: AiringStatusTypes | null | undefined }> } | null | undefined };
 
 export type HighestRatedAnimesQueryVariables = Exact<{
   limit: Scalars['Int'];
 }>;
 
 
-export type HighestRatedAnimesQuery = { __typename?: 'Query', animes?: { __typename?: 'AnimeConnection', nodes: Array<{ __typename?: 'Anime', id: any, title: string, coverImage?: string | null | undefined, numberOfEpisodes?: number | null | undefined, averageWatcherRating?: any | null | undefined, userLiked?: boolean | null | undefined, userRating?: any | null | undefined, userWatchStatus?: WatchingStatusEnum | null | undefined, userEpisodeCount?: any | null | undefined, startBroadcastDatetime?: any | null | undefined, airingStatusType?: AiringStatusTypes | null | undefined }> } | null | undefined };
+export type HighestRatedAnimesQuery = { __typename?: 'Query', animes?: { __typename?: 'AnimeConnection', nodes: Array<{ __typename?: 'Anime', id: any, title: string, coverImage?: string | null | undefined, numberOfEpisodes?: number | null | undefined, averageWatcherRating?: any | null | undefined, userLiked?: boolean | null | undefined, userRating?: any | null | undefined, userWatchStatus?: string | null | undefined, userEpisodeCount?: any | null | undefined, startBroadcastDatetime?: any | null | undefined, airingStatusType?: AiringStatusTypes | null | undefined }> } | null | undefined };
 
 export type UserListsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type UserListsQuery = { __typename?: 'Query', animeLists?: { __typename?: 'AnimeListsConnection', nodes: Array<{ __typename?: 'AnimeList', id: any, privacy: AnimeListPrivacy, title: string }> } | null | undefined };
+export type UserListsQuery = { __typename?: 'Query', animeLists?: { __typename?: 'AnimeListsConnection', nodes: Array<{ __typename?: 'AnimeList', id: any, nodeId: string, privacy: AnimeListPrivacy, title: string }> } | null | undefined };
 
 export type UserCustomAnimeListQueryVariables = Exact<{
   listId: Scalars['UUID'];
@@ -12123,11 +12083,11 @@ export type UserAnimeListsQueryVariables = Exact<{ [key: string]: never; }>;
 export type UserAnimeListsQuery = { __typename?: 'Query', allUserAnimes?: { __typename?: 'UserAnimeListTypesConnection', nodes: Array<{ __typename?: 'UserAnimeListType', id?: any | null | undefined, listId?: any | null | undefined, listName?: string | null | undefined, title?: string | null | undefined, coverImage?: string | null | undefined, privacy?: AnimeListPrivacy | null | undefined }> } | null | undefined };
 
 export type GetUserAnimeListsQueryVariables = Exact<{
-  watchStatus?: Maybe<WatchingStatusEnum>;
+  watchStatus: Scalars['String'];
 }>;
 
 
-export type GetUserAnimeListsQuery = { __typename?: 'Query', getUserAnimeLists?: { __typename?: 'UserListsConnection', nodes: Array<{ __typename?: 'UserList', id?: any | null | undefined, title?: string | null | undefined, userId?: string | null | undefined, animes?: Array<{ __typename?: 'UserListAnime', title?: string | null | undefined, url?: string | null | undefined, watchStatus?: WatchingStatusEnum | null | undefined, id?: any | null | undefined } | null | undefined> | null | undefined }> } | null | undefined };
+export type GetUserAnimeListsQuery = { __typename?: 'Query', getUserAnimeLists?: { __typename?: 'UserListsConnection', nodes: Array<{ __typename?: 'UserList', id?: any | null | undefined, title?: string | null | undefined, userId?: string | null | undefined, animes?: Array<{ __typename?: 'UserListAnime', id?: any | null | undefined, title?: string | null | undefined, coverImage?: string | null | undefined, averageWatcherRating?: any | null | undefined, airingStatusType?: string | null | undefined, numberOfEpisodes?: any | null | undefined, startBroadcastDatetime?: any | null | undefined, userEpisodeCount?: any | null | undefined, userLiked?: boolean | null | undefined, userRating?: any | null | undefined, userWatchStatus?: string | null | undefined } | null | undefined> | null | undefined }> } | null | undefined };
 
 export const AnimeCardFragmentFragmentDoc = gql`
     fragment AnimeCardFragment on Anime {
@@ -12146,8 +12106,10 @@ export const AnimeCardFragmentFragmentDoc = gql`
     `;
 export const AnimeListFragmentFragmentDoc = gql`
     fragment AnimeListFragment on AnimeList {
-  title
   id
+  nodeId
+  privacy
+  title
 }
     `;
 export const CustomAnimeListFragmentFragmentDoc = gql`
@@ -12164,6 +12126,21 @@ export const CustomAnimeListFragmentFragmentDoc = gql`
   userScore
   watchStatus
   animeIndex
+}
+    `;
+export const UserListAnimeFragmentFragmentDoc = gql`
+    fragment UserListAnimeFragment on UserListAnime {
+  id
+  title
+  coverImage
+  averageWatcherRating
+  airingStatusType
+  numberOfEpisodes
+  startBroadcastDatetime
+  userEpisodeCount
+  userLiked
+  userRating
+  userWatchStatus
 }
     `;
 export const UpdateWatchStatusDocument = gql`
@@ -12332,7 +12309,7 @@ export const CreateNewListAddAnimeDocument = gql`
   createNewListAddAnime(
     input: {animeidinput: $animeidinput, clientMutationId: "NewListCreatedAndAnimeAdded"}
   ) {
-    user {
+    query {
       animeLists {
         nodes {
           ...AnimeListFragment
@@ -12366,6 +12343,44 @@ export const UpdateListIndexDocument = gql`
 
 export function useUpdateListIndexMutation() {
   return Urql.useMutation<UpdateListIndexMutation, UpdateListIndexMutationVariables>(UpdateListIndexDocument);
+};
+export const DeleteUserAnimeListDocument = gql`
+    mutation DeleteUserAnimeList($listId: UUID!) {
+  deleteAnimeList(input: {id: $listId, clientMutationId: "List Deleted"}) {
+    clientMutationId
+    query {
+      animeLists {
+        nodes {
+          ...AnimeListFragment
+        }
+      }
+    }
+  }
+}
+    ${AnimeListFragmentFragmentDoc}`;
+
+export function useDeleteUserAnimeListMutation() {
+  return Urql.useMutation<DeleteUserAnimeListMutation, DeleteUserAnimeListMutationVariables>(DeleteUserAnimeListDocument);
+};
+export const UpdateUserAnimeListTitleDocument = gql`
+    mutation UpdateUserAnimeListTitle($listId: UUID!, $title: String!) {
+  updateAnimeList(
+    input: {patch: {title: $title}, id: $listId, clientMutationId: "List Updated"}
+  ) {
+    query {
+      animeLists {
+        nodes {
+          ...AnimeListFragment
+        }
+      }
+    }
+    clientMutationId
+  }
+}
+    ${AnimeListFragmentFragmentDoc}`;
+
+export function useUpdateUserAnimeListTitleMutation() {
+  return Urql.useMutation<UpdateUserAnimeListTitleMutation, UpdateUserAnimeListTitleMutationVariables>(UpdateUserAnimeListTitleDocument);
 };
 export const WeeklyAnimesDocument = gql`
     query WeeklyAnimes {
@@ -12429,13 +12444,11 @@ export const UserListsDocument = gql`
     query userLists {
   animeLists {
     nodes {
-      id
-      privacy
-      title
+      ...AnimeListFragment
     }
   }
 }
-    `;
+    ${AnimeListFragmentFragmentDoc}`;
 
 export function useUserListsQuery(options: Omit<Urql.UseQueryArgs<UserListsQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<UserListsQuery>({ query: UserListsDocument, ...options });
@@ -12489,22 +12502,19 @@ export function useUserAnimeListsQuery(options: Omit<Urql.UseQueryArgs<UserAnime
   return Urql.useQuery<UserAnimeListsQuery>({ query: UserAnimeListsDocument, ...options });
 };
 export const GetUserAnimeListsDocument = gql`
-    query GetUserAnimeLists($watchStatus: WatchingStatusEnum) {
+    query GetUserAnimeLists($watchStatus: String!) {
   getUserAnimeLists(watchStatusInput: $watchStatus) {
     nodes {
       id
       title
       userId
       animes {
-        title
-        url
-        watchStatus
-        id
+        ...UserListAnimeFragment
       }
     }
   }
 }
-    `;
+    ${UserListAnimeFragmentFragmentDoc}`;
 
 export function useGetUserAnimeListsQuery(options: Omit<Urql.UseQueryArgs<GetUserAnimeListsQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<GetUserAnimeListsQuery>({ query: GetUserAnimeListsDocument, ...options });
@@ -14587,6 +14597,14 @@ export default {
         "name": "AnimeList",
         "fields": [
           {
+            "name": "createdAt",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
             "name": "id",
             "type": {
               "kind": "NON_NULL",
@@ -14594,6 +14612,14 @@ export default {
                 "kind": "SCALAR",
                 "name": "Any"
               }
+            },
+            "args": []
+          },
+          {
+            "name": "isDefault",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
             },
             "args": []
           },
@@ -22696,26 +22722,6 @@ export default {
             ]
           },
           {
-            "name": "deleteAnimeListByUserIdAndTitle",
-            "type": {
-              "kind": "OBJECT",
-              "name": "DeleteAnimeListPayload",
-              "ofType": null
-            },
-            "args": [
-              {
-                "name": "input",
-                "type": {
-                  "kind": "NON_NULL",
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "Any"
-                  }
-                }
-              }
-            ]
-          },
-          {
             "name": "deleteAnimeProducer",
             "type": {
               "kind": "OBJECT",
@@ -23997,26 +24003,6 @@ export default {
           },
           {
             "name": "updateAnimeListByNodeId",
-            "type": {
-              "kind": "OBJECT",
-              "name": "UpdateAnimeListPayload",
-              "ofType": null
-            },
-            "args": [
-              {
-                "name": "input",
-                "type": {
-                  "kind": "NON_NULL",
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "Any"
-                  }
-                }
-              }
-            ]
-          },
-          {
-            "name": "updateAnimeListByUserIdAndTitle",
             "type": {
               "kind": "OBJECT",
               "name": "UpdateAnimeListPayload",
@@ -27423,36 +27409,6 @@ export default {
             "args": [
               {
                 "name": "nodeId",
-                "type": {
-                  "kind": "NON_NULL",
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "Any"
-                  }
-                }
-              }
-            ]
-          },
-          {
-            "name": "animeListByUserIdAndTitle",
-            "type": {
-              "kind": "OBJECT",
-              "name": "AnimeList",
-              "ofType": null
-            },
-            "args": [
-              {
-                "name": "title",
-                "type": {
-                  "kind": "NON_NULL",
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "Any"
-                  }
-                }
-              },
-              {
-                "name": "userId",
                 "type": {
                   "kind": "NON_NULL",
                   "ofType": {
@@ -35597,7 +35553,47 @@ export default {
         "name": "UserListAnime",
         "fields": [
           {
+            "name": "airingStatusType",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "averageWatcherRating",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "coverImage",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
             "name": "id",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "numberOfEpisodes",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "startBroadcastDatetime",
             "type": {
               "kind": "SCALAR",
               "name": "Any"
@@ -35613,7 +35609,7 @@ export default {
             "args": []
           },
           {
-            "name": "url",
+            "name": "userEpisodeCount",
             "type": {
               "kind": "SCALAR",
               "name": "Any"
@@ -35621,7 +35617,23 @@ export default {
             "args": []
           },
           {
-            "name": "watchStatus",
+            "name": "userLiked",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "userRating",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "userWatchStatus",
             "type": {
               "kind": "SCALAR",
               "name": "Any"

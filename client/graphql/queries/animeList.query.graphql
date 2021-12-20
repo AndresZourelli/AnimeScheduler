@@ -51,9 +51,7 @@ query HighestRatedAnimes($limit: Int!) {
 query userLists {
   animeLists {
     nodes {
-      id
-      privacy
-      title
+      ...AnimeListFragment
     }
   }
 }

@@ -1008,7 +1008,6 @@ type Query implements Node {
   animeImage(animeId: UUID!, imageId: UUID!): AnimeImage
   animeLicensor(animeId: UUID!, licensorId: UUID!): AnimeLicensor
   animeList(id: UUID!): AnimeList
-  animeListByUserIdAndTitle(userId: String!, title: String!): AnimeList
   animeProducer(animeId: UUID!, producerId: UUID!): AnimeProducer
   animeStaff(animeId: UUID!, personId: UUID!, staffRoleId: UUID!): AnimeStaff
   animeStudio(animeId: UUID!, studioId: UUID!): AnimeStudio
@@ -1072,7 +1071,7 @@ type Query implements Node {
 
   """Reads and enables pagination through a set of `UserList`."""
   getUserAnimeLists(
-    watchStatusInput: WatchingStatusEnum
+    watchStatusInput: String
 
     """Only read the first `n` values of the set."""
     first: Int
@@ -4778,6 +4777,8 @@ type AnimeList implements Node {
   id: UUID!
   title: String!
   privacy: AnimeListPrivacy!
+  isDefault: Boolean
+  createdAt: Datetime
 
   """Reads a single `User` that is related to this `AnimeList`."""
   user: User
@@ -4876,6 +4877,10 @@ enum UserAnimeListsOrderBy {
   ANIME_LIST_BY_ANIME_LIST_ID__TITLE_DESC
   ANIME_LIST_BY_ANIME_LIST_ID__PRIVACY_ASC
   ANIME_LIST_BY_ANIME_LIST_ID__PRIVACY_DESC
+  ANIME_LIST_BY_ANIME_LIST_ID__IS_DEFAULT_ASC
+  ANIME_LIST_BY_ANIME_LIST_ID__IS_DEFAULT_DESC
+  ANIME_LIST_BY_ANIME_LIST_ID__CREATED_AT_ASC
+  ANIME_LIST_BY_ANIME_LIST_ID__CREATED_AT_DESC
   ANIME_BY_ANIME_ID__ID_ASC
   ANIME_BY_ANIME_ID__ID_DESC
   ANIME_BY_ANIME_ID__MAL_ID_ASC
@@ -4968,6 +4973,10 @@ enum AnimeListsOrderBy {
   TITLE_DESC
   PRIVACY_ASC
   PRIVACY_DESC
+  IS_DEFAULT_ASC
+  IS_DEFAULT_DESC
+  CREATED_AT_ASC
+  CREATED_AT_DESC
   PRIMARY_KEY_ASC
   PRIMARY_KEY_DESC
   USER_BY_USER_ID__ID_ASC
@@ -4992,6 +5001,12 @@ input AnimeListCondition {
 
   """Checks for equality with the object’s `privacy` field."""
   privacy: AnimeListPrivacy
+
+  """Checks for equality with the object’s `isDefault` field."""
+  isDefault: Boolean
+
+  """Checks for equality with the object’s `createdAt` field."""
+  createdAt: Datetime
 }
 
 """
@@ -5009,6 +5024,12 @@ input AnimeListFilter {
 
   """Filter by the object’s `privacy` field."""
   privacy: AnimeListPrivacyFilter
+
+  """Filter by the object’s `isDefault` field."""
+  isDefault: BooleanFilter
+
+  """Filter by the object’s `createdAt` field."""
+  createdAt: DatetimeFilter
 
   """Checks for all expressions in this list."""
   and: [AnimeListFilter!]
@@ -5060,6 +5081,90 @@ input AnimeListPrivacyFilter {
 
   """Greater than or equal to the specified value."""
   greaterThanOrEqualTo: AnimeListPrivacy
+}
+
+"""
+A filter to be used against Boolean fields. All fields are combined with a logical ‘and.’
+"""
+input BooleanFilter {
+  """
+  Is null (if `true` is specified) or is not null (if `false` is specified).
+  """
+  isNull: Boolean
+
+  """Equal to the specified value."""
+  equalTo: Boolean
+
+  """Not equal to the specified value."""
+  notEqualTo: Boolean
+
+  """
+  Not equal to the specified value, treating null like an ordinary value.
+  """
+  distinctFrom: Boolean
+
+  """Equal to the specified value, treating null like an ordinary value."""
+  notDistinctFrom: Boolean
+
+  """Included in the specified list."""
+  in: [Boolean!]
+
+  """Not included in the specified list."""
+  notIn: [Boolean!]
+
+  """Less than the specified value."""
+  lessThan: Boolean
+
+  """Less than or equal to the specified value."""
+  lessThanOrEqualTo: Boolean
+
+  """Greater than the specified value."""
+  greaterThan: Boolean
+
+  """Greater than or equal to the specified value."""
+  greaterThanOrEqualTo: Boolean
+}
+
+"""
+A filter to be used against Datetime fields. All fields are combined with a logical ‘and.’
+"""
+input DatetimeFilter {
+  """
+  Is null (if `true` is specified) or is not null (if `false` is specified).
+  """
+  isNull: Boolean
+
+  """Equal to the specified value."""
+  equalTo: Datetime
+
+  """Not equal to the specified value."""
+  notEqualTo: Datetime
+
+  """
+  Not equal to the specified value, treating null like an ordinary value.
+  """
+  distinctFrom: Datetime
+
+  """Equal to the specified value, treating null like an ordinary value."""
+  notDistinctFrom: Datetime
+
+  """Included in the specified list."""
+  in: [Datetime!]
+
+  """Not included in the specified list."""
+  notIn: [Datetime!]
+
+  """Less than the specified value."""
+  lessThan: Datetime
+
+  """Less than or equal to the specified value."""
+  lessThanOrEqualTo: Datetime
+
+  """Greater than the specified value."""
+  greaterThan: Datetime
+
+  """Greater than or equal to the specified value."""
+  greaterThanOrEqualTo: Datetime
 }
 
 """A connection to a list of `UserWatchStatus` values."""
@@ -5612,48 +5717,6 @@ input AnimeFilter {
 }
 
 """
-A filter to be used against Datetime fields. All fields are combined with a logical ‘and.’
-"""
-input DatetimeFilter {
-  """
-  Is null (if `true` is specified) or is not null (if `false` is specified).
-  """
-  isNull: Boolean
-
-  """Equal to the specified value."""
-  equalTo: Datetime
-
-  """Not equal to the specified value."""
-  notEqualTo: Datetime
-
-  """
-  Not equal to the specified value, treating null like an ordinary value.
-  """
-  distinctFrom: Datetime
-
-  """Equal to the specified value, treating null like an ordinary value."""
-  notDistinctFrom: Datetime
-
-  """Included in the specified list."""
-  in: [Datetime!]
-
-  """Not included in the specified list."""
-  notIn: [Datetime!]
-
-  """Less than the specified value."""
-  lessThan: Datetime
-
-  """Less than or equal to the specified value."""
-  lessThanOrEqualTo: Datetime
-
-  """Greater than the specified value."""
-  greaterThan: Datetime
-
-  """Greater than or equal to the specified value."""
-  greaterThanOrEqualTo: Datetime
-}
-
-"""
 A filter to be used against AgeRatingTypes fields. All fields are combined with a logical ‘and.’
 """
 input AgeRatingTypesFilter {
@@ -5861,48 +5924,6 @@ input SeasonFilter {
 
   """Greater than or equal to the specified value."""
   greaterThanOrEqualTo: Season
-}
-
-"""
-A filter to be used against Boolean fields. All fields are combined with a logical ‘and.’
-"""
-input BooleanFilter {
-  """
-  Is null (if `true` is specified) or is not null (if `false` is specified).
-  """
-  isNull: Boolean
-
-  """Equal to the specified value."""
-  equalTo: Boolean
-
-  """Not equal to the specified value."""
-  notEqualTo: Boolean
-
-  """
-  Not equal to the specified value, treating null like an ordinary value.
-  """
-  distinctFrom: Boolean
-
-  """Equal to the specified value, treating null like an ordinary value."""
-  notDistinctFrom: Boolean
-
-  """Included in the specified list."""
-  in: [Boolean!]
-
-  """Not included in the specified list."""
-  notIn: [Boolean!]
-
-  """Less than the specified value."""
-  lessThan: Boolean
-
-  """Less than or equal to the specified value."""
-  lessThanOrEqualTo: Boolean
-
-  """Greater than the specified value."""
-  greaterThan: Boolean
-
-  """Greater than or equal to the specified value."""
-  greaterThanOrEqualTo: Boolean
 }
 
 """A connection to a list of `CharacterByAnime` values."""
@@ -6800,20 +6821,17 @@ type UserList {
 }
 
 type UserListAnime {
-  title: String
   id: UUID
-  watchStatus: WatchingStatusEnum
-  url: String
-}
-
-enum WatchingStatusEnum {
-  WATCHING
-  PLAN_TO_WATCH
-  COMPLETED
-  REWATCHING
-  PAUSED
-  DROPPED
-  NOT_WATCHING
+  title: String
+  coverImage: String
+  numberOfEpisodes: BigFloat
+  averageWatcherRating: BigFloat
+  userLiked: Boolean
+  userRating: BigFloat
+  userWatchStatus: String
+  userEpisodeCount: BigFloat
+  startBroadcastDatetime: Datetime
+  airingStatusType: String
 }
 
 """A `UserList` edge in the connection."""
@@ -7255,14 +7273,6 @@ type Mutation {
     The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
     """
     input: UpdateAnimeListInput!
-  ): UpdateAnimeListPayload
-
-  """Updates a single `AnimeList` using a unique key and a patch."""
-  updateAnimeListByUserIdAndTitle(
-    """
-    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    """
-    input: UpdateAnimeListByUserIdAndTitleInput!
   ): UpdateAnimeListPayload
 
   """
@@ -7775,14 +7785,6 @@ type Mutation {
     The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
     """
     input: DeleteAnimeListInput!
-  ): DeleteAnimeListPayload
-
-  """Deletes a single `AnimeList` using a unique key."""
-  deleteAnimeListByUserIdAndTitle(
-    """
-    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    """
-    input: DeleteAnimeListByUserIdAndTitleInput!
   ): DeleteAnimeListPayload
 
   """Deletes a single `AnimeProducer` using its globally unique id."""
@@ -8785,6 +8787,8 @@ input AnimeListInput {
   userId: String!
   title: String
   privacy: AnimeListPrivacy
+  isDefault: Boolean
+  createdAt: Datetime
 }
 
 """The output of our create `AnimeProducer` mutation."""
@@ -10148,6 +10152,8 @@ input AnimeListPatch {
   userId: String
   title: String
   privacy: AnimeListPrivacy
+  isDefault: Boolean
+  createdAt: Datetime
 }
 
 """All input for the `updateAnimeList` mutation."""
@@ -10163,22 +10169,6 @@ input UpdateAnimeListInput {
   """
   patch: AnimeListPatch!
   id: UUID!
-}
-
-"""All input for the `updateAnimeListByUserIdAndTitle` mutation."""
-input UpdateAnimeListByUserIdAndTitleInput {
-  """
-  An arbitrary string value with no semantic meaning. Will be included in the
-  payload verbatim. May be used to track mutations by the client.
-  """
-  clientMutationId: String
-
-  """
-  An object where the defined keys will be set on the `AnimeList` being updated.
-  """
-  patch: AnimeListPatch!
-  userId: String!
-  title: String!
 }
 
 """The output of our update `AnimeProducer` mutation."""
@@ -12101,17 +12091,6 @@ input DeleteAnimeListInput {
   id: UUID!
 }
 
-"""All input for the `deleteAnimeListByUserIdAndTitle` mutation."""
-input DeleteAnimeListByUserIdAndTitleInput {
-  """
-  An arbitrary string value with no semantic meaning. Will be included in the
-  payload verbatim. May be used to track mutations by the client.
-  """
-  clientMutationId: String
-  userId: String!
-  title: String!
-}
-
 """The output of our delete `AnimeProducer` mutation."""
 type DeleteAnimeProducerPayload {
   """
@@ -13316,7 +13295,7 @@ input AddAnimeToListInput {
   animeId: UUID
   title: String
   privacy: AnimeListPrivacy
-  watchStatus: WatchingStatusEnum
+  watchStatus: String
 }
 
 """The output of our `createNewListAddAnime` mutation."""
@@ -13390,7 +13369,7 @@ input InsertAnimeToUserListInput {
   inputAnimeId: UUID
   inputAnimeListId: UUID
   inputAnimeIndex: String
-  inputWatchStatus: WatchingStatusEnum
+  inputWatchStatus: String
 }
 
 """The output of our `insertOrUpdateAnimeUserScore` mutation."""
@@ -13726,8 +13705,6 @@ type UpsertAnimeListPayload {
 """Where conditions for the upsert `AnimeList` mutation."""
 input UpsertAnimeListWhere {
   id: UUID
-  userId: String
-  title: String
 }
 
 """All input for the upsert `AnimeList` mutation."""

@@ -21,3 +21,35 @@ mutation UpdateListIndex(
     clientMutationId
   }
 }
+
+mutation DeleteUserAnimeList($listId: UUID!) {
+  deleteAnimeList(input: { id: $listId, clientMutationId: "List Deleted" }) {
+    clientMutationId
+    query {
+      animeLists {
+        nodes {
+          ...AnimeListFragment
+        }
+      }
+    }
+  }
+}
+
+mutation UpdateUserAnimeListTitle($listId: UUID!, $title: String!) {
+  updateAnimeList(
+    input: {
+      patch: { title: $title }
+      id: $listId
+      clientMutationId: "List Updated"
+    }
+  ) {
+    query {
+      animeLists {
+        nodes {
+          ...AnimeListFragment
+        }
+      }
+    }
+    clientMutationId
+  }
+}

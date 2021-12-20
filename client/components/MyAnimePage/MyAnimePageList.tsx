@@ -1,11 +1,11 @@
 import AnimeCard from "@/components/Home/AnimeCard";
-import { useGetUserAnimeListsQuery, WatchingStatusEnum } from "@/graphql";
+import { useGetUserAnimeListsQuery, WatchStatusTypes } from "@/graphql";
 import { useAuth } from "@/lib/Auth/FirebaseAuth";
 import { Box, Button, Grid, Heading, Text } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 
 interface MyAnimePageListInterface {
-  watchingStatus: WatchingStatusEnum;
+  watchingStatus: WatchStatusTypes;
 }
 
 const MyAnimePageList = ({ watchingStatus }: MyAnimePageListInterface) => {
@@ -15,18 +15,12 @@ const MyAnimePageList = ({ watchingStatus }: MyAnimePageListInterface) => {
     variables: { watchStatus: watchingStatus },
     pause: !user?.uid,
   });
-  console.log(animesResult);
+
   const [animeLists, setAnimeLists] = useState([]);
   const [hasMoreAnimes, setHasMoreAnimes] = useState(false);
 
   const [numberOfAnimes, setNumberOfAnimes] = useState(animeLists?.length);
   const [currentAnimesDisplayed, setAnimesDisplayed] = useState(10);
-
-  // useEffect(() => {
-  //   if (!animesResult.fetching && animesResult.data?.getUserAnimeLists) {
-  //     setAnimeLists(animesResult.data.getUserAnimeLists.nodes);
-  //   }
-  // }, [animesResult]);
 
   useEffect(() => {
     if (currentAnimesDisplayed < numberOfAnimes) {
@@ -63,14 +57,11 @@ const MyAnimePageList = ({ watchingStatus }: MyAnimePageListInterface) => {
           gap={4}
         >
           {animesResult.data?.getUserAnimeLists?.nodes.map((list, idx) => {
-            console.log(list);
             const test = list.animes.map((anime, idx2) => (
               <AnimeCard
                 key={anime.id + "-" + list.id}
-                url={anime.url}
                 id={anime.id}
                 {...anime}
-                userSection
               />
             ));
             return (
