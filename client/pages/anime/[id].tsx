@@ -3,121 +3,39 @@ import { Spinner, Box, Flex } from "@chakra-ui/react";
 import AnimePageInfoCol from "@/components/Home/AnimePageInfoCol";
 import AnimePageMain from "@/components/Home/AnimePageMain";
 import { useQuery } from "urql";
-
-const GET_ANIME = `
-  query SelectAnime($animeId: UUID!) {
-    anime(id: $animeId) {
-      ageRating {
-        ageRatingType
-      }
-      airingStatus {
-        airingStatusType
-      }
-      alternateAnimeNames {
-        nodes {
-          name
-        }
-      }
-      animeCharacters(filter: {languageId: {equalTo: "4bb3de26-f4b2-4e44-8e65-364e32a19e22"}}) {
-        nodes {
-          character {
-            id
-            name
-            characterImage {
-            url
-          }
-          }
-          characterRole {
-            role
-            id
-          }
-          language {
-            language
-          }
-          person {
-            firstName
-            lastName
-            id
-            personImage {
-            url
-          }
-          }
-        }
-      }
-      animeGenres {
-        nodes {
-          genre {
-            genre
-          }
-        }
-      }
-      animeLicensors {
-        nodes {
-          licensor {
-            licensor
-          }
-        }
-      }
-      animeProducers {
-        nodes {
-          producer {
-            producer
-          }
-        }
-      }
-      animeStaffs {
-        nodes {
-          person {
-            firstName
-            lastName
-            id
-            personImage {
-              url
-            }
-          }
-          staffRole {
-            role
-          }
-        }
-      }
-      animeStudios {
-        nodes {
-          studio {
-            studio
-          }
-        }
-      }
-      averageWatcherRating
-      description
-      duration
-      endBroadcastDatetime
-      mediaType {
-        mediaType
-      }
-      numberOfEpisodes
-      profileImage {
-        url
-      }
-      season {
-        season
-      }
-      sourceMaterial {
-        sourceMaterialType
-      }
-      title
-      startBroadcastDatetime
-    }
-  }
-`;
+import { useGetAnimeQuery, LanguageType } from "@/graphql";
+import { useState, useEffect } from "react";
 
 const AnimePage = () => {
   const router = useRouter();
   const { id } = router.query;
-  const [AnimeResult, AnimeQuery] = useQuery({
-    query: GET_ANIME,
-    variables: { animeId: id },
+  const [getLanguage, setLanguage] = useState<LanguageType>(
+    LanguageType.Japanese
+  );
+  const [getNumberOfCharacters, setNumberOfCharacters] = useState(10);
+  const [getNumberOfStaff, setNumberOfStaff] = useState(10);
+  const [getNextCharacters, setGetNextCharacters] = useState(null);
+  const [getNextStaff, setGetNextStaff] = useState(null);
+
+  const [AnimeResult, AnimeQuery] = useGetAnimeQuery({
+    variables: {
+      animeId: id,
+      voiceActorLanguage: getLanguage,
+      numOfAnimeToDisplay: 10,
+      afterCursor: getNextCharacters,
+      numOfStaffToDisplay: 10,
+      StaffCursor: getNextStaff,
+    },
     pause: !id,
   });
+
+  const getMore = () => {
+    if (AnimeResult?.data?.anime?.animeCharacters?.pageInfo?.hasNextPage) {
+      setGetNextCharacters(
+        AnimeResult.data.anime.animeCharacters.pageInfo.endCursor
+      );
+    }
+  };
 
   if (!id || !AnimeResult.data) {
     return (
@@ -130,11 +48,13 @@ const AnimePage = () => {
   return (
     <Box position="relative">
       <Flex position="relative">
+        {console.log(AnimeResult.data)}
         <AnimePageInfoCol
           {...AnimeResult.data?.anime}
           fetching={AnimeResult.fetching}
         />
         <AnimePageMain
+          getNext={getMore}
           {...AnimeResult.data?.anime}
           fetching={AnimeResult.fetching}
         />

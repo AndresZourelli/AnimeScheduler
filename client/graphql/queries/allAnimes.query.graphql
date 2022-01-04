@@ -1,7 +1,0 @@
-query WeeklyAnimes {
-  animes(filter: { airingStatusType: { equalTo: CURRENTLY_AIRING } }) {
-    nodes {
-      ...AnimeCardFragment
-    }
-  }
-}

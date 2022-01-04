@@ -1,0 +1,142 @@
+query WeeklyAnimes {
+  animes(
+    filter: {
+      airingStatusType: { equalTo: CURRENTLY_AIRING }
+      userWatchStatus: { isNull: false }
+    }
+  ) {
+    nodes {
+      ...AnimeCardFragment
+    }
+  }
+}
+
+query SearchAnimes(
+  $after: Cursor = null
+  $first: Int = null
+  $searchInput: String
+) {
+  searchAnimes(searchInput: $searchInput, after: $after, first: $first) {
+    nodes {
+      ...AnimeCardFragment
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+      hasPreviousPage
+      startCursor
+    }
+    totalCount
+  }
+}
+
+query GetAnime(
+  $animeId: UUID!
+  $voiceActorLanguage: LanguageType!
+  $afterCursor: Cursor
+  $numOfAnimeToDisplay: Int!
+  $numOfStaffToDisplay: Int!
+  $StaffCursor: Cursor
+) {
+  anime(id: $animeId) {
+    ...AnimeCardFragment
+    ageRatingType
+    description
+    duration
+    endBroadcastDatetime
+    mediaType
+    season
+    seasonYear
+    sourceMaterialType
+    genreList {
+      nodes {
+        id
+        genre
+      }
+    }
+    licensorList {
+      nodes {
+        id
+        licensor
+      }
+    }
+    producerList {
+      nodes {
+        id
+        producer
+      }
+    }
+    studioList {
+      nodes {
+        id
+        studio
+      }
+    }
+    alternateAnimeNames {
+      nodes {
+        id
+        name
+      }
+    }
+    animeCharacters(
+      filter: { language: { equalTo: $voiceActorLanguage } }
+      first: $numOfAnimeToDisplay
+      after: $afterCursor
+      orderBy: CHARACTER_ROLE_BY_CHARACTER_ROLE_ID__ROLE_ASC
+    ) {
+      nodes {
+        nodeId
+        characterRole {
+          role
+          id
+        }
+        person {
+          firstName
+          lastName
+          id
+          personImage {
+            url
+          }
+        }
+        language
+        character {
+          id
+          name
+          characterImage {
+            url
+          }
+        }
+      }
+      pageInfo {
+        hasNextPage
+        hasPreviousPage
+        endCursor
+        startCursor
+      }
+      totalCount
+    }
+    animeStaffs(after: $StaffCursor, first: $numOfStaffToDisplay) {
+      nodes {
+        person {
+          id
+          firstName
+          lastName
+          personImage {
+            url
+          }
+        }
+        staffRole {
+          role
+        }
+        nodeId
+      }
+      pageInfo {
+        endCursor
+        hasNextPage
+        hasPreviousPage
+        startCursor
+      }
+      totalCount
+    }
+  }
+}

@@ -1,5 +1,6 @@
 import CharacterCard from "@/components/Home/CharacterCard";
 import StaffCard from "@/components/Home/StaffCard";
+import { GetAnimeQuery, Scalars } from "@/graphql";
 import {
   Box,
   Button,
@@ -17,14 +18,27 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
+type AnimeCharacterType = GetAnimeQuery["anime"]["animeCharacters"];
+type AnimeStaffType = GetAnimeQuery["anime"]["animeStaffs"];
+type AnimeGenreType = GetAnimeQuery["anime"]["genreList"];
+interface IMainAnimePage {
+  fetching?: boolean;
+  description?: Scalars["String"];
+  animeStaffs?: AnimeStaffType;
+  animeCharacters?: AnimeCharacterType;
+  genreList?: AnimeGenreType;
+  title?: Scalars["String"];
+  getNext: () => void;
+}
 const AnimePageMain = ({
   title,
   description,
-  animeGenres,
+  genreList,
   animeCharacters,
   animeStaffs,
   fetching,
-}) => {
+  getNext,
+}: IMainAnimePage) => {
   const [hasMoreCharacters, setHasMoreCharacters] = useState(false);
   const [hasMoreActors, setHasMoreActors] = useState(false);
   const [hasMoreStaff, setHasMoreStaff] = useState(false);
@@ -38,14 +52,14 @@ const AnimePageMain = ({
     animeStaffs?.nodes?.length ?? 0
   );
   const [currentStaffDisplayed, setStaffDisplayed] = useState(10);
-
+  console.log(hasMoreCharacters, animeCharacters.pageInfo);
   useEffect(() => {
-    if (currentCharactersDisplayed < numberOfCharacters) {
+    if (animeCharacters.pageInfo.hasNextPage) {
       setHasMoreCharacters(true);
     } else {
       setHasMoreCharacters(false);
     }
-  }, [currentCharactersDisplayed, numberOfCharacters]);
+  }, [animeCharacters]);
 
   useEffect(() => {
     if (currentStaffDisplayed < numberOfStaff) {
@@ -91,16 +105,16 @@ const AnimePageMain = ({
       <Box my="3" mr="16">
         <Heading mb="2">{title}</Heading>
         <Box mb="2">
-          {animeGenres.nodes.map((genre, idx) => {
+          {genreList.nodes.map((genre, idx) => {
             return (
               <Tag
                 position="relative"
                 mr="2"
                 variant="outline"
                 key={uuidv4()}
-                colorScheme={tagColors[idx % animeGenres.nodes.length]}
+                colorScheme={tagColors[idx % genreList.nodes.length]}
               >
-                <TagLabel>{genre.genre.genre}</TagLabel>
+                <TagLabel>{genre.genre}</TagLabel>
               </Tag>
             );
           })}
@@ -115,15 +129,18 @@ const AnimePageMain = ({
           mb={4}
         >
           {animeCharacters?.nodes
-            ?.slice(0, currentCharactersDisplayed)
             .sort(characterSort)
             .map((characterPreview) => {
               return (
                 <CharacterCard
-                  key={characterPreview.character.id}
+                  key={
+                    characterPreview.character.id +
+                    "-" +
+                    characterPreview.person.id
+                  }
                   character={characterPreview.character}
                   role={characterPreview.characterRole.role}
-                  language={characterPreview.language.language}
+                  language={characterPreview.language}
                   actor={characterPreview.person}
                 />
               );
@@ -131,7 +148,7 @@ const AnimePageMain = ({
         </Grid>
         <Box display="flex">
           {hasMoreCharacters ? (
-            <Button m="auto" onClick={charactersShowMore} size="sm">
+            <Button m="auto" onClick={getNext} size="sm">
               Show More
             </Button>
           ) : null}
@@ -139,17 +156,9 @@ const AnimePageMain = ({
         <Divider my="3" />
         <Heading>Staff</Heading>
         <Flex wrap="wrap" justifyContent="flexStart">
-          {animeStaffs?.nodes
-            ?.slice(0, currentStaffDisplayed)
-            .map((staffPreview) => {
-              return (
-                <StaffCard
-                  key={staffPreview.person.id}
-                  staff={staffPreview.person}
-                  role={staffPreview.staffRole.role}
-                />
-              );
-            })}
+          {animeStaffs?.nodes.map((staffPreview) => {
+            return <StaffCard key={staffPreview.person.id} {...staffPreview} />;
+          })}
         </Flex>
         <Box display="flex">
           {hasMoreStaff ? (

@@ -1,50 +1,27 @@
+import { CustomAnimeList, WatchStatusTypes } from "@/graphql";
+import { Icon } from "@chakra-ui/icons";
 import {
-  Box,
-  Heading,
-  Tab,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Tabs,
-  Divider,
-  Table,
-  Thead,
-  Tbody,
-  Tfoot,
-  Tr,
-  Th,
-  Td,
-  TableCaption,
-  Skeleton,
   AspectRatio,
-  Select,
-  Text,
+  Box,
   IconButton,
+  Select,
+  Skeleton,
+  Td,
+  Text,
   Tooltip,
+  Tr,
 } from "@chakra-ui/react";
-import {
-  useUserCustomAnimeListQuery,
-  useUpdateListIndexMutation,
-  CustomAnimeList,
-  WatchStatusTypes,
-} from "@/graphql";
 import NextImage from "next/image";
-import { useState, useEffect } from "react";
-import {
-  DragDropContext,
-  Draggable,
-  Droppable,
-  DropResult,
-} from "react-beautiful-dnd";
-import { reorder } from "@/utilities/helperFunctions";
-import { Lexico } from "@/utilities/lexicoHelperFunctions";
+import { useEffect, useState } from "react";
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
+import { MdDragHandle } from "react-icons/md";
 import useAnimeList from "../Hooks/useAnimeList";
 
 interface AnimeItemInterface extends CustomAnimeList {
   animeIndex?: string;
   index?: number;
   dragProvided?: any;
+  dragSnapshot?: any;
 }
 
 const CustomListRow = ({
@@ -60,6 +37,7 @@ const CustomListRow = ({
   averageWatcherRating,
   dragProvided,
   animeId,
+  dragSnapshot,
 }: AnimeItemInterface) => {
   const [imageLoaded, setImageLoaded] = useState(false);
   const {
@@ -100,9 +78,14 @@ const CustomListRow = ({
     <Tr
       key={id}
       ref={dragProvided.innerRef}
-      {...dragProvided.dragHandleProps}
       {...dragProvided.draggableProps}
+      isDragging={dragSnapshot.isDragging && !dragSnapshot.isDropAnimating}
     >
+      <Td>
+        <Box {...dragProvided.dragHandleProps}>
+          <Icon as={MdDragHandle} boxSize="7" />
+        </Box>
+      </Td>
       <Td>{index + 1}</Td>
       <Td w="150px">
         <Skeleton isLoaded={imageLoaded} maxW="50px">

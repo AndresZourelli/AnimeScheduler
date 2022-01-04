@@ -17,3 +17,11 @@ query GetLastItemInCustomList($animeListId: UUID!) {
     }
   }
 }
+
+query UserCustomAnimeListByWatchStatus($watchStatusType: String!) {
+  animes(filter: { userWatchStatus: { equalTo: $watchStatusType } }) {
+    nodes {
+      ...AnimeCardFragment
+    }
+  }
+}

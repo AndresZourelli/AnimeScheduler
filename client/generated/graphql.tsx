@@ -276,16 +276,24 @@ export type Anime = Node & {
   description?: Maybe<Scalars['String']>;
   duration?: Maybe<Scalars['Int']>;
   endBroadcastDatetime?: Maybe<Scalars['Datetime']>;
+  /** Reads and enables pagination through a set of `Genre`. */
+  genreList: GenresConnection;
   id: Scalars['UUID'];
+  /** Reads and enables pagination through a set of `Licensor`. */
+  licensorList: LicensorsConnection;
   malId?: Maybe<Scalars['Int']>;
   mediaType?: Maybe<MediaTypes>;
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID'];
   numberOfEpisodes?: Maybe<Scalars['Int']>;
+  /** Reads and enables pagination through a set of `Producer`. */
+  producerList: ProducersConnection;
   season?: Maybe<Season>;
   seasonYear?: Maybe<Scalars['Int']>;
   sourceMaterialType?: Maybe<SourceMaterialTypes>;
   startBroadcastDatetime?: Maybe<Scalars['Datetime']>;
+  /** Reads and enables pagination through a set of `Studio`. */
+  studioList: StudiosConnection;
   title: Scalars['String'];
   /** Reads and enables pagination through a set of `UserAnimeList`. */
   userAnimeLists: UserAnimeListsConnection;
@@ -418,6 +426,46 @@ export type AnimeCharacterPreviewArgs = {
 };
 
 
+export type AnimeGenreListArgs = {
+  after?: Maybe<Scalars['Cursor']>;
+  before?: Maybe<Scalars['Cursor']>;
+  filter?: Maybe<GenreFilter>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+};
+
+
+export type AnimeLicensorListArgs = {
+  after?: Maybe<Scalars['Cursor']>;
+  before?: Maybe<Scalars['Cursor']>;
+  filter?: Maybe<LicensorFilter>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+};
+
+
+export type AnimeProducerListArgs = {
+  after?: Maybe<Scalars['Cursor']>;
+  before?: Maybe<Scalars['Cursor']>;
+  filter?: Maybe<ProducerFilter>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+};
+
+
+export type AnimeStudioListArgs = {
+  after?: Maybe<Scalars['Cursor']>;
+  before?: Maybe<Scalars['Cursor']>;
+  filter?: Maybe<StudioFilter>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+};
+
+
 export type AnimeUserAnimeListsArgs = {
   after?: Maybe<Scalars['Cursor']>;
   before?: Maybe<Scalars['Cursor']>;
@@ -453,18 +501,23 @@ export type AnimeUserWatchStatusesArgs = {
   orderBy?: Maybe<Array<UserWatchStatusesOrderBy>>;
 };
 
-export type AnimeCharacter = {
+export type AnimeCharacter = Node & {
   __typename?: 'AnimeCharacter';
   /** Reads a single `Anime` that is related to this `AnimeCharacter`. */
   anime?: Maybe<Anime>;
+  animeId: Scalars['UUID'];
   /** Reads a single `Character` that is related to this `AnimeCharacter`. */
   character?: Maybe<Character>;
+  characterId: Scalars['UUID'];
   /** Reads a single `CharacterRole` that is related to this `AnimeCharacter`. */
   characterRole?: Maybe<CharacterRole>;
-  /** Reads a single `Language` that is related to this `AnimeCharacter`. */
-  language?: Maybe<Language>;
+  characterRoleId: Scalars['UUID'];
+  language: LanguageType;
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  nodeId: Scalars['ID'];
   /** Reads a single `Person` that is related to this `AnimeCharacter`. */
   person?: Maybe<Person>;
+  personId: Scalars['UUID'];
 };
 
 /**
@@ -478,8 +531,8 @@ export type AnimeCharacterCondition = {
   characterId?: Maybe<Scalars['UUID']>;
   /** Checks for equality with the object’s `characterRoleId` field. */
   characterRoleId?: Maybe<Scalars['UUID']>;
-  /** Checks for equality with the object’s `languageId` field. */
-  languageId?: Maybe<Scalars['UUID']>;
+  /** Checks for equality with the object’s `language` field. */
+  language?: Maybe<LanguageType>;
   /** Checks for equality with the object’s `personId` field. */
   personId?: Maybe<Scalars['UUID']>;
 };
@@ -494,8 +547,8 @@ export type AnimeCharacterFilter = {
   characterId?: Maybe<UuidFilter>;
   /** Filter by the object’s `characterRoleId` field. */
   characterRoleId?: Maybe<UuidFilter>;
-  /** Filter by the object’s `languageId` field. */
-  languageId?: Maybe<UuidFilter>;
+  /** Filter by the object’s `language` field. */
+  language?: Maybe<LanguageTypeFilter>;
   /** Negates the expression. */
   not?: Maybe<AnimeCharacterFilter>;
   /** Checks for any expressions in this list. */
@@ -509,7 +562,7 @@ export type AnimeCharacterInput = {
   animeId: Scalars['UUID'];
   characterId: Scalars['UUID'];
   characterRoleId: Scalars['UUID'];
-  languageId: Scalars['UUID'];
+  language: LanguageType;
   personId: Scalars['UUID'];
 };
 
@@ -518,7 +571,7 @@ export type AnimeCharacterPatch = {
   animeId?: Maybe<Scalars['UUID']>;
   characterId?: Maybe<Scalars['UUID']>;
   characterRoleId?: Maybe<Scalars['UUID']>;
-  languageId?: Maybe<Scalars['UUID']>;
+  language?: Maybe<LanguageType>;
   personId?: Maybe<Scalars['UUID']>;
 };
 
@@ -598,12 +651,8 @@ export enum AnimeCharactersOrderBy {
   CharacterRoleByCharacterRoleIdRoleDesc = 'CHARACTER_ROLE_BY_CHARACTER_ROLE_ID__ROLE_DESC',
   CharacterRoleIdAsc = 'CHARACTER_ROLE_ID_ASC',
   CharacterRoleIdDesc = 'CHARACTER_ROLE_ID_DESC',
-  LanguageByLanguageIdIdAsc = 'LANGUAGE_BY_LANGUAGE_ID__ID_ASC',
-  LanguageByLanguageIdIdDesc = 'LANGUAGE_BY_LANGUAGE_ID__ID_DESC',
-  LanguageByLanguageIdLanguageAsc = 'LANGUAGE_BY_LANGUAGE_ID__LANGUAGE_ASC',
-  LanguageByLanguageIdLanguageDesc = 'LANGUAGE_BY_LANGUAGE_ID__LANGUAGE_DESC',
-  LanguageIdAsc = 'LANGUAGE_ID_ASC',
-  LanguageIdDesc = 'LANGUAGE_ID_DESC',
+  LanguageAsc = 'LANGUAGE_ASC',
+  LanguageDesc = 'LANGUAGE_DESC',
   Natural = 'NATURAL',
   PersonByPersonIdAlternateNamesAsc = 'PERSON_BY_PERSON_ID__ALTERNATE_NAMES_ASC',
   PersonByPersonIdAlternateNamesDesc = 'PERSON_BY_PERSON_ID__ALTERNATE_NAMES_DESC',
@@ -622,7 +671,9 @@ export enum AnimeCharactersOrderBy {
   PersonByPersonIdPersonImageIdAsc = 'PERSON_BY_PERSON_ID__PERSON_IMAGE_ID_ASC',
   PersonByPersonIdPersonImageIdDesc = 'PERSON_BY_PERSON_ID__PERSON_IMAGE_ID_DESC',
   PersonIdAsc = 'PERSON_ID_ASC',
-  PersonIdDesc = 'PERSON_ID_DESC'
+  PersonIdDesc = 'PERSON_ID_DESC',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC'
 }
 
 /** A condition to be used against `Anime` object types. All fields are tested for equality and combined with a logical ‘and.’ */
@@ -1929,8 +1980,6 @@ export type Character = Node & {
   name: Scalars['String'];
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID'];
-  /** Reads and enables pagination through a set of `VoiceActor`. */
-  voiceActors: VoiceActorsConnection;
 };
 
 
@@ -1956,136 +2005,6 @@ export type CharacterCharacterImagesArgs = {
   offset?: Maybe<Scalars['Int']>;
   orderBy?: Maybe<Array<CharacterImagesOrderBy>>;
 };
-
-
-export type CharacterVoiceActorsArgs = {
-  after?: Maybe<Scalars['Cursor']>;
-  before?: Maybe<Scalars['Cursor']>;
-  condition?: Maybe<VoiceActorCondition>;
-  filter?: Maybe<VoiceActorFilter>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  orderBy?: Maybe<Array<VoiceActorsOrderBy>>;
-};
-
-export type CharacterByAnime = {
-  __typename?: 'CharacterByAnime';
-  actorFirstName?: Maybe<Scalars['String']>;
-  actorId?: Maybe<Scalars['UUID']>;
-  actorImage?: Maybe<Scalars['String']>;
-  actorLastName?: Maybe<Scalars['String']>;
-  animeId?: Maybe<Scalars['UUID']>;
-  characterId?: Maybe<Scalars['UUID']>;
-  characterImage?: Maybe<Scalars['String']>;
-  characterName?: Maybe<Scalars['String']>;
-  language?: Maybe<Scalars['String']>;
-  role?: Maybe<Scalars['String']>;
-};
-
-/**
- * A condition to be used against `CharacterByAnime` object types. All fields are
- * tested for equality and combined with a logical ‘and.’
- */
-export type CharacterByAnimeCondition = {
-  /** Checks for equality with the object’s `actorFirstName` field. */
-  actorFirstName?: Maybe<Scalars['String']>;
-  /** Checks for equality with the object’s `actorId` field. */
-  actorId?: Maybe<Scalars['UUID']>;
-  /** Checks for equality with the object’s `actorImage` field. */
-  actorImage?: Maybe<Scalars['String']>;
-  /** Checks for equality with the object’s `actorLastName` field. */
-  actorLastName?: Maybe<Scalars['String']>;
-  /** Checks for equality with the object’s `animeId` field. */
-  animeId?: Maybe<Scalars['UUID']>;
-  /** Checks for equality with the object’s `characterId` field. */
-  characterId?: Maybe<Scalars['UUID']>;
-  /** Checks for equality with the object’s `characterImage` field. */
-  characterImage?: Maybe<Scalars['String']>;
-  /** Checks for equality with the object’s `characterName` field. */
-  characterName?: Maybe<Scalars['String']>;
-  /** Checks for equality with the object’s `language` field. */
-  language?: Maybe<Scalars['String']>;
-  /** Checks for equality with the object’s `role` field. */
-  role?: Maybe<Scalars['String']>;
-};
-
-/** A connection to a list of `CharacterByAnime` values. */
-export type CharacterByAnimeConnection = {
-  __typename?: 'CharacterByAnimeConnection';
-  /** A list of edges which contains the `CharacterByAnime` and cursor to aid in pagination. */
-  edges: Array<CharacterByAnimeEdge>;
-  /** A list of `CharacterByAnime` objects. */
-  nodes: Array<CharacterByAnime>;
-  /** Information to aid in pagination. */
-  pageInfo: PageInfo;
-  /** The count of *all* `CharacterByAnime` you could get from the connection. */
-  totalCount: Scalars['Int'];
-};
-
-/** A `CharacterByAnime` edge in the connection. */
-export type CharacterByAnimeEdge = {
-  __typename?: 'CharacterByAnimeEdge';
-  /** A cursor for use in pagination. */
-  cursor?: Maybe<Scalars['Cursor']>;
-  /** The `CharacterByAnime` at the end of the edge. */
-  node: CharacterByAnime;
-};
-
-/** A filter to be used against `CharacterByAnime` object types. All fields are combined with a logical ‘and.’ */
-export type CharacterByAnimeFilter = {
-  /** Filter by the object’s `actorFirstName` field. */
-  actorFirstName?: Maybe<StringFilter>;
-  /** Filter by the object’s `actorId` field. */
-  actorId?: Maybe<UuidFilter>;
-  /** Filter by the object’s `actorImage` field. */
-  actorImage?: Maybe<StringFilter>;
-  /** Filter by the object’s `actorLastName` field. */
-  actorLastName?: Maybe<StringFilter>;
-  /** Checks for all expressions in this list. */
-  and?: Maybe<Array<CharacterByAnimeFilter>>;
-  /** Filter by the object’s `animeId` field. */
-  animeId?: Maybe<UuidFilter>;
-  /** Filter by the object’s `characterId` field. */
-  characterId?: Maybe<UuidFilter>;
-  /** Filter by the object’s `characterImage` field. */
-  characterImage?: Maybe<StringFilter>;
-  /** Filter by the object’s `characterName` field. */
-  characterName?: Maybe<StringFilter>;
-  /** Filter by the object’s `language` field. */
-  language?: Maybe<StringFilter>;
-  /** Negates the expression. */
-  not?: Maybe<CharacterByAnimeFilter>;
-  /** Checks for any expressions in this list. */
-  or?: Maybe<Array<CharacterByAnimeFilter>>;
-  /** Filter by the object’s `role` field. */
-  role?: Maybe<StringFilter>;
-};
-
-/** Methods to use when ordering `CharacterByAnime`. */
-export enum CharacterByAnimeOrderBy {
-  ActorFirstNameAsc = 'ACTOR_FIRST_NAME_ASC',
-  ActorFirstNameDesc = 'ACTOR_FIRST_NAME_DESC',
-  ActorIdAsc = 'ACTOR_ID_ASC',
-  ActorIdDesc = 'ACTOR_ID_DESC',
-  ActorImageAsc = 'ACTOR_IMAGE_ASC',
-  ActorImageDesc = 'ACTOR_IMAGE_DESC',
-  ActorLastNameAsc = 'ACTOR_LAST_NAME_ASC',
-  ActorLastNameDesc = 'ACTOR_LAST_NAME_DESC',
-  AnimeIdAsc = 'ANIME_ID_ASC',
-  AnimeIdDesc = 'ANIME_ID_DESC',
-  CharacterIdAsc = 'CHARACTER_ID_ASC',
-  CharacterIdDesc = 'CHARACTER_ID_DESC',
-  CharacterImageAsc = 'CHARACTER_IMAGE_ASC',
-  CharacterImageDesc = 'CHARACTER_IMAGE_DESC',
-  CharacterNameAsc = 'CHARACTER_NAME_ASC',
-  CharacterNameDesc = 'CHARACTER_NAME_DESC',
-  LanguageAsc = 'LANGUAGE_ASC',
-  LanguageDesc = 'LANGUAGE_DESC',
-  Natural = 'NATURAL',
-  RoleAsc = 'ROLE_ASC',
-  RoleDesc = 'ROLE_DESC'
-}
 
 /**
  * A condition to be used against `Character` object types. All fields are tested
@@ -2380,9 +2299,7 @@ export enum CharactersOrderBy {
   NameDesc = 'NAME_DESC',
   Natural = 'NATURAL',
   PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
-  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
-  VoiceActorsByCharacterIdCountAsc = 'VOICE_ACTORS_BY_CHARACTER_ID__COUNT_ASC',
-  VoiceActorsByCharacterIdCountDesc = 'VOICE_ACTORS_BY_CHARACTER_ID__COUNT_DESC'
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC'
 }
 
 /** All input for the create `AlternateAnimeName` mutation. */
@@ -2449,8 +2366,6 @@ export type CreateAnimeCharacterPayload = {
    * unchanged and unused. May be used by a client to track mutations.
    */
   clientMutationId?: Maybe<Scalars['String']>;
-  /** Reads a single `Language` that is related to this `AnimeCharacter`. */
-  language?: Maybe<Language>;
   /** Reads a single `Person` that is related to this `AnimeCharacter`. */
   person?: Maybe<Person>;
   /** Our root query field type. Allows us to run any query from our mutation payload. */
@@ -2961,39 +2876,6 @@ export type CreateImagePayload = {
 /** The output of our create `Image` mutation. */
 export type CreateImagePayloadImageEdgeArgs = {
   orderBy?: Maybe<Array<ImagesOrderBy>>;
-};
-
-/** All input for the create `Language` mutation. */
-export type CreateLanguageInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>;
-  /** The `Language` to be created by this mutation. */
-  language: LanguageInput;
-};
-
-/** The output of our create `Language` mutation. */
-export type CreateLanguagePayload = {
-  __typename?: 'CreateLanguagePayload';
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']>;
-  /** The `Language` that was created by this mutation. */
-  language?: Maybe<Language>;
-  /** An edge for our `Language`. May be used by Relay 1. */
-  languageEdge?: Maybe<LanguagesEdge>;
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>;
-};
-
-
-/** The output of our create `Language` mutation. */
-export type CreateLanguagePayloadLanguageEdgeArgs = {
-  orderBy?: Maybe<Array<LanguagesOrderBy>>;
 };
 
 /** All input for the create `Licensor` mutation. */
@@ -3542,16 +3424,28 @@ export type DeleteAnimeByNodeIdInput = {
   nodeId: Scalars['ID'];
 };
 
-/** All input for the `deleteAnimeCharacterByAnimeIdAndCharacterIdAndLanguageIdAndPersonId` mutation. */
-export type DeleteAnimeCharacterByAnimeIdAndCharacterIdAndLanguageIdAndPersonIdInput = {
-  animeId: Scalars['UUID'];
-  characterId: Scalars['UUID'];
+/** All input for the `deleteAnimeCharacterByNodeId` mutation. */
+export type DeleteAnimeCharacterByNodeIdInput = {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: Maybe<Scalars['String']>;
-  languageId: Scalars['UUID'];
+  /** The globally unique `ID` which will identify a single `AnimeCharacter` to be deleted. */
+  nodeId: Scalars['ID'];
+};
+
+/** All input for the `deleteAnimeCharacter` mutation. */
+export type DeleteAnimeCharacterInput = {
+  animeId: Scalars['UUID'];
+  characterId: Scalars['UUID'];
+  characterRoleId: Scalars['UUID'];
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  language: LanguageType;
   personId: Scalars['UUID'];
 };
 
@@ -3574,8 +3468,6 @@ export type DeleteAnimeCharacterPayload = {
    */
   clientMutationId?: Maybe<Scalars['String']>;
   deletedAnimeCharacterNodeId?: Maybe<Scalars['ID']>;
-  /** Reads a single `Language` that is related to this `AnimeCharacter`. */
-  language?: Maybe<Language>;
   /** Reads a single `Person` that is related to this `AnimeCharacter`. */
   person?: Maybe<Person>;
   /** Our root query field type. Allows us to run any query from our mutation payload. */
@@ -4268,60 +4160,6 @@ export type DeleteImagePayload = {
 /** The output of our delete `Image` mutation. */
 export type DeleteImagePayloadImageEdgeArgs = {
   orderBy?: Maybe<Array<ImagesOrderBy>>;
-};
-
-/** All input for the `deleteLanguageByLanguage` mutation. */
-export type DeleteLanguageByLanguageInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>;
-  language: Scalars['String'];
-};
-
-/** All input for the `deleteLanguageByNodeId` mutation. */
-export type DeleteLanguageByNodeIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>;
-  /** The globally unique `ID` which will identify a single `Language` to be deleted. */
-  nodeId: Scalars['ID'];
-};
-
-/** All input for the `deleteLanguage` mutation. */
-export type DeleteLanguageInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>;
-  id: Scalars['UUID'];
-};
-
-/** The output of our delete `Language` mutation. */
-export type DeleteLanguagePayload = {
-  __typename?: 'DeleteLanguagePayload';
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']>;
-  deletedLanguageNodeId?: Maybe<Scalars['ID']>;
-  /** The `Language` that was deleted by this mutation. */
-  language?: Maybe<Language>;
-  /** An edge for our `Language`. May be used by Relay 1. */
-  languageEdge?: Maybe<LanguagesEdge>;
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>;
-};
-
-
-/** The output of our delete `Language` mutation. */
-export type DeleteLanguagePayloadLanguageEdgeArgs = {
-  orderBy?: Maybe<Array<LanguagesOrderBy>>;
 };
 
 /** All input for the `deleteLicensorByLicensor` mutation. */
@@ -5180,99 +5018,43 @@ export type IntFilter = {
   notIn?: Maybe<Array<Scalars['Int']>>;
 };
 
-export type Language = Node & {
-  __typename?: 'Language';
-  /** Reads and enables pagination through a set of `AnimeCharacter`. */
-  animeCharacters: AnimeCharactersConnection;
-  id: Scalars['UUID'];
-  language: Scalars['String'];
-  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
-  nodeId: Scalars['ID'];
-};
-
-
-export type LanguageAnimeCharactersArgs = {
-  after?: Maybe<Scalars['Cursor']>;
-  before?: Maybe<Scalars['Cursor']>;
-  condition?: Maybe<AnimeCharacterCondition>;
-  filter?: Maybe<AnimeCharacterFilter>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  orderBy?: Maybe<Array<AnimeCharactersOrderBy>>;
-};
-
-/**
- * A condition to be used against `Language` object types. All fields are tested
- * for equality and combined with a logical ‘and.’
- */
-export type LanguageCondition = {
-  /** Checks for equality with the object’s `id` field. */
-  id?: Maybe<Scalars['UUID']>;
-  /** Checks for equality with the object’s `language` field. */
-  language?: Maybe<Scalars['String']>;
-};
-
-/** A filter to be used against `Language` object types. All fields are combined with a logical ‘and.’ */
-export type LanguageFilter = {
-  /** Checks for all expressions in this list. */
-  and?: Maybe<Array<LanguageFilter>>;
-  /** Filter by the object’s `id` field. */
-  id?: Maybe<UuidFilter>;
-  /** Filter by the object’s `language` field. */
-  language?: Maybe<StringFilter>;
-  /** Negates the expression. */
-  not?: Maybe<LanguageFilter>;
-  /** Checks for any expressions in this list. */
-  or?: Maybe<Array<LanguageFilter>>;
-};
-
-/** An input for mutations affecting `Language` */
-export type LanguageInput = {
-  id?: Maybe<Scalars['UUID']>;
-  language: Scalars['String'];
-};
-
-/** Represents an update to a `Language`. Fields that are set will be updated. */
-export type LanguagePatch = {
-  id?: Maybe<Scalars['UUID']>;
-  language?: Maybe<Scalars['String']>;
-};
-
-/** A connection to a list of `Language` values. */
-export type LanguagesConnection = {
-  __typename?: 'LanguagesConnection';
-  /** A list of edges which contains the `Language` and cursor to aid in pagination. */
-  edges: Array<LanguagesEdge>;
-  /** A list of `Language` objects. */
-  nodes: Array<Language>;
-  /** Information to aid in pagination. */
-  pageInfo: PageInfo;
-  /** The count of *all* `Language` you could get from the connection. */
-  totalCount: Scalars['Int'];
-};
-
-/** A `Language` edge in the connection. */
-export type LanguagesEdge = {
-  __typename?: 'LanguagesEdge';
-  /** A cursor for use in pagination. */
-  cursor?: Maybe<Scalars['Cursor']>;
-  /** The `Language` at the end of the edge. */
-  node: Language;
-};
-
-/** Methods to use when ordering `Language`. */
-export enum LanguagesOrderBy {
-  AnimeCharactersByLanguageIdCountAsc = 'ANIME_CHARACTERS_BY_LANGUAGE_ID__COUNT_ASC',
-  AnimeCharactersByLanguageIdCountDesc = 'ANIME_CHARACTERS_BY_LANGUAGE_ID__COUNT_DESC',
-  IdAsc = 'ID_ASC',
-  IdDesc = 'ID_DESC',
-  LanguageAsc = 'LANGUAGE_ASC',
-  LanguageDesc = 'LANGUAGE_DESC',
-  Natural = 'NATURAL',
-  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
-  PrimaryKeyDesc = 'PRIMARY_KEY_DESC'
+export enum LanguageType {
+  English = 'ENGLISH',
+  French = 'FRENCH',
+  German = 'GERMAN',
+  Italian = 'ITALIAN',
+  Japanese = 'JAPANESE',
+  Korean = 'KOREAN',
+  Mandarin = 'MANDARIN',
+  PortugueseBr = 'PORTUGUESE_BR_',
+  Spanish = 'SPANISH'
 }
+
+/** A filter to be used against LanguageType fields. All fields are combined with a logical ‘and.’ */
+export type LanguageTypeFilter = {
+  /** Not equal to the specified value, treating null like an ordinary value. */
+  distinctFrom?: Maybe<LanguageType>;
+  /** Equal to the specified value. */
+  equalTo?: Maybe<LanguageType>;
+  /** Greater than the specified value. */
+  greaterThan?: Maybe<LanguageType>;
+  /** Greater than or equal to the specified value. */
+  greaterThanOrEqualTo?: Maybe<LanguageType>;
+  /** Included in the specified list. */
+  in?: Maybe<Array<LanguageType>>;
+  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
+  isNull?: Maybe<Scalars['Boolean']>;
+  /** Less than the specified value. */
+  lessThan?: Maybe<LanguageType>;
+  /** Less than or equal to the specified value. */
+  lessThanOrEqualTo?: Maybe<LanguageType>;
+  /** Equal to the specified value, treating null like an ordinary value. */
+  notDistinctFrom?: Maybe<LanguageType>;
+  /** Not equal to the specified value. */
+  notEqualTo?: Maybe<LanguageType>;
+  /** Not included in the specified list. */
+  notIn?: Maybe<Array<LanguageType>>;
+};
 
 export type Licensor = Node & {
   __typename?: 'Licensor';
@@ -5438,8 +5220,6 @@ export type Mutation = {
   createGenre?: Maybe<CreateGenrePayload>;
   /** Creates a single `Image`. */
   createImage?: Maybe<CreateImagePayload>;
-  /** Creates a single `Language`. */
-  createLanguage?: Maybe<CreateLanguagePayload>;
   /** Creates a single `Licensor`. */
   createLicensor?: Maybe<CreateLicensorPayload>;
   createNewListAddAnime?: Maybe<CreateNewListAddAnimePayload>;
@@ -5472,7 +5252,9 @@ export type Mutation = {
   /** Deletes a single `Anime` using its globally unique id. */
   deleteAnimeByNodeId?: Maybe<DeleteAnimePayload>;
   /** Deletes a single `AnimeCharacter` using a unique key. */
-  deleteAnimeCharacterByAnimeIdAndCharacterIdAndLanguageIdAndPersonId?: Maybe<DeleteAnimeCharacterPayload>;
+  deleteAnimeCharacter?: Maybe<DeleteAnimeCharacterPayload>;
+  /** Deletes a single `AnimeCharacter` using its globally unique id. */
+  deleteAnimeCharacterByNodeId?: Maybe<DeleteAnimeCharacterPayload>;
   /** Deletes a single `AnimeGenre` using a unique key. */
   deleteAnimeGenre?: Maybe<DeleteAnimeGenrePayload>;
   /** Deletes a single `AnimeGenre` using its globally unique id. */
@@ -5531,12 +5313,6 @@ export type Mutation = {
   deleteImage?: Maybe<DeleteImagePayload>;
   /** Deletes a single `Image` using its globally unique id. */
   deleteImageByNodeId?: Maybe<DeleteImagePayload>;
-  /** Deletes a single `Language` using a unique key. */
-  deleteLanguage?: Maybe<DeleteLanguagePayload>;
-  /** Deletes a single `Language` using a unique key. */
-  deleteLanguageByLanguage?: Maybe<DeleteLanguagePayload>;
-  /** Deletes a single `Language` using its globally unique id. */
-  deleteLanguageByNodeId?: Maybe<DeleteLanguagePayload>;
   /** Deletes a single `Licensor` using a unique key. */
   deleteLicensor?: Maybe<DeleteLicensorPayload>;
   /** Deletes a single `Licensor` using a unique key. */
@@ -5599,7 +5375,9 @@ export type Mutation = {
   /** Updates a single `Anime` using its globally unique id and a patch. */
   updateAnimeByNodeId?: Maybe<UpdateAnimePayload>;
   /** Updates a single `AnimeCharacter` using a unique key and a patch. */
-  updateAnimeCharacterByAnimeIdAndCharacterIdAndLanguageIdAndPersonId?: Maybe<UpdateAnimeCharacterPayload>;
+  updateAnimeCharacter?: Maybe<UpdateAnimeCharacterPayload>;
+  /** Updates a single `AnimeCharacter` using its globally unique id and a patch. */
+  updateAnimeCharacterByNodeId?: Maybe<UpdateAnimeCharacterPayload>;
   /** Updates a single `AnimeGenre` using a unique key and a patch. */
   updateAnimeGenre?: Maybe<UpdateAnimeGenrePayload>;
   /** Updates a single `AnimeGenre` using its globally unique id and a patch. */
@@ -5658,12 +5436,6 @@ export type Mutation = {
   updateImage?: Maybe<UpdateImagePayload>;
   /** Updates a single `Image` using its globally unique id and a patch. */
   updateImageByNodeId?: Maybe<UpdateImagePayload>;
-  /** Updates a single `Language` using a unique key and a patch. */
-  updateLanguage?: Maybe<UpdateLanguagePayload>;
-  /** Updates a single `Language` using a unique key and a patch. */
-  updateLanguageByLanguage?: Maybe<UpdateLanguagePayload>;
-  /** Updates a single `Language` using its globally unique id and a patch. */
-  updateLanguageByNodeId?: Maybe<UpdateLanguagePayload>;
   /** Updates a single `Licensor` using a unique key and a patch. */
   updateLicensor?: Maybe<UpdateLicensorPayload>;
   /** Updates a single `Licensor` using a unique key and a patch. */
@@ -5744,8 +5516,6 @@ export type Mutation = {
   upsertGenre?: Maybe<UpsertGenrePayload>;
   /** Upserts a single `Image`. */
   upsertImage?: Maybe<UpsertImagePayload>;
-  /** Upserts a single `Language`. */
-  upsertLanguage?: Maybe<UpsertLanguagePayload>;
   /** Upserts a single `Licensor`. */
   upsertLicensor?: Maybe<UpsertLicensorPayload>;
   /** Upserts a single `Person`. */
@@ -5872,12 +5642,6 @@ export type MutationCreateImageArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationCreateLanguageArgs = {
-  input: CreateLanguageInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
 export type MutationCreateLicensorArgs = {
   input: CreateLicensorInput;
 };
@@ -5974,8 +5738,14 @@ export type MutationDeleteAnimeByNodeIdArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteAnimeCharacterByAnimeIdAndCharacterIdAndLanguageIdAndPersonIdArgs = {
-  input: DeleteAnimeCharacterByAnimeIdAndCharacterIdAndLanguageIdAndPersonIdInput;
+export type MutationDeleteAnimeCharacterArgs = {
+  input: DeleteAnimeCharacterInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteAnimeCharacterByNodeIdArgs = {
+  input: DeleteAnimeCharacterByNodeIdInput;
 };
 
 
@@ -6150,24 +5920,6 @@ export type MutationDeleteImageArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationDeleteImageByNodeIdArgs = {
   input: DeleteImageByNodeIdInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteLanguageArgs = {
-  input: DeleteLanguageInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteLanguageByLanguageArgs = {
-  input: DeleteLanguageByLanguageInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteLanguageByNodeIdArgs = {
-  input: DeleteLanguageByNodeIdInput;
 };
 
 
@@ -6364,8 +6116,14 @@ export type MutationUpdateAnimeByNodeIdArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateAnimeCharacterByAnimeIdAndCharacterIdAndLanguageIdAndPersonIdArgs = {
-  input: UpdateAnimeCharacterByAnimeIdAndCharacterIdAndLanguageIdAndPersonIdInput;
+export type MutationUpdateAnimeCharacterArgs = {
+  input: UpdateAnimeCharacterInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateAnimeCharacterByNodeIdArgs = {
+  input: UpdateAnimeCharacterByNodeIdInput;
 };
 
 
@@ -6540,24 +6298,6 @@ export type MutationUpdateImageArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpdateImageByNodeIdArgs = {
   input: UpdateImageByNodeIdInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateLanguageArgs = {
-  input: UpdateLanguageInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateLanguageByLanguageArgs = {
-  input: UpdateLanguageByLanguageInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateLanguageByNodeIdArgs = {
-  input: UpdateLanguageByNodeIdInput;
 };
 
 
@@ -6814,13 +6554,6 @@ export type MutationUpsertGenreArgs = {
 export type MutationUpsertImageArgs = {
   input: UpsertImageInput;
   where?: Maybe<UpsertImageWhere>;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpsertLanguageArgs = {
-  input: UpsertLanguageInput;
-  where?: Maybe<UpsertLanguageWhere>;
 };
 
 
@@ -7308,7 +7041,9 @@ export type Query = Node & {
   animeByMalId?: Maybe<Anime>;
   /** Reads a single `Anime` using its globally unique `ID`. */
   animeByNodeId?: Maybe<Anime>;
-  animeCharacterByAnimeIdAndCharacterIdAndLanguageIdAndPersonId?: Maybe<AnimeCharacter>;
+  animeCharacter?: Maybe<AnimeCharacter>;
+  /** Reads a single `AnimeCharacter` using its globally unique `ID`. */
+  animeCharacterByNodeId?: Maybe<AnimeCharacter>;
   /** Reads and enables pagination through a set of `AnimeCharacter`. */
   animeCharacters?: Maybe<AnimeCharactersConnection>;
   animeGenre?: Maybe<AnimeGenre>;
@@ -7354,8 +7089,6 @@ export type Query = Node & {
   /** Reads and enables pagination through a set of `Anime`. */
   animes?: Maybe<AnimeConnection>;
   character?: Maybe<Character>;
-  /** Reads and enables pagination through a set of `CharacterByAnime`. */
-  characterByAnimes?: Maybe<CharacterByAnimeConnection>;
   characterByMalId?: Maybe<Character>;
   /** Reads a single `Character` using its globally unique `ID`. */
   characterByNodeId?: Maybe<Character>;
@@ -7388,12 +7121,6 @@ export type Query = Node & {
   imageByNodeId?: Maybe<Image>;
   /** Reads and enables pagination through a set of `Image`. */
   images?: Maybe<ImagesConnection>;
-  language?: Maybe<Language>;
-  languageByLanguage?: Maybe<Language>;
-  /** Reads a single `Language` using its globally unique `ID`. */
-  languageByNodeId?: Maybe<Language>;
-  /** Reads and enables pagination through a set of `Language`. */
-  languages?: Maybe<LanguagesConnection>;
   licensor?: Maybe<Licensor>;
   licensorByLicensor?: Maybe<Licensor>;
   /** Reads a single `Licensor` using its globally unique `ID`. */
@@ -7426,6 +7153,8 @@ export type Query = Node & {
    * which can only query top level fields if they are in a particular form.
    */
   query: Query;
+  /** Reads and enables pagination through a set of `Anime`. */
+  searchAnimes?: Maybe<AnimeConnection>;
   staffRole?: Maybe<StaffRole>;
   /** Reads a single `StaffRole` using its globally unique `ID`. */
   staffRoleByNodeId?: Maybe<StaffRole>;
@@ -7451,6 +7180,8 @@ export type Query = Node & {
   userByNodeId?: Maybe<User>;
   /** Reads and enables pagination through a set of `CustomAnimeList`. */
   userCustomAnimeList?: Maybe<CustomAnimeListsConnection>;
+  /** Reads and enables pagination through a set of `UserCustomAnimeListByStatusType`. */
+  userCustomAnimeListByStatus?: Maybe<UserCustomAnimeListByStatusTypesConnection>;
   userWatchStatus?: Maybe<UserWatchStatus>;
   /** Reads a single `UserWatchStatus` using its globally unique `ID`. */
   userWatchStatusByNodeId?: Maybe<UserWatchStatus>;
@@ -7458,8 +7189,6 @@ export type Query = Node & {
   userWatchStatuses?: Maybe<UserWatchStatusesConnection>;
   /** Reads and enables pagination through a set of `User`. */
   users?: Maybe<UsersConnection>;
-  /** Reads and enables pagination through a set of `VoiceActor`. */
-  voiceActors?: Maybe<VoiceActorsConnection>;
 };
 
 
@@ -7518,11 +7247,18 @@ export type QueryAnimeByNodeIdArgs = {
 
 
 /** The root query type which gives access points into the data universe. */
-export type QueryAnimeCharacterByAnimeIdAndCharacterIdAndLanguageIdAndPersonIdArgs = {
+export type QueryAnimeCharacterArgs = {
   animeId: Scalars['UUID'];
   characterId: Scalars['UUID'];
-  languageId: Scalars['UUID'];
+  characterRoleId: Scalars['UUID'];
+  language: LanguageType;
   personId: Scalars['UUID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryAnimeCharacterByNodeIdArgs = {
+  nodeId: Scalars['ID'];
 };
 
 
@@ -7767,19 +7503,6 @@ export type QueryCharacterArgs = {
 
 
 /** The root query type which gives access points into the data universe. */
-export type QueryCharacterByAnimesArgs = {
-  after?: Maybe<Scalars['Cursor']>;
-  before?: Maybe<Scalars['Cursor']>;
-  condition?: Maybe<CharacterByAnimeCondition>;
-  filter?: Maybe<CharacterByAnimeFilter>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  orderBy?: Maybe<Array<CharacterByAnimeOrderBy>>;
-};
-
-
-/** The root query type which gives access points into the data universe. */
 export type QueryCharacterByMalIdArgs = {
   malId: Scalars['String'];
 };
@@ -7936,37 +7659,6 @@ export type QueryImagesArgs = {
 
 
 /** The root query type which gives access points into the data universe. */
-export type QueryLanguageArgs = {
-  id: Scalars['UUID'];
-};
-
-
-/** The root query type which gives access points into the data universe. */
-export type QueryLanguageByLanguageArgs = {
-  language: Scalars['String'];
-};
-
-
-/** The root query type which gives access points into the data universe. */
-export type QueryLanguageByNodeIdArgs = {
-  nodeId: Scalars['ID'];
-};
-
-
-/** The root query type which gives access points into the data universe. */
-export type QueryLanguagesArgs = {
-  after?: Maybe<Scalars['Cursor']>;
-  before?: Maybe<Scalars['Cursor']>;
-  condition?: Maybe<LanguageCondition>;
-  filter?: Maybe<LanguageFilter>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  orderBy?: Maybe<Array<LanguagesOrderBy>>;
-};
-
-
-/** The root query type which gives access points into the data universe. */
 export type QueryLicensorArgs = {
   id: Scalars['UUID'];
 };
@@ -8088,6 +7780,18 @@ export type QueryProducersArgs = {
   last?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
   orderBy?: Maybe<Array<ProducersOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QuerySearchAnimesArgs = {
+  after?: Maybe<Scalars['Cursor']>;
+  before?: Maybe<Scalars['Cursor']>;
+  filter?: Maybe<AnimeFilter>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  searchInput?: Maybe<Scalars['String']>;
 };
 
 
@@ -8224,6 +7928,18 @@ export type QueryUserCustomAnimeListArgs = {
 
 
 /** The root query type which gives access points into the data universe. */
+export type QueryUserCustomAnimeListByStatusArgs = {
+  after?: Maybe<Scalars['Cursor']>;
+  before?: Maybe<Scalars['Cursor']>;
+  filter?: Maybe<UserCustomAnimeListByStatusTypeFilter>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  watchStatusType?: Maybe<Scalars['String']>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
 export type QueryUserWatchStatusArgs = {
   animeId: Scalars['UUID'];
   userId: Scalars['String'];
@@ -8259,19 +7975,6 @@ export type QueryUsersArgs = {
   last?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
   orderBy?: Maybe<Array<UsersOrderBy>>;
-};
-
-
-/** The root query type which gives access points into the data universe. */
-export type QueryVoiceActorsArgs = {
-  after?: Maybe<Scalars['Cursor']>;
-  before?: Maybe<Scalars['Cursor']>;
-  condition?: Maybe<VoiceActorCondition>;
-  filter?: Maybe<VoiceActorFilter>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  orderBy?: Maybe<Array<VoiceActorsOrderBy>>;
 };
 
 /** All input for the `registerUser` mutation. */
@@ -8812,16 +8515,30 @@ export type UpdateAnimeByNodeIdInput = {
   patch: AnimePatch;
 };
 
-/** All input for the `updateAnimeCharacterByAnimeIdAndCharacterIdAndLanguageIdAndPersonId` mutation. */
-export type UpdateAnimeCharacterByAnimeIdAndCharacterIdAndLanguageIdAndPersonIdInput = {
-  animeId: Scalars['UUID'];
-  characterId: Scalars['UUID'];
+/** All input for the `updateAnimeCharacterByNodeId` mutation. */
+export type UpdateAnimeCharacterByNodeIdInput = {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: Maybe<Scalars['String']>;
-  languageId: Scalars['UUID'];
+  /** The globally unique `ID` which will identify a single `AnimeCharacter` to be updated. */
+  nodeId: Scalars['ID'];
+  /** An object where the defined keys will be set on the `AnimeCharacter` being updated. */
+  patch: AnimeCharacterPatch;
+};
+
+/** All input for the `updateAnimeCharacter` mutation. */
+export type UpdateAnimeCharacterInput = {
+  animeId: Scalars['UUID'];
+  characterId: Scalars['UUID'];
+  characterRoleId: Scalars['UUID'];
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  language: LanguageType;
   /** An object where the defined keys will be set on the `AnimeCharacter` being updated. */
   patch: AnimeCharacterPatch;
   personId: Scalars['UUID'];
@@ -8845,8 +8562,6 @@ export type UpdateAnimeCharacterPayload = {
    * unchanged and unused. May be used by a client to track mutations.
    */
   clientMutationId?: Maybe<Scalars['String']>;
-  /** Reads a single `Language` that is related to this `AnimeCharacter`. */
-  language?: Maybe<Language>;
   /** Reads a single `Person` that is related to this `AnimeCharacter`. */
   person?: Maybe<Person>;
   /** Our root query field type. Allows us to run any query from our mutation payload. */
@@ -9587,65 +9302,6 @@ export type UpdateImagePayloadImageEdgeArgs = {
   orderBy?: Maybe<Array<ImagesOrderBy>>;
 };
 
-/** All input for the `updateLanguageByLanguage` mutation. */
-export type UpdateLanguageByLanguageInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>;
-  language: Scalars['String'];
-  /** An object where the defined keys will be set on the `Language` being updated. */
-  patch: LanguagePatch;
-};
-
-/** All input for the `updateLanguageByNodeId` mutation. */
-export type UpdateLanguageByNodeIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>;
-  /** The globally unique `ID` which will identify a single `Language` to be updated. */
-  nodeId: Scalars['ID'];
-  /** An object where the defined keys will be set on the `Language` being updated. */
-  patch: LanguagePatch;
-};
-
-/** All input for the `updateLanguage` mutation. */
-export type UpdateLanguageInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>;
-  id: Scalars['UUID'];
-  /** An object where the defined keys will be set on the `Language` being updated. */
-  patch: LanguagePatch;
-};
-
-/** The output of our update `Language` mutation. */
-export type UpdateLanguagePayload = {
-  __typename?: 'UpdateLanguagePayload';
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']>;
-  /** The `Language` that was updated by this mutation. */
-  language?: Maybe<Language>;
-  /** An edge for our `Language`. May be used by Relay 1. */
-  languageEdge?: Maybe<LanguagesEdge>;
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>;
-};
-
-
-/** The output of our update `Language` mutation. */
-export type UpdateLanguagePayloadLanguageEdgeArgs = {
-  orderBy?: Maybe<Array<LanguagesOrderBy>>;
-};
-
 /** All input for the `updateLicensorByLicensor` mutation. */
 export type UpdateLicensorByLicensorInput = {
   /**
@@ -10242,8 +9898,6 @@ export type UpsertAnimeCharacterPayload = {
   characterRole?: Maybe<CharacterRole>;
   /** The exact same `clientMutationId` that was provided in the mutation input, unchanged and unused. May be used by a client to track mutations. */
   clientMutationId?: Maybe<Scalars['String']>;
-  /** Reads a single `Language` that is related to this `AnimeCharacter`. */
-  language?: Maybe<Language>;
   /** Reads a single `Person` that is related to this `AnimeCharacter`. */
   person?: Maybe<Person>;
   /** Our root query field type. Allows us to run any query from our mutation payload. */
@@ -10260,7 +9914,8 @@ export type UpsertAnimeCharacterPayloadAnimeCharacterEdgeArgs = {
 export type UpsertAnimeCharacterWhere = {
   animeId?: Maybe<Scalars['UUID']>;
   characterId?: Maybe<Scalars['UUID']>;
-  languageId?: Maybe<Scalars['UUID']>;
+  characterRoleId?: Maybe<Scalars['UUID']>;
+  language?: Maybe<LanguageType>;
   personId?: Maybe<Scalars['UUID']>;
 };
 
@@ -10761,39 +10416,6 @@ export type UpsertImagePayloadImageEdgeArgs = {
 /** Where conditions for the upsert `Image` mutation. */
 export type UpsertImageWhere = {
   id?: Maybe<Scalars['UUID']>;
-};
-
-/** All input for the upsert `Language` mutation. */
-export type UpsertLanguageInput = {
-  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<Scalars['String']>;
-  /** The `Language` to be upserted by this mutation. */
-  language: LanguageInput;
-};
-
-/** The output of our upsert `Language` mutation. */
-export type UpsertLanguagePayload = {
-  __typename?: 'UpsertLanguagePayload';
-  /** The exact same `clientMutationId` that was provided in the mutation input, unchanged and unused. May be used by a client to track mutations. */
-  clientMutationId?: Maybe<Scalars['String']>;
-  /** The `Language` that was upserted by this mutation. */
-  language?: Maybe<Language>;
-  /** An edge for our `Language`. May be used by Relay 1. */
-  languageEdge?: Maybe<LanguagesEdge>;
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>;
-};
-
-
-/** The output of our upsert `Language` mutation. */
-export type UpsertLanguagePayloadLanguageEdgeArgs = {
-  orderBy?: Maybe<Array<LanguagesOrderBy>>;
-};
-
-/** Where conditions for the upsert `Language` mutation. */
-export type UpsertLanguageWhere = {
-  id?: Maybe<Scalars['UUID']>;
-  language?: Maybe<Scalars['String']>;
 };
 
 /** All input for the upsert `Licensor` mutation. */
@@ -11511,6 +11133,69 @@ export type UserCondition = {
   id?: Maybe<Scalars['String']>;
 };
 
+export type UserCustomAnimeListByStatusType = {
+  __typename?: 'UserCustomAnimeListByStatusType';
+  averageWatcherRating?: Maybe<Scalars['BigFloat']>;
+  id?: Maybe<Scalars['UUID']>;
+  imageUrl?: Maybe<Scalars['String']>;
+  mediaType?: Maybe<Scalars['String']>;
+  numberOfEpisodes?: Maybe<Scalars['BigFloat']>;
+  title?: Maybe<Scalars['String']>;
+  userEpisodesWatched?: Maybe<Scalars['BigFloat']>;
+  userScore?: Maybe<Scalars['BigFloat']>;
+  watchStatus?: Maybe<Scalars['String']>;
+};
+
+/** A filter to be used against `UserCustomAnimeListByStatusType` object types. All fields are combined with a logical ‘and.’ */
+export type UserCustomAnimeListByStatusTypeFilter = {
+  /** Checks for all expressions in this list. */
+  and?: Maybe<Array<UserCustomAnimeListByStatusTypeFilter>>;
+  /** Filter by the object’s `averageWatcherRating` field. */
+  averageWatcherRating?: Maybe<BigFloatFilter>;
+  /** Filter by the object’s `id` field. */
+  id?: Maybe<UuidFilter>;
+  /** Filter by the object’s `imageUrl` field. */
+  imageUrl?: Maybe<StringFilter>;
+  /** Filter by the object’s `mediaType` field. */
+  mediaType?: Maybe<StringFilter>;
+  /** Negates the expression. */
+  not?: Maybe<UserCustomAnimeListByStatusTypeFilter>;
+  /** Filter by the object’s `numberOfEpisodes` field. */
+  numberOfEpisodes?: Maybe<BigFloatFilter>;
+  /** Checks for any expressions in this list. */
+  or?: Maybe<Array<UserCustomAnimeListByStatusTypeFilter>>;
+  /** Filter by the object’s `title` field. */
+  title?: Maybe<StringFilter>;
+  /** Filter by the object’s `userEpisodesWatched` field. */
+  userEpisodesWatched?: Maybe<BigFloatFilter>;
+  /** Filter by the object’s `userScore` field. */
+  userScore?: Maybe<BigFloatFilter>;
+  /** Filter by the object’s `watchStatus` field. */
+  watchStatus?: Maybe<StringFilter>;
+};
+
+/** A connection to a list of `UserCustomAnimeListByStatusType` values. */
+export type UserCustomAnimeListByStatusTypesConnection = {
+  __typename?: 'UserCustomAnimeListByStatusTypesConnection';
+  /** A list of edges which contains the `UserCustomAnimeListByStatusType` and cursor to aid in pagination. */
+  edges: Array<UserCustomAnimeListByStatusTypesEdge>;
+  /** A list of `UserCustomAnimeListByStatusType` objects. */
+  nodes: Array<UserCustomAnimeListByStatusType>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `UserCustomAnimeListByStatusType` you could get from the connection. */
+  totalCount: Scalars['Int'];
+};
+
+/** A `UserCustomAnimeListByStatusType` edge in the connection. */
+export type UserCustomAnimeListByStatusTypesEdge = {
+  __typename?: 'UserCustomAnimeListByStatusTypesEdge';
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>;
+  /** The `UserCustomAnimeListByStatusType` at the end of the edge. */
+  node: UserCustomAnimeListByStatusType;
+};
+
 /** A filter to be used against `User` object types. All fields are combined with a logical ‘and.’ */
 export type UserFilter = {
   /** Checks for all expressions in this list. */
@@ -11767,107 +11452,6 @@ export enum UsersOrderBy {
   UserWatchStatusesByUserIdCountDesc = 'USER_WATCH_STATUSES_BY_USER_ID__COUNT_DESC'
 }
 
-export type VoiceActor = {
-  __typename?: 'VoiceActor';
-  actorFirstName?: Maybe<Scalars['String']>;
-  actorLastName?: Maybe<Scalars['String']>;
-  /** Reads a single `Character` that is related to this `VoiceActor`. */
-  character?: Maybe<Character>;
-  language?: Maybe<Scalars['String']>;
-  personImageUrl?: Maybe<Scalars['String']>;
-  voiceActorId?: Maybe<Scalars['UUID']>;
-};
-
-/**
- * A condition to be used against `VoiceActor` object types. All fields are tested
- * for equality and combined with a logical ‘and.’
- */
-export type VoiceActorCondition = {
-  /** Checks for equality with the object’s `actorFirstName` field. */
-  actorFirstName?: Maybe<Scalars['String']>;
-  /** Checks for equality with the object’s `actorLastName` field. */
-  actorLastName?: Maybe<Scalars['String']>;
-  /** Checks for equality with the object’s `characterId` field. */
-  characterId?: Maybe<Scalars['UUID']>;
-  /** Checks for equality with the object’s `language` field. */
-  language?: Maybe<Scalars['String']>;
-  /** Checks for equality with the object’s `personImageUrl` field. */
-  personImageUrl?: Maybe<Scalars['String']>;
-  /** Checks for equality with the object’s `voiceActorId` field. */
-  voiceActorId?: Maybe<Scalars['UUID']>;
-};
-
-/** A filter to be used against `VoiceActor` object types. All fields are combined with a logical ‘and.’ */
-export type VoiceActorFilter = {
-  /** Filter by the object’s `actorFirstName` field. */
-  actorFirstName?: Maybe<StringFilter>;
-  /** Filter by the object’s `actorLastName` field. */
-  actorLastName?: Maybe<StringFilter>;
-  /** Checks for all expressions in this list. */
-  and?: Maybe<Array<VoiceActorFilter>>;
-  /** Filter by the object’s `characterId` field. */
-  characterId?: Maybe<UuidFilter>;
-  /** Filter by the object’s `language` field. */
-  language?: Maybe<StringFilter>;
-  /** Negates the expression. */
-  not?: Maybe<VoiceActorFilter>;
-  /** Checks for any expressions in this list. */
-  or?: Maybe<Array<VoiceActorFilter>>;
-  /** Filter by the object’s `personImageUrl` field. */
-  personImageUrl?: Maybe<StringFilter>;
-  /** Filter by the object’s `voiceActorId` field. */
-  voiceActorId?: Maybe<UuidFilter>;
-};
-
-/** A connection to a list of `VoiceActor` values. */
-export type VoiceActorsConnection = {
-  __typename?: 'VoiceActorsConnection';
-  /** A list of edges which contains the `VoiceActor` and cursor to aid in pagination. */
-  edges: Array<VoiceActorsEdge>;
-  /** A list of `VoiceActor` objects. */
-  nodes: Array<VoiceActor>;
-  /** Information to aid in pagination. */
-  pageInfo: PageInfo;
-  /** The count of *all* `VoiceActor` you could get from the connection. */
-  totalCount: Scalars['Int'];
-};
-
-/** A `VoiceActor` edge in the connection. */
-export type VoiceActorsEdge = {
-  __typename?: 'VoiceActorsEdge';
-  /** A cursor for use in pagination. */
-  cursor?: Maybe<Scalars['Cursor']>;
-  /** The `VoiceActor` at the end of the edge. */
-  node: VoiceActor;
-};
-
-/** Methods to use when ordering `VoiceActor`. */
-export enum VoiceActorsOrderBy {
-  ActorFirstNameAsc = 'ACTOR_FIRST_NAME_ASC',
-  ActorFirstNameDesc = 'ACTOR_FIRST_NAME_DESC',
-  ActorLastNameAsc = 'ACTOR_LAST_NAME_ASC',
-  ActorLastNameDesc = 'ACTOR_LAST_NAME_DESC',
-  CharacterByCharacterIdCharacterImageIdAsc = 'CHARACTER_BY_CHARACTER_ID__CHARACTER_IMAGE_ID_ASC',
-  CharacterByCharacterIdCharacterImageIdDesc = 'CHARACTER_BY_CHARACTER_ID__CHARACTER_IMAGE_ID_DESC',
-  CharacterByCharacterIdDescriptionAsc = 'CHARACTER_BY_CHARACTER_ID__DESCRIPTION_ASC',
-  CharacterByCharacterIdDescriptionDesc = 'CHARACTER_BY_CHARACTER_ID__DESCRIPTION_DESC',
-  CharacterByCharacterIdIdAsc = 'CHARACTER_BY_CHARACTER_ID__ID_ASC',
-  CharacterByCharacterIdIdDesc = 'CHARACTER_BY_CHARACTER_ID__ID_DESC',
-  CharacterByCharacterIdMalIdAsc = 'CHARACTER_BY_CHARACTER_ID__MAL_ID_ASC',
-  CharacterByCharacterIdMalIdDesc = 'CHARACTER_BY_CHARACTER_ID__MAL_ID_DESC',
-  CharacterByCharacterIdNameAsc = 'CHARACTER_BY_CHARACTER_ID__NAME_ASC',
-  CharacterByCharacterIdNameDesc = 'CHARACTER_BY_CHARACTER_ID__NAME_DESC',
-  CharacterIdAsc = 'CHARACTER_ID_ASC',
-  CharacterIdDesc = 'CHARACTER_ID_DESC',
-  LanguageAsc = 'LANGUAGE_ASC',
-  LanguageDesc = 'LANGUAGE_DESC',
-  Natural = 'NATURAL',
-  PersonImageUrlAsc = 'PERSON_IMAGE_URL_ASC',
-  PersonImageUrlDesc = 'PERSON_IMAGE_URL_DESC',
-  VoiceActorIdAsc = 'VOICE_ACTOR_ID_ASC',
-  VoiceActorIdDesc = 'VOICE_ACTOR_ID_DESC'
-}
-
 export enum WatchStatusTypes {
   Completed = 'COMPLETED',
   Dropped = 'DROPPED',
@@ -11919,7 +11503,7 @@ export type UpdateWatchStatusMutationVariables = Exact<{
 }>;
 
 
-export type UpdateWatchStatusMutation = { __typename?: 'Mutation', updateUserWatchStatus?: { __typename?: 'UpdateUserWatchStatusPayload', clientMutationId?: string | null | undefined } | null | undefined };
+export type UpdateWatchStatusMutation = { __typename?: 'Mutation', updateUserWatchStatus?: { __typename?: 'UpdateUserWatchStatusPayload', clientMutationId?: string | null | undefined, query?: { __typename?: 'Query', animes?: { __typename?: 'AnimeConnection', nodes: Array<{ __typename?: 'Anime', id: any, title: string, coverImage?: string | null | undefined, numberOfEpisodes?: number | null | undefined, averageWatcherRating?: any | null | undefined, userLiked?: boolean | null | undefined, userRating?: any | null | undefined, userWatchStatus?: string | null | undefined, userEpisodeCount?: any | null | undefined, startBroadcastDatetime?: any | null | undefined, airingStatusType?: AiringStatusTypes | null | undefined }> } | null | undefined } | null | undefined } | null | undefined };
 
 export type UpdateUserAnimeScoreMutationVariables = Exact<{
   animeId: Scalars['UUID'];
@@ -11927,7 +11511,7 @@ export type UpdateUserAnimeScoreMutationVariables = Exact<{
 }>;
 
 
-export type UpdateUserAnimeScoreMutation = { __typename?: 'Mutation', insertOrUpdateAnimeUserScore?: { __typename?: 'InsertOrUpdateAnimeUserScorePayload', clientMutationId?: string | null | undefined } | null | undefined };
+export type UpdateUserAnimeScoreMutation = { __typename?: 'Mutation', insertOrUpdateAnimeUserScore?: { __typename?: 'InsertOrUpdateAnimeUserScorePayload', clientMutationId?: string | null | undefined, query?: { __typename?: 'Query', animes?: { __typename?: 'AnimeConnection', nodes: Array<{ __typename?: 'Anime', id: any, title: string, coverImage?: string | null | undefined, numberOfEpisodes?: number | null | undefined, averageWatcherRating?: any | null | undefined, userLiked?: boolean | null | undefined, userRating?: any | null | undefined, userWatchStatus?: string | null | undefined, userEpisodeCount?: any | null | undefined, startBroadcastDatetime?: any | null | undefined, airingStatusType?: AiringStatusTypes | null | undefined }> } | null | undefined } | null | undefined } | null | undefined };
 
 export type UpdateUserEpisodeCountMutationVariables = Exact<{
   animeId: Scalars['UUID'];
@@ -12028,11 +11612,6 @@ export type UpdateUserAnimeListTitleMutationVariables = Exact<{
 
 export type UpdateUserAnimeListTitleMutation = { __typename?: 'Mutation', updateAnimeList?: { __typename?: 'UpdateAnimeListPayload', clientMutationId?: string | null | undefined, query?: { __typename?: 'Query', animeLists?: { __typename?: 'AnimeListsConnection', nodes: Array<{ __typename?: 'AnimeList', id: any, nodeId: string, privacy: AnimeListPrivacy, title: string }> } | null | undefined } | null | undefined } | null | undefined };
 
-export type WeeklyAnimesQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type WeeklyAnimesQuery = { __typename?: 'Query', animes?: { __typename?: 'AnimeConnection', nodes: Array<{ __typename?: 'Anime', id: any, title: string, coverImage?: string | null | undefined, numberOfEpisodes?: number | null | undefined, averageWatcherRating?: any | null | undefined, userLiked?: boolean | null | undefined, userRating?: any | null | undefined, userWatchStatus?: string | null | undefined, userEpisodeCount?: any | null | undefined, startBroadcastDatetime?: any | null | undefined, airingStatusType?: AiringStatusTypes | null | undefined }> } | null | undefined };
-
 export type CurrentlyAiringContinuedQueryVariables = Exact<{
   limit: Scalars['Int'];
   currentSeason: Season;
@@ -12063,6 +11642,32 @@ export type UserListsQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type UserListsQuery = { __typename?: 'Query', animeLists?: { __typename?: 'AnimeListsConnection', nodes: Array<{ __typename?: 'AnimeList', id: any, nodeId: string, privacy: AnimeListPrivacy, title: string }> } | null | undefined };
 
+export type WeeklyAnimesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type WeeklyAnimesQuery = { __typename?: 'Query', animes?: { __typename?: 'AnimeConnection', nodes: Array<{ __typename?: 'Anime', id: any, title: string, coverImage?: string | null | undefined, numberOfEpisodes?: number | null | undefined, averageWatcherRating?: any | null | undefined, userLiked?: boolean | null | undefined, userRating?: any | null | undefined, userWatchStatus?: string | null | undefined, userEpisodeCount?: any | null | undefined, startBroadcastDatetime?: any | null | undefined, airingStatusType?: AiringStatusTypes | null | undefined }> } | null | undefined };
+
+export type SearchAnimesQueryVariables = Exact<{
+  after?: Maybe<Scalars['Cursor']>;
+  first?: Maybe<Scalars['Int']>;
+  searchInput?: Maybe<Scalars['String']>;
+}>;
+
+
+export type SearchAnimesQuery = { __typename?: 'Query', searchAnimes?: { __typename?: 'AnimeConnection', totalCount: number, nodes: Array<{ __typename?: 'Anime', id: any, title: string, coverImage?: string | null | undefined, numberOfEpisodes?: number | null | undefined, averageWatcherRating?: any | null | undefined, userLiked?: boolean | null | undefined, userRating?: any | null | undefined, userWatchStatus?: string | null | undefined, userEpisodeCount?: any | null | undefined, startBroadcastDatetime?: any | null | undefined, airingStatusType?: AiringStatusTypes | null | undefined }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: any | null | undefined, hasPreviousPage: boolean, startCursor?: any | null | undefined } } | null | undefined };
+
+export type GetAnimeQueryVariables = Exact<{
+  animeId: Scalars['UUID'];
+  voiceActorLanguage: LanguageType;
+  afterCursor?: Maybe<Scalars['Cursor']>;
+  numOfAnimeToDisplay: Scalars['Int'];
+  numOfStaffToDisplay: Scalars['Int'];
+  StaffCursor?: Maybe<Scalars['Cursor']>;
+}>;
+
+
+export type GetAnimeQuery = { __typename?: 'Query', anime?: { __typename?: 'Anime', ageRatingType?: AgeRatingTypes | null | undefined, description?: string | null | undefined, duration?: number | null | undefined, endBroadcastDatetime?: any | null | undefined, mediaType?: MediaTypes | null | undefined, season?: Season | null | undefined, seasonYear?: number | null | undefined, sourceMaterialType?: SourceMaterialTypes | null | undefined, id: any, title: string, coverImage?: string | null | undefined, numberOfEpisodes?: number | null | undefined, averageWatcherRating?: any | null | undefined, userLiked?: boolean | null | undefined, userRating?: any | null | undefined, userWatchStatus?: string | null | undefined, userEpisodeCount?: any | null | undefined, startBroadcastDatetime?: any | null | undefined, airingStatusType?: AiringStatusTypes | null | undefined, genreList: { __typename?: 'GenresConnection', nodes: Array<{ __typename?: 'Genre', id: any, genre: string }> }, licensorList: { __typename?: 'LicensorsConnection', nodes: Array<{ __typename?: 'Licensor', id: any, licensor: string }> }, producerList: { __typename?: 'ProducersConnection', nodes: Array<{ __typename?: 'Producer', id: any, producer: string }> }, studioList: { __typename?: 'StudiosConnection', nodes: Array<{ __typename?: 'Studio', id: any, studio: string }> }, alternateAnimeNames: { __typename?: 'AlternateAnimeNamesConnection', nodes: Array<{ __typename?: 'AlternateAnimeName', id: any, name: string }> }, animeCharacters: { __typename?: 'AnimeCharactersConnection', totalCount: number, nodes: Array<{ __typename?: 'AnimeCharacter', nodeId: string, language: LanguageType, characterRole?: { __typename?: 'CharacterRole', role: string, id: any } | null | undefined, person?: { __typename?: 'Person', firstName: string, lastName?: string | null | undefined, id: any, personImage?: { __typename?: 'Image', url: string } | null | undefined } | null | undefined, character?: { __typename?: 'Character', id: any, name: string, characterImage?: { __typename?: 'Image', url: string } | null | undefined } | null | undefined }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, endCursor?: any | null | undefined, startCursor?: any | null | undefined } }, animeStaffs: { __typename?: 'AnimeStaffConnection', totalCount: number, nodes: Array<{ __typename?: 'AnimeStaff', nodeId: string, person?: { __typename?: 'Person', id: any, firstName: string, lastName?: string | null | undefined, personImage?: { __typename?: 'Image', url: string } | null | undefined } | null | undefined, staffRole?: { __typename?: 'StaffRole', role: string } | null | undefined }>, pageInfo: { __typename?: 'PageInfo', endCursor?: any | null | undefined, hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: any | null | undefined } } } | null | undefined };
+
 export type UserCustomAnimeListQueryVariables = Exact<{
   listId: Scalars['UUID'];
 }>;
@@ -12076,6 +11681,13 @@ export type GetLastItemInCustomListQueryVariables = Exact<{
 
 
 export type GetLastItemInCustomListQuery = { __typename?: 'Query', userAnimeLists?: { __typename?: 'UserAnimeListsConnection', nodes: Array<{ __typename?: 'UserAnimeList', animeIndex: string }> } | null | undefined };
+
+export type UserCustomAnimeListByWatchStatusQueryVariables = Exact<{
+  watchStatusType: Scalars['String'];
+}>;
+
+
+export type UserCustomAnimeListByWatchStatusQuery = { __typename?: 'Query', animes?: { __typename?: 'AnimeConnection', nodes: Array<{ __typename?: 'Anime', id: any, title: string, coverImage?: string | null | undefined, numberOfEpisodes?: number | null | undefined, averageWatcherRating?: any | null | undefined, userLiked?: boolean | null | undefined, userRating?: any | null | undefined, userWatchStatus?: string | null | undefined, userEpisodeCount?: any | null | undefined, startBroadcastDatetime?: any | null | undefined, airingStatusType?: AiringStatusTypes | null | undefined }> } | null | undefined };
 
 export type UserAnimeListsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -12149,9 +11761,16 @@ export const UpdateWatchStatusDocument = gql`
     input: {patch: {animeId: $animeId, userId: $userId, watchStatus: $watchStatus}, userId: $userId, animeId: $animeId, clientMutationId: "UpdatedWatchStatus"}
   ) {
     clientMutationId
+    query {
+      animes(filter: {id: {equalTo: $animeId}}) {
+        nodes {
+          ...AnimeCardFragment
+        }
+      }
+    }
   }
 }
-    `;
+    ${AnimeCardFragmentFragmentDoc}`;
 
 export function useUpdateWatchStatusMutation() {
   return Urql.useMutation<UpdateWatchStatusMutation, UpdateWatchStatusMutationVariables>(UpdateWatchStatusDocument);
@@ -12162,9 +11781,16 @@ export const UpdateUserAnimeScoreDocument = gql`
     input: {inputAnimeId: $animeId, inputUserScore: $userScore, clientMutationId: "test"}
   ) {
     clientMutationId
+    query {
+      animes(filter: {id: {equalTo: $animeId}}) {
+        nodes {
+          ...AnimeCardFragment
+        }
+      }
+    }
   }
 }
-    `;
+    ${AnimeCardFragmentFragmentDoc}`;
 
 export function useUpdateUserAnimeScoreMutation() {
   return Urql.useMutation<UpdateUserAnimeScoreMutation, UpdateUserAnimeScoreMutationVariables>(UpdateUserAnimeScoreDocument);
@@ -12382,19 +12008,6 @@ export const UpdateUserAnimeListTitleDocument = gql`
 export function useUpdateUserAnimeListTitleMutation() {
   return Urql.useMutation<UpdateUserAnimeListTitleMutation, UpdateUserAnimeListTitleMutationVariables>(UpdateUserAnimeListTitleDocument);
 };
-export const WeeklyAnimesDocument = gql`
-    query WeeklyAnimes {
-  animes(filter: {airingStatusType: {equalTo: CURRENTLY_AIRING}}) {
-    nodes {
-      ...AnimeCardFragment
-    }
-  }
-}
-    ${AnimeCardFragmentFragmentDoc}`;
-
-export function useWeeklyAnimesQuery(options: Omit<Urql.UseQueryArgs<WeeklyAnimesQueryVariables>, 'query'> = {}) {
-  return Urql.useQuery<WeeklyAnimesQuery>({ query: WeeklyAnimesDocument, ...options });
-};
 export const CurrentlyAiringContinuedDocument = gql`
     query CurrentlyAiringContinued($limit: Int!, $currentSeason: Season!, $seasonYear: Int!) {
   animes(
@@ -12453,6 +12066,150 @@ export const UserListsDocument = gql`
 export function useUserListsQuery(options: Omit<Urql.UseQueryArgs<UserListsQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<UserListsQuery>({ query: UserListsDocument, ...options });
 };
+export const WeeklyAnimesDocument = gql`
+    query WeeklyAnimes {
+  animes(
+    filter: {airingStatusType: {equalTo: CURRENTLY_AIRING}, userWatchStatus: {isNull: false}}
+  ) {
+    nodes {
+      ...AnimeCardFragment
+    }
+  }
+}
+    ${AnimeCardFragmentFragmentDoc}`;
+
+export function useWeeklyAnimesQuery(options: Omit<Urql.UseQueryArgs<WeeklyAnimesQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<WeeklyAnimesQuery>({ query: WeeklyAnimesDocument, ...options });
+};
+export const SearchAnimesDocument = gql`
+    query SearchAnimes($after: Cursor = null, $first: Int = null, $searchInput: String) {
+  searchAnimes(searchInput: $searchInput, after: $after, first: $first) {
+    nodes {
+      ...AnimeCardFragment
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+      hasPreviousPage
+      startCursor
+    }
+    totalCount
+  }
+}
+    ${AnimeCardFragmentFragmentDoc}`;
+
+export function useSearchAnimesQuery(options: Omit<Urql.UseQueryArgs<SearchAnimesQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<SearchAnimesQuery>({ query: SearchAnimesDocument, ...options });
+};
+export const GetAnimeDocument = gql`
+    query GetAnime($animeId: UUID!, $voiceActorLanguage: LanguageType!, $afterCursor: Cursor, $numOfAnimeToDisplay: Int!, $numOfStaffToDisplay: Int!, $StaffCursor: Cursor) {
+  anime(id: $animeId) {
+    ...AnimeCardFragment
+    ageRatingType
+    description
+    duration
+    endBroadcastDatetime
+    mediaType
+    season
+    seasonYear
+    sourceMaterialType
+    genreList {
+      nodes {
+        id
+        genre
+      }
+    }
+    licensorList {
+      nodes {
+        id
+        licensor
+      }
+    }
+    producerList {
+      nodes {
+        id
+        producer
+      }
+    }
+    studioList {
+      nodes {
+        id
+        studio
+      }
+    }
+    alternateAnimeNames {
+      nodes {
+        id
+        name
+      }
+    }
+    animeCharacters(
+      filter: {language: {equalTo: $voiceActorLanguage}}
+      first: $numOfAnimeToDisplay
+      after: $afterCursor
+      orderBy: CHARACTER_ROLE_BY_CHARACTER_ROLE_ID__ROLE_ASC
+    ) {
+      nodes {
+        nodeId
+        characterRole {
+          role
+          id
+        }
+        person {
+          firstName
+          lastName
+          id
+          personImage {
+            url
+          }
+        }
+        language
+        character {
+          id
+          name
+          characterImage {
+            url
+          }
+        }
+      }
+      pageInfo {
+        hasNextPage
+        hasPreviousPage
+        endCursor
+        startCursor
+      }
+      totalCount
+    }
+    animeStaffs(after: $StaffCursor, first: $numOfStaffToDisplay) {
+      nodes {
+        person {
+          id
+          firstName
+          lastName
+          personImage {
+            url
+          }
+        }
+        staffRole {
+          role
+        }
+        nodeId
+      }
+      pageInfo {
+        endCursor
+        hasNextPage
+        hasPreviousPage
+        startCursor
+      }
+      totalCount
+    }
+  }
+}
+    ${AnimeCardFragmentFragmentDoc}`;
+
+export function useGetAnimeQuery(options: Omit<Urql.UseQueryArgs<GetAnimeQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<GetAnimeQuery>({ query: GetAnimeDocument, ...options });
+};
 export const UserCustomAnimeListDocument = gql`
     query UserCustomAnimeList($listId: UUID!) {
   userCustomAnimeList(listId: $listId) {
@@ -12482,6 +12239,19 @@ export const GetLastItemInCustomListDocument = gql`
 
 export function useGetLastItemInCustomListQuery(options: Omit<Urql.UseQueryArgs<GetLastItemInCustomListQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<GetLastItemInCustomListQuery>({ query: GetLastItemInCustomListDocument, ...options });
+};
+export const UserCustomAnimeListByWatchStatusDocument = gql`
+    query UserCustomAnimeListByWatchStatus($watchStatusType: String!) {
+  animes(filter: {userWatchStatus: {equalTo: $watchStatusType}}) {
+    nodes {
+      ...AnimeCardFragment
+    }
+  }
+}
+    ${AnimeCardFragmentFragmentDoc}`;
+
+export function useUserCustomAnimeListByWatchStatusQuery(options: Omit<Urql.UseQueryArgs<UserCustomAnimeListByWatchStatusQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<UserCustomAnimeListByWatchStatusQuery>({ query: UserCustomAnimeListByWatchStatusDocument, ...options });
 };
 export const UserAnimeListsDocument = gql`
     query UserAnimeLists {
@@ -13533,6 +13303,61 @@ export default {
             "args": []
           },
           {
+            "name": "genreList",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "GenresConnection",
+                "ofType": null
+              }
+            },
+            "args": [
+              {
+                "name": "after",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "before",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "filter",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "first",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "last",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "offset",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              }
+            ]
+          },
+          {
             "name": "id",
             "type": {
               "kind": "NON_NULL",
@@ -13542,6 +13367,61 @@ export default {
               }
             },
             "args": []
+          },
+          {
+            "name": "licensorList",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "LicensorsConnection",
+                "ofType": null
+              }
+            },
+            "args": [
+              {
+                "name": "after",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "before",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "filter",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "first",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "last",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "offset",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              }
+            ]
           },
           {
             "name": "malId",
@@ -13579,6 +13459,61 @@ export default {
             "args": []
           },
           {
+            "name": "producerList",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "ProducersConnection",
+                "ofType": null
+              }
+            },
+            "args": [
+              {
+                "name": "after",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "before",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "filter",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "first",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "last",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "offset",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              }
+            ]
+          },
+          {
             "name": "season",
             "type": {
               "kind": "SCALAR",
@@ -13609,6 +13544,61 @@ export default {
               "name": "Any"
             },
             "args": []
+          },
+          {
+            "name": "studioList",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "StudiosConnection",
+                "ofType": null
+              }
+            },
+            "args": [
+              {
+                "name": "after",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "before",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "filter",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "first",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "last",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "offset",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              }
+            ]
           },
           {
             "name": "title",
@@ -13900,11 +13890,33 @@ export default {
             "args": []
           },
           {
+            "name": "animeId",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          },
+          {
             "name": "character",
             "type": {
               "kind": "OBJECT",
               "name": "Character",
               "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "characterId",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
             },
             "args": []
           },
@@ -13918,11 +13930,35 @@ export default {
             "args": []
           },
           {
+            "name": "characterRoleId",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          },
+          {
             "name": "language",
             "type": {
-              "kind": "OBJECT",
-              "name": "Language",
-              "ofType": null
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "nodeId",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
             },
             "args": []
           },
@@ -13934,9 +13970,25 @@ export default {
               "ofType": null
             },
             "args": []
+          },
+          {
+            "name": "personId",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
           }
         ],
-        "interfaces": []
+        "interfaces": [
+          {
+            "kind": "INTERFACE",
+            "name": "Node"
+          }
+        ]
       },
       {
         "kind": "OBJECT",
@@ -15707,81 +15759,6 @@ export default {
               }
             },
             "args": []
-          },
-          {
-            "name": "voiceActors",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "VoiceActorsConnection",
-                "ofType": null
-              }
-            },
-            "args": [
-              {
-                "name": "after",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
-                }
-              },
-              {
-                "name": "before",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
-                }
-              },
-              {
-                "name": "condition",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
-                }
-              },
-              {
-                "name": "filter",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
-                }
-              },
-              {
-                "name": "first",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
-                }
-              },
-              {
-                "name": "last",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
-                }
-              },
-              {
-                "name": "offset",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
-                }
-              },
-              {
-                "name": "orderBy",
-                "type": {
-                  "kind": "LIST",
-                  "ofType": {
-                    "kind": "NON_NULL",
-                    "ofType": {
-                      "kind": "SCALAR",
-                      "name": "Any"
-                    }
-                  }
-                }
-              }
-            ]
           }
         ],
         "interfaces": [
@@ -15790,186 +15767,6 @@ export default {
             "name": "Node"
           }
         ]
-      },
-      {
-        "kind": "OBJECT",
-        "name": "CharacterByAnime",
-        "fields": [
-          {
-            "name": "actorFirstName",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          },
-          {
-            "name": "actorId",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          },
-          {
-            "name": "actorImage",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          },
-          {
-            "name": "actorLastName",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          },
-          {
-            "name": "animeId",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          },
-          {
-            "name": "characterId",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          },
-          {
-            "name": "characterImage",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          },
-          {
-            "name": "characterName",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          },
-          {
-            "name": "language",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          },
-          {
-            "name": "role",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          }
-        ],
-        "interfaces": []
-      },
-      {
-        "kind": "OBJECT",
-        "name": "CharacterByAnimeConnection",
-        "fields": [
-          {
-            "name": "edges",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "LIST",
-                "ofType": {
-                  "kind": "NON_NULL",
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "CharacterByAnimeEdge",
-                    "ofType": null
-                  }
-                }
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "nodes",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "LIST",
-                "ofType": {
-                  "kind": "NON_NULL",
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "CharacterByAnime",
-                    "ofType": null
-                  }
-                }
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "pageInfo",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "PageInfo",
-                "ofType": null
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "totalCount",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Any"
-              }
-            },
-            "args": []
-          }
-        ],
-        "interfaces": []
-      },
-      {
-        "kind": "OBJECT",
-        "name": "CharacterByAnimeEdge",
-        "fields": [
-          {
-            "name": "cursor",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          },
-          {
-            "name": "node",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "CharacterByAnime",
-                "ofType": null
-              }
-            },
-            "args": []
-          }
-        ],
-        "interfaces": []
       },
       {
         "kind": "OBJECT",
@@ -16566,15 +16363,6 @@ export default {
             "type": {
               "kind": "SCALAR",
               "name": "Any"
-            },
-            "args": []
-          },
-          {
-            "name": "language",
-            "type": {
-              "kind": "OBJECT",
-              "name": "Language",
-              "ofType": null
             },
             "args": []
           },
@@ -17524,62 +17312,6 @@ export default {
             "type": {
               "kind": "OBJECT",
               "name": "ImagesEdge",
-              "ofType": null
-            },
-            "args": [
-              {
-                "name": "orderBy",
-                "type": {
-                  "kind": "LIST",
-                  "ofType": {
-                    "kind": "NON_NULL",
-                    "ofType": {
-                      "kind": "SCALAR",
-                      "name": "Any"
-                    }
-                  }
-                }
-              }
-            ]
-          },
-          {
-            "name": "query",
-            "type": {
-              "kind": "OBJECT",
-              "name": "Query",
-              "ofType": null
-            },
-            "args": []
-          }
-        ],
-        "interfaces": []
-      },
-      {
-        "kind": "OBJECT",
-        "name": "CreateLanguagePayload",
-        "fields": [
-          {
-            "name": "clientMutationId",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          },
-          {
-            "name": "language",
-            "type": {
-              "kind": "OBJECT",
-              "name": "Language",
-              "ofType": null
-            },
-            "args": []
-          },
-          {
-            "name": "languageEdge",
-            "type": {
-              "kind": "OBJECT",
-              "name": "LanguagesEdge",
               "ofType": null
             },
             "args": [
@@ -18665,15 +18397,6 @@ export default {
             "args": []
           },
           {
-            "name": "language",
-            "type": {
-              "kind": "OBJECT",
-              "name": "Language",
-              "ofType": null
-            },
-            "args": []
-          },
-          {
             "name": "person",
             "type": {
               "kind": "OBJECT",
@@ -19731,70 +19454,6 @@ export default {
             "type": {
               "kind": "OBJECT",
               "name": "ImagesEdge",
-              "ofType": null
-            },
-            "args": [
-              {
-                "name": "orderBy",
-                "type": {
-                  "kind": "LIST",
-                  "ofType": {
-                    "kind": "NON_NULL",
-                    "ofType": {
-                      "kind": "SCALAR",
-                      "name": "Any"
-                    }
-                  }
-                }
-              }
-            ]
-          },
-          {
-            "name": "query",
-            "type": {
-              "kind": "OBJECT",
-              "name": "Query",
-              "ofType": null
-            },
-            "args": []
-          }
-        ],
-        "interfaces": []
-      },
-      {
-        "kind": "OBJECT",
-        "name": "DeleteLanguagePayload",
-        "fields": [
-          {
-            "name": "clientMutationId",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          },
-          {
-            "name": "deletedLanguageNodeId",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          },
-          {
-            "name": "language",
-            "type": {
-              "kind": "OBJECT",
-              "name": "Language",
-              "ofType": null
-            },
-            "args": []
-          },
-          {
-            "name": "languageEdge",
-            "type": {
-              "kind": "OBJECT",
-              "name": "LanguagesEdge",
               "ofType": null
             },
             "args": [
@@ -21433,219 +21092,6 @@ export default {
       },
       {
         "kind": "OBJECT",
-        "name": "Language",
-        "fields": [
-          {
-            "name": "animeCharacters",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "AnimeCharactersConnection",
-                "ofType": null
-              }
-            },
-            "args": [
-              {
-                "name": "after",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
-                }
-              },
-              {
-                "name": "before",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
-                }
-              },
-              {
-                "name": "condition",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
-                }
-              },
-              {
-                "name": "filter",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
-                }
-              },
-              {
-                "name": "first",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
-                }
-              },
-              {
-                "name": "last",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
-                }
-              },
-              {
-                "name": "offset",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
-                }
-              },
-              {
-                "name": "orderBy",
-                "type": {
-                  "kind": "LIST",
-                  "ofType": {
-                    "kind": "NON_NULL",
-                    "ofType": {
-                      "kind": "SCALAR",
-                      "name": "Any"
-                    }
-                  }
-                }
-              }
-            ]
-          },
-          {
-            "name": "id",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Any"
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "language",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Any"
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "nodeId",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Any"
-              }
-            },
-            "args": []
-          }
-        ],
-        "interfaces": [
-          {
-            "kind": "INTERFACE",
-            "name": "Node"
-          }
-        ]
-      },
-      {
-        "kind": "OBJECT",
-        "name": "LanguagesConnection",
-        "fields": [
-          {
-            "name": "edges",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "LIST",
-                "ofType": {
-                  "kind": "NON_NULL",
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "LanguagesEdge",
-                    "ofType": null
-                  }
-                }
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "nodes",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "LIST",
-                "ofType": {
-                  "kind": "NON_NULL",
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "Language",
-                    "ofType": null
-                  }
-                }
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "pageInfo",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "PageInfo",
-                "ofType": null
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "totalCount",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Any"
-              }
-            },
-            "args": []
-          }
-        ],
-        "interfaces": []
-      },
-      {
-        "kind": "OBJECT",
-        "name": "LanguagesEdge",
-        "fields": [
-          {
-            "name": "cursor",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          },
-          {
-            "name": "node",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "Language",
-                "ofType": null
-              }
-            },
-            "args": []
-          }
-        ],
-        "interfaces": []
-      },
-      {
-        "kind": "OBJECT",
         "name": "Licensor",
         "fields": [
           {
@@ -22202,26 +21648,6 @@ export default {
             ]
           },
           {
-            "name": "createLanguage",
-            "type": {
-              "kind": "OBJECT",
-              "name": "CreateLanguagePayload",
-              "ofType": null
-            },
-            "args": [
-              {
-                "name": "input",
-                "type": {
-                  "kind": "NON_NULL",
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "Any"
-                  }
-                }
-              }
-            ]
-          },
-          {
             "name": "createLicensor",
             "type": {
               "kind": "OBJECT",
@@ -22542,7 +21968,27 @@ export default {
             ]
           },
           {
-            "name": "deleteAnimeCharacterByAnimeIdAndCharacterIdAndLanguageIdAndPersonId",
+            "name": "deleteAnimeCharacter",
+            "type": {
+              "kind": "OBJECT",
+              "name": "DeleteAnimeCharacterPayload",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "input",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "deleteAnimeCharacterByNodeId",
             "type": {
               "kind": "OBJECT",
               "name": "DeleteAnimeCharacterPayload",
@@ -23126,66 +22572,6 @@ export default {
             "type": {
               "kind": "OBJECT",
               "name": "DeleteImagePayload",
-              "ofType": null
-            },
-            "args": [
-              {
-                "name": "input",
-                "type": {
-                  "kind": "NON_NULL",
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "Any"
-                  }
-                }
-              }
-            ]
-          },
-          {
-            "name": "deleteLanguage",
-            "type": {
-              "kind": "OBJECT",
-              "name": "DeleteLanguagePayload",
-              "ofType": null
-            },
-            "args": [
-              {
-                "name": "input",
-                "type": {
-                  "kind": "NON_NULL",
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "Any"
-                  }
-                }
-              }
-            ]
-          },
-          {
-            "name": "deleteLanguageByLanguage",
-            "type": {
-              "kind": "OBJECT",
-              "name": "DeleteLanguagePayload",
-              "ofType": null
-            },
-            "args": [
-              {
-                "name": "input",
-                "type": {
-                  "kind": "NON_NULL",
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "Any"
-                  }
-                }
-              }
-            ]
-          },
-          {
-            "name": "deleteLanguageByNodeId",
-            "type": {
-              "kind": "OBJECT",
-              "name": "DeleteLanguagePayload",
               "ofType": null
             },
             "args": [
@@ -23842,7 +23228,27 @@ export default {
             ]
           },
           {
-            "name": "updateAnimeCharacterByAnimeIdAndCharacterIdAndLanguageIdAndPersonId",
+            "name": "updateAnimeCharacter",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UpdateAnimeCharacterPayload",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "input",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "updateAnimeCharacterByNodeId",
             "type": {
               "kind": "OBJECT",
               "name": "UpdateAnimeCharacterPayload",
@@ -24426,66 +23832,6 @@ export default {
             "type": {
               "kind": "OBJECT",
               "name": "UpdateImagePayload",
-              "ofType": null
-            },
-            "args": [
-              {
-                "name": "input",
-                "type": {
-                  "kind": "NON_NULL",
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "Any"
-                  }
-                }
-              }
-            ]
-          },
-          {
-            "name": "updateLanguage",
-            "type": {
-              "kind": "OBJECT",
-              "name": "UpdateLanguagePayload",
-              "ofType": null
-            },
-            "args": [
-              {
-                "name": "input",
-                "type": {
-                  "kind": "NON_NULL",
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "Any"
-                  }
-                }
-              }
-            ]
-          },
-          {
-            "name": "updateLanguageByLanguage",
-            "type": {
-              "kind": "OBJECT",
-              "name": "UpdateLanguagePayload",
-              "ofType": null
-            },
-            "args": [
-              {
-                "name": "input",
-                "type": {
-                  "kind": "NON_NULL",
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "Any"
-                  }
-                }
-              }
-            ]
-          },
-          {
-            "name": "updateLanguageByNodeId",
-            "type": {
-              "kind": "OBJECT",
-              "name": "UpdateLanguagePayload",
               "ofType": null
             },
             "args": [
@@ -25414,33 +24760,6 @@ export default {
             ]
           },
           {
-            "name": "upsertLanguage",
-            "type": {
-              "kind": "OBJECT",
-              "name": "UpsertLanguagePayload",
-              "ofType": null
-            },
-            "args": [
-              {
-                "name": "input",
-                "type": {
-                  "kind": "NON_NULL",
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "Any"
-                  }
-                }
-              },
-              {
-                "name": "where",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
-                }
-              }
-            ]
-          },
-          {
             "name": "upsertLicensor",
             "type": {
               "kind": "OBJECT",
@@ -25741,6 +25060,10 @@ export default {
           },
           {
             "kind": "OBJECT",
+            "name": "AnimeCharacter"
+          },
+          {
+            "kind": "OBJECT",
             "name": "AnimeGenre"
           },
           {
@@ -25790,10 +25113,6 @@ export default {
           {
             "kind": "OBJECT",
             "name": "Image"
-          },
-          {
-            "kind": "OBJECT",
-            "name": "Language"
           },
           {
             "kind": "OBJECT",
@@ -26892,7 +26211,7 @@ export default {
             ]
           },
           {
-            "name": "animeCharacterByAnimeIdAndCharacterIdAndLanguageIdAndPersonId",
+            "name": "animeCharacter",
             "type": {
               "kind": "OBJECT",
               "name": "AnimeCharacter",
@@ -26920,7 +26239,17 @@ export default {
                 }
               },
               {
-                "name": "languageId",
+                "name": "characterRoleId",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              },
+              {
+                "name": "language",
                 "type": {
                   "kind": "NON_NULL",
                   "ofType": {
@@ -26931,6 +26260,26 @@ export default {
               },
               {
                 "name": "personId",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "animeCharacterByNodeId",
+            "type": {
+              "kind": "OBJECT",
+              "name": "AnimeCharacter",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "nodeId",
                 "type": {
                   "kind": "NON_NULL",
                   "ofType": {
@@ -28082,78 +27431,6 @@ export default {
             ]
           },
           {
-            "name": "characterByAnimes",
-            "type": {
-              "kind": "OBJECT",
-              "name": "CharacterByAnimeConnection",
-              "ofType": null
-            },
-            "args": [
-              {
-                "name": "after",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
-                }
-              },
-              {
-                "name": "before",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
-                }
-              },
-              {
-                "name": "condition",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
-                }
-              },
-              {
-                "name": "filter",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
-                }
-              },
-              {
-                "name": "first",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
-                }
-              },
-              {
-                "name": "last",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
-                }
-              },
-              {
-                "name": "offset",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
-                }
-              },
-              {
-                "name": "orderBy",
-                "type": {
-                  "kind": "LIST",
-                  "ofType": {
-                    "kind": "NON_NULL",
-                    "ofType": {
-                      "kind": "SCALAR",
-                      "name": "Any"
-                    }
-                  }
-                }
-              }
-            ]
-          },
-          {
             "name": "characterByMalId",
             "type": {
               "kind": "OBJECT",
@@ -28856,138 +28133,6 @@ export default {
             ]
           },
           {
-            "name": "language",
-            "type": {
-              "kind": "OBJECT",
-              "name": "Language",
-              "ofType": null
-            },
-            "args": [
-              {
-                "name": "id",
-                "type": {
-                  "kind": "NON_NULL",
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "Any"
-                  }
-                }
-              }
-            ]
-          },
-          {
-            "name": "languageByLanguage",
-            "type": {
-              "kind": "OBJECT",
-              "name": "Language",
-              "ofType": null
-            },
-            "args": [
-              {
-                "name": "language",
-                "type": {
-                  "kind": "NON_NULL",
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "Any"
-                  }
-                }
-              }
-            ]
-          },
-          {
-            "name": "languageByNodeId",
-            "type": {
-              "kind": "OBJECT",
-              "name": "Language",
-              "ofType": null
-            },
-            "args": [
-              {
-                "name": "nodeId",
-                "type": {
-                  "kind": "NON_NULL",
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "Any"
-                  }
-                }
-              }
-            ]
-          },
-          {
-            "name": "languages",
-            "type": {
-              "kind": "OBJECT",
-              "name": "LanguagesConnection",
-              "ofType": null
-            },
-            "args": [
-              {
-                "name": "after",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
-                }
-              },
-              {
-                "name": "before",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
-                }
-              },
-              {
-                "name": "condition",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
-                }
-              },
-              {
-                "name": "filter",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
-                }
-              },
-              {
-                "name": "first",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
-                }
-              },
-              {
-                "name": "last",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
-                }
-              },
-              {
-                "name": "offset",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
-                }
-              },
-              {
-                "name": "orderBy",
-                "type": {
-                  "kind": "LIST",
-                  "ofType": {
-                    "kind": "NON_NULL",
-                    "ofType": {
-                      "kind": "SCALAR",
-                      "name": "Any"
-                    }
-                  }
-                }
-              }
-            ]
-          },
-          {
             "name": "licensor",
             "type": {
               "kind": "OBJECT",
@@ -29547,6 +28692,65 @@ export default {
               }
             },
             "args": []
+          },
+          {
+            "name": "searchAnimes",
+            "type": {
+              "kind": "OBJECT",
+              "name": "AnimeConnection",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "after",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "before",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "filter",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "first",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "last",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "offset",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "searchInput",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              }
+            ]
           },
           {
             "name": "staffRole",
@@ -30136,6 +29340,65 @@ export default {
             ]
           },
           {
+            "name": "userCustomAnimeListByStatus",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UserCustomAnimeListByStatusTypesConnection",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "after",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "before",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "filter",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "first",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "last",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "offset",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "watchStatusType",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              }
+            ]
+          },
+          {
             "name": "userWatchStatus",
             "type": {
               "kind": "OBJECT",
@@ -30262,78 +29525,6 @@ export default {
             "type": {
               "kind": "OBJECT",
               "name": "UsersConnection",
-              "ofType": null
-            },
-            "args": [
-              {
-                "name": "after",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
-                }
-              },
-              {
-                "name": "before",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
-                }
-              },
-              {
-                "name": "condition",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
-                }
-              },
-              {
-                "name": "filter",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
-                }
-              },
-              {
-                "name": "first",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
-                }
-              },
-              {
-                "name": "last",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
-                }
-              },
-              {
-                "name": "offset",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
-                }
-              },
-              {
-                "name": "orderBy",
-                "type": {
-                  "kind": "LIST",
-                  "ofType": {
-                    "kind": "NON_NULL",
-                    "ofType": {
-                      "kind": "SCALAR",
-                      "name": "Any"
-                    }
-                  }
-                }
-              }
-            ]
-          },
-          {
-            "name": "voiceActors",
-            "type": {
-              "kind": "OBJECT",
-              "name": "VoiceActorsConnection",
               "ofType": null
             },
             "args": [
@@ -31235,15 +30426,6 @@ export default {
             "type": {
               "kind": "SCALAR",
               "name": "Any"
-            },
-            "args": []
-          },
-          {
-            "name": "language",
-            "type": {
-              "kind": "OBJECT",
-              "name": "Language",
-              "ofType": null
             },
             "args": []
           },
@@ -32225,62 +31407,6 @@ export default {
       },
       {
         "kind": "OBJECT",
-        "name": "UpdateLanguagePayload",
-        "fields": [
-          {
-            "name": "clientMutationId",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          },
-          {
-            "name": "language",
-            "type": {
-              "kind": "OBJECT",
-              "name": "Language",
-              "ofType": null
-            },
-            "args": []
-          },
-          {
-            "name": "languageEdge",
-            "type": {
-              "kind": "OBJECT",
-              "name": "LanguagesEdge",
-              "ofType": null
-            },
-            "args": [
-              {
-                "name": "orderBy",
-                "type": {
-                  "kind": "LIST",
-                  "ofType": {
-                    "kind": "NON_NULL",
-                    "ofType": {
-                      "kind": "SCALAR",
-                      "name": "Any"
-                    }
-                  }
-                }
-              }
-            ]
-          },
-          {
-            "name": "query",
-            "type": {
-              "kind": "OBJECT",
-              "name": "Query",
-              "ofType": null
-            },
-            "args": []
-          }
-        ],
-        "interfaces": []
-      },
-      {
-        "kind": "OBJECT",
         "name": "UpdateLicensorPayload",
         "fields": [
           {
@@ -33053,15 +32179,6 @@ export default {
             "type": {
               "kind": "SCALAR",
               "name": "Any"
-            },
-            "args": []
-          },
-          {
-            "name": "language",
-            "type": {
-              "kind": "OBJECT",
-              "name": "Language",
-              "ofType": null
             },
             "args": []
           },
@@ -34011,62 +33128,6 @@ export default {
             "type": {
               "kind": "OBJECT",
               "name": "ImagesEdge",
-              "ofType": null
-            },
-            "args": [
-              {
-                "name": "orderBy",
-                "type": {
-                  "kind": "LIST",
-                  "ofType": {
-                    "kind": "NON_NULL",
-                    "ofType": {
-                      "kind": "SCALAR",
-                      "name": "Any"
-                    }
-                  }
-                }
-              }
-            ]
-          },
-          {
-            "name": "query",
-            "type": {
-              "kind": "OBJECT",
-              "name": "Query",
-              "ofType": null
-            },
-            "args": []
-          }
-        ],
-        "interfaces": []
-      },
-      {
-        "kind": "OBJECT",
-        "name": "UpsertLanguagePayload",
-        "fields": [
-          {
-            "name": "clientMutationId",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          },
-          {
-            "name": "language",
-            "type": {
-              "kind": "OBJECT",
-              "name": "Language",
-              "ofType": null
-            },
-            "args": []
-          },
-          {
-            "name": "languageEdge",
-            "type": {
-              "kind": "OBJECT",
-              "name": "LanguagesEdge",
               "ofType": null
             },
             "args": [
@@ -35507,6 +34568,178 @@ export default {
       },
       {
         "kind": "OBJECT",
+        "name": "UserCustomAnimeListByStatusType",
+        "fields": [
+          {
+            "name": "averageWatcherRating",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "id",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "imageUrl",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "mediaType",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "numberOfEpisodes",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "title",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "userEpisodesWatched",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "userScore",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "watchStatus",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "UserCustomAnimeListByStatusTypesConnection",
+        "fields": [
+          {
+            "name": "edges",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "LIST",
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "UserCustomAnimeListByStatusTypesEdge",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "nodes",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "LIST",
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "UserCustomAnimeListByStatusType",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "pageInfo",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "PageInfo",
+                "ofType": null
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "totalCount",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "UserCustomAnimeListByStatusTypesEdge",
+        "fields": [
+          {
+            "name": "cursor",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "node",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "UserCustomAnimeListByStatusType",
+                "ofType": null
+              }
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
         "name": "UserList",
         "fields": [
           {
@@ -35996,155 +35229,6 @@ export default {
               "ofType": {
                 "kind": "OBJECT",
                 "name": "User",
-                "ofType": null
-              }
-            },
-            "args": []
-          }
-        ],
-        "interfaces": []
-      },
-      {
-        "kind": "OBJECT",
-        "name": "VoiceActor",
-        "fields": [
-          {
-            "name": "actorFirstName",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          },
-          {
-            "name": "actorLastName",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          },
-          {
-            "name": "character",
-            "type": {
-              "kind": "OBJECT",
-              "name": "Character",
-              "ofType": null
-            },
-            "args": []
-          },
-          {
-            "name": "language",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          },
-          {
-            "name": "personImageUrl",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          },
-          {
-            "name": "voiceActorId",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          }
-        ],
-        "interfaces": []
-      },
-      {
-        "kind": "OBJECT",
-        "name": "VoiceActorsConnection",
-        "fields": [
-          {
-            "name": "edges",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "LIST",
-                "ofType": {
-                  "kind": "NON_NULL",
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "VoiceActorsEdge",
-                    "ofType": null
-                  }
-                }
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "nodes",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "LIST",
-                "ofType": {
-                  "kind": "NON_NULL",
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "VoiceActor",
-                    "ofType": null
-                  }
-                }
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "pageInfo",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "PageInfo",
-                "ofType": null
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "totalCount",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Any"
-              }
-            },
-            "args": []
-          }
-        ],
-        "interfaces": []
-      },
-      {
-        "kind": "OBJECT",
-        "name": "VoiceActorsEdge",
-        "fields": [
-          {
-            "name": "cursor",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          },
-          {
-            "name": "node",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "VoiceActor",
                 "ofType": null
               }
             },

@@ -1,72 +1,67 @@
+import ImageLoader from "@/components/Common/ImageLoader";
+import { useSearchAnimesQuery } from "@/graphql";
+import { useAuth } from "@/lib/Auth/FirebaseAuth";
+import { MoonIcon, Search2Icon, SunIcon } from "@chakra-ui/icons";
 import {
-  Flex,
-  Spacer,
-  Link,
-  useColorMode,
-  IconButton,
-  Button,
   Box,
-  Heading,
+  Button,
   Center,
+  Flex,
+  Heading,
+  IconButton,
+  Input,
   InputGroup,
   InputLeftElement,
-  Input,
+  Link,
   Popover,
-  PopoverTrigger,
+  PopoverBody,
   PopoverContent,
   PopoverHeader,
-  PopoverBody,
+  PopoverTrigger,
+  Spacer,
   Spinner,
-  Text,
   Table,
-  Thead,
   Tbody,
-  Tr,
-  Th,
   Td,
+  Text,
+  Th,
+  Thead,
+  Tr,
+  useColorMode,
+  useOutsideClick,
 } from "@chakra-ui/react";
-import { MoonIcon, SunIcon, Search2Icon } from "@chakra-ui/icons";
-import NextLink from "next/link";
-import ImageLoader from "@/components/Common/ImageLoader";
-import { useRouter } from "next/router";
-import { useState, useEffect, useCallback } from "react";
 import debouce from "lodash";
-import { useAuth } from "@/lib/Auth/FirebaseAuth";
-import { useQuery } from "urql";
+import NextLink from "next/link";
+import { useRouter } from "next/router";
+import { useCallback, useEffect, useState, useRef } from "react";
 
-const SEARCH_FOR_ANIME = `
-  query SearchForAnime(
-    $SearchInput: String!
-    $PageInput: Int
-    $LimitInput: Int
-  ) {
-    getAnimes(search: $SearchInput, page: $PageInput, limit: $LimitInput) {
-      animes {
-        title
-        image_url
-        avg_score
-        id: _id
-      }
-    }
-  }
-`;
 interface Search {
   variables?: Variable;
 }
 interface Variable {
   SearchInput: string;
-  PageInput: number;
+  EndCursor: string;
   LimitInput: number;
 }
 const Nav = () => {
-  const [searchAnimes, setSearchAnimes] = useState<Search>({});
+  const ref = useRef();
+  useOutsideClick({
+    ref: ref,
+    handler: () => setOpenPopover(false),
+  });
+  const [searchAnimes, setSearchAnimes] = useState<Search>({
+    variables: { EndCursor: null, LimitInput: 4, SearchInput: null },
+  });
   const [search, setSearch] = useState("");
   const [openPopover, setOpenPopover] = useState(false);
 
-  const [{ data, fetching, error }, reDoSearch] = useQuery({
-    query: SEARCH_FOR_ANIME,
-    variables: { search },
-    pause: search === null || search === "" || search === undefined,
+  const [searchResult, searchQuery] = useSearchAnimesQuery({
+    variables: {
+      searchInput: search,
+      after: searchAnimes.variables.EndCursor,
+      first: searchAnimes.variables.LimitInput,
+    },
+    pause: true,
   });
 
   const router = useRouter();
@@ -112,9 +107,7 @@ const Nav = () => {
   };
 
   const updateQuery = () => {
-    setSearchAnimes({
-      variables: { SearchInput: search, PageInput: 1, LimitInput: 6 },
-    });
+    searchQuery();
     setOpenPopover(true);
   };
   const delayedSearch = useCallback(debouce.debounce(updateQuery, 500), [
@@ -151,7 +144,7 @@ const Nav = () => {
           <ImageLoader
             image_url="/coffee_jelly3.svg"
             alt="Coffee Jelly Logo"
-            w="40px"
+            maxW="40px"
             minH="40px"
           />
         </Box>
@@ -168,6 +161,7 @@ const Nav = () => {
             placement="bottom"
             autoFocus={false}
             gutter={0}
+            closeOnBlur={true}
           >
             <PopoverTrigger>
               <InputGroup>
@@ -183,23 +177,19 @@ const Nav = () => {
               </InputGroup>
             </PopoverTrigger>
             <PopoverContent>
-              <PopoverHeader>Search Results</PopoverHeader>
+              <PopoverHeader>
+                Total found: {searchResult?.data?.searchAnimes?.totalCount ?? 0}
+              </PopoverHeader>
 
-              {fetching ? (
+              {searchResult.fetching ? (
                 <PopoverBody m="auto">
                   <Spinner size="xl" />
                 </PopoverBody>
               ) : (
                 <PopoverBody>
                   <Table>
-                    <Thead>
-                      <Tr>
-                        <Th>Results</Th>
-                        <Th />
-                      </Tr>
-                    </Thead>
                     <Tbody>
-                      {data?.getAnimes?.animes.map((anime) => {
+                      {searchResult?.data?.searchAnimes.nodes.map((anime) => {
                         return (
                           <Tr
                             key={anime.id}
@@ -216,9 +206,9 @@ const Nav = () => {
                             <Td display="relative">
                               <Box w="70px" h="100px" position="relative">
                                 <ImageLoader
-                                  image_url={anime.url}
+                                  image_url={anime.coverImage}
                                   alt={anime.title}
-                                  w="70px"
+                                  maxW="70px"
                                   minH="100px"
                                 />
                               </Box>

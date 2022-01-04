@@ -1,16 +1,11 @@
 import ImageLoader from "@/components/Common/ImageLoader";
 import { Box, Heading, Text } from "@chakra-ui/react";
 import NextLink from "next/link";
+import { GetAnimeQuery, AnimeStaff } from "@/graphql";
 
-const StaffCard = ({
-  staff: {
-    firstName,
-    lastName,
-    id,
-    personImage: { url },
-  },
-  role,
-}) => {
+type AnimeStaffType = GetAnimeQuery["anime"]["animeStaffs"]["nodes"][0];
+
+const StaffCard: React.FC<AnimeStaffType> = ({ person, staffRole }) => {
   return (
     <Box
       overflow="hidden"
@@ -23,7 +18,7 @@ const StaffCard = ({
       flex="0 0 auto"
       mb="4"
     >
-      <NextLink href={`/staff/${id}`}>
+      <NextLink href={`/staff/${person.id}`}>
         <Box
           m="auto"
           position="relative"
@@ -43,13 +38,17 @@ const StaffCard = ({
             textOverflow="ellipsis"
             mb="0"
           >
-            {firstName + " " + (lastName ?? "")}
+            {person.firstName + " " + (person.lastName ?? "")}
           </Heading>
           <Box width="125px" height="194px" position="relative" display="block">
-            <ImageLoader image_url={url} alt={firstName + " " + lastName} />
+            <ImageLoader
+              image_url={person.personImage.url}
+              alt={person.firstName + " " + person.lastName}
+              maxW="125px"
+            />
           </Box>
           <Text fontSize="sm" textAlign="center" overflow="hidden">
-            Role: {role}
+            Role: {staffRole.role}
           </Text>
         </Box>
       </NextLink>

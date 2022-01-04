@@ -1,6 +1,7 @@
 import LoadImage from "@/components/Common/ImageLoader";
 import PopupMenuButton from "@/components/Common/PopupMenuButton";
 import useAnimeList from "@/components/Hooks/useAnimeList";
+import { AiringStatusTypes, WatchStatusTypes } from "@/graphql";
 import {
   Badge,
   Box,
@@ -8,20 +9,19 @@ import {
   Heading,
   IconButton,
   Select,
-  Tooltip,
-  Text,
   Tag,
   TagLeftIcon,
+  Text,
+  Tooltip,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import {
   AiFillHeart,
   AiOutlineHeart,
-  AiOutlinePlus,
   AiOutlineMinus,
+  AiOutlinePlus,
 } from "react-icons/ai";
-import { WatchStatusTypes, Anime, AiringStatusTypes } from "@/graphql";
 import useCountDown from "../Hooks/useCountDown";
 interface IAnime {
   id: any;
@@ -49,6 +49,7 @@ interface AnimeCard {
   startBroadcastDatetime?: any;
   airingStatusType?: string;
   animeInfo?: any;
+  showNextEpisode?: boolean;
 }
 
 const AnimeCard = ({
@@ -61,10 +62,13 @@ const AnimeCard = ({
   userWatchStatus = null,
   startBroadcastDatetime = null,
   airingStatusType = null,
+  userRating = null,
+  userEpisodeCount = null,
+  showNextEpisode = false,
 }: AnimeCard) => {
   const router = useRouter();
 
-  const [userEpisodeCount, setUserEpisodeCount] = useState<number>(0);
+  const [userEpisodesCount, setUserEpisodeCount] = useState<number>(0);
   const [userAnimeWatchStatus, setUserAnimeWatchStatus] =
     useState<WatchStatusTypes>(WatchStatusTypes.NotWatched);
   const [userAnimeRating, setUserAnimeRating] = useState(-1);
@@ -121,10 +125,22 @@ const AnimeCard = ({
   }, [userAnimeRating]);
 
   useEffect(() => {
+    if (userRating) {
+      setUserAnimeRating(userRating);
+    }
+  }, [userRating]);
+
+  useEffect(() => {
     if (userEpisodeCount) {
       setUserEpisodeCount(userEpisodeCount);
     }
   }, [userEpisodeCount]);
+
+  useEffect(() => {
+    if (userEpisodesCount) {
+      setUserEpisodeCount(userEpisodesCount);
+    }
+  }, [userEpisodesCount]);
   return (
     <>
       <Box
@@ -137,7 +153,7 @@ const AnimeCard = ({
         {user ? (
           <>
             {(airingStatusType as AiringStatusTypes) ===
-            AiringStatusTypes.CurrentlyAiring ? (
+              AiringStatusTypes.CurrentlyAiring && showNextEpisode ? (
               <Box
                 w="full"
                 bg="gray.600"
@@ -255,7 +271,7 @@ const AnimeCard = ({
                 </Tooltip>
                 <Tooltip label="Number of episodes you have watched">
                   <Text textAlign="center" fontSize="small" px="2">
-                    {`${userEpisodeCount}/${
+                    {`${userEpisodesCount}/${
                       numberOfEpisodes ? numberOfEpisodes : "???"
                     }`}{" "}
                     eps watched

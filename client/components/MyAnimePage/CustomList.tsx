@@ -39,6 +39,7 @@ interface CustomListInterface {
 const CustomList = ({ listId, listTitle }: CustomListInterface) => {
   const [animeItems, setAnimeItems] = useState<CustomAnimeList[]>([]);
   const [editTitle, setEditTitle] = useState<boolean>(false);
+  const [isDefault, setIsDefault] = useState<boolean>(false);
   const [editTitleValue, setEditTitleValue] = useState<string>();
   const [editNewTitleValue, setEditNewTitleValue] = useState<string>();
   const [userCustomListResult, queryUserCustomList] =
@@ -174,6 +175,12 @@ const CustomList = ({ listId, listTitle }: CustomListInterface) => {
     }
   }, [listTitle]);
 
+  useEffect(() => {
+    if (listTitle === "default") {
+      setIsDefault(true);
+    }
+  }, [listTitle]);
+
   return (
     <Box>
       <Flex h="15vh" justifyContent="space-between">
@@ -199,7 +206,7 @@ const CustomList = ({ listId, listTitle }: CustomListInterface) => {
                 onClick={onClickCloseTitle}
               />
             </>
-          ) : (
+          ) : isDefault ? null : (
             <IconButton
               aria-label="Edit list name"
               icon={<FiEdit />}
@@ -208,15 +215,18 @@ const CustomList = ({ listId, listTitle }: CustomListInterface) => {
             />
           )}
         </Flex>
-        <Button onClick={deleteUserList} colorScheme="blue">
-          Delete List
-        </Button>
+        {isDefault ? null : (
+          <Button onClick={deleteUserList} colorScheme="blue">
+            Delete List
+          </Button>
+        )}
       </Flex>
       <Box>
         <DragDropContext onDragEnd={onDragEnd}>
           <Table>
             <Thead>
               <Tr>
+                <Th />
                 <Th />
                 <Th />
                 <Th>Title</Th>
@@ -242,6 +252,7 @@ const CustomList = ({ listId, listTitle }: CustomListInterface) => {
                             dragProvided={drag_provided}
                             {...anime}
                             index={index}
+                            dragSnapshot={drag_snapshot}
                           />
                         )}
                       </Draggable>

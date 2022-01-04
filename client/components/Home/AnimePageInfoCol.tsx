@@ -19,26 +19,68 @@ import {
 import moment from "moment-timezone";
 import { useEffect, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
+import {
+  AgeRatingTypes,
+  AiringStatusTypes,
+  AlternateAnimeName,
+  AlternateAnimeNamesConnection,
+  AnimeGenresConnection,
+  AnimeLicensorsConnection,
+  AnimeProducersConnection,
+  AnimeStudiosConnection,
+  MediaTypes,
+  Scalars,
+  Season,
+  SourceMaterialTypes,
+  GetAnimeQuery,
+} from "@/graphql";
+
+type AltAnimeNameType = GetAnimeQuery["anime"]["alternateAnimeNames"];
+type GenreListType = GetAnimeQuery["anime"]["genreList"];
+type LicensorListType = GetAnimeQuery["anime"]["licensorList"];
+type ProducerListType = GetAnimeQuery["anime"]["producerList"];
+type StudioListType = GetAnimeQuery["anime"]["studioList"];
+interface IAnimeInfoPageCol {
+  fetching?: boolean;
+  ageRatingType?: AgeRatingTypes;
+  airingStatusType?: AiringStatusTypes;
+  alternateAnimeNames?: AltAnimeNameType;
+  genreList?: GenreListType;
+  licensorList?: LicensorListType;
+  producerList?: ProducerListType;
+  studioList?: StudioListType;
+  duration?: Scalars["Int"];
+  startBroadcastDatetime?: Scalars["Datetime"];
+  endBroadcastDatetime?: Scalars["Datetime"];
+  mediaType?: MediaTypes;
+  numberOfEpisodes?: Scalars["Int"];
+  season?: Season;
+  coverImage?: Scalars["String"];
+  seasonYear?: Scalars["Int"];
+  sourceMaterialType?: SourceMaterialTypes;
+  title?: Scalars["String"];
+}
 
 const AnimePageInfoCol = ({
-  ageRating,
-  airingStatus,
+  ageRatingType,
+  airingStatusType,
   alternateAnimeNames,
-  animeGenres,
-  animeLicensors,
-  animeProducers,
-  animeStudios,
+  genreList,
+  licensorList,
+  producerList,
+  studioList,
   duration,
   startBroadcastDatetime,
   endBroadcastDatetime,
   mediaType,
   numberOfEpisodes,
   season,
-  sourceMaterial,
-  profileImage,
+  coverImage,
+  seasonYear,
+  sourceMaterialType,
   title,
   fetching,
-}) => {
+}: IAnimeInfoPageCol) => {
   const [timerDays, setTimerDays] = useState("00");
   const [timerHours, setTimerHours] = useState("00");
   const [timerMinutes, setTimerMinutes] = useState("00");
@@ -50,7 +92,7 @@ const AnimePageInfoCol = ({
     if (fetching === false && title) {
       getCountDown(startBroadcastDatetime);
     }
-  }, []);
+  }, [fetching, startBroadcastDatetime, title]);
 
   // if (!type || fetching) {
   //   return (
@@ -123,8 +165,8 @@ const AnimePageInfoCol = ({
   return (
     <Box m="8" w="md">
       <Box width="225px">
-        <Box height="300px" width="225px" minWidth="225px" position="relative">
-          <ImageLoader image_url={profileImage.url} alt={title} />
+        <Box position="relative">
+          <ImageLoader image_url={coverImage} alt={title} maxW="225px" />
         </Box>
         <ButtonGroup my="4" isAttached w="100%">
           <Button isFullWidth>Add to List</Button>
@@ -137,7 +179,7 @@ const AnimePageInfoCol = ({
         </ButtonGroup>
       </Box>
       <Box>
-        {airingStatus.airingStatusType === "Currently Airing" ? (
+        {airingStatusType === AiringStatusTypes.CurrentlyAiring ? (
           <Stat>
             <Heading size="sm">Next Episode</Heading>
             <StatNumber fontSize="md">{`${timerDays}:${timerHours}:${timerMinutes}:${timerSeconds}`}</StatNumber>
@@ -177,47 +219,49 @@ const AnimePageInfoCol = ({
       <Divider my="3" />
       <Box>
         <Heading size="sm">Broadcast Media</Heading>
-        <Text>{mediaType.mediaType}</Text>
+        <Text>{mediaType}</Text>
       </Box>
       <Divider my="3" />
       <Box>
         <Heading size="sm">Release Season</Heading>
-        <Text>{season.season}</Text>
+        <Text>
+          {season} {seasonYear}
+        </Text>
       </Box>
       <Divider my="3" />
       <Box>
         <Heading size="sm">Source Material</Heading>
-        <Text>{sourceMaterial.sourceMaterialType}</Text>
+        <Text>{sourceMaterialType}</Text>
       </Box>
       <Divider my="3" />
       <Box>
         <Heading size="sm">Airing Status</Heading>
-        <Text>{airingStatus.airingStatusType}</Text>
+        <Text>{airingStatusType}</Text>
       </Box>
       <Divider my="3" />
       <Box>
         <Heading size="sm">Age Rating</Heading>
-        <Text>{ageRating.ageRatingType}</Text>
+        <Text>{ageRatingType}</Text>
       </Box>
       <Divider my="3" />
       <Box>
         <Heading size="sm">Licensors</Heading>
-        {animeLicensors.nodes.map((licensor) => (
-          <Text key={uuidv4()}>{licensor.licensor.licensor}</Text>
+        {licensorList.nodes.map((licensorItem) => (
+          <Text key={uuidv4()}>{licensorItem.licensor}</Text>
         ))}
       </Box>
       <Divider my="3" />
       <Box>
         <Heading size="sm">Producers</Heading>
-        {animeProducers.nodes.map((producer) => (
-          <Text key={uuidv4()}>{producer.producer.producer}</Text>
+        {producerList.nodes.map((producerItem) => (
+          <Text key={uuidv4()}>{producerItem.producer}</Text>
         ))}
       </Box>
       <Divider my="3" />
       <Box>
         <Heading size="sm">Studios</Heading>
-        {animeStudios.nodes.map((studio) => (
-          <Text key={uuidv4()}>{studio.studio.studio}</Text>
+        {studioList.nodes.map((studioItem) => (
+          <Text key={uuidv4()}>{studioItem.studio}</Text>
         ))}
       </Box>
       <Divider my="3" />

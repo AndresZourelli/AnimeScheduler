@@ -1,5 +1,9 @@
 import AnimeCard from "@/components/Home/AnimeCard";
-import { useGetUserAnimeListsQuery, WatchStatusTypes } from "@/graphql";
+import {
+  useGetUserAnimeListsQuery,
+  WatchStatusTypes,
+  useUserCustomAnimeListByWatchStatusQuery,
+} from "@/graphql";
 import { useAuth } from "@/lib/Auth/FirebaseAuth";
 import { Box, Button, Grid, Heading, Text } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
@@ -11,8 +15,8 @@ interface MyAnimePageListInterface {
 const MyAnimePageList = ({ watchingStatus }: MyAnimePageListInterface) => {
   const { user } = useAuth();
   const [dataLoaded, setDataLoaded] = useState(false);
-  const [animesResult, fetchAnimes] = useGetUserAnimeListsQuery({
-    variables: { watchStatus: watchingStatus },
+  const [animesResult, fetchAnimes] = useUserCustomAnimeListByWatchStatusQuery({
+    variables: { watchStatusType: watchingStatus },
     pause: !user?.uid,
   });
 
@@ -38,47 +42,27 @@ const MyAnimePageList = ({ watchingStatus }: MyAnimePageListInterface) => {
     if (
       !animesResult.fetching &&
       animesResult.data &&
-      animesResult.data.getUserAnimeLists?.nodes &&
+      animesResult.data.animes?.nodes &&
       !dataLoaded
     ) {
-      setAnimeLists([
-        ...animesResult.data.getUserAnimeLists?.nodes,
-        ...animeLists,
-      ]);
+      setAnimeLists([...animesResult.data.animes?.nodes, ...animeLists]);
       setDataLoaded(true);
     }
   }, [animesResult, animeLists, dataLoaded]);
   return (
     <Box position="relative" justifySelf="end" mt="8" mx="3">
       <Box my="3" mr="16">
-        <Box
+        <Grid
           gridTemplateColumns="repeat(5, 225px)"
           gridAutoRows="minmax(225px, auto)"
           gap={4}
         >
-          {animesResult.data?.getUserAnimeLists?.nodes.map((list, idx) => {
-            const test = list.animes.map((anime, idx2) => (
-              <AnimeCard
-                key={anime.id + "-" + list.id}
-                id={anime.id}
-                {...anime}
-              />
-            ));
-            return (
-              <Box key={list.id}>
-                <Heading w="full">{list.title}</Heading>
-
-                <Grid
-                  gridTemplateColumns="repeat(5, 225px)"
-                  gridAutoRows="minmax(225px, auto)"
-                  gap={4}
-                >
-                  {test}
-                </Grid>
-              </Box>
-            );
-          })}
-        </Box>
+          {animesResult.data?.animes?.nodes
+            .filter((node) => node.userWatchStatus === watchingStatus)
+            .map((anime, idx) => (
+              <AnimeCard key={anime.id} {...anime} />
+            ))}
+        </Grid>
         <Box display="flex">
           {hasMoreAnimes ? (
             <Button m="auto" onClick={animesShowMore} size="sm">

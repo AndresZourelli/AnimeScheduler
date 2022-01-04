@@ -12,6 +12,13 @@ mutation UpdateWatchStatus(
     }
   ) {
     clientMutationId
+    query {
+      animes(filter: { id: { equalTo: $animeId } }) {
+        nodes {
+          ...AnimeCardFragment
+        }
+      }
+    }
   }
 }
 
@@ -24,6 +31,13 @@ mutation UpdateUserAnimeScore($animeId: UUID!, $userScore: Int!) {
     }
   ) {
     clientMutationId
+    query {
+      animes(filter: { id: { equalTo: $animeId } }) {
+        nodes {
+          ...AnimeCardFragment
+        }
+      }
+    }
   }
 }
 

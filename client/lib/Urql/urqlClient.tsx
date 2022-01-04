@@ -1,10 +1,16 @@
 import { gql, makeOperation } from "@urql/core";
 import { devtoolsExchange } from "@urql/devtools";
 import { authExchange } from "@urql/exchange-auth";
-import { cacheExchange } from "@urql/exchange-graphcache";
+import { cacheExchange, Data } from "@urql/exchange-graphcache";
 import { createClient, dedupExchange, fetchExchange } from "urql";
+import { relayPagination } from "@urql/exchange-graphcache/extras";
+
 import { auth } from "../../firebase/firebaseInit";
 import { checkTokenExpiration } from "../../utilities/checkTokenExpiration";
+
+interface ExtendedData extends Data {
+  nodeId: string;
+}
 
 const client = createClient({
   url: "http://localhost:4000/graphql",
@@ -12,8 +18,18 @@ const client = createClient({
     devtoolsExchange,
     dedupExchange,
     cacheExchange({
+      resolvers: {
+        Anime: {
+          animeCharacters: relayPagination(),
+          animeStaffs: relayPagination(),
+        },
+      },
       keys: {
         UserList: (data) => null,
+        Image: (data) => null,
+        StaffRole: (data) => null,
+        AnimeCharacter: (data: ExtendedData) => data.nodeId,
+        AnimeStaff: (data: ExtendedData) => data.nodeId,
       },
     }),
     authExchange({
