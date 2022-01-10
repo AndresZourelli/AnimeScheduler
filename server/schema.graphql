@@ -17,6 +17,74 @@ type Query implements Node {
     nodeId: ID!
   ): Node
 
+  """Reads and enables pagination through a set of `AgeRating`."""
+  ageRatings(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `AgeRating`."""
+    orderBy: [AgeRatingsOrderBy!] = [NATURAL]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: AgeRatingCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: AgeRatingFilter
+  ): AgeRatingsConnection
+
+  """Reads and enables pagination through a set of `AiringStatus`."""
+  airingStatuses(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `AiringStatus`."""
+    orderBy: [AiringStatusesOrderBy!] = [NATURAL]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: AiringStatusCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: AiringStatusFilter
+  ): AiringStatusesConnection
+
   """Reads and enables pagination through a set of `AlternateAnimeName`."""
   alternateAnimeNames(
     """Only read the first `n` values of the set."""
@@ -391,6 +459,40 @@ type Query implements Node {
     filter: AnimeFilter
   ): AnimeConnection
 
+  """Reads and enables pagination through a set of `AvailableLanguage`."""
+  availableLanguages(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `AvailableLanguage`."""
+    orderBy: [AvailableLanguagesOrderBy!] = [NATURAL]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: AvailableLanguageCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: AvailableLanguageFilter
+  ): AvailableLanguagesConnection
+
   """Reads and enables pagination through a set of `CharacterImage`."""
   characterImages(
     """Only read the first `n` values of the set."""
@@ -595,6 +697,40 @@ type Query implements Node {
     filter: LicensorFilter
   ): LicensorsConnection
 
+  """Reads and enables pagination through a set of `MediaFormat`."""
+  mediaFormats(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `MediaFormat`."""
+    orderBy: [MediaFormatsOrderBy!] = [NATURAL]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: MediaFormatCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: MediaFormatFilter
+  ): MediaFormatsConnection
+
   """Reads and enables pagination through a set of `PersonImage`."""
   personImages(
     """Only read the first `n` values of the set."""
@@ -696,6 +832,40 @@ type Query implements Node {
     """
     filter: ProducerFilter
   ): ProducersConnection
+
+  """Reads and enables pagination through a set of `SourceMaterial`."""
+  sourceMaterials(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `SourceMaterial`."""
+    orderBy: [SourceMaterialsOrderBy!] = [NATURAL]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: SourceMaterialCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: SourceMaterialFilter
+  ): SourceMaterialsConnection
 
   """Reads and enables pagination through a set of `StaffRole`."""
   staffRoles(
@@ -993,7 +1163,7 @@ type Query implements Node {
     filter: UserListFilter
   ): UserListsConnection
 
-  """Reads and enables pagination through a set of `Anime`."""
+  """Reads and enables pagination through a set of `SearchResult`."""
   searchAnimes(
     searchInput: String
 
@@ -1018,8 +1188,8 @@ type Query implements Node {
     """
     A filter to be used in determining which values should be returned by the collection.
     """
-    filter: AnimeFilter
-  ): AnimeConnection
+    filter: SearchResultFilter
+  ): SearchResultsConnection
 
   """Reads and enables pagination through a set of `CustomAnimeList`."""
   userCustomAnimeList(
@@ -1262,6 +1432,349 @@ interface Node {
   A globally unique identifier. Can be used in various places throughout the system to identify this single value.
   """
   nodeId: ID!
+}
+
+"""A connection to a list of `AgeRating` values."""
+type AgeRatingsConnection {
+  """A list of `AgeRating` objects."""
+  nodes: [AgeRating!]!
+
+  """
+  A list of edges which contains the `AgeRating` and cursor to aid in pagination.
+  """
+  edges: [AgeRatingsEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `AgeRating` you could get from the connection."""
+  totalCount: Int!
+}
+
+type AgeRating {
+  ageRatingType: String
+  id: BigInt
+}
+
+"""
+A signed eight-byte integer. The upper big integer values are greater than the
+max value for a JavaScript number. Therefore all big integers will be output as
+strings and not numbers.
+"""
+scalar BigInt
+
+"""A `AgeRating` edge in the connection."""
+type AgeRatingsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `AgeRating` at the end of the edge."""
+  node: AgeRating!
+}
+
+"""A location in a connection that can be used for resuming pagination."""
+scalar Cursor
+
+"""Information about pagination in a connection."""
+type PageInfo {
+  """When paginating forwards, are there more items?"""
+  hasNextPage: Boolean!
+
+  """When paginating backwards, are there more items?"""
+  hasPreviousPage: Boolean!
+
+  """When paginating backwards, the cursor to continue."""
+  startCursor: Cursor
+
+  """When paginating forwards, the cursor to continue."""
+  endCursor: Cursor
+}
+
+"""Methods to use when ordering `AgeRating`."""
+enum AgeRatingsOrderBy {
+  NATURAL
+  AGE_RATING_TYPE_ASC
+  AGE_RATING_TYPE_DESC
+  ID_ASC
+  ID_DESC
+}
+
+"""
+A condition to be used against `AgeRating` object types. All fields are tested
+for equality and combined with a logical ‘and.’
+"""
+input AgeRatingCondition {
+  """Checks for equality with the object’s `ageRatingType` field."""
+  ageRatingType: String
+
+  """Checks for equality with the object’s `id` field."""
+  id: BigInt
+}
+
+"""
+A filter to be used against `AgeRating` object types. All fields are combined with a logical ‘and.’
+"""
+input AgeRatingFilter {
+  """Filter by the object’s `ageRatingType` field."""
+  ageRatingType: StringFilter
+
+  """Filter by the object’s `id` field."""
+  id: BigIntFilter
+
+  """Checks for all expressions in this list."""
+  and: [AgeRatingFilter!]
+
+  """Checks for any expressions in this list."""
+  or: [AgeRatingFilter!]
+
+  """Negates the expression."""
+  not: AgeRatingFilter
+}
+
+"""
+A filter to be used against String fields. All fields are combined with a logical ‘and.’
+"""
+input StringFilter {
+  """
+  Is null (if `true` is specified) or is not null (if `false` is specified).
+  """
+  isNull: Boolean
+
+  """Equal to the specified value."""
+  equalTo: String
+
+  """Not equal to the specified value."""
+  notEqualTo: String
+
+  """
+  Not equal to the specified value, treating null like an ordinary value.
+  """
+  distinctFrom: String
+
+  """Equal to the specified value, treating null like an ordinary value."""
+  notDistinctFrom: String
+
+  """Included in the specified list."""
+  in: [String!]
+
+  """Not included in the specified list."""
+  notIn: [String!]
+
+  """Less than the specified value."""
+  lessThan: String
+
+  """Less than or equal to the specified value."""
+  lessThanOrEqualTo: String
+
+  """Greater than the specified value."""
+  greaterThan: String
+
+  """Greater than or equal to the specified value."""
+  greaterThanOrEqualTo: String
+
+  """Contains the specified string (case-sensitive)."""
+  includes: String
+
+  """Does not contain the specified string (case-sensitive)."""
+  notIncludes: String
+
+  """Contains the specified string (case-insensitive)."""
+  includesInsensitive: String
+
+  """Does not contain the specified string (case-insensitive)."""
+  notIncludesInsensitive: String
+
+  """Starts with the specified string (case-sensitive)."""
+  startsWith: String
+
+  """Does not start with the specified string (case-sensitive)."""
+  notStartsWith: String
+
+  """Starts with the specified string (case-insensitive)."""
+  startsWithInsensitive: String
+
+  """Does not start with the specified string (case-insensitive)."""
+  notStartsWithInsensitive: String
+
+  """Ends with the specified string (case-sensitive)."""
+  endsWith: String
+
+  """Does not end with the specified string (case-sensitive)."""
+  notEndsWith: String
+
+  """Ends with the specified string (case-insensitive)."""
+  endsWithInsensitive: String
+
+  """Does not end with the specified string (case-insensitive)."""
+  notEndsWithInsensitive: String
+
+  """
+  Matches the specified pattern (case-sensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters.
+  """
+  like: String
+
+  """
+  Does not match the specified pattern (case-sensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters.
+  """
+  notLike: String
+
+  """
+  Matches the specified pattern (case-insensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters.
+  """
+  likeInsensitive: String
+
+  """
+  Does not match the specified pattern (case-insensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters.
+  """
+  notLikeInsensitive: String
+
+  """Equal to the specified value (case-insensitive)."""
+  equalToInsensitive: String
+
+  """Not equal to the specified value (case-insensitive)."""
+  notEqualToInsensitive: String
+
+  """
+  Not equal to the specified value, treating null like an ordinary value (case-insensitive).
+  """
+  distinctFromInsensitive: String
+
+  """
+  Equal to the specified value, treating null like an ordinary value (case-insensitive).
+  """
+  notDistinctFromInsensitive: String
+
+  """Included in the specified list (case-insensitive)."""
+  inInsensitive: [String!]
+
+  """Not included in the specified list (case-insensitive)."""
+  notInInsensitive: [String!]
+
+  """Less than the specified value (case-insensitive)."""
+  lessThanInsensitive: String
+
+  """Less than or equal to the specified value (case-insensitive)."""
+  lessThanOrEqualToInsensitive: String
+
+  """Greater than the specified value (case-insensitive)."""
+  greaterThanInsensitive: String
+
+  """Greater than or equal to the specified value (case-insensitive)."""
+  greaterThanOrEqualToInsensitive: String
+}
+
+"""
+A filter to be used against BigInt fields. All fields are combined with a logical ‘and.’
+"""
+input BigIntFilter {
+  """
+  Is null (if `true` is specified) or is not null (if `false` is specified).
+  """
+  isNull: Boolean
+
+  """Equal to the specified value."""
+  equalTo: BigInt
+
+  """Not equal to the specified value."""
+  notEqualTo: BigInt
+
+  """
+  Not equal to the specified value, treating null like an ordinary value.
+  """
+  distinctFrom: BigInt
+
+  """Equal to the specified value, treating null like an ordinary value."""
+  notDistinctFrom: BigInt
+
+  """Included in the specified list."""
+  in: [BigInt!]
+
+  """Not included in the specified list."""
+  notIn: [BigInt!]
+
+  """Less than the specified value."""
+  lessThan: BigInt
+
+  """Less than or equal to the specified value."""
+  lessThanOrEqualTo: BigInt
+
+  """Greater than the specified value."""
+  greaterThan: BigInt
+
+  """Greater than or equal to the specified value."""
+  greaterThanOrEqualTo: BigInt
+}
+
+"""A connection to a list of `AiringStatus` values."""
+type AiringStatusesConnection {
+  """A list of `AiringStatus` objects."""
+  nodes: [AiringStatus!]!
+
+  """
+  A list of edges which contains the `AiringStatus` and cursor to aid in pagination.
+  """
+  edges: [AiringStatusesEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `AiringStatus` you could get from the connection."""
+  totalCount: Int!
+}
+
+type AiringStatus {
+  airingStatusType: String
+  id: BigInt
+}
+
+"""A `AiringStatus` edge in the connection."""
+type AiringStatusesEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `AiringStatus` at the end of the edge."""
+  node: AiringStatus!
+}
+
+"""Methods to use when ordering `AiringStatus`."""
+enum AiringStatusesOrderBy {
+  NATURAL
+  AIRING_STATUS_TYPE_ASC
+  AIRING_STATUS_TYPE_DESC
+  ID_ASC
+  ID_DESC
+}
+
+"""
+A condition to be used against `AiringStatus` object types. All fields are
+tested for equality and combined with a logical ‘and.’
+"""
+input AiringStatusCondition {
+  """Checks for equality with the object’s `airingStatusType` field."""
+  airingStatusType: String
+
+  """Checks for equality with the object’s `id` field."""
+  id: BigInt
+}
+
+"""
+A filter to be used against `AiringStatus` object types. All fields are combined with a logical ‘and.’
+"""
+input AiringStatusFilter {
+  """Filter by the object’s `airingStatusType` field."""
+  airingStatusType: StringFilter
+
+  """Filter by the object’s `id` field."""
+  id: BigIntFilter
+
+  """Checks for all expressions in this list."""
+  and: [AiringStatusFilter!]
+
+  """Checks for any expressions in this list."""
+  or: [AiringStatusFilter!]
+
+  """Negates the expression."""
+  not: AiringStatusFilter
 }
 
 """A connection to a list of `AlternateAnimeName` values."""
@@ -2166,24 +2679,6 @@ type AnimeListsEdge {
   node: AnimeList!
 }
 
-"""A location in a connection that can be used for resuming pagination."""
-scalar Cursor
-
-"""Information about pagination in a connection."""
-type PageInfo {
-  """When paginating forwards, are there more items?"""
-  hasNextPage: Boolean!
-
-  """When paginating backwards, are there more items?"""
-  hasPreviousPage: Boolean!
-
-  """When paginating backwards, the cursor to continue."""
-  startCursor: Cursor
-
-  """When paginating forwards, the cursor to continue."""
-  endCursor: Cursor
-}
-
 """Methods to use when ordering `AnimeList`."""
 enum AnimeListsOrderBy {
   NATURAL
@@ -2303,138 +2798,6 @@ input UUIDFilter {
 
   """Greater than or equal to the specified value."""
   greaterThanOrEqualTo: UUID
-}
-
-"""
-A filter to be used against String fields. All fields are combined with a logical ‘and.’
-"""
-input StringFilter {
-  """
-  Is null (if `true` is specified) or is not null (if `false` is specified).
-  """
-  isNull: Boolean
-
-  """Equal to the specified value."""
-  equalTo: String
-
-  """Not equal to the specified value."""
-  notEqualTo: String
-
-  """
-  Not equal to the specified value, treating null like an ordinary value.
-  """
-  distinctFrom: String
-
-  """Equal to the specified value, treating null like an ordinary value."""
-  notDistinctFrom: String
-
-  """Included in the specified list."""
-  in: [String!]
-
-  """Not included in the specified list."""
-  notIn: [String!]
-
-  """Less than the specified value."""
-  lessThan: String
-
-  """Less than or equal to the specified value."""
-  lessThanOrEqualTo: String
-
-  """Greater than the specified value."""
-  greaterThan: String
-
-  """Greater than or equal to the specified value."""
-  greaterThanOrEqualTo: String
-
-  """Contains the specified string (case-sensitive)."""
-  includes: String
-
-  """Does not contain the specified string (case-sensitive)."""
-  notIncludes: String
-
-  """Contains the specified string (case-insensitive)."""
-  includesInsensitive: String
-
-  """Does not contain the specified string (case-insensitive)."""
-  notIncludesInsensitive: String
-
-  """Starts with the specified string (case-sensitive)."""
-  startsWith: String
-
-  """Does not start with the specified string (case-sensitive)."""
-  notStartsWith: String
-
-  """Starts with the specified string (case-insensitive)."""
-  startsWithInsensitive: String
-
-  """Does not start with the specified string (case-insensitive)."""
-  notStartsWithInsensitive: String
-
-  """Ends with the specified string (case-sensitive)."""
-  endsWith: String
-
-  """Does not end with the specified string (case-sensitive)."""
-  notEndsWith: String
-
-  """Ends with the specified string (case-insensitive)."""
-  endsWithInsensitive: String
-
-  """Does not end with the specified string (case-insensitive)."""
-  notEndsWithInsensitive: String
-
-  """
-  Matches the specified pattern (case-sensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters.
-  """
-  like: String
-
-  """
-  Does not match the specified pattern (case-sensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters.
-  """
-  notLike: String
-
-  """
-  Matches the specified pattern (case-insensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters.
-  """
-  likeInsensitive: String
-
-  """
-  Does not match the specified pattern (case-insensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters.
-  """
-  notLikeInsensitive: String
-
-  """Equal to the specified value (case-insensitive)."""
-  equalToInsensitive: String
-
-  """Not equal to the specified value (case-insensitive)."""
-  notEqualToInsensitive: String
-
-  """
-  Not equal to the specified value, treating null like an ordinary value (case-insensitive).
-  """
-  distinctFromInsensitive: String
-
-  """
-  Equal to the specified value, treating null like an ordinary value (case-insensitive).
-  """
-  notDistinctFromInsensitive: String
-
-  """Included in the specified list (case-insensitive)."""
-  inInsensitive: [String!]
-
-  """Not included in the specified list (case-insensitive)."""
-  notInInsensitive: [String!]
-
-  """Less than the specified value (case-insensitive)."""
-  lessThanInsensitive: String
-
-  """Less than or equal to the specified value (case-insensitive)."""
-  lessThanOrEqualToInsensitive: String
-
-  """Greater than the specified value (case-insensitive)."""
-  greaterThanInsensitive: String
-
-  """Greater than or equal to the specified value (case-insensitive)."""
-  greaterThanOrEqualToInsensitive: String
 }
 
 """
@@ -3447,74 +3810,6 @@ type Image implements Node {
     filter: AnimeImageFilter
   ): AnimeImagesConnection!
 
-  """Reads and enables pagination through a set of `Character`."""
-  charactersByCharacterImageId(
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """The method to use when ordering `Character`."""
-    orderBy: [CharactersOrderBy!] = [PRIMARY_KEY_ASC]
-
-    """
-    A condition to be used in determining which values should be returned by the collection.
-    """
-    condition: CharacterCondition
-
-    """
-    A filter to be used in determining which values should be returned by the collection.
-    """
-    filter: CharacterFilter
-  ): CharactersConnection!
-
-  """Reads and enables pagination through a set of `Person`."""
-  peopleByPersonImageId(
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """The method to use when ordering `Person`."""
-    orderBy: [PeopleOrderBy!] = [PRIMARY_KEY_ASC]
-
-    """
-    A condition to be used in determining which values should be returned by the collection.
-    """
-    condition: PersonCondition
-
-    """
-    A filter to be used in determining which values should be returned by the collection.
-    """
-    filter: PersonFilter
-  ): PeopleConnection!
-
   """Reads and enables pagination through a set of `CharacterImage`."""
   characterImages(
     """Only read the first `n` values of the set."""
@@ -3549,6 +3844,40 @@ type Image implements Node {
     filter: CharacterImageFilter
   ): CharacterImagesConnection!
 
+  """Reads and enables pagination through a set of `Character`."""
+  charactersByCharacterImageId(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `Character`."""
+    orderBy: [CharactersOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: CharacterCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: CharacterFilter
+  ): CharactersConnection!
+
   """Reads and enables pagination through a set of `PersonImage`."""
   personImages(
     """Only read the first `n` values of the set."""
@@ -3582,6 +3911,40 @@ type Image implements Node {
     """
     filter: PersonImageFilter
   ): PersonImagesConnection!
+
+  """Reads and enables pagination through a set of `Person`."""
+  peopleByPersonImageId(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `Person`."""
+    orderBy: [PeopleOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: PersonCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: PersonFilter
+  ): PeopleConnection!
 }
 
 """A connection to a list of `AnimeImage` values."""
@@ -3706,6 +4069,106 @@ input AnimeImageFilter {
   not: AnimeImageFilter
 }
 
+"""A connection to a list of `CharacterImage` values."""
+type CharacterImagesConnection {
+  """A list of `CharacterImage` objects."""
+  nodes: [CharacterImage!]!
+
+  """
+  A list of edges which contains the `CharacterImage` and cursor to aid in pagination.
+  """
+  edges: [CharacterImagesEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `CharacterImage` you could get from the connection."""
+  totalCount: Int!
+}
+
+type CharacterImage implements Node {
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  nodeId: ID!
+  characterId: UUID!
+  imageId: UUID!
+
+  """Reads a single `Character` that is related to this `CharacterImage`."""
+  character: Character
+
+  """Reads a single `Image` that is related to this `CharacterImage`."""
+  image: Image
+}
+
+"""A `CharacterImage` edge in the connection."""
+type CharacterImagesEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `CharacterImage` at the end of the edge."""
+  node: CharacterImage!
+}
+
+"""Methods to use when ordering `CharacterImage`."""
+enum CharacterImagesOrderBy {
+  NATURAL
+  CHARACTER_ID_ASC
+  CHARACTER_ID_DESC
+  IMAGE_ID_ASC
+  IMAGE_ID_DESC
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+  CHARACTER_BY_CHARACTER_ID__ID_ASC
+  CHARACTER_BY_CHARACTER_ID__ID_DESC
+  CHARACTER_BY_CHARACTER_ID__MAL_ID_ASC
+  CHARACTER_BY_CHARACTER_ID__MAL_ID_DESC
+  CHARACTER_BY_CHARACTER_ID__NAME_ASC
+  CHARACTER_BY_CHARACTER_ID__NAME_DESC
+  CHARACTER_BY_CHARACTER_ID__DESCRIPTION_ASC
+  CHARACTER_BY_CHARACTER_ID__DESCRIPTION_DESC
+  CHARACTER_BY_CHARACTER_ID__CHARACTER_IMAGE_ID_ASC
+  CHARACTER_BY_CHARACTER_ID__CHARACTER_IMAGE_ID_DESC
+  IMAGE_BY_IMAGE_ID__ID_ASC
+  IMAGE_BY_IMAGE_ID__ID_DESC
+  IMAGE_BY_IMAGE_ID__TITLE_ASC
+  IMAGE_BY_IMAGE_ID__TITLE_DESC
+  IMAGE_BY_IMAGE_ID__URL_ASC
+  IMAGE_BY_IMAGE_ID__URL_DESC
+}
+
+"""
+A condition to be used against `CharacterImage` object types. All fields are
+tested for equality and combined with a logical ‘and.’
+"""
+input CharacterImageCondition {
+  """Checks for equality with the object’s `characterId` field."""
+  characterId: UUID
+
+  """Checks for equality with the object’s `imageId` field."""
+  imageId: UUID
+}
+
+"""
+A filter to be used against `CharacterImage` object types. All fields are combined with a logical ‘and.’
+"""
+input CharacterImageFilter {
+  """Filter by the object’s `characterId` field."""
+  characterId: UUIDFilter
+
+  """Filter by the object’s `imageId` field."""
+  imageId: UUIDFilter
+
+  """Checks for all expressions in this list."""
+  and: [CharacterImageFilter!]
+
+  """Checks for any expressions in this list."""
+  or: [CharacterImageFilter!]
+
+  """Negates the expression."""
+  not: CharacterImageFilter
+}
+
 """A connection to a list of `Character` values."""
 type CharactersConnection {
   """A list of `Character` objects."""
@@ -3809,21 +4272,36 @@ input CharacterFilter {
   not: CharacterFilter
 }
 
-"""A connection to a list of `Person` values."""
-type PeopleConnection {
-  """A list of `Person` objects."""
-  nodes: [Person!]!
+"""A connection to a list of `PersonImage` values."""
+type PersonImagesConnection {
+  """A list of `PersonImage` objects."""
+  nodes: [PersonImage!]!
 
   """
-  A list of edges which contains the `Person` and cursor to aid in pagination.
+  A list of edges which contains the `PersonImage` and cursor to aid in pagination.
   """
-  edges: [PeopleEdge!]!
+  edges: [PersonImagesEdge!]!
 
   """Information to aid in pagination."""
   pageInfo: PageInfo!
 
-  """The count of *all* `Person` you could get from the connection."""
+  """The count of *all* `PersonImage` you could get from the connection."""
   totalCount: Int!
+}
+
+type PersonImage implements Node {
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  nodeId: ID!
+  personId: UUID!
+  imageId: UUID!
+
+  """Reads a single `Person` that is related to this `PersonImage`."""
+  person: Person
+
+  """Reads a single `Image` that is related to this `PersonImage`."""
+  image: Image
 }
 
 type Person implements Node {
@@ -4307,47 +4785,6 @@ type AnimeStaffEdge {
   node: AnimeStaff!
 }
 
-"""A connection to a list of `PersonImage` values."""
-type PersonImagesConnection {
-  """A list of `PersonImage` objects."""
-  nodes: [PersonImage!]!
-
-  """
-  A list of edges which contains the `PersonImage` and cursor to aid in pagination.
-  """
-  edges: [PersonImagesEdge!]!
-
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """The count of *all* `PersonImage` you could get from the connection."""
-  totalCount: Int!
-}
-
-type PersonImage implements Node {
-  """
-  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
-  """
-  nodeId: ID!
-  personId: UUID!
-  imageId: UUID!
-
-  """Reads a single `Person` that is related to this `PersonImage`."""
-  person: Person
-
-  """Reads a single `Image` that is related to this `PersonImage`."""
-  image: Image
-}
-
-"""A `PersonImage` edge in the connection."""
-type PersonImagesEdge {
-  """A cursor for use in pagination."""
-  cursor: Cursor
-
-  """The `PersonImage` at the end of the edge."""
-  node: PersonImage!
-}
-
 """Methods to use when ordering `PersonImage`."""
 enum PersonImagesOrderBy {
   NATURAL
@@ -4411,6 +4848,32 @@ input PersonImageFilter {
 
   """Negates the expression."""
   not: PersonImageFilter
+}
+
+"""A `PersonImage` edge in the connection."""
+type PersonImagesEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `PersonImage` at the end of the edge."""
+  node: PersonImage!
+}
+
+"""A connection to a list of `Person` values."""
+type PeopleConnection {
+  """A list of `Person` objects."""
+  nodes: [Person!]!
+
+  """
+  A list of edges which contains the `Person` and cursor to aid in pagination.
+  """
+  edges: [PeopleEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Person` you could get from the connection."""
+  totalCount: Int!
 }
 
 """A `Person` edge in the connection."""
@@ -4522,106 +4985,6 @@ input PersonFilter {
 
   """Negates the expression."""
   not: PersonFilter
-}
-
-"""A connection to a list of `CharacterImage` values."""
-type CharacterImagesConnection {
-  """A list of `CharacterImage` objects."""
-  nodes: [CharacterImage!]!
-
-  """
-  A list of edges which contains the `CharacterImage` and cursor to aid in pagination.
-  """
-  edges: [CharacterImagesEdge!]!
-
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """The count of *all* `CharacterImage` you could get from the connection."""
-  totalCount: Int!
-}
-
-type CharacterImage implements Node {
-  """
-  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
-  """
-  nodeId: ID!
-  characterId: UUID!
-  imageId: UUID!
-
-  """Reads a single `Character` that is related to this `CharacterImage`."""
-  character: Character
-
-  """Reads a single `Image` that is related to this `CharacterImage`."""
-  image: Image
-}
-
-"""A `CharacterImage` edge in the connection."""
-type CharacterImagesEdge {
-  """A cursor for use in pagination."""
-  cursor: Cursor
-
-  """The `CharacterImage` at the end of the edge."""
-  node: CharacterImage!
-}
-
-"""Methods to use when ordering `CharacterImage`."""
-enum CharacterImagesOrderBy {
-  NATURAL
-  CHARACTER_ID_ASC
-  CHARACTER_ID_DESC
-  IMAGE_ID_ASC
-  IMAGE_ID_DESC
-  PRIMARY_KEY_ASC
-  PRIMARY_KEY_DESC
-  CHARACTER_BY_CHARACTER_ID__ID_ASC
-  CHARACTER_BY_CHARACTER_ID__ID_DESC
-  CHARACTER_BY_CHARACTER_ID__MAL_ID_ASC
-  CHARACTER_BY_CHARACTER_ID__MAL_ID_DESC
-  CHARACTER_BY_CHARACTER_ID__NAME_ASC
-  CHARACTER_BY_CHARACTER_ID__NAME_DESC
-  CHARACTER_BY_CHARACTER_ID__DESCRIPTION_ASC
-  CHARACTER_BY_CHARACTER_ID__DESCRIPTION_DESC
-  CHARACTER_BY_CHARACTER_ID__CHARACTER_IMAGE_ID_ASC
-  CHARACTER_BY_CHARACTER_ID__CHARACTER_IMAGE_ID_DESC
-  IMAGE_BY_IMAGE_ID__ID_ASC
-  IMAGE_BY_IMAGE_ID__ID_DESC
-  IMAGE_BY_IMAGE_ID__TITLE_ASC
-  IMAGE_BY_IMAGE_ID__TITLE_DESC
-  IMAGE_BY_IMAGE_ID__URL_ASC
-  IMAGE_BY_IMAGE_ID__URL_DESC
-}
-
-"""
-A condition to be used against `CharacterImage` object types. All fields are
-tested for equality and combined with a logical ‘and.’
-"""
-input CharacterImageCondition {
-  """Checks for equality with the object’s `characterId` field."""
-  characterId: UUID
-
-  """Checks for equality with the object’s `imageId` field."""
-  imageId: UUID
-}
-
-"""
-A filter to be used against `CharacterImage` object types. All fields are combined with a logical ‘and.’
-"""
-input CharacterImageFilter {
-  """Filter by the object’s `characterId` field."""
-  characterId: UUIDFilter
-
-  """Filter by the object’s `imageId` field."""
-  imageId: UUIDFilter
-
-  """Checks for all expressions in this list."""
-  and: [CharacterImageFilter!]
-
-  """Checks for any expressions in this list."""
-  or: [CharacterImageFilter!]
-
-  """Negates the expression."""
-  not: CharacterImageFilter
 }
 
 type CharacterRole implements Node {
@@ -6030,6 +6393,80 @@ input SeasonFilter {
   greaterThanOrEqualTo: Season
 }
 
+"""A connection to a list of `AvailableLanguage` values."""
+type AvailableLanguagesConnection {
+  """A list of `AvailableLanguage` objects."""
+  nodes: [AvailableLanguage!]!
+
+  """
+  A list of edges which contains the `AvailableLanguage` and cursor to aid in pagination.
+  """
+  edges: [AvailableLanguagesEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """
+  The count of *all* `AvailableLanguage` you could get from the connection.
+  """
+  totalCount: Int!
+}
+
+type AvailableLanguage {
+  language: String
+  id: BigInt
+}
+
+"""A `AvailableLanguage` edge in the connection."""
+type AvailableLanguagesEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `AvailableLanguage` at the end of the edge."""
+  node: AvailableLanguage!
+}
+
+"""Methods to use when ordering `AvailableLanguage`."""
+enum AvailableLanguagesOrderBy {
+  NATURAL
+  LANGUAGE_ASC
+  LANGUAGE_DESC
+  ID_ASC
+  ID_DESC
+}
+
+"""
+A condition to be used against `AvailableLanguage` object types. All fields are
+tested for equality and combined with a logical ‘and.’
+"""
+input AvailableLanguageCondition {
+  """Checks for equality with the object’s `language` field."""
+  language: String
+
+  """Checks for equality with the object’s `id` field."""
+  id: BigInt
+}
+
+"""
+A filter to be used against `AvailableLanguage` object types. All fields are combined with a logical ‘and.’
+"""
+input AvailableLanguageFilter {
+  """Filter by the object’s `language` field."""
+  language: StringFilter
+
+  """Filter by the object’s `id` field."""
+  id: BigIntFilter
+
+  """Checks for all expressions in this list."""
+  and: [AvailableLanguageFilter!]
+
+  """Checks for any expressions in this list."""
+  or: [AvailableLanguageFilter!]
+
+  """Negates the expression."""
+  not: AvailableLanguageFilter
+}
+
 """A connection to a list of `CharacterRole` values."""
 type CharacterRolesConnection {
   """A list of `CharacterRole` objects."""
@@ -6164,14 +6601,14 @@ enum ImagesOrderBy {
   PRIMARY_KEY_DESC
   ANIME_IMAGES_BY_IMAGE_ID__COUNT_ASC
   ANIME_IMAGES_BY_IMAGE_ID__COUNT_DESC
-  CHARACTERS_BY_CHARACTER_IMAGE_ID__COUNT_ASC
-  CHARACTERS_BY_CHARACTER_IMAGE_ID__COUNT_DESC
-  PEOPLE_BY_PERSON_IMAGE_ID__COUNT_ASC
-  PEOPLE_BY_PERSON_IMAGE_ID__COUNT_DESC
   CHARACTER_IMAGES_BY_IMAGE_ID__COUNT_ASC
   CHARACTER_IMAGES_BY_IMAGE_ID__COUNT_DESC
+  CHARACTERS_BY_CHARACTER_IMAGE_ID__COUNT_ASC
+  CHARACTERS_BY_CHARACTER_IMAGE_ID__COUNT_DESC
   PERSON_IMAGES_BY_IMAGE_ID__COUNT_ASC
   PERSON_IMAGES_BY_IMAGE_ID__COUNT_DESC
+  PEOPLE_BY_PERSON_IMAGE_ID__COUNT_ASC
+  PEOPLE_BY_PERSON_IMAGE_ID__COUNT_DESC
 }
 
 """
@@ -6236,6 +6673,78 @@ input LicensorCondition {
   licensor: String
 }
 
+"""A connection to a list of `MediaFormat` values."""
+type MediaFormatsConnection {
+  """A list of `MediaFormat` objects."""
+  nodes: [MediaFormat!]!
+
+  """
+  A list of edges which contains the `MediaFormat` and cursor to aid in pagination.
+  """
+  edges: [MediaFormatsEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `MediaFormat` you could get from the connection."""
+  totalCount: Int!
+}
+
+type MediaFormat {
+  mediaType: String
+  id: BigInt
+}
+
+"""A `MediaFormat` edge in the connection."""
+type MediaFormatsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `MediaFormat` at the end of the edge."""
+  node: MediaFormat!
+}
+
+"""Methods to use when ordering `MediaFormat`."""
+enum MediaFormatsOrderBy {
+  NATURAL
+  MEDIA_TYPE_ASC
+  MEDIA_TYPE_DESC
+  ID_ASC
+  ID_DESC
+}
+
+"""
+A condition to be used against `MediaFormat` object types. All fields are tested
+for equality and combined with a logical ‘and.’
+"""
+input MediaFormatCondition {
+  """Checks for equality with the object’s `mediaType` field."""
+  mediaType: String
+
+  """Checks for equality with the object’s `id` field."""
+  id: BigInt
+}
+
+"""
+A filter to be used against `MediaFormat` object types. All fields are combined with a logical ‘and.’
+"""
+input MediaFormatFilter {
+  """Filter by the object’s `mediaType` field."""
+  mediaType: StringFilter
+
+  """Filter by the object’s `id` field."""
+  id: BigIntFilter
+
+  """Checks for all expressions in this list."""
+  and: [MediaFormatFilter!]
+
+  """Checks for any expressions in this list."""
+  or: [MediaFormatFilter!]
+
+  """Negates the expression."""
+  not: MediaFormatFilter
+}
+
 """Methods to use when ordering `Producer`."""
 enum ProducersOrderBy {
   NATURAL
@@ -6259,6 +6768,78 @@ input ProducerCondition {
 
   """Checks for equality with the object’s `producer` field."""
   producer: String
+}
+
+"""A connection to a list of `SourceMaterial` values."""
+type SourceMaterialsConnection {
+  """A list of `SourceMaterial` objects."""
+  nodes: [SourceMaterial!]!
+
+  """
+  A list of edges which contains the `SourceMaterial` and cursor to aid in pagination.
+  """
+  edges: [SourceMaterialsEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `SourceMaterial` you could get from the connection."""
+  totalCount: Int!
+}
+
+type SourceMaterial {
+  sourceMaterialType: String
+  id: BigInt
+}
+
+"""A `SourceMaterial` edge in the connection."""
+type SourceMaterialsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `SourceMaterial` at the end of the edge."""
+  node: SourceMaterial!
+}
+
+"""Methods to use when ordering `SourceMaterial`."""
+enum SourceMaterialsOrderBy {
+  NATURAL
+  SOURCE_MATERIAL_TYPE_ASC
+  SOURCE_MATERIAL_TYPE_DESC
+  ID_ASC
+  ID_DESC
+}
+
+"""
+A condition to be used against `SourceMaterial` object types. All fields are
+tested for equality and combined with a logical ‘and.’
+"""
+input SourceMaterialCondition {
+  """Checks for equality with the object’s `sourceMaterialType` field."""
+  sourceMaterialType: String
+
+  """Checks for equality with the object’s `id` field."""
+  id: BigInt
+}
+
+"""
+A filter to be used against `SourceMaterial` object types. All fields are combined with a logical ‘and.’
+"""
+input SourceMaterialFilter {
+  """Filter by the object’s `sourceMaterialType` field."""
+  sourceMaterialType: StringFilter
+
+  """Filter by the object’s `id` field."""
+  id: BigIntFilter
+
+  """Checks for all expressions in this list."""
+  and: [SourceMaterialFilter!]
+
+  """Checks for any expressions in this list."""
+  or: [SourceMaterialFilter!]
+
+  """Negates the expression."""
+  not: SourceMaterialFilter
 }
 
 """A connection to a list of `StaffRole` values."""
@@ -6567,6 +7148,117 @@ input UserListFilter {
 
   """Negates the expression."""
   not: UserListFilter
+}
+
+"""A connection to a list of `SearchResult` values."""
+type SearchResultsConnection {
+  """A list of `SearchResult` objects."""
+  nodes: [SearchResult!]!
+
+  """
+  A list of edges which contains the `SearchResult` and cursor to aid in pagination.
+  """
+  edges: [SearchResultsEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `SearchResult` you could get from the connection."""
+  totalCount: Int!
+}
+
+type SearchResult {
+  id: UUID
+  malId: Int
+  title: String
+  description: String
+  numberOfEpisodes: Int
+  duration: Int
+  averageWatcherRating: BigFloat
+  startBroadcastDatetime: Datetime
+  endBroadcastDatetime: Datetime
+  ageRatingType: String
+  airingStatusType: String
+  mediaType: String
+  sourceMaterialType: String
+  coverImage: String
+  season: String
+  seasonYear: Int
+  altName: String
+}
+
+"""A `SearchResult` edge in the connection."""
+type SearchResultsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `SearchResult` at the end of the edge."""
+  node: SearchResult!
+}
+
+"""
+A filter to be used against `SearchResult` object types. All fields are combined with a logical ‘and.’
+"""
+input SearchResultFilter {
+  """Filter by the object’s `id` field."""
+  id: UUIDFilter
+
+  """Filter by the object’s `malId` field."""
+  malId: IntFilter
+
+  """Filter by the object’s `title` field."""
+  title: StringFilter
+
+  """Filter by the object’s `description` field."""
+  description: StringFilter
+
+  """Filter by the object’s `numberOfEpisodes` field."""
+  numberOfEpisodes: IntFilter
+
+  """Filter by the object’s `duration` field."""
+  duration: IntFilter
+
+  """Filter by the object’s `averageWatcherRating` field."""
+  averageWatcherRating: BigFloatFilter
+
+  """Filter by the object’s `startBroadcastDatetime` field."""
+  startBroadcastDatetime: DatetimeFilter
+
+  """Filter by the object’s `endBroadcastDatetime` field."""
+  endBroadcastDatetime: DatetimeFilter
+
+  """Filter by the object’s `ageRatingType` field."""
+  ageRatingType: StringFilter
+
+  """Filter by the object’s `airingStatusType` field."""
+  airingStatusType: StringFilter
+
+  """Filter by the object’s `mediaType` field."""
+  mediaType: StringFilter
+
+  """Filter by the object’s `sourceMaterialType` field."""
+  sourceMaterialType: StringFilter
+
+  """Filter by the object’s `coverImage` field."""
+  coverImage: StringFilter
+
+  """Filter by the object’s `season` field."""
+  season: StringFilter
+
+  """Filter by the object’s `seasonYear` field."""
+  seasonYear: IntFilter
+
+  """Filter by the object’s `altName` field."""
+  altName: StringFilter
+
+  """Checks for all expressions in this list."""
+  and: [SearchResultFilter!]
+
+  """Checks for any expressions in this list."""
+  or: [SearchResultFilter!]
+
+  """Negates the expression."""
+  not: SearchResultFilter
 }
 
 """A connection to a list of `CustomAnimeList` values."""

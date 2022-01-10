@@ -1,0 +1,18 @@
+fragment SearchResultFragment on SearchResult {
+  title
+  id
+  malId
+  mediaType
+  numberOfEpisodes
+  season
+  seasonYear
+  sourceMaterialType
+  startBroadcastDatetime
+  ageRatingType
+  airingStatusType
+  averageWatcherRating
+  coverImage
+  description
+  duration
+  endBroadcastDatetime
+}

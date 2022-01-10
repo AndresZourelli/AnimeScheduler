@@ -1,0 +1,57 @@
+query SearchAnimes(
+  $after: Cursor = null
+  $first: Int = null
+  $searchInput: String
+) {
+  searchAnimes(searchInput: $searchInput, after: $after, first: $first) {
+    nodes {
+      altName
+      ...SearchResultFragment
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+      hasPreviousPage
+      startCursor
+    }
+    totalCount
+  }
+}
+
+query AdvanceFilterData {
+  genres(orderBy: GENRE_ASC) {
+    nodes {
+      genre
+    }
+  }
+  mediaFormats {
+    nodes {
+      mediaType
+    }
+  }
+  airingStatuses {
+    nodes {
+      airingStatusType
+    }
+  }
+  sourceMaterials {
+    nodes {
+      sourceMaterialType
+    }
+  }
+  producers(orderBy: PRODUCER_ASC) {
+    nodes {
+      producer
+    }
+  }
+  studios(orderBy: STUDIO_ASC) {
+    nodes {
+      studio
+    }
+  }
+  ageRatings {
+    nodes {
+      ageRatingType
+    }
+  }
+}

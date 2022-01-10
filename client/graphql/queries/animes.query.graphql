@@ -11,25 +11,6 @@ query WeeklyAnimes {
   }
 }
 
-query SearchAnimes(
-  $after: Cursor = null
-  $first: Int = null
-  $searchInput: String
-) {
-  searchAnimes(searchInput: $searchInput, after: $after, first: $first) {
-    nodes {
-      ...AnimeCardFragment
-    }
-    pageInfo {
-      hasNextPage
-      endCursor
-      hasPreviousPage
-      startCursor
-    }
-    totalCount
-  }
-}
-
 query GetAnime(
   $animeId: UUID!
   $voiceActorLanguage: LanguageType!
