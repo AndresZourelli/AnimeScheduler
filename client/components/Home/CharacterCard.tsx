@@ -11,7 +11,7 @@ const CharacterCard = ({ character, role, actor, language }) => {
       bg="rgba(0, 0, 0, 0.2)"
     >
       <HStack maxW="175px">
-        <NextLink href={`/character/${character.id}`}>
+        <NextLink href={`/characters/${character.id}`}>
           <Box
             minW="60px"
             minH="90px"
@@ -22,6 +22,7 @@ const CharacterCard = ({ character, role, actor, language }) => {
             <ImageLoader
               image_url={character.characterImage.url}
               alt={character.name}
+              maxW="60px"
             />
           </Box>
         </NextLink>
@@ -60,6 +61,7 @@ const CharacterCard = ({ character, role, actor, language }) => {
               <ImageLoader
                 image_url={actor.personImage.url}
                 alt={actor.firstName + " " + (actor.lastName ?? "")}
+                maxW="60px"
               />
             </Box>
           </NextLink>

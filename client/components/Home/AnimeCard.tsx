@@ -94,7 +94,7 @@ const AnimeCard = ({
   });
 
   const redirectToAnime = (e) => {
-    router.push(`/anime/${id}`);
+    router.push(`/animes/${id}`);
   };
 
   const addAnimeToDefaultList = (

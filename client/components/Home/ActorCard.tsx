@@ -16,7 +16,7 @@ const ActorCard = ({
     w="200px"
     flex="0 0 auto"
   >
-    <NextLink href={`/actor/${actor_id}`}>
+    <NextLink href={`/actors/${actor_id}`}>
       <Box
         m="auto"
         position="relative"
@@ -42,7 +42,7 @@ const ActorCard = ({
           <ImageLoader
             image_url={image_url}
             alt={actor_name}
-            w="125px"
+            maxW="125px"
             minH="194px"
           />
         </Box>

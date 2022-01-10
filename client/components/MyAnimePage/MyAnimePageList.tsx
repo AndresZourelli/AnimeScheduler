@@ -51,25 +51,19 @@ const MyAnimePageList = ({ watchingStatus }: MyAnimePageListInterface) => {
   }, [animesResult, animeLists, dataLoaded]);
   return (
     <Box position="relative" justifySelf="end" mt="8" mx="3">
-      <Box my="3" mr="16">
-        <Grid
-          gridTemplateColumns="repeat(5, 225px)"
-          gridAutoRows="minmax(225px, auto)"
-          gap={4}
-        >
-          {animesResult.data?.animes?.nodes
-            .filter((node) => node.userWatchStatus === watchingStatus)
-            .map((anime, idx) => (
-              <AnimeCard key={anime.id} {...anime} />
-            ))}
-        </Grid>
-        <Box display="flex">
-          {hasMoreAnimes ? (
-            <Button m="auto" onClick={animesShowMore} size="sm">
-              Show More
-            </Button>
-          ) : null}
-        </Box>
+      <Grid templateColumns={"repeat(auto-fit, minmax(225px, 225px))"} gap={3}>
+        {animesResult.data?.animes?.nodes
+          .filter((node) => node.userWatchStatus === watchingStatus)
+          .map((anime, idx) => (
+            <AnimeCard key={anime.id} {...anime} />
+          ))}
+      </Grid>
+      <Box display="flex">
+        {hasMoreAnimes ? (
+          <Button m="auto" onClick={animesShowMore} size="sm">
+            Show More
+          </Button>
+        ) : null}
       </Box>
     </Box>
   );

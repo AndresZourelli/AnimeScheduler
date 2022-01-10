@@ -1,6 +1,7 @@
 import gql from 'graphql-tag';
 import * as Urql from 'urql';
 export type Maybe<T> = T | null;
+export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
@@ -14,6 +15,12 @@ export type Scalars = {
   Float: number;
   /** A floating point number that requires more precision than IEEE 754 binary 64 */
   BigFloat: any;
+  /**
+   * A signed eight-byte integer. The upper big integer values are greater than the
+   * max value for a JavaScript number. Therefore all big integers will be output as
+   * strings and not numbers.
+   */
+  BigInt: any;
   /** A location in a connection that can be used for resuming pagination. */
   Cursor: any;
   /**
@@ -27,16 +34,16 @@ export type Scalars = {
 
 /** All input for the `addAnimeToList` mutation. */
 export type AddAnimeToListInput = {
-  animeId?: Maybe<Scalars['UUID']>;
+  animeId?: InputMaybe<Scalars['UUID']>;
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
-  privacy?: Maybe<AnimeListPrivacy>;
-  title?: Maybe<Scalars['String']>;
-  userId?: Maybe<Scalars['String']>;
-  watchStatus?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  privacy?: InputMaybe<AnimeListPrivacy>;
+  title?: InputMaybe<Scalars['String']>;
+  userId?: InputMaybe<Scalars['String']>;
+  watchStatus?: InputMaybe<Scalars['String']>;
 };
 
 /** The output of our `addAnimeToList` mutation. */
@@ -59,7 +66,38 @@ export type AddAnimeToListPayload = {
 
 /** The output of our `addAnimeToList` mutation. */
 export type AddAnimeToListPayloadAnimeListEdgeArgs = {
-  orderBy?: Maybe<Array<AnimeListsOrderBy>>;
+  orderBy?: InputMaybe<Array<AnimeListsOrderBy>>;
+};
+
+export type AgeRating = {
+  __typename?: 'AgeRating';
+  ageRatingType?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['BigInt']>;
+};
+
+/**
+ * A condition to be used against `AgeRating` object types. All fields are tested
+ * for equality and combined with a logical ‘and.’
+ */
+export type AgeRatingCondition = {
+  /** Checks for equality with the object’s `ageRatingType` field. */
+  ageRatingType?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `id` field. */
+  id?: InputMaybe<Scalars['BigInt']>;
+};
+
+/** A filter to be used against `AgeRating` object types. All fields are combined with a logical ‘and.’ */
+export type AgeRatingFilter = {
+  /** Filter by the object’s `ageRatingType` field. */
+  ageRatingType?: InputMaybe<StringFilter>;
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<AgeRatingFilter>>;
+  /** Filter by the object’s `id` field. */
+  id?: InputMaybe<BigIntFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<AgeRatingFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<AgeRatingFilter>>;
 };
 
 export enum AgeRatingTypes {
@@ -73,27 +111,89 @@ export enum AgeRatingTypes {
 /** A filter to be used against AgeRatingTypes fields. All fields are combined with a logical ‘and.’ */
 export type AgeRatingTypesFilter = {
   /** Not equal to the specified value, treating null like an ordinary value. */
-  distinctFrom?: Maybe<AgeRatingTypes>;
+  distinctFrom?: InputMaybe<AgeRatingTypes>;
   /** Equal to the specified value. */
-  equalTo?: Maybe<AgeRatingTypes>;
+  equalTo?: InputMaybe<AgeRatingTypes>;
   /** Greater than the specified value. */
-  greaterThan?: Maybe<AgeRatingTypes>;
+  greaterThan?: InputMaybe<AgeRatingTypes>;
   /** Greater than or equal to the specified value. */
-  greaterThanOrEqualTo?: Maybe<AgeRatingTypes>;
+  greaterThanOrEqualTo?: InputMaybe<AgeRatingTypes>;
   /** Included in the specified list. */
-  in?: Maybe<Array<AgeRatingTypes>>;
+  in?: InputMaybe<Array<AgeRatingTypes>>;
   /** Is null (if `true` is specified) or is not null (if `false` is specified). */
-  isNull?: Maybe<Scalars['Boolean']>;
+  isNull?: InputMaybe<Scalars['Boolean']>;
   /** Less than the specified value. */
-  lessThan?: Maybe<AgeRatingTypes>;
+  lessThan?: InputMaybe<AgeRatingTypes>;
   /** Less than or equal to the specified value. */
-  lessThanOrEqualTo?: Maybe<AgeRatingTypes>;
+  lessThanOrEqualTo?: InputMaybe<AgeRatingTypes>;
   /** Equal to the specified value, treating null like an ordinary value. */
-  notDistinctFrom?: Maybe<AgeRatingTypes>;
+  notDistinctFrom?: InputMaybe<AgeRatingTypes>;
   /** Not equal to the specified value. */
-  notEqualTo?: Maybe<AgeRatingTypes>;
+  notEqualTo?: InputMaybe<AgeRatingTypes>;
   /** Not included in the specified list. */
-  notIn?: Maybe<Array<AgeRatingTypes>>;
+  notIn?: InputMaybe<Array<AgeRatingTypes>>;
+};
+
+/** A connection to a list of `AgeRating` values. */
+export type AgeRatingsConnection = {
+  __typename?: 'AgeRatingsConnection';
+  /** A list of edges which contains the `AgeRating` and cursor to aid in pagination. */
+  edges: Array<AgeRatingsEdge>;
+  /** A list of `AgeRating` objects. */
+  nodes: Array<AgeRating>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `AgeRating` you could get from the connection. */
+  totalCount: Scalars['Int'];
+};
+
+/** A `AgeRating` edge in the connection. */
+export type AgeRatingsEdge = {
+  __typename?: 'AgeRatingsEdge';
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>;
+  /** The `AgeRating` at the end of the edge. */
+  node: AgeRating;
+};
+
+/** Methods to use when ordering `AgeRating`. */
+export enum AgeRatingsOrderBy {
+  AgeRatingTypeAsc = 'AGE_RATING_TYPE_ASC',
+  AgeRatingTypeDesc = 'AGE_RATING_TYPE_DESC',
+  IdAsc = 'ID_ASC',
+  IdDesc = 'ID_DESC',
+  Natural = 'NATURAL'
+}
+
+export type AiringStatus = {
+  __typename?: 'AiringStatus';
+  airingStatusType?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['BigInt']>;
+};
+
+/**
+ * A condition to be used against `AiringStatus` object types. All fields are
+ * tested for equality and combined with a logical ‘and.’
+ */
+export type AiringStatusCondition = {
+  /** Checks for equality with the object’s `airingStatusType` field. */
+  airingStatusType?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `id` field. */
+  id?: InputMaybe<Scalars['BigInt']>;
+};
+
+/** A filter to be used against `AiringStatus` object types. All fields are combined with a logical ‘and.’ */
+export type AiringStatusFilter = {
+  /** Filter by the object’s `airingStatusType` field. */
+  airingStatusType?: InputMaybe<StringFilter>;
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<AiringStatusFilter>>;
+  /** Filter by the object’s `id` field. */
+  id?: InputMaybe<BigIntFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<AiringStatusFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<AiringStatusFilter>>;
 };
 
 export enum AiringStatusTypes {
@@ -104,28 +204,59 @@ export enum AiringStatusTypes {
 /** A filter to be used against AiringStatusTypes fields. All fields are combined with a logical ‘and.’ */
 export type AiringStatusTypesFilter = {
   /** Not equal to the specified value, treating null like an ordinary value. */
-  distinctFrom?: Maybe<AiringStatusTypes>;
+  distinctFrom?: InputMaybe<AiringStatusTypes>;
   /** Equal to the specified value. */
-  equalTo?: Maybe<AiringStatusTypes>;
+  equalTo?: InputMaybe<AiringStatusTypes>;
   /** Greater than the specified value. */
-  greaterThan?: Maybe<AiringStatusTypes>;
+  greaterThan?: InputMaybe<AiringStatusTypes>;
   /** Greater than or equal to the specified value. */
-  greaterThanOrEqualTo?: Maybe<AiringStatusTypes>;
+  greaterThanOrEqualTo?: InputMaybe<AiringStatusTypes>;
   /** Included in the specified list. */
-  in?: Maybe<Array<AiringStatusTypes>>;
+  in?: InputMaybe<Array<AiringStatusTypes>>;
   /** Is null (if `true` is specified) or is not null (if `false` is specified). */
-  isNull?: Maybe<Scalars['Boolean']>;
+  isNull?: InputMaybe<Scalars['Boolean']>;
   /** Less than the specified value. */
-  lessThan?: Maybe<AiringStatusTypes>;
+  lessThan?: InputMaybe<AiringStatusTypes>;
   /** Less than or equal to the specified value. */
-  lessThanOrEqualTo?: Maybe<AiringStatusTypes>;
+  lessThanOrEqualTo?: InputMaybe<AiringStatusTypes>;
   /** Equal to the specified value, treating null like an ordinary value. */
-  notDistinctFrom?: Maybe<AiringStatusTypes>;
+  notDistinctFrom?: InputMaybe<AiringStatusTypes>;
   /** Not equal to the specified value. */
-  notEqualTo?: Maybe<AiringStatusTypes>;
+  notEqualTo?: InputMaybe<AiringStatusTypes>;
   /** Not included in the specified list. */
-  notIn?: Maybe<Array<AiringStatusTypes>>;
+  notIn?: InputMaybe<Array<AiringStatusTypes>>;
 };
+
+/** A connection to a list of `AiringStatus` values. */
+export type AiringStatusesConnection = {
+  __typename?: 'AiringStatusesConnection';
+  /** A list of edges which contains the `AiringStatus` and cursor to aid in pagination. */
+  edges: Array<AiringStatusesEdge>;
+  /** A list of `AiringStatus` objects. */
+  nodes: Array<AiringStatus>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `AiringStatus` you could get from the connection. */
+  totalCount: Scalars['Int'];
+};
+
+/** A `AiringStatus` edge in the connection. */
+export type AiringStatusesEdge = {
+  __typename?: 'AiringStatusesEdge';
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>;
+  /** The `AiringStatus` at the end of the edge. */
+  node: AiringStatus;
+};
+
+/** Methods to use when ordering `AiringStatus`. */
+export enum AiringStatusesOrderBy {
+  AiringStatusTypeAsc = 'AIRING_STATUS_TYPE_ASC',
+  AiringStatusTypeDesc = 'AIRING_STATUS_TYPE_DESC',
+  IdAsc = 'ID_ASC',
+  IdDesc = 'ID_DESC',
+  Natural = 'NATURAL'
+}
 
 export type AlternateAnimeName = Node & {
   __typename?: 'AlternateAnimeName';
@@ -143,41 +274,41 @@ export type AlternateAnimeName = Node & {
  */
 export type AlternateAnimeNameCondition = {
   /** Checks for equality with the object’s `animeId` field. */
-  animeId?: Maybe<Scalars['UUID']>;
+  animeId?: InputMaybe<Scalars['UUID']>;
   /** Checks for equality with the object’s `id` field. */
-  id?: Maybe<Scalars['UUID']>;
+  id?: InputMaybe<Scalars['UUID']>;
   /** Checks for equality with the object’s `name` field. */
-  name?: Maybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']>;
 };
 
 /** A filter to be used against `AlternateAnimeName` object types. All fields are combined with a logical ‘and.’ */
 export type AlternateAnimeNameFilter = {
   /** Checks for all expressions in this list. */
-  and?: Maybe<Array<AlternateAnimeNameFilter>>;
+  and?: InputMaybe<Array<AlternateAnimeNameFilter>>;
   /** Filter by the object’s `animeId` field. */
-  animeId?: Maybe<UuidFilter>;
+  animeId?: InputMaybe<UuidFilter>;
   /** Filter by the object’s `id` field. */
-  id?: Maybe<UuidFilter>;
+  id?: InputMaybe<UuidFilter>;
   /** Filter by the object’s `name` field. */
-  name?: Maybe<StringFilter>;
+  name?: InputMaybe<StringFilter>;
   /** Negates the expression. */
-  not?: Maybe<AlternateAnimeNameFilter>;
+  not?: InputMaybe<AlternateAnimeNameFilter>;
   /** Checks for any expressions in this list. */
-  or?: Maybe<Array<AlternateAnimeNameFilter>>;
+  or?: InputMaybe<Array<AlternateAnimeNameFilter>>;
 };
 
 /** An input for mutations affecting `AlternateAnimeName` */
 export type AlternateAnimeNameInput = {
   animeId: Scalars['UUID'];
-  id?: Maybe<Scalars['UUID']>;
+  id?: InputMaybe<Scalars['UUID']>;
   name: Scalars['String'];
 };
 
 /** Represents an update to a `AlternateAnimeName`. Fields that are set will be updated. */
 export type AlternateAnimeNamePatch = {
-  animeId?: Maybe<Scalars['UUID']>;
-  id?: Maybe<Scalars['UUID']>;
-  name?: Maybe<Scalars['String']>;
+  animeId?: InputMaybe<Scalars['UUID']>;
+  id?: InputMaybe<Scalars['UUID']>;
+  name?: InputMaybe<Scalars['String']>;
 };
 
 /** A connection to a list of `AlternateAnimeName` values. */
@@ -309,196 +440,196 @@ export type Anime = Node & {
 
 
 export type AnimeAlternateAnimeNamesArgs = {
-  after?: Maybe<Scalars['Cursor']>;
-  before?: Maybe<Scalars['Cursor']>;
-  condition?: Maybe<AlternateAnimeNameCondition>;
-  filter?: Maybe<AlternateAnimeNameFilter>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  orderBy?: Maybe<Array<AlternateAnimeNamesOrderBy>>;
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<AlternateAnimeNameCondition>;
+  filter?: InputMaybe<AlternateAnimeNameFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<AlternateAnimeNamesOrderBy>>;
 };
 
 
 export type AnimeAnimeCharactersArgs = {
-  after?: Maybe<Scalars['Cursor']>;
-  before?: Maybe<Scalars['Cursor']>;
-  condition?: Maybe<AnimeCharacterCondition>;
-  filter?: Maybe<AnimeCharacterFilter>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  orderBy?: Maybe<Array<AnimeCharactersOrderBy>>;
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<AnimeCharacterCondition>;
+  filter?: InputMaybe<AnimeCharacterFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<AnimeCharactersOrderBy>>;
 };
 
 
 export type AnimeAnimeGenresArgs = {
-  after?: Maybe<Scalars['Cursor']>;
-  before?: Maybe<Scalars['Cursor']>;
-  condition?: Maybe<AnimeGenreCondition>;
-  filter?: Maybe<AnimeGenreFilter>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  orderBy?: Maybe<Array<AnimeGenresOrderBy>>;
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<AnimeGenreCondition>;
+  filter?: InputMaybe<AnimeGenreFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<AnimeGenresOrderBy>>;
 };
 
 
 export type AnimeAnimeImagesArgs = {
-  after?: Maybe<Scalars['Cursor']>;
-  before?: Maybe<Scalars['Cursor']>;
-  condition?: Maybe<AnimeImageCondition>;
-  filter?: Maybe<AnimeImageFilter>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  orderBy?: Maybe<Array<AnimeImagesOrderBy>>;
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<AnimeImageCondition>;
+  filter?: InputMaybe<AnimeImageFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<AnimeImagesOrderBy>>;
 };
 
 
 export type AnimeAnimeLicensorsArgs = {
-  after?: Maybe<Scalars['Cursor']>;
-  before?: Maybe<Scalars['Cursor']>;
-  condition?: Maybe<AnimeLicensorCondition>;
-  filter?: Maybe<AnimeLicensorFilter>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  orderBy?: Maybe<Array<AnimeLicensorsOrderBy>>;
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<AnimeLicensorCondition>;
+  filter?: InputMaybe<AnimeLicensorFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<AnimeLicensorsOrderBy>>;
 };
 
 
 export type AnimeAnimeProducersArgs = {
-  after?: Maybe<Scalars['Cursor']>;
-  before?: Maybe<Scalars['Cursor']>;
-  condition?: Maybe<AnimeProducerCondition>;
-  filter?: Maybe<AnimeProducerFilter>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  orderBy?: Maybe<Array<AnimeProducersOrderBy>>;
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<AnimeProducerCondition>;
+  filter?: InputMaybe<AnimeProducerFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<AnimeProducersOrderBy>>;
 };
 
 
 export type AnimeAnimeStaffsArgs = {
-  after?: Maybe<Scalars['Cursor']>;
-  before?: Maybe<Scalars['Cursor']>;
-  condition?: Maybe<AnimeStaffCondition>;
-  filter?: Maybe<AnimeStaffFilter>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  orderBy?: Maybe<Array<AnimeStaffOrderBy>>;
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<AnimeStaffCondition>;
+  filter?: InputMaybe<AnimeStaffFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<AnimeStaffOrderBy>>;
 };
 
 
 export type AnimeAnimeStudiosArgs = {
-  after?: Maybe<Scalars['Cursor']>;
-  before?: Maybe<Scalars['Cursor']>;
-  condition?: Maybe<AnimeStudioCondition>;
-  filter?: Maybe<AnimeStudioFilter>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  orderBy?: Maybe<Array<AnimeStudiosOrderBy>>;
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<AnimeStudioCondition>;
+  filter?: InputMaybe<AnimeStudioFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<AnimeStudiosOrderBy>>;
 };
 
 
 export type AnimeAnimeUserScoresArgs = {
-  after?: Maybe<Scalars['Cursor']>;
-  before?: Maybe<Scalars['Cursor']>;
-  condition?: Maybe<AnimeUserScoreCondition>;
-  filter?: Maybe<AnimeUserScoreFilter>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  orderBy?: Maybe<Array<AnimeUserScoresOrderBy>>;
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<AnimeUserScoreCondition>;
+  filter?: InputMaybe<AnimeUserScoreFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<AnimeUserScoresOrderBy>>;
 };
 
 
 export type AnimeCharacterPreviewArgs = {
-  after?: Maybe<Scalars['Cursor']>;
-  before?: Maybe<Scalars['Cursor']>;
-  filter?: Maybe<StaffResultFilter>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  filter?: InputMaybe<StaffResultFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
 };
 
 
 export type AnimeGenreListArgs = {
-  after?: Maybe<Scalars['Cursor']>;
-  before?: Maybe<Scalars['Cursor']>;
-  filter?: Maybe<GenreFilter>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  filter?: InputMaybe<GenreFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
 };
 
 
 export type AnimeLicensorListArgs = {
-  after?: Maybe<Scalars['Cursor']>;
-  before?: Maybe<Scalars['Cursor']>;
-  filter?: Maybe<LicensorFilter>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  filter?: InputMaybe<LicensorFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
 };
 
 
 export type AnimeProducerListArgs = {
-  after?: Maybe<Scalars['Cursor']>;
-  before?: Maybe<Scalars['Cursor']>;
-  filter?: Maybe<ProducerFilter>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  filter?: InputMaybe<ProducerFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
 };
 
 
 export type AnimeStudioListArgs = {
-  after?: Maybe<Scalars['Cursor']>;
-  before?: Maybe<Scalars['Cursor']>;
-  filter?: Maybe<StudioFilter>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  filter?: InputMaybe<StudioFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
 };
 
 
 export type AnimeUserAnimeListsArgs = {
-  after?: Maybe<Scalars['Cursor']>;
-  before?: Maybe<Scalars['Cursor']>;
-  condition?: Maybe<UserAnimeListCondition>;
-  filter?: Maybe<UserAnimeListFilter>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  orderBy?: Maybe<Array<UserAnimeListsOrderBy>>;
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<UserAnimeListCondition>;
+  filter?: InputMaybe<UserAnimeListFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<UserAnimeListsOrderBy>>;
 };
 
 
 export type AnimeUserAnimesArgs = {
-  after?: Maybe<Scalars['Cursor']>;
-  before?: Maybe<Scalars['Cursor']>;
-  condition?: Maybe<UserAnimeCondition>;
-  filter?: Maybe<UserAnimeFilter>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  orderBy?: Maybe<Array<UserAnimeOrderBy>>;
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<UserAnimeCondition>;
+  filter?: InputMaybe<UserAnimeFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<UserAnimeOrderBy>>;
 };
 
 
 export type AnimeUserWatchStatusesArgs = {
-  after?: Maybe<Scalars['Cursor']>;
-  before?: Maybe<Scalars['Cursor']>;
-  condition?: Maybe<UserWatchStatusCondition>;
-  filter?: Maybe<UserWatchStatusFilter>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  orderBy?: Maybe<Array<UserWatchStatusesOrderBy>>;
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<UserWatchStatusCondition>;
+  filter?: InputMaybe<UserWatchStatusFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<UserWatchStatusesOrderBy>>;
 };
 
 export type AnimeCharacter = Node & {
@@ -526,35 +657,35 @@ export type AnimeCharacter = Node & {
  */
 export type AnimeCharacterCondition = {
   /** Checks for equality with the object’s `animeId` field. */
-  animeId?: Maybe<Scalars['UUID']>;
+  animeId?: InputMaybe<Scalars['UUID']>;
   /** Checks for equality with the object’s `characterId` field. */
-  characterId?: Maybe<Scalars['UUID']>;
+  characterId?: InputMaybe<Scalars['UUID']>;
   /** Checks for equality with the object’s `characterRoleId` field. */
-  characterRoleId?: Maybe<Scalars['UUID']>;
+  characterRoleId?: InputMaybe<Scalars['UUID']>;
   /** Checks for equality with the object’s `language` field. */
-  language?: Maybe<LanguageType>;
+  language?: InputMaybe<LanguageType>;
   /** Checks for equality with the object’s `personId` field. */
-  personId?: Maybe<Scalars['UUID']>;
+  personId?: InputMaybe<Scalars['UUID']>;
 };
 
 /** A filter to be used against `AnimeCharacter` object types. All fields are combined with a logical ‘and.’ */
 export type AnimeCharacterFilter = {
   /** Checks for all expressions in this list. */
-  and?: Maybe<Array<AnimeCharacterFilter>>;
+  and?: InputMaybe<Array<AnimeCharacterFilter>>;
   /** Filter by the object’s `animeId` field. */
-  animeId?: Maybe<UuidFilter>;
+  animeId?: InputMaybe<UuidFilter>;
   /** Filter by the object’s `characterId` field. */
-  characterId?: Maybe<UuidFilter>;
+  characterId?: InputMaybe<UuidFilter>;
   /** Filter by the object’s `characterRoleId` field. */
-  characterRoleId?: Maybe<UuidFilter>;
+  characterRoleId?: InputMaybe<UuidFilter>;
   /** Filter by the object’s `language` field. */
-  language?: Maybe<LanguageTypeFilter>;
+  language?: InputMaybe<LanguageTypeFilter>;
   /** Negates the expression. */
-  not?: Maybe<AnimeCharacterFilter>;
+  not?: InputMaybe<AnimeCharacterFilter>;
   /** Checks for any expressions in this list. */
-  or?: Maybe<Array<AnimeCharacterFilter>>;
+  or?: InputMaybe<Array<AnimeCharacterFilter>>;
   /** Filter by the object’s `personId` field. */
-  personId?: Maybe<UuidFilter>;
+  personId?: InputMaybe<UuidFilter>;
 };
 
 /** An input for mutations affecting `AnimeCharacter` */
@@ -568,11 +699,11 @@ export type AnimeCharacterInput = {
 
 /** Represents an update to a `AnimeCharacter`. Fields that are set will be updated. */
 export type AnimeCharacterPatch = {
-  animeId?: Maybe<Scalars['UUID']>;
-  characterId?: Maybe<Scalars['UUID']>;
-  characterRoleId?: Maybe<Scalars['UUID']>;
-  language?: Maybe<LanguageType>;
-  personId?: Maybe<Scalars['UUID']>;
+  animeId?: InputMaybe<Scalars['UUID']>;
+  characterId?: InputMaybe<Scalars['UUID']>;
+  characterRoleId?: InputMaybe<Scalars['UUID']>;
+  language?: InputMaybe<LanguageType>;
+  personId?: InputMaybe<Scalars['UUID']>;
 };
 
 /** A connection to a list of `AnimeCharacter` values. */
@@ -679,37 +810,37 @@ export enum AnimeCharactersOrderBy {
 /** A condition to be used against `Anime` object types. All fields are tested for equality and combined with a logical ‘and.’ */
 export type AnimeCondition = {
   /** Checks for equality with the object’s `ageRatingType` field. */
-  ageRatingType?: Maybe<AgeRatingTypes>;
+  ageRatingType?: InputMaybe<AgeRatingTypes>;
   /** Checks for equality with the object’s `airingStatusType` field. */
-  airingStatusType?: Maybe<AiringStatusTypes>;
+  airingStatusType?: InputMaybe<AiringStatusTypes>;
   /** Checks for equality with the object’s `averageWatcherRating` field. */
-  averageWatcherRating?: Maybe<Scalars['BigFloat']>;
+  averageWatcherRating?: InputMaybe<Scalars['BigFloat']>;
   /** Checks for equality with the object’s `coverImage` field. */
-  coverImage?: Maybe<Scalars['String']>;
+  coverImage?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `description` field. */
-  description?: Maybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `duration` field. */
-  duration?: Maybe<Scalars['Int']>;
+  duration?: InputMaybe<Scalars['Int']>;
   /** Checks for equality with the object’s `endBroadcastDatetime` field. */
-  endBroadcastDatetime?: Maybe<Scalars['Datetime']>;
+  endBroadcastDatetime?: InputMaybe<Scalars['Datetime']>;
   /** Checks for equality with the object’s `id` field. */
-  id?: Maybe<Scalars['UUID']>;
+  id?: InputMaybe<Scalars['UUID']>;
   /** Checks for equality with the object’s `malId` field. */
-  malId?: Maybe<Scalars['Int']>;
+  malId?: InputMaybe<Scalars['Int']>;
   /** Checks for equality with the object’s `mediaType` field. */
-  mediaType?: Maybe<MediaTypes>;
+  mediaType?: InputMaybe<MediaTypes>;
   /** Checks for equality with the object’s `numberOfEpisodes` field. */
-  numberOfEpisodes?: Maybe<Scalars['Int']>;
+  numberOfEpisodes?: InputMaybe<Scalars['Int']>;
   /** Checks for equality with the object’s `season` field. */
-  season?: Maybe<Season>;
+  season?: InputMaybe<Season>;
   /** Checks for equality with the object’s `seasonYear` field. */
-  seasonYear?: Maybe<Scalars['Int']>;
+  seasonYear?: InputMaybe<Scalars['Int']>;
   /** Checks for equality with the object’s `sourceMaterialType` field. */
-  sourceMaterialType?: Maybe<SourceMaterialTypes>;
+  sourceMaterialType?: InputMaybe<SourceMaterialTypes>;
   /** Checks for equality with the object’s `startBroadcastDatetime` field. */
-  startBroadcastDatetime?: Maybe<Scalars['Datetime']>;
+  startBroadcastDatetime?: InputMaybe<Scalars['Datetime']>;
   /** Checks for equality with the object’s `title` field. */
-  title?: Maybe<Scalars['String']>;
+  title?: InputMaybe<Scalars['String']>;
 };
 
 /** A connection to a list of `Anime` values. */
@@ -737,51 +868,51 @@ export type AnimeEdge = {
 /** A filter to be used against `Anime` object types. All fields are combined with a logical ‘and.’ */
 export type AnimeFilter = {
   /** Filter by the object’s `ageRatingType` field. */
-  ageRatingType?: Maybe<AgeRatingTypesFilter>;
+  ageRatingType?: InputMaybe<AgeRatingTypesFilter>;
   /** Filter by the object’s `airingStatusType` field. */
-  airingStatusType?: Maybe<AiringStatusTypesFilter>;
+  airingStatusType?: InputMaybe<AiringStatusTypesFilter>;
   /** Checks for all expressions in this list. */
-  and?: Maybe<Array<AnimeFilter>>;
+  and?: InputMaybe<Array<AnimeFilter>>;
   /** Filter by the object’s `averageWatcherRating` field. */
-  averageWatcherRating?: Maybe<BigFloatFilter>;
+  averageWatcherRating?: InputMaybe<BigFloatFilter>;
   /** Filter by the object’s `coverImage` field. */
-  coverImage?: Maybe<StringFilter>;
+  coverImage?: InputMaybe<StringFilter>;
   /** Filter by the object’s `description` field. */
-  description?: Maybe<StringFilter>;
+  description?: InputMaybe<StringFilter>;
   /** Filter by the object’s `duration` field. */
-  duration?: Maybe<IntFilter>;
+  duration?: InputMaybe<IntFilter>;
   /** Filter by the object’s `endBroadcastDatetime` field. */
-  endBroadcastDatetime?: Maybe<DatetimeFilter>;
+  endBroadcastDatetime?: InputMaybe<DatetimeFilter>;
   /** Filter by the object’s `id` field. */
-  id?: Maybe<UuidFilter>;
+  id?: InputMaybe<UuidFilter>;
   /** Filter by the object’s `malId` field. */
-  malId?: Maybe<IntFilter>;
+  malId?: InputMaybe<IntFilter>;
   /** Filter by the object’s `mediaType` field. */
-  mediaType?: Maybe<MediaTypesFilter>;
+  mediaType?: InputMaybe<MediaTypesFilter>;
   /** Negates the expression. */
-  not?: Maybe<AnimeFilter>;
+  not?: InputMaybe<AnimeFilter>;
   /** Filter by the object’s `numberOfEpisodes` field. */
-  numberOfEpisodes?: Maybe<IntFilter>;
+  numberOfEpisodes?: InputMaybe<IntFilter>;
   /** Checks for any expressions in this list. */
-  or?: Maybe<Array<AnimeFilter>>;
+  or?: InputMaybe<Array<AnimeFilter>>;
   /** Filter by the object’s `season` field. */
-  season?: Maybe<SeasonFilter>;
+  season?: InputMaybe<SeasonFilter>;
   /** Filter by the object’s `seasonYear` field. */
-  seasonYear?: Maybe<IntFilter>;
+  seasonYear?: InputMaybe<IntFilter>;
   /** Filter by the object’s `sourceMaterialType` field. */
-  sourceMaterialType?: Maybe<SourceMaterialTypesFilter>;
+  sourceMaterialType?: InputMaybe<SourceMaterialTypesFilter>;
   /** Filter by the object’s `startBroadcastDatetime` field. */
-  startBroadcastDatetime?: Maybe<DatetimeFilter>;
+  startBroadcastDatetime?: InputMaybe<DatetimeFilter>;
   /** Filter by the object’s `title` field. */
-  title?: Maybe<StringFilter>;
+  title?: InputMaybe<StringFilter>;
   /** Filter by the object’s `userEpisodeCount` field. */
-  userEpisodeCount?: Maybe<BigFloatFilter>;
+  userEpisodeCount?: InputMaybe<BigFloatFilter>;
   /** Filter by the object’s `userLiked` field. */
-  userLiked?: Maybe<BooleanFilter>;
+  userLiked?: InputMaybe<BooleanFilter>;
   /** Filter by the object’s `userRating` field. */
-  userRating?: Maybe<BigFloatFilter>;
+  userRating?: InputMaybe<BigFloatFilter>;
   /** Filter by the object’s `userWatchStatus` field. */
-  userWatchStatus?: Maybe<StringFilter>;
+  userWatchStatus?: InputMaybe<StringFilter>;
 };
 
 export type AnimeGenre = Node & {
@@ -802,23 +933,23 @@ export type AnimeGenre = Node & {
  */
 export type AnimeGenreCondition = {
   /** Checks for equality with the object’s `animeId` field. */
-  animeId?: Maybe<Scalars['UUID']>;
+  animeId?: InputMaybe<Scalars['UUID']>;
   /** Checks for equality with the object’s `genreId` field. */
-  genreId?: Maybe<Scalars['UUID']>;
+  genreId?: InputMaybe<Scalars['UUID']>;
 };
 
 /** A filter to be used against `AnimeGenre` object types. All fields are combined with a logical ‘and.’ */
 export type AnimeGenreFilter = {
   /** Checks for all expressions in this list. */
-  and?: Maybe<Array<AnimeGenreFilter>>;
+  and?: InputMaybe<Array<AnimeGenreFilter>>;
   /** Filter by the object’s `animeId` field. */
-  animeId?: Maybe<UuidFilter>;
+  animeId?: InputMaybe<UuidFilter>;
   /** Filter by the object’s `genreId` field. */
-  genreId?: Maybe<UuidFilter>;
+  genreId?: InputMaybe<UuidFilter>;
   /** Negates the expression. */
-  not?: Maybe<AnimeGenreFilter>;
+  not?: InputMaybe<AnimeGenreFilter>;
   /** Checks for any expressions in this list. */
-  or?: Maybe<Array<AnimeGenreFilter>>;
+  or?: InputMaybe<Array<AnimeGenreFilter>>;
 };
 
 /** An input for mutations affecting `AnimeGenre` */
@@ -829,8 +960,8 @@ export type AnimeGenreInput = {
 
 /** Represents an update to a `AnimeGenre`. Fields that are set will be updated. */
 export type AnimeGenrePatch = {
-  animeId?: Maybe<Scalars['UUID']>;
-  genreId?: Maybe<Scalars['UUID']>;
+  animeId?: InputMaybe<Scalars['UUID']>;
+  genreId?: InputMaybe<Scalars['UUID']>;
 };
 
 /** A connection to a list of `AnimeGenre` values. */
@@ -920,23 +1051,23 @@ export type AnimeImage = Node & {
  */
 export type AnimeImageCondition = {
   /** Checks for equality with the object’s `animeId` field. */
-  animeId?: Maybe<Scalars['UUID']>;
+  animeId?: InputMaybe<Scalars['UUID']>;
   /** Checks for equality with the object’s `imageId` field. */
-  imageId?: Maybe<Scalars['UUID']>;
+  imageId?: InputMaybe<Scalars['UUID']>;
 };
 
 /** A filter to be used against `AnimeImage` object types. All fields are combined with a logical ‘and.’ */
 export type AnimeImageFilter = {
   /** Checks for all expressions in this list. */
-  and?: Maybe<Array<AnimeImageFilter>>;
+  and?: InputMaybe<Array<AnimeImageFilter>>;
   /** Filter by the object’s `animeId` field. */
-  animeId?: Maybe<UuidFilter>;
+  animeId?: InputMaybe<UuidFilter>;
   /** Filter by the object’s `imageId` field. */
-  imageId?: Maybe<UuidFilter>;
+  imageId?: InputMaybe<UuidFilter>;
   /** Negates the expression. */
-  not?: Maybe<AnimeImageFilter>;
+  not?: InputMaybe<AnimeImageFilter>;
   /** Checks for any expressions in this list. */
-  or?: Maybe<Array<AnimeImageFilter>>;
+  or?: InputMaybe<Array<AnimeImageFilter>>;
 };
 
 /** An input for mutations affecting `AnimeImage` */
@@ -947,8 +1078,8 @@ export type AnimeImageInput = {
 
 /** Represents an update to a `AnimeImage`. Fields that are set will be updated. */
 export type AnimeImagePatch = {
-  animeId?: Maybe<Scalars['UUID']>;
-  imageId?: Maybe<Scalars['UUID']>;
+  animeId?: InputMaybe<Scalars['UUID']>;
+  imageId?: InputMaybe<Scalars['UUID']>;
 };
 
 /** A connection to a list of `AnimeImage` values. */
@@ -1024,21 +1155,21 @@ export enum AnimeImagesOrderBy {
 
 /** An input for mutations affecting `Anime` */
 export type AnimeInput = {
-  ageRatingType?: Maybe<AgeRatingTypes>;
-  airingStatusType?: Maybe<AiringStatusTypes>;
-  averageWatcherRating?: Maybe<Scalars['BigFloat']>;
-  coverImage?: Maybe<Scalars['String']>;
-  description?: Maybe<Scalars['String']>;
-  duration?: Maybe<Scalars['Int']>;
-  endBroadcastDatetime?: Maybe<Scalars['Datetime']>;
-  id?: Maybe<Scalars['UUID']>;
-  malId?: Maybe<Scalars['Int']>;
-  mediaType?: Maybe<MediaTypes>;
-  numberOfEpisodes?: Maybe<Scalars['Int']>;
-  season?: Maybe<Season>;
-  seasonYear?: Maybe<Scalars['Int']>;
-  sourceMaterialType?: Maybe<SourceMaterialTypes>;
-  startBroadcastDatetime?: Maybe<Scalars['Datetime']>;
+  ageRatingType?: InputMaybe<AgeRatingTypes>;
+  airingStatusType?: InputMaybe<AiringStatusTypes>;
+  averageWatcherRating?: InputMaybe<Scalars['BigFloat']>;
+  coverImage?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']>;
+  duration?: InputMaybe<Scalars['Int']>;
+  endBroadcastDatetime?: InputMaybe<Scalars['Datetime']>;
+  id?: InputMaybe<Scalars['UUID']>;
+  malId?: InputMaybe<Scalars['Int']>;
+  mediaType?: InputMaybe<MediaTypes>;
+  numberOfEpisodes?: InputMaybe<Scalars['Int']>;
+  season?: InputMaybe<Season>;
+  seasonYear?: InputMaybe<Scalars['Int']>;
+  sourceMaterialType?: InputMaybe<SourceMaterialTypes>;
+  startBroadcastDatetime?: InputMaybe<Scalars['Datetime']>;
   title: Scalars['String'];
 };
 
@@ -1060,23 +1191,23 @@ export type AnimeLicensor = Node & {
  */
 export type AnimeLicensorCondition = {
   /** Checks for equality with the object’s `animeId` field. */
-  animeId?: Maybe<Scalars['UUID']>;
+  animeId?: InputMaybe<Scalars['UUID']>;
   /** Checks for equality with the object’s `licensorId` field. */
-  licensorId?: Maybe<Scalars['UUID']>;
+  licensorId?: InputMaybe<Scalars['UUID']>;
 };
 
 /** A filter to be used against `AnimeLicensor` object types. All fields are combined with a logical ‘and.’ */
 export type AnimeLicensorFilter = {
   /** Checks for all expressions in this list. */
-  and?: Maybe<Array<AnimeLicensorFilter>>;
+  and?: InputMaybe<Array<AnimeLicensorFilter>>;
   /** Filter by the object’s `animeId` field. */
-  animeId?: Maybe<UuidFilter>;
+  animeId?: InputMaybe<UuidFilter>;
   /** Filter by the object’s `licensorId` field. */
-  licensorId?: Maybe<UuidFilter>;
+  licensorId?: InputMaybe<UuidFilter>;
   /** Negates the expression. */
-  not?: Maybe<AnimeLicensorFilter>;
+  not?: InputMaybe<AnimeLicensorFilter>;
   /** Checks for any expressions in this list. */
-  or?: Maybe<Array<AnimeLicensorFilter>>;
+  or?: InputMaybe<Array<AnimeLicensorFilter>>;
 };
 
 /** An input for mutations affecting `AnimeLicensor` */
@@ -1087,8 +1218,8 @@ export type AnimeLicensorInput = {
 
 /** Represents an update to a `AnimeLicensor`. Fields that are set will be updated. */
 export type AnimeLicensorPatch = {
-  animeId?: Maybe<Scalars['UUID']>;
-  licensorId?: Maybe<Scalars['UUID']>;
+  animeId?: InputMaybe<Scalars['UUID']>;
+  licensorId?: InputMaybe<Scalars['UUID']>;
 };
 
 /** A connection to a list of `AnimeLicensor` values. */
@@ -1177,14 +1308,14 @@ export type AnimeList = Node & {
 
 
 export type AnimeListUserAnimeListsArgs = {
-  after?: Maybe<Scalars['Cursor']>;
-  before?: Maybe<Scalars['Cursor']>;
-  condition?: Maybe<UserAnimeListCondition>;
-  filter?: Maybe<UserAnimeListFilter>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  orderBy?: Maybe<Array<UserAnimeListsOrderBy>>;
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<UserAnimeListCondition>;
+  filter?: InputMaybe<UserAnimeListFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<UserAnimeListsOrderBy>>;
 };
 
 /**
@@ -1193,59 +1324,59 @@ export type AnimeListUserAnimeListsArgs = {
  */
 export type AnimeListCondition = {
   /** Checks for equality with the object’s `createdAt` field. */
-  createdAt?: Maybe<Scalars['Datetime']>;
+  createdAt?: InputMaybe<Scalars['Datetime']>;
   /** Checks for equality with the object’s `id` field. */
-  id?: Maybe<Scalars['UUID']>;
+  id?: InputMaybe<Scalars['UUID']>;
   /** Checks for equality with the object’s `isDefault` field. */
-  isDefault?: Maybe<Scalars['Boolean']>;
+  isDefault?: InputMaybe<Scalars['Boolean']>;
   /** Checks for equality with the object’s `privacy` field. */
-  privacy?: Maybe<AnimeListPrivacy>;
+  privacy?: InputMaybe<AnimeListPrivacy>;
   /** Checks for equality with the object’s `title` field. */
-  title?: Maybe<Scalars['String']>;
+  title?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `userId` field. */
-  userId?: Maybe<Scalars['String']>;
+  userId?: InputMaybe<Scalars['String']>;
 };
 
 /** A filter to be used against `AnimeList` object types. All fields are combined with a logical ‘and.’ */
 export type AnimeListFilter = {
   /** Checks for all expressions in this list. */
-  and?: Maybe<Array<AnimeListFilter>>;
+  and?: InputMaybe<Array<AnimeListFilter>>;
   /** Filter by the object’s `createdAt` field. */
-  createdAt?: Maybe<DatetimeFilter>;
+  createdAt?: InputMaybe<DatetimeFilter>;
   /** Filter by the object’s `id` field. */
-  id?: Maybe<UuidFilter>;
+  id?: InputMaybe<UuidFilter>;
   /** Filter by the object’s `isDefault` field. */
-  isDefault?: Maybe<BooleanFilter>;
+  isDefault?: InputMaybe<BooleanFilter>;
   /** Negates the expression. */
-  not?: Maybe<AnimeListFilter>;
+  not?: InputMaybe<AnimeListFilter>;
   /** Checks for any expressions in this list. */
-  or?: Maybe<Array<AnimeListFilter>>;
+  or?: InputMaybe<Array<AnimeListFilter>>;
   /** Filter by the object’s `privacy` field. */
-  privacy?: Maybe<AnimeListPrivacyFilter>;
+  privacy?: InputMaybe<AnimeListPrivacyFilter>;
   /** Filter by the object’s `title` field. */
-  title?: Maybe<StringFilter>;
+  title?: InputMaybe<StringFilter>;
   /** Filter by the object’s `userId` field. */
-  userId?: Maybe<StringFilter>;
+  userId?: InputMaybe<StringFilter>;
 };
 
 /** An input for mutations affecting `AnimeList` */
 export type AnimeListInput = {
-  createdAt?: Maybe<Scalars['Datetime']>;
-  id?: Maybe<Scalars['UUID']>;
-  isDefault?: Maybe<Scalars['Boolean']>;
-  privacy?: Maybe<AnimeListPrivacy>;
-  title?: Maybe<Scalars['String']>;
+  createdAt?: InputMaybe<Scalars['Datetime']>;
+  id?: InputMaybe<Scalars['UUID']>;
+  isDefault?: InputMaybe<Scalars['Boolean']>;
+  privacy?: InputMaybe<AnimeListPrivacy>;
+  title?: InputMaybe<Scalars['String']>;
   userId: Scalars['String'];
 };
 
 /** Represents an update to a `AnimeList`. Fields that are set will be updated. */
 export type AnimeListPatch = {
-  createdAt?: Maybe<Scalars['Datetime']>;
-  id?: Maybe<Scalars['UUID']>;
-  isDefault?: Maybe<Scalars['Boolean']>;
-  privacy?: Maybe<AnimeListPrivacy>;
-  title?: Maybe<Scalars['String']>;
-  userId?: Maybe<Scalars['String']>;
+  createdAt?: InputMaybe<Scalars['Datetime']>;
+  id?: InputMaybe<Scalars['UUID']>;
+  isDefault?: InputMaybe<Scalars['Boolean']>;
+  privacy?: InputMaybe<AnimeListPrivacy>;
+  title?: InputMaybe<Scalars['String']>;
+  userId?: InputMaybe<Scalars['String']>;
 };
 
 export enum AnimeListPrivacy {
@@ -1257,27 +1388,27 @@ export enum AnimeListPrivacy {
 /** A filter to be used against AnimeListPrivacy fields. All fields are combined with a logical ‘and.’ */
 export type AnimeListPrivacyFilter = {
   /** Not equal to the specified value, treating null like an ordinary value. */
-  distinctFrom?: Maybe<AnimeListPrivacy>;
+  distinctFrom?: InputMaybe<AnimeListPrivacy>;
   /** Equal to the specified value. */
-  equalTo?: Maybe<AnimeListPrivacy>;
+  equalTo?: InputMaybe<AnimeListPrivacy>;
   /** Greater than the specified value. */
-  greaterThan?: Maybe<AnimeListPrivacy>;
+  greaterThan?: InputMaybe<AnimeListPrivacy>;
   /** Greater than or equal to the specified value. */
-  greaterThanOrEqualTo?: Maybe<AnimeListPrivacy>;
+  greaterThanOrEqualTo?: InputMaybe<AnimeListPrivacy>;
   /** Included in the specified list. */
-  in?: Maybe<Array<AnimeListPrivacy>>;
+  in?: InputMaybe<Array<AnimeListPrivacy>>;
   /** Is null (if `true` is specified) or is not null (if `false` is specified). */
-  isNull?: Maybe<Scalars['Boolean']>;
+  isNull?: InputMaybe<Scalars['Boolean']>;
   /** Less than the specified value. */
-  lessThan?: Maybe<AnimeListPrivacy>;
+  lessThan?: InputMaybe<AnimeListPrivacy>;
   /** Less than or equal to the specified value. */
-  lessThanOrEqualTo?: Maybe<AnimeListPrivacy>;
+  lessThanOrEqualTo?: InputMaybe<AnimeListPrivacy>;
   /** Equal to the specified value, treating null like an ordinary value. */
-  notDistinctFrom?: Maybe<AnimeListPrivacy>;
+  notDistinctFrom?: InputMaybe<AnimeListPrivacy>;
   /** Not equal to the specified value. */
-  notEqualTo?: Maybe<AnimeListPrivacy>;
+  notEqualTo?: InputMaybe<AnimeListPrivacy>;
   /** Not included in the specified list. */
-  notIn?: Maybe<Array<AnimeListPrivacy>>;
+  notIn?: InputMaybe<Array<AnimeListPrivacy>>;
 };
 
 /** A connection to a list of `AnimeList` values. */
@@ -1390,22 +1521,22 @@ export enum AnimeOrderBy {
 
 /** Represents an update to a `Anime`. Fields that are set will be updated. */
 export type AnimePatch = {
-  ageRatingType?: Maybe<AgeRatingTypes>;
-  airingStatusType?: Maybe<AiringStatusTypes>;
-  averageWatcherRating?: Maybe<Scalars['BigFloat']>;
-  coverImage?: Maybe<Scalars['String']>;
-  description?: Maybe<Scalars['String']>;
-  duration?: Maybe<Scalars['Int']>;
-  endBroadcastDatetime?: Maybe<Scalars['Datetime']>;
-  id?: Maybe<Scalars['UUID']>;
-  malId?: Maybe<Scalars['Int']>;
-  mediaType?: Maybe<MediaTypes>;
-  numberOfEpisodes?: Maybe<Scalars['Int']>;
-  season?: Maybe<Season>;
-  seasonYear?: Maybe<Scalars['Int']>;
-  sourceMaterialType?: Maybe<SourceMaterialTypes>;
-  startBroadcastDatetime?: Maybe<Scalars['Datetime']>;
-  title?: Maybe<Scalars['String']>;
+  ageRatingType?: InputMaybe<AgeRatingTypes>;
+  airingStatusType?: InputMaybe<AiringStatusTypes>;
+  averageWatcherRating?: InputMaybe<Scalars['BigFloat']>;
+  coverImage?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']>;
+  duration?: InputMaybe<Scalars['Int']>;
+  endBroadcastDatetime?: InputMaybe<Scalars['Datetime']>;
+  id?: InputMaybe<Scalars['UUID']>;
+  malId?: InputMaybe<Scalars['Int']>;
+  mediaType?: InputMaybe<MediaTypes>;
+  numberOfEpisodes?: InputMaybe<Scalars['Int']>;
+  season?: InputMaybe<Season>;
+  seasonYear?: InputMaybe<Scalars['Int']>;
+  sourceMaterialType?: InputMaybe<SourceMaterialTypes>;
+  startBroadcastDatetime?: InputMaybe<Scalars['Datetime']>;
+  title?: InputMaybe<Scalars['String']>;
 };
 
 export type AnimeProducer = Node & {
@@ -1426,23 +1557,23 @@ export type AnimeProducer = Node & {
  */
 export type AnimeProducerCondition = {
   /** Checks for equality with the object’s `animeId` field. */
-  animeId?: Maybe<Scalars['UUID']>;
+  animeId?: InputMaybe<Scalars['UUID']>;
   /** Checks for equality with the object’s `producerId` field. */
-  producerId?: Maybe<Scalars['UUID']>;
+  producerId?: InputMaybe<Scalars['UUID']>;
 };
 
 /** A filter to be used against `AnimeProducer` object types. All fields are combined with a logical ‘and.’ */
 export type AnimeProducerFilter = {
   /** Checks for all expressions in this list. */
-  and?: Maybe<Array<AnimeProducerFilter>>;
+  and?: InputMaybe<Array<AnimeProducerFilter>>;
   /** Filter by the object’s `animeId` field. */
-  animeId?: Maybe<UuidFilter>;
+  animeId?: InputMaybe<UuidFilter>;
   /** Negates the expression. */
-  not?: Maybe<AnimeProducerFilter>;
+  not?: InputMaybe<AnimeProducerFilter>;
   /** Checks for any expressions in this list. */
-  or?: Maybe<Array<AnimeProducerFilter>>;
+  or?: InputMaybe<Array<AnimeProducerFilter>>;
   /** Filter by the object’s `producerId` field. */
-  producerId?: Maybe<UuidFilter>;
+  producerId?: InputMaybe<UuidFilter>;
 };
 
 /** An input for mutations affecting `AnimeProducer` */
@@ -1453,8 +1584,8 @@ export type AnimeProducerInput = {
 
 /** Represents an update to a `AnimeProducer`. Fields that are set will be updated. */
 export type AnimeProducerPatch = {
-  animeId?: Maybe<Scalars['UUID']>;
-  producerId?: Maybe<Scalars['UUID']>;
+  animeId?: InputMaybe<Scalars['UUID']>;
+  producerId?: InputMaybe<Scalars['UUID']>;
 };
 
 /** A connection to a list of `AnimeProducer` values. */
@@ -1547,11 +1678,11 @@ export type AnimeStaff = Node & {
  */
 export type AnimeStaffCondition = {
   /** Checks for equality with the object’s `animeId` field. */
-  animeId?: Maybe<Scalars['UUID']>;
+  animeId?: InputMaybe<Scalars['UUID']>;
   /** Checks for equality with the object’s `personId` field. */
-  personId?: Maybe<Scalars['UUID']>;
+  personId?: InputMaybe<Scalars['UUID']>;
   /** Checks for equality with the object’s `staffRoleId` field. */
-  staffRoleId?: Maybe<Scalars['UUID']>;
+  staffRoleId?: InputMaybe<Scalars['UUID']>;
 };
 
 /** A connection to a list of `AnimeStaff` values. */
@@ -1579,17 +1710,17 @@ export type AnimeStaffEdge = {
 /** A filter to be used against `AnimeStaff` object types. All fields are combined with a logical ‘and.’ */
 export type AnimeStaffFilter = {
   /** Checks for all expressions in this list. */
-  and?: Maybe<Array<AnimeStaffFilter>>;
+  and?: InputMaybe<Array<AnimeStaffFilter>>;
   /** Filter by the object’s `animeId` field. */
-  animeId?: Maybe<UuidFilter>;
+  animeId?: InputMaybe<UuidFilter>;
   /** Negates the expression. */
-  not?: Maybe<AnimeStaffFilter>;
+  not?: InputMaybe<AnimeStaffFilter>;
   /** Checks for any expressions in this list. */
-  or?: Maybe<Array<AnimeStaffFilter>>;
+  or?: InputMaybe<Array<AnimeStaffFilter>>;
   /** Filter by the object’s `personId` field. */
-  personId?: Maybe<UuidFilter>;
+  personId?: InputMaybe<UuidFilter>;
   /** Filter by the object’s `staffRoleId` field. */
-  staffRoleId?: Maybe<UuidFilter>;
+  staffRoleId?: InputMaybe<UuidFilter>;
 };
 
 /** An input for mutations affecting `AnimeStaff` */
@@ -1666,9 +1797,9 @@ export enum AnimeStaffOrderBy {
 
 /** Represents an update to a `AnimeStaff`. Fields that are set will be updated. */
 export type AnimeStaffPatch = {
-  animeId?: Maybe<Scalars['UUID']>;
-  personId?: Maybe<Scalars['UUID']>;
-  staffRoleId?: Maybe<Scalars['UUID']>;
+  animeId?: InputMaybe<Scalars['UUID']>;
+  personId?: InputMaybe<Scalars['UUID']>;
+  staffRoleId?: InputMaybe<Scalars['UUID']>;
 };
 
 export type AnimeStudio = Node & {
@@ -1689,23 +1820,23 @@ export type AnimeStudio = Node & {
  */
 export type AnimeStudioCondition = {
   /** Checks for equality with the object’s `animeId` field. */
-  animeId?: Maybe<Scalars['UUID']>;
+  animeId?: InputMaybe<Scalars['UUID']>;
   /** Checks for equality with the object’s `studioId` field. */
-  studioId?: Maybe<Scalars['UUID']>;
+  studioId?: InputMaybe<Scalars['UUID']>;
 };
 
 /** A filter to be used against `AnimeStudio` object types. All fields are combined with a logical ‘and.’ */
 export type AnimeStudioFilter = {
   /** Checks for all expressions in this list. */
-  and?: Maybe<Array<AnimeStudioFilter>>;
+  and?: InputMaybe<Array<AnimeStudioFilter>>;
   /** Filter by the object’s `animeId` field. */
-  animeId?: Maybe<UuidFilter>;
+  animeId?: InputMaybe<UuidFilter>;
   /** Negates the expression. */
-  not?: Maybe<AnimeStudioFilter>;
+  not?: InputMaybe<AnimeStudioFilter>;
   /** Checks for any expressions in this list. */
-  or?: Maybe<Array<AnimeStudioFilter>>;
+  or?: InputMaybe<Array<AnimeStudioFilter>>;
   /** Filter by the object’s `studioId` field. */
-  studioId?: Maybe<UuidFilter>;
+  studioId?: InputMaybe<UuidFilter>;
 };
 
 /** An input for mutations affecting `AnimeStudio` */
@@ -1716,8 +1847,8 @@ export type AnimeStudioInput = {
 
 /** Represents an update to a `AnimeStudio`. Fields that are set will be updated. */
 export type AnimeStudioPatch = {
-  animeId?: Maybe<Scalars['UUID']>;
-  studioId?: Maybe<Scalars['UUID']>;
+  animeId?: InputMaybe<Scalars['UUID']>;
+  studioId?: InputMaybe<Scalars['UUID']>;
 };
 
 /** A connection to a list of `AnimeStudio` values. */
@@ -1808,27 +1939,27 @@ export type AnimeUserScore = Node & {
  */
 export type AnimeUserScoreCondition = {
   /** Checks for equality with the object’s `animeId` field. */
-  animeId?: Maybe<Scalars['UUID']>;
+  animeId?: InputMaybe<Scalars['UUID']>;
   /** Checks for equality with the object’s `userId` field. */
-  userId?: Maybe<Scalars['String']>;
+  userId?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `userScore` field. */
-  userScore?: Maybe<Scalars['BigFloat']>;
+  userScore?: InputMaybe<Scalars['BigFloat']>;
 };
 
 /** A filter to be used against `AnimeUserScore` object types. All fields are combined with a logical ‘and.’ */
 export type AnimeUserScoreFilter = {
   /** Checks for all expressions in this list. */
-  and?: Maybe<Array<AnimeUserScoreFilter>>;
+  and?: InputMaybe<Array<AnimeUserScoreFilter>>;
   /** Filter by the object’s `animeId` field. */
-  animeId?: Maybe<UuidFilter>;
+  animeId?: InputMaybe<UuidFilter>;
   /** Negates the expression. */
-  not?: Maybe<AnimeUserScoreFilter>;
+  not?: InputMaybe<AnimeUserScoreFilter>;
   /** Checks for any expressions in this list. */
-  or?: Maybe<Array<AnimeUserScoreFilter>>;
+  or?: InputMaybe<Array<AnimeUserScoreFilter>>;
   /** Filter by the object’s `userId` field. */
-  userId?: Maybe<StringFilter>;
+  userId?: InputMaybe<StringFilter>;
   /** Filter by the object’s `userScore` field. */
-  userScore?: Maybe<BigFloatFilter>;
+  userScore?: InputMaybe<BigFloatFilter>;
 };
 
 /** An input for mutations affecting `AnimeUserScore` */
@@ -1840,9 +1971,9 @@ export type AnimeUserScoreInput = {
 
 /** Represents an update to a `AnimeUserScore`. Fields that are set will be updated. */
 export type AnimeUserScorePatch = {
-  animeId?: Maybe<Scalars['UUID']>;
-  userId?: Maybe<Scalars['String']>;
-  userScore?: Maybe<Scalars['BigFloat']>;
+  animeId?: InputMaybe<Scalars['UUID']>;
+  userId?: InputMaybe<Scalars['String']>;
+  userScore?: InputMaybe<Scalars['BigFloat']>;
 };
 
 /** A connection to a list of `AnimeUserScore` values. */
@@ -1914,56 +2045,144 @@ export enum AnimeUserScoresOrderBy {
   UserScoreDesc = 'USER_SCORE_DESC'
 }
 
+export type AvailableLanguage = {
+  __typename?: 'AvailableLanguage';
+  id?: Maybe<Scalars['BigInt']>;
+  language?: Maybe<Scalars['String']>;
+};
+
+/**
+ * A condition to be used against `AvailableLanguage` object types. All fields are
+ * tested for equality and combined with a logical ‘and.’
+ */
+export type AvailableLanguageCondition = {
+  /** Checks for equality with the object’s `id` field. */
+  id?: InputMaybe<Scalars['BigInt']>;
+  /** Checks for equality with the object’s `language` field. */
+  language?: InputMaybe<Scalars['String']>;
+};
+
+/** A filter to be used against `AvailableLanguage` object types. All fields are combined with a logical ‘and.’ */
+export type AvailableLanguageFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<AvailableLanguageFilter>>;
+  /** Filter by the object’s `id` field. */
+  id?: InputMaybe<BigIntFilter>;
+  /** Filter by the object’s `language` field. */
+  language?: InputMaybe<StringFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<AvailableLanguageFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<AvailableLanguageFilter>>;
+};
+
+/** A connection to a list of `AvailableLanguage` values. */
+export type AvailableLanguagesConnection = {
+  __typename?: 'AvailableLanguagesConnection';
+  /** A list of edges which contains the `AvailableLanguage` and cursor to aid in pagination. */
+  edges: Array<AvailableLanguagesEdge>;
+  /** A list of `AvailableLanguage` objects. */
+  nodes: Array<AvailableLanguage>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `AvailableLanguage` you could get from the connection. */
+  totalCount: Scalars['Int'];
+};
+
+/** A `AvailableLanguage` edge in the connection. */
+export type AvailableLanguagesEdge = {
+  __typename?: 'AvailableLanguagesEdge';
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>;
+  /** The `AvailableLanguage` at the end of the edge. */
+  node: AvailableLanguage;
+};
+
+/** Methods to use when ordering `AvailableLanguage`. */
+export enum AvailableLanguagesOrderBy {
+  IdAsc = 'ID_ASC',
+  IdDesc = 'ID_DESC',
+  LanguageAsc = 'LANGUAGE_ASC',
+  LanguageDesc = 'LANGUAGE_DESC',
+  Natural = 'NATURAL'
+}
+
 /** A filter to be used against BigFloat fields. All fields are combined with a logical ‘and.’ */
 export type BigFloatFilter = {
   /** Not equal to the specified value, treating null like an ordinary value. */
-  distinctFrom?: Maybe<Scalars['BigFloat']>;
+  distinctFrom?: InputMaybe<Scalars['BigFloat']>;
   /** Equal to the specified value. */
-  equalTo?: Maybe<Scalars['BigFloat']>;
+  equalTo?: InputMaybe<Scalars['BigFloat']>;
   /** Greater than the specified value. */
-  greaterThan?: Maybe<Scalars['BigFloat']>;
+  greaterThan?: InputMaybe<Scalars['BigFloat']>;
   /** Greater than or equal to the specified value. */
-  greaterThanOrEqualTo?: Maybe<Scalars['BigFloat']>;
+  greaterThanOrEqualTo?: InputMaybe<Scalars['BigFloat']>;
   /** Included in the specified list. */
-  in?: Maybe<Array<Scalars['BigFloat']>>;
+  in?: InputMaybe<Array<Scalars['BigFloat']>>;
   /** Is null (if `true` is specified) or is not null (if `false` is specified). */
-  isNull?: Maybe<Scalars['Boolean']>;
+  isNull?: InputMaybe<Scalars['Boolean']>;
   /** Less than the specified value. */
-  lessThan?: Maybe<Scalars['BigFloat']>;
+  lessThan?: InputMaybe<Scalars['BigFloat']>;
   /** Less than or equal to the specified value. */
-  lessThanOrEqualTo?: Maybe<Scalars['BigFloat']>;
+  lessThanOrEqualTo?: InputMaybe<Scalars['BigFloat']>;
   /** Equal to the specified value, treating null like an ordinary value. */
-  notDistinctFrom?: Maybe<Scalars['BigFloat']>;
+  notDistinctFrom?: InputMaybe<Scalars['BigFloat']>;
   /** Not equal to the specified value. */
-  notEqualTo?: Maybe<Scalars['BigFloat']>;
+  notEqualTo?: InputMaybe<Scalars['BigFloat']>;
   /** Not included in the specified list. */
-  notIn?: Maybe<Array<Scalars['BigFloat']>>;
+  notIn?: InputMaybe<Array<Scalars['BigFloat']>>;
+};
+
+/** A filter to be used against BigInt fields. All fields are combined with a logical ‘and.’ */
+export type BigIntFilter = {
+  /** Not equal to the specified value, treating null like an ordinary value. */
+  distinctFrom?: InputMaybe<Scalars['BigInt']>;
+  /** Equal to the specified value. */
+  equalTo?: InputMaybe<Scalars['BigInt']>;
+  /** Greater than the specified value. */
+  greaterThan?: InputMaybe<Scalars['BigInt']>;
+  /** Greater than or equal to the specified value. */
+  greaterThanOrEqualTo?: InputMaybe<Scalars['BigInt']>;
+  /** Included in the specified list. */
+  in?: InputMaybe<Array<Scalars['BigInt']>>;
+  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
+  isNull?: InputMaybe<Scalars['Boolean']>;
+  /** Less than the specified value. */
+  lessThan?: InputMaybe<Scalars['BigInt']>;
+  /** Less than or equal to the specified value. */
+  lessThanOrEqualTo?: InputMaybe<Scalars['BigInt']>;
+  /** Equal to the specified value, treating null like an ordinary value. */
+  notDistinctFrom?: InputMaybe<Scalars['BigInt']>;
+  /** Not equal to the specified value. */
+  notEqualTo?: InputMaybe<Scalars['BigInt']>;
+  /** Not included in the specified list. */
+  notIn?: InputMaybe<Array<Scalars['BigInt']>>;
 };
 
 /** A filter to be used against Boolean fields. All fields are combined with a logical ‘and.’ */
 export type BooleanFilter = {
   /** Not equal to the specified value, treating null like an ordinary value. */
-  distinctFrom?: Maybe<Scalars['Boolean']>;
+  distinctFrom?: InputMaybe<Scalars['Boolean']>;
   /** Equal to the specified value. */
-  equalTo?: Maybe<Scalars['Boolean']>;
+  equalTo?: InputMaybe<Scalars['Boolean']>;
   /** Greater than the specified value. */
-  greaterThan?: Maybe<Scalars['Boolean']>;
+  greaterThan?: InputMaybe<Scalars['Boolean']>;
   /** Greater than or equal to the specified value. */
-  greaterThanOrEqualTo?: Maybe<Scalars['Boolean']>;
+  greaterThanOrEqualTo?: InputMaybe<Scalars['Boolean']>;
   /** Included in the specified list. */
-  in?: Maybe<Array<Scalars['Boolean']>>;
+  in?: InputMaybe<Array<Scalars['Boolean']>>;
   /** Is null (if `true` is specified) or is not null (if `false` is specified). */
-  isNull?: Maybe<Scalars['Boolean']>;
+  isNull?: InputMaybe<Scalars['Boolean']>;
   /** Less than the specified value. */
-  lessThan?: Maybe<Scalars['Boolean']>;
+  lessThan?: InputMaybe<Scalars['Boolean']>;
   /** Less than or equal to the specified value. */
-  lessThanOrEqualTo?: Maybe<Scalars['Boolean']>;
+  lessThanOrEqualTo?: InputMaybe<Scalars['Boolean']>;
   /** Equal to the specified value, treating null like an ordinary value. */
-  notDistinctFrom?: Maybe<Scalars['Boolean']>;
+  notDistinctFrom?: InputMaybe<Scalars['Boolean']>;
   /** Not equal to the specified value. */
-  notEqualTo?: Maybe<Scalars['Boolean']>;
+  notEqualTo?: InputMaybe<Scalars['Boolean']>;
   /** Not included in the specified list. */
-  notIn?: Maybe<Array<Scalars['Boolean']>>;
+  notIn?: InputMaybe<Array<Scalars['Boolean']>>;
 };
 
 export type Character = Node & {
@@ -1984,26 +2203,26 @@ export type Character = Node & {
 
 
 export type CharacterAnimeCharactersArgs = {
-  after?: Maybe<Scalars['Cursor']>;
-  before?: Maybe<Scalars['Cursor']>;
-  condition?: Maybe<AnimeCharacterCondition>;
-  filter?: Maybe<AnimeCharacterFilter>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  orderBy?: Maybe<Array<AnimeCharactersOrderBy>>;
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<AnimeCharacterCondition>;
+  filter?: InputMaybe<AnimeCharacterFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<AnimeCharactersOrderBy>>;
 };
 
 
 export type CharacterCharacterImagesArgs = {
-  after?: Maybe<Scalars['Cursor']>;
-  before?: Maybe<Scalars['Cursor']>;
-  condition?: Maybe<CharacterImageCondition>;
-  filter?: Maybe<CharacterImageFilter>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  orderBy?: Maybe<Array<CharacterImagesOrderBy>>;
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<CharacterImageCondition>;
+  filter?: InputMaybe<CharacterImageFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<CharacterImagesOrderBy>>;
 };
 
 /**
@@ -2012,35 +2231,35 @@ export type CharacterCharacterImagesArgs = {
  */
 export type CharacterCondition = {
   /** Checks for equality with the object’s `characterImageId` field. */
-  characterImageId?: Maybe<Scalars['UUID']>;
+  characterImageId?: InputMaybe<Scalars['UUID']>;
   /** Checks for equality with the object’s `description` field. */
-  description?: Maybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `id` field. */
-  id?: Maybe<Scalars['UUID']>;
+  id?: InputMaybe<Scalars['UUID']>;
   /** Checks for equality with the object’s `malId` field. */
-  malId?: Maybe<Scalars['String']>;
+  malId?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `name` field. */
-  name?: Maybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']>;
 };
 
 /** A filter to be used against `Character` object types. All fields are combined with a logical ‘and.’ */
 export type CharacterFilter = {
   /** Checks for all expressions in this list. */
-  and?: Maybe<Array<CharacterFilter>>;
+  and?: InputMaybe<Array<CharacterFilter>>;
   /** Filter by the object’s `characterImageId` field. */
-  characterImageId?: Maybe<UuidFilter>;
+  characterImageId?: InputMaybe<UuidFilter>;
   /** Filter by the object’s `description` field. */
-  description?: Maybe<StringFilter>;
+  description?: InputMaybe<StringFilter>;
   /** Filter by the object’s `id` field. */
-  id?: Maybe<UuidFilter>;
+  id?: InputMaybe<UuidFilter>;
   /** Filter by the object’s `malId` field. */
-  malId?: Maybe<StringFilter>;
+  malId?: InputMaybe<StringFilter>;
   /** Filter by the object’s `name` field. */
-  name?: Maybe<StringFilter>;
+  name?: InputMaybe<StringFilter>;
   /** Negates the expression. */
-  not?: Maybe<CharacterFilter>;
+  not?: InputMaybe<CharacterFilter>;
   /** Checks for any expressions in this list. */
-  or?: Maybe<Array<CharacterFilter>>;
+  or?: InputMaybe<Array<CharacterFilter>>;
 };
 
 export type CharacterImage = Node & {
@@ -2061,23 +2280,23 @@ export type CharacterImage = Node & {
  */
 export type CharacterImageCondition = {
   /** Checks for equality with the object’s `characterId` field. */
-  characterId?: Maybe<Scalars['UUID']>;
+  characterId?: InputMaybe<Scalars['UUID']>;
   /** Checks for equality with the object’s `imageId` field. */
-  imageId?: Maybe<Scalars['UUID']>;
+  imageId?: InputMaybe<Scalars['UUID']>;
 };
 
 /** A filter to be used against `CharacterImage` object types. All fields are combined with a logical ‘and.’ */
 export type CharacterImageFilter = {
   /** Checks for all expressions in this list. */
-  and?: Maybe<Array<CharacterImageFilter>>;
+  and?: InputMaybe<Array<CharacterImageFilter>>;
   /** Filter by the object’s `characterId` field. */
-  characterId?: Maybe<UuidFilter>;
+  characterId?: InputMaybe<UuidFilter>;
   /** Filter by the object’s `imageId` field. */
-  imageId?: Maybe<UuidFilter>;
+  imageId?: InputMaybe<UuidFilter>;
   /** Negates the expression. */
-  not?: Maybe<CharacterImageFilter>;
+  not?: InputMaybe<CharacterImageFilter>;
   /** Checks for any expressions in this list. */
-  or?: Maybe<Array<CharacterImageFilter>>;
+  or?: InputMaybe<Array<CharacterImageFilter>>;
 };
 
 /** An input for mutations affecting `CharacterImage` */
@@ -2088,8 +2307,8 @@ export type CharacterImageInput = {
 
 /** Represents an update to a `CharacterImage`. Fields that are set will be updated. */
 export type CharacterImagePatch = {
-  characterId?: Maybe<Scalars['UUID']>;
-  imageId?: Maybe<Scalars['UUID']>;
+  characterId?: InputMaybe<Scalars['UUID']>;
+  imageId?: InputMaybe<Scalars['UUID']>;
 };
 
 /** A connection to a list of `CharacterImage` values. */
@@ -2143,20 +2362,20 @@ export enum CharacterImagesOrderBy {
 
 /** An input for mutations affecting `Character` */
 export type CharacterInput = {
-  characterImageId?: Maybe<Scalars['UUID']>;
-  description?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['UUID']>;
-  malId?: Maybe<Scalars['String']>;
+  characterImageId?: InputMaybe<Scalars['UUID']>;
+  description?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['UUID']>;
+  malId?: InputMaybe<Scalars['String']>;
   name: Scalars['String'];
 };
 
 /** Represents an update to a `Character`. Fields that are set will be updated. */
 export type CharacterPatch = {
-  characterImageId?: Maybe<Scalars['UUID']>;
-  description?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['UUID']>;
-  malId?: Maybe<Scalars['String']>;
-  name?: Maybe<Scalars['String']>;
+  characterImageId?: InputMaybe<Scalars['UUID']>;
+  description?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['UUID']>;
+  malId?: InputMaybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']>;
 };
 
 export type CharacterRole = Node & {
@@ -2171,14 +2390,14 @@ export type CharacterRole = Node & {
 
 
 export type CharacterRoleAnimeCharactersArgs = {
-  after?: Maybe<Scalars['Cursor']>;
-  before?: Maybe<Scalars['Cursor']>;
-  condition?: Maybe<AnimeCharacterCondition>;
-  filter?: Maybe<AnimeCharacterFilter>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  orderBy?: Maybe<Array<AnimeCharactersOrderBy>>;
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<AnimeCharacterCondition>;
+  filter?: InputMaybe<AnimeCharacterFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<AnimeCharactersOrderBy>>;
 };
 
 /**
@@ -2187,35 +2406,35 @@ export type CharacterRoleAnimeCharactersArgs = {
  */
 export type CharacterRoleCondition = {
   /** Checks for equality with the object’s `id` field. */
-  id?: Maybe<Scalars['UUID']>;
+  id?: InputMaybe<Scalars['UUID']>;
   /** Checks for equality with the object’s `role` field. */
-  role?: Maybe<Scalars['String']>;
+  role?: InputMaybe<Scalars['String']>;
 };
 
 /** A filter to be used against `CharacterRole` object types. All fields are combined with a logical ‘and.’ */
 export type CharacterRoleFilter = {
   /** Checks for all expressions in this list. */
-  and?: Maybe<Array<CharacterRoleFilter>>;
+  and?: InputMaybe<Array<CharacterRoleFilter>>;
   /** Filter by the object’s `id` field. */
-  id?: Maybe<UuidFilter>;
+  id?: InputMaybe<UuidFilter>;
   /** Negates the expression. */
-  not?: Maybe<CharacterRoleFilter>;
+  not?: InputMaybe<CharacterRoleFilter>;
   /** Checks for any expressions in this list. */
-  or?: Maybe<Array<CharacterRoleFilter>>;
+  or?: InputMaybe<Array<CharacterRoleFilter>>;
   /** Filter by the object’s `role` field. */
-  role?: Maybe<StringFilter>;
+  role?: InputMaybe<StringFilter>;
 };
 
 /** An input for mutations affecting `CharacterRole` */
 export type CharacterRoleInput = {
-  id?: Maybe<Scalars['UUID']>;
+  id?: InputMaybe<Scalars['UUID']>;
   role: Scalars['String'];
 };
 
 /** Represents an update to a `CharacterRole`. Fields that are set will be updated. */
 export type CharacterRolePatch = {
-  id?: Maybe<Scalars['UUID']>;
-  role?: Maybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['UUID']>;
+  role?: InputMaybe<Scalars['String']>;
 };
 
 /** A connection to a list of `CharacterRole` values. */
@@ -2310,7 +2529,7 @@ export type CreateAlternateAnimeNameInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
 };
 
 /** The output of our create `AlternateAnimeName` mutation. */
@@ -2334,7 +2553,7 @@ export type CreateAlternateAnimeNamePayload = {
 
 /** The output of our create `AlternateAnimeName` mutation. */
 export type CreateAlternateAnimeNamePayloadAlternateAnimeNameEdgeArgs = {
-  orderBy?: Maybe<Array<AlternateAnimeNamesOrderBy>>;
+  orderBy?: InputMaybe<Array<AlternateAnimeNamesOrderBy>>;
 };
 
 /** All input for the create `AnimeCharacter` mutation. */
@@ -2345,7 +2564,7 @@ export type CreateAnimeCharacterInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
 };
 
 /** The output of our create `AnimeCharacter` mutation. */
@@ -2375,7 +2594,7 @@ export type CreateAnimeCharacterPayload = {
 
 /** The output of our create `AnimeCharacter` mutation. */
 export type CreateAnimeCharacterPayloadAnimeCharacterEdgeArgs = {
-  orderBy?: Maybe<Array<AnimeCharactersOrderBy>>;
+  orderBy?: InputMaybe<Array<AnimeCharactersOrderBy>>;
 };
 
 /** All input for the create `AnimeGenre` mutation. */
@@ -2386,7 +2605,7 @@ export type CreateAnimeGenreInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
 };
 
 /** The output of our create `AnimeGenre` mutation. */
@@ -2412,7 +2631,7 @@ export type CreateAnimeGenrePayload = {
 
 /** The output of our create `AnimeGenre` mutation. */
 export type CreateAnimeGenrePayloadAnimeGenreEdgeArgs = {
-  orderBy?: Maybe<Array<AnimeGenresOrderBy>>;
+  orderBy?: InputMaybe<Array<AnimeGenresOrderBy>>;
 };
 
 /** All input for the create `AnimeImage` mutation. */
@@ -2423,7 +2642,7 @@ export type CreateAnimeImageInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
 };
 
 /** The output of our create `AnimeImage` mutation. */
@@ -2449,7 +2668,7 @@ export type CreateAnimeImagePayload = {
 
 /** The output of our create `AnimeImage` mutation. */
 export type CreateAnimeImagePayloadAnimeImageEdgeArgs = {
-  orderBy?: Maybe<Array<AnimeImagesOrderBy>>;
+  orderBy?: InputMaybe<Array<AnimeImagesOrderBy>>;
 };
 
 /** All input for the create `Anime` mutation. */
@@ -2460,7 +2679,7 @@ export type CreateAnimeInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
 };
 
 /** All input for the create `AnimeLicensor` mutation. */
@@ -2471,7 +2690,7 @@ export type CreateAnimeLicensorInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
 };
 
 /** The output of our create `AnimeLicensor` mutation. */
@@ -2497,7 +2716,7 @@ export type CreateAnimeLicensorPayload = {
 
 /** The output of our create `AnimeLicensor` mutation. */
 export type CreateAnimeLicensorPayloadAnimeLicensorEdgeArgs = {
-  orderBy?: Maybe<Array<AnimeLicensorsOrderBy>>;
+  orderBy?: InputMaybe<Array<AnimeLicensorsOrderBy>>;
 };
 
 /** All input for the create `AnimeList` mutation. */
@@ -2508,7 +2727,7 @@ export type CreateAnimeListInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
 };
 
 /** The output of our create `AnimeList` mutation. */
@@ -2532,7 +2751,7 @@ export type CreateAnimeListPayload = {
 
 /** The output of our create `AnimeList` mutation. */
 export type CreateAnimeListPayloadAnimeListEdgeArgs = {
-  orderBy?: Maybe<Array<AnimeListsOrderBy>>;
+  orderBy?: InputMaybe<Array<AnimeListsOrderBy>>;
 };
 
 /** The output of our create `Anime` mutation. */
@@ -2554,7 +2773,7 @@ export type CreateAnimePayload = {
 
 /** The output of our create `Anime` mutation. */
 export type CreateAnimePayloadAnimeEdgeArgs = {
-  orderBy?: Maybe<Array<AnimeOrderBy>>;
+  orderBy?: InputMaybe<Array<AnimeOrderBy>>;
 };
 
 /** All input for the create `AnimeProducer` mutation. */
@@ -2565,7 +2784,7 @@ export type CreateAnimeProducerInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
 };
 
 /** The output of our create `AnimeProducer` mutation. */
@@ -2591,7 +2810,7 @@ export type CreateAnimeProducerPayload = {
 
 /** The output of our create `AnimeProducer` mutation. */
 export type CreateAnimeProducerPayloadAnimeProducerEdgeArgs = {
-  orderBy?: Maybe<Array<AnimeProducersOrderBy>>;
+  orderBy?: InputMaybe<Array<AnimeProducersOrderBy>>;
 };
 
 /** All input for the create `AnimeStaff` mutation. */
@@ -2602,7 +2821,7 @@ export type CreateAnimeStaffInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
 };
 
 /** The output of our create `AnimeStaff` mutation. */
@@ -2630,7 +2849,7 @@ export type CreateAnimeStaffPayload = {
 
 /** The output of our create `AnimeStaff` mutation. */
 export type CreateAnimeStaffPayloadAnimeStaffEdgeArgs = {
-  orderBy?: Maybe<Array<AnimeStaffOrderBy>>;
+  orderBy?: InputMaybe<Array<AnimeStaffOrderBy>>;
 };
 
 /** All input for the create `AnimeStudio` mutation. */
@@ -2641,7 +2860,7 @@ export type CreateAnimeStudioInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
 };
 
 /** The output of our create `AnimeStudio` mutation. */
@@ -2667,7 +2886,7 @@ export type CreateAnimeStudioPayload = {
 
 /** The output of our create `AnimeStudio` mutation. */
 export type CreateAnimeStudioPayloadAnimeStudioEdgeArgs = {
-  orderBy?: Maybe<Array<AnimeStudiosOrderBy>>;
+  orderBy?: InputMaybe<Array<AnimeStudiosOrderBy>>;
 };
 
 /** All input for the create `AnimeUserScore` mutation. */
@@ -2678,7 +2897,7 @@ export type CreateAnimeUserScoreInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
 };
 
 /** The output of our create `AnimeUserScore` mutation. */
@@ -2704,7 +2923,7 @@ export type CreateAnimeUserScorePayload = {
 
 /** The output of our create `AnimeUserScore` mutation. */
 export type CreateAnimeUserScorePayloadAnimeUserScoreEdgeArgs = {
-  orderBy?: Maybe<Array<AnimeUserScoresOrderBy>>;
+  orderBy?: InputMaybe<Array<AnimeUserScoresOrderBy>>;
 };
 
 /** All input for the create `CharacterImage` mutation. */
@@ -2715,7 +2934,7 @@ export type CreateCharacterImageInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
 };
 
 /** The output of our create `CharacterImage` mutation. */
@@ -2741,7 +2960,7 @@ export type CreateCharacterImagePayload = {
 
 /** The output of our create `CharacterImage` mutation. */
 export type CreateCharacterImagePayloadCharacterImageEdgeArgs = {
-  orderBy?: Maybe<Array<CharacterImagesOrderBy>>;
+  orderBy?: InputMaybe<Array<CharacterImagesOrderBy>>;
 };
 
 /** All input for the create `Character` mutation. */
@@ -2752,7 +2971,7 @@ export type CreateCharacterInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
 };
 
 /** The output of our create `Character` mutation. */
@@ -2776,7 +2995,7 @@ export type CreateCharacterPayload = {
 
 /** The output of our create `Character` mutation. */
 export type CreateCharacterPayloadCharacterEdgeArgs = {
-  orderBy?: Maybe<Array<CharactersOrderBy>>;
+  orderBy?: InputMaybe<Array<CharactersOrderBy>>;
 };
 
 /** All input for the create `CharacterRole` mutation. */
@@ -2787,7 +3006,7 @@ export type CreateCharacterRoleInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
 };
 
 /** The output of our create `CharacterRole` mutation. */
@@ -2809,7 +3028,7 @@ export type CreateCharacterRolePayload = {
 
 /** The output of our create `CharacterRole` mutation. */
 export type CreateCharacterRolePayloadCharacterRoleEdgeArgs = {
-  orderBy?: Maybe<Array<CharacterRolesOrderBy>>;
+  orderBy?: InputMaybe<Array<CharacterRolesOrderBy>>;
 };
 
 /** All input for the create `Genre` mutation. */
@@ -2818,7 +3037,7 @@ export type CreateGenreInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   /** The `Genre` to be created by this mutation. */
   genre: GenreInput;
 };
@@ -2842,7 +3061,7 @@ export type CreateGenrePayload = {
 
 /** The output of our create `Genre` mutation. */
 export type CreateGenrePayloadGenreEdgeArgs = {
-  orderBy?: Maybe<Array<GenresOrderBy>>;
+  orderBy?: InputMaybe<Array<GenresOrderBy>>;
 };
 
 /** All input for the create `Image` mutation. */
@@ -2851,7 +3070,7 @@ export type CreateImageInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   /** The `Image` to be created by this mutation. */
   image: ImageInput;
 };
@@ -2875,7 +3094,7 @@ export type CreateImagePayload = {
 
 /** The output of our create `Image` mutation. */
 export type CreateImagePayloadImageEdgeArgs = {
-  orderBy?: Maybe<Array<ImagesOrderBy>>;
+  orderBy?: InputMaybe<Array<ImagesOrderBy>>;
 };
 
 /** All input for the create `Licensor` mutation. */
@@ -2884,7 +3103,7 @@ export type CreateLicensorInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   /** The `Licensor` to be created by this mutation. */
   licensor: LicensorInput;
 };
@@ -2908,7 +3127,7 @@ export type CreateLicensorPayload = {
 
 /** The output of our create `Licensor` mutation. */
 export type CreateLicensorPayloadLicensorEdgeArgs = {
-  orderBy?: Maybe<Array<LicensorsOrderBy>>;
+  orderBy?: InputMaybe<Array<LicensorsOrderBy>>;
 };
 
 /** All input for the `createNewListAddAnime` mutation. */
@@ -2918,7 +3137,7 @@ export type CreateNewListAddAnimeInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
 };
 
 /** The output of our `createNewListAddAnime` mutation. */
@@ -2941,7 +3160,7 @@ export type CreateNewListAddAnimePayload = {
 
 /** The output of our `createNewListAddAnime` mutation. */
 export type CreateNewListAddAnimePayloadAnimeListEdgeArgs = {
-  orderBy?: Maybe<Array<AnimeListsOrderBy>>;
+  orderBy?: InputMaybe<Array<AnimeListsOrderBy>>;
 };
 
 /** All input for the create `PersonImage` mutation. */
@@ -2950,7 +3169,7 @@ export type CreatePersonImageInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   /** The `PersonImage` to be created by this mutation. */
   personImage: PersonImageInput;
 };
@@ -2978,7 +3197,7 @@ export type CreatePersonImagePayload = {
 
 /** The output of our create `PersonImage` mutation. */
 export type CreatePersonImagePayloadPersonImageEdgeArgs = {
-  orderBy?: Maybe<Array<PersonImagesOrderBy>>;
+  orderBy?: InputMaybe<Array<PersonImagesOrderBy>>;
 };
 
 /** All input for the create `Person` mutation. */
@@ -2987,7 +3206,7 @@ export type CreatePersonInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   /** The `Person` to be created by this mutation. */
   person: PersonInput;
 };
@@ -3013,7 +3232,7 @@ export type CreatePersonPayload = {
 
 /** The output of our create `Person` mutation. */
 export type CreatePersonPayloadPersonEdgeArgs = {
-  orderBy?: Maybe<Array<PeopleOrderBy>>;
+  orderBy?: InputMaybe<Array<PeopleOrderBy>>;
 };
 
 /** All input for the create `Producer` mutation. */
@@ -3022,7 +3241,7 @@ export type CreateProducerInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   /** The `Producer` to be created by this mutation. */
   producer: ProducerInput;
 };
@@ -3046,7 +3265,7 @@ export type CreateProducerPayload = {
 
 /** The output of our create `Producer` mutation. */
 export type CreateProducerPayloadProducerEdgeArgs = {
-  orderBy?: Maybe<Array<ProducersOrderBy>>;
+  orderBy?: InputMaybe<Array<ProducersOrderBy>>;
 };
 
 /** All input for the create `StaffRole` mutation. */
@@ -3055,7 +3274,7 @@ export type CreateStaffRoleInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   /** The `StaffRole` to be created by this mutation. */
   staffRole: StaffRoleInput;
 };
@@ -3079,7 +3298,7 @@ export type CreateStaffRolePayload = {
 
 /** The output of our create `StaffRole` mutation. */
 export type CreateStaffRolePayloadStaffRoleEdgeArgs = {
-  orderBy?: Maybe<Array<StaffRolesOrderBy>>;
+  orderBy?: InputMaybe<Array<StaffRolesOrderBy>>;
 };
 
 /** All input for the create `Studio` mutation. */
@@ -3088,7 +3307,7 @@ export type CreateStudioInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   /** The `Studio` to be created by this mutation. */
   studio: StudioInput;
 };
@@ -3112,7 +3331,7 @@ export type CreateStudioPayload = {
 
 /** The output of our create `Studio` mutation. */
 export type CreateStudioPayloadStudioEdgeArgs = {
-  orderBy?: Maybe<Array<StudiosOrderBy>>;
+  orderBy?: InputMaybe<Array<StudiosOrderBy>>;
 };
 
 /** All input for the create `UserAnime` mutation. */
@@ -3121,7 +3340,7 @@ export type CreateUserAnimeInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   /** The `UserAnime` to be created by this mutation. */
   userAnime: UserAnimeInput;
 };
@@ -3132,7 +3351,7 @@ export type CreateUserAnimeListInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   /** The `UserAnimeList` to be created by this mutation. */
   userAnimeList: UserAnimeListInput;
 };
@@ -3160,7 +3379,7 @@ export type CreateUserAnimeListPayload = {
 
 /** The output of our create `UserAnimeList` mutation. */
 export type CreateUserAnimeListPayloadUserAnimeListEdgeArgs = {
-  orderBy?: Maybe<Array<UserAnimeListsOrderBy>>;
+  orderBy?: InputMaybe<Array<UserAnimeListsOrderBy>>;
 };
 
 /** The output of our create `UserAnime` mutation. */
@@ -3186,7 +3405,7 @@ export type CreateUserAnimePayload = {
 
 /** The output of our create `UserAnime` mutation. */
 export type CreateUserAnimePayloadUserAnimeEdgeArgs = {
-  orderBy?: Maybe<Array<UserAnimeOrderBy>>;
+  orderBy?: InputMaybe<Array<UserAnimeOrderBy>>;
 };
 
 /** All input for the create `User` mutation. */
@@ -3195,7 +3414,7 @@ export type CreateUserInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   /** The `User` to be created by this mutation. */
   user: UserInput;
 };
@@ -3219,7 +3438,7 @@ export type CreateUserPayload = {
 
 /** The output of our create `User` mutation. */
 export type CreateUserPayloadUserEdgeArgs = {
-  orderBy?: Maybe<Array<UsersOrderBy>>;
+  orderBy?: InputMaybe<Array<UsersOrderBy>>;
 };
 
 /** All input for the create `UserWatchStatus` mutation. */
@@ -3228,7 +3447,7 @@ export type CreateUserWatchStatusInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   /** The `UserWatchStatus` to be created by this mutation. */
   userWatchStatus: UserWatchStatusInput;
 };
@@ -3256,7 +3475,7 @@ export type CreateUserWatchStatusPayload = {
 
 /** The output of our create `UserWatchStatus` mutation. */
 export type CreateUserWatchStatusPayloadUserWatchStatusEdgeArgs = {
-  orderBy?: Maybe<Array<UserWatchStatusesOrderBy>>;
+  orderBy?: InputMaybe<Array<UserWatchStatusesOrderBy>>;
 };
 
 export type CustomAnimeList = {
@@ -3278,35 +3497,35 @@ export type CustomAnimeList = {
 /** A filter to be used against `CustomAnimeList` object types. All fields are combined with a logical ‘and.’ */
 export type CustomAnimeListFilter = {
   /** Checks for all expressions in this list. */
-  and?: Maybe<Array<CustomAnimeListFilter>>;
+  and?: InputMaybe<Array<CustomAnimeListFilter>>;
   /** Filter by the object’s `animeId` field. */
-  animeId?: Maybe<UuidFilter>;
+  animeId?: InputMaybe<UuidFilter>;
   /** Filter by the object’s `animeIndex` field. */
-  animeIndex?: Maybe<StringFilter>;
+  animeIndex?: InputMaybe<StringFilter>;
   /** Filter by the object’s `averageWatcherRating` field. */
-  averageWatcherRating?: Maybe<BigFloatFilter>;
+  averageWatcherRating?: InputMaybe<BigFloatFilter>;
   /** Filter by the object’s `id` field. */
-  id?: Maybe<StringFilter>;
+  id?: InputMaybe<StringFilter>;
   /** Filter by the object’s `imageUrl` field. */
-  imageUrl?: Maybe<StringFilter>;
+  imageUrl?: InputMaybe<StringFilter>;
   /** Filter by the object’s `listName` field. */
-  listName?: Maybe<StringFilter>;
+  listName?: InputMaybe<StringFilter>;
   /** Filter by the object’s `mediaType` field. */
-  mediaType?: Maybe<StringFilter>;
+  mediaType?: InputMaybe<StringFilter>;
   /** Negates the expression. */
-  not?: Maybe<CustomAnimeListFilter>;
+  not?: InputMaybe<CustomAnimeListFilter>;
   /** Filter by the object’s `numberOfEpisodes` field. */
-  numberOfEpisodes?: Maybe<IntFilter>;
+  numberOfEpisodes?: InputMaybe<IntFilter>;
   /** Checks for any expressions in this list. */
-  or?: Maybe<Array<CustomAnimeListFilter>>;
+  or?: InputMaybe<Array<CustomAnimeListFilter>>;
   /** Filter by the object’s `title` field. */
-  title?: Maybe<StringFilter>;
+  title?: InputMaybe<StringFilter>;
   /** Filter by the object’s `userEpisodesWatched` field. */
-  userEpisodesWatched?: Maybe<IntFilter>;
+  userEpisodesWatched?: InputMaybe<IntFilter>;
   /** Filter by the object’s `userScore` field. */
-  userScore?: Maybe<BigFloatFilter>;
+  userScore?: InputMaybe<BigFloatFilter>;
   /** Filter by the object’s `watchStatus` field. */
-  watchStatus?: Maybe<StringFilter>;
+  watchStatus?: InputMaybe<StringFilter>;
 };
 
 /** A connection to a list of `CustomAnimeList` values. */
@@ -3334,27 +3553,27 @@ export type CustomAnimeListsEdge = {
 /** A filter to be used against Datetime fields. All fields are combined with a logical ‘and.’ */
 export type DatetimeFilter = {
   /** Not equal to the specified value, treating null like an ordinary value. */
-  distinctFrom?: Maybe<Scalars['Datetime']>;
+  distinctFrom?: InputMaybe<Scalars['Datetime']>;
   /** Equal to the specified value. */
-  equalTo?: Maybe<Scalars['Datetime']>;
+  equalTo?: InputMaybe<Scalars['Datetime']>;
   /** Greater than the specified value. */
-  greaterThan?: Maybe<Scalars['Datetime']>;
+  greaterThan?: InputMaybe<Scalars['Datetime']>;
   /** Greater than or equal to the specified value. */
-  greaterThanOrEqualTo?: Maybe<Scalars['Datetime']>;
+  greaterThanOrEqualTo?: InputMaybe<Scalars['Datetime']>;
   /** Included in the specified list. */
-  in?: Maybe<Array<Scalars['Datetime']>>;
+  in?: InputMaybe<Array<Scalars['Datetime']>>;
   /** Is null (if `true` is specified) or is not null (if `false` is specified). */
-  isNull?: Maybe<Scalars['Boolean']>;
+  isNull?: InputMaybe<Scalars['Boolean']>;
   /** Less than the specified value. */
-  lessThan?: Maybe<Scalars['Datetime']>;
+  lessThan?: InputMaybe<Scalars['Datetime']>;
   /** Less than or equal to the specified value. */
-  lessThanOrEqualTo?: Maybe<Scalars['Datetime']>;
+  lessThanOrEqualTo?: InputMaybe<Scalars['Datetime']>;
   /** Equal to the specified value, treating null like an ordinary value. */
-  notDistinctFrom?: Maybe<Scalars['Datetime']>;
+  notDistinctFrom?: InputMaybe<Scalars['Datetime']>;
   /** Not equal to the specified value. */
-  notEqualTo?: Maybe<Scalars['Datetime']>;
+  notEqualTo?: InputMaybe<Scalars['Datetime']>;
   /** Not included in the specified list. */
-  notIn?: Maybe<Array<Scalars['Datetime']>>;
+  notIn?: InputMaybe<Array<Scalars['Datetime']>>;
 };
 
 /** All input for the `deleteAlternateAnimeNameByNodeId` mutation. */
@@ -3363,7 +3582,7 @@ export type DeleteAlternateAnimeNameByNodeIdInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   /** The globally unique `ID` which will identify a single `AlternateAnimeName` to be deleted. */
   nodeId: Scalars['ID'];
 };
@@ -3374,7 +3593,7 @@ export type DeleteAlternateAnimeNameInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   id: Scalars['UUID'];
 };
 
@@ -3400,7 +3619,7 @@ export type DeleteAlternateAnimeNamePayload = {
 
 /** The output of our delete `AlternateAnimeName` mutation. */
 export type DeleteAlternateAnimeNamePayloadAlternateAnimeNameEdgeArgs = {
-  orderBy?: Maybe<Array<AlternateAnimeNamesOrderBy>>;
+  orderBy?: InputMaybe<Array<AlternateAnimeNamesOrderBy>>;
 };
 
 /** All input for the `deleteAnimeByMalId` mutation. */
@@ -3409,7 +3628,7 @@ export type DeleteAnimeByMalIdInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   malId: Scalars['Int'];
 };
 
@@ -3419,7 +3638,7 @@ export type DeleteAnimeByNodeIdInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   /** The globally unique `ID` which will identify a single `Anime` to be deleted. */
   nodeId: Scalars['ID'];
 };
@@ -3430,7 +3649,7 @@ export type DeleteAnimeCharacterByNodeIdInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   /** The globally unique `ID` which will identify a single `AnimeCharacter` to be deleted. */
   nodeId: Scalars['ID'];
 };
@@ -3444,7 +3663,7 @@ export type DeleteAnimeCharacterInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   language: LanguageType;
   personId: Scalars['UUID'];
 };
@@ -3477,7 +3696,7 @@ export type DeleteAnimeCharacterPayload = {
 
 /** The output of our delete `AnimeCharacter` mutation. */
 export type DeleteAnimeCharacterPayloadAnimeCharacterEdgeArgs = {
-  orderBy?: Maybe<Array<AnimeCharactersOrderBy>>;
+  orderBy?: InputMaybe<Array<AnimeCharactersOrderBy>>;
 };
 
 /** All input for the `deleteAnimeGenreByNodeId` mutation. */
@@ -3486,7 +3705,7 @@ export type DeleteAnimeGenreByNodeIdInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   /** The globally unique `ID` which will identify a single `AnimeGenre` to be deleted. */
   nodeId: Scalars['ID'];
 };
@@ -3498,7 +3717,7 @@ export type DeleteAnimeGenreInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   genreId: Scalars['UUID'];
 };
 
@@ -3526,7 +3745,7 @@ export type DeleteAnimeGenrePayload = {
 
 /** The output of our delete `AnimeGenre` mutation. */
 export type DeleteAnimeGenrePayloadAnimeGenreEdgeArgs = {
-  orderBy?: Maybe<Array<AnimeGenresOrderBy>>;
+  orderBy?: InputMaybe<Array<AnimeGenresOrderBy>>;
 };
 
 /** All input for the `deleteAnimeImageByNodeId` mutation. */
@@ -3535,7 +3754,7 @@ export type DeleteAnimeImageByNodeIdInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   /** The globally unique `ID` which will identify a single `AnimeImage` to be deleted. */
   nodeId: Scalars['ID'];
 };
@@ -3547,7 +3766,7 @@ export type DeleteAnimeImageInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   imageId: Scalars['UUID'];
 };
 
@@ -3575,7 +3794,7 @@ export type DeleteAnimeImagePayload = {
 
 /** The output of our delete `AnimeImage` mutation. */
 export type DeleteAnimeImagePayloadAnimeImageEdgeArgs = {
-  orderBy?: Maybe<Array<AnimeImagesOrderBy>>;
+  orderBy?: InputMaybe<Array<AnimeImagesOrderBy>>;
 };
 
 /** All input for the `deleteAnime` mutation. */
@@ -3584,7 +3803,7 @@ export type DeleteAnimeInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   id: Scalars['UUID'];
 };
 
@@ -3594,7 +3813,7 @@ export type DeleteAnimeLicensorByNodeIdInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   /** The globally unique `ID` which will identify a single `AnimeLicensor` to be deleted. */
   nodeId: Scalars['ID'];
 };
@@ -3606,7 +3825,7 @@ export type DeleteAnimeLicensorInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   licensorId: Scalars['UUID'];
 };
 
@@ -3634,7 +3853,7 @@ export type DeleteAnimeLicensorPayload = {
 
 /** The output of our delete `AnimeLicensor` mutation. */
 export type DeleteAnimeLicensorPayloadAnimeLicensorEdgeArgs = {
-  orderBy?: Maybe<Array<AnimeLicensorsOrderBy>>;
+  orderBy?: InputMaybe<Array<AnimeLicensorsOrderBy>>;
 };
 
 /** All input for the `deleteAnimeListByNodeId` mutation. */
@@ -3643,7 +3862,7 @@ export type DeleteAnimeListByNodeIdInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   /** The globally unique `ID` which will identify a single `AnimeList` to be deleted. */
   nodeId: Scalars['ID'];
 };
@@ -3654,7 +3873,7 @@ export type DeleteAnimeListInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   id: Scalars['UUID'];
 };
 
@@ -3680,7 +3899,7 @@ export type DeleteAnimeListPayload = {
 
 /** The output of our delete `AnimeList` mutation. */
 export type DeleteAnimeListPayloadAnimeListEdgeArgs = {
-  orderBy?: Maybe<Array<AnimeListsOrderBy>>;
+  orderBy?: InputMaybe<Array<AnimeListsOrderBy>>;
 };
 
 /** The output of our delete `Anime` mutation. */
@@ -3703,7 +3922,7 @@ export type DeleteAnimePayload = {
 
 /** The output of our delete `Anime` mutation. */
 export type DeleteAnimePayloadAnimeEdgeArgs = {
-  orderBy?: Maybe<Array<AnimeOrderBy>>;
+  orderBy?: InputMaybe<Array<AnimeOrderBy>>;
 };
 
 /** All input for the `deleteAnimeProducerByNodeId` mutation. */
@@ -3712,7 +3931,7 @@ export type DeleteAnimeProducerByNodeIdInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   /** The globally unique `ID` which will identify a single `AnimeProducer` to be deleted. */
   nodeId: Scalars['ID'];
 };
@@ -3724,7 +3943,7 @@ export type DeleteAnimeProducerInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   producerId: Scalars['UUID'];
 };
 
@@ -3752,7 +3971,7 @@ export type DeleteAnimeProducerPayload = {
 
 /** The output of our delete `AnimeProducer` mutation. */
 export type DeleteAnimeProducerPayloadAnimeProducerEdgeArgs = {
-  orderBy?: Maybe<Array<AnimeProducersOrderBy>>;
+  orderBy?: InputMaybe<Array<AnimeProducersOrderBy>>;
 };
 
 /** All input for the `deleteAnimeStaffByNodeId` mutation. */
@@ -3761,7 +3980,7 @@ export type DeleteAnimeStaffByNodeIdInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   /** The globally unique `ID` which will identify a single `AnimeStaff` to be deleted. */
   nodeId: Scalars['ID'];
 };
@@ -3773,7 +3992,7 @@ export type DeleteAnimeStaffInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   personId: Scalars['UUID'];
   staffRoleId: Scalars['UUID'];
 };
@@ -3804,7 +4023,7 @@ export type DeleteAnimeStaffPayload = {
 
 /** The output of our delete `AnimeStaff` mutation. */
 export type DeleteAnimeStaffPayloadAnimeStaffEdgeArgs = {
-  orderBy?: Maybe<Array<AnimeStaffOrderBy>>;
+  orderBy?: InputMaybe<Array<AnimeStaffOrderBy>>;
 };
 
 /** All input for the `deleteAnimeStudioByNodeId` mutation. */
@@ -3813,7 +4032,7 @@ export type DeleteAnimeStudioByNodeIdInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   /** The globally unique `ID` which will identify a single `AnimeStudio` to be deleted. */
   nodeId: Scalars['ID'];
 };
@@ -3825,7 +4044,7 @@ export type DeleteAnimeStudioInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   studioId: Scalars['UUID'];
 };
 
@@ -3853,7 +4072,7 @@ export type DeleteAnimeStudioPayload = {
 
 /** The output of our delete `AnimeStudio` mutation. */
 export type DeleteAnimeStudioPayloadAnimeStudioEdgeArgs = {
-  orderBy?: Maybe<Array<AnimeStudiosOrderBy>>;
+  orderBy?: InputMaybe<Array<AnimeStudiosOrderBy>>;
 };
 
 /** All input for the `deleteAnimeUserScoreByNodeId` mutation. */
@@ -3862,7 +4081,7 @@ export type DeleteAnimeUserScoreByNodeIdInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   /** The globally unique `ID` which will identify a single `AnimeUserScore` to be deleted. */
   nodeId: Scalars['ID'];
 };
@@ -3874,7 +4093,7 @@ export type DeleteAnimeUserScoreInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   userId: Scalars['String'];
 };
 
@@ -3902,7 +4121,7 @@ export type DeleteAnimeUserScorePayload = {
 
 /** The output of our delete `AnimeUserScore` mutation. */
 export type DeleteAnimeUserScorePayloadAnimeUserScoreEdgeArgs = {
-  orderBy?: Maybe<Array<AnimeUserScoresOrderBy>>;
+  orderBy?: InputMaybe<Array<AnimeUserScoresOrderBy>>;
 };
 
 /** All input for the `deleteCharacterByMalId` mutation. */
@@ -3911,7 +4130,7 @@ export type DeleteCharacterByMalIdInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   malId: Scalars['String'];
 };
 
@@ -3921,7 +4140,7 @@ export type DeleteCharacterByNodeIdInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   /** The globally unique `ID` which will identify a single `Character` to be deleted. */
   nodeId: Scalars['ID'];
 };
@@ -3932,7 +4151,7 @@ export type DeleteCharacterImageByNodeIdInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   /** The globally unique `ID` which will identify a single `CharacterImage` to be deleted. */
   nodeId: Scalars['ID'];
 };
@@ -3944,7 +4163,7 @@ export type DeleteCharacterImageInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   imageId: Scalars['UUID'];
 };
 
@@ -3972,7 +4191,7 @@ export type DeleteCharacterImagePayload = {
 
 /** The output of our delete `CharacterImage` mutation. */
 export type DeleteCharacterImagePayloadCharacterImageEdgeArgs = {
-  orderBy?: Maybe<Array<CharacterImagesOrderBy>>;
+  orderBy?: InputMaybe<Array<CharacterImagesOrderBy>>;
 };
 
 /** All input for the `deleteCharacter` mutation. */
@@ -3981,7 +4200,7 @@ export type DeleteCharacterInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   id: Scalars['UUID'];
 };
 
@@ -4007,7 +4226,7 @@ export type DeleteCharacterPayload = {
 
 /** The output of our delete `Character` mutation. */
 export type DeleteCharacterPayloadCharacterEdgeArgs = {
-  orderBy?: Maybe<Array<CharactersOrderBy>>;
+  orderBy?: InputMaybe<Array<CharactersOrderBy>>;
 };
 
 /** All input for the `deleteCharacterRoleByNodeId` mutation. */
@@ -4016,7 +4235,7 @@ export type DeleteCharacterRoleByNodeIdInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   /** The globally unique `ID` which will identify a single `CharacterRole` to be deleted. */
   nodeId: Scalars['ID'];
 };
@@ -4027,7 +4246,7 @@ export type DeleteCharacterRoleByRoleInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   role: Scalars['String'];
 };
 
@@ -4037,7 +4256,7 @@ export type DeleteCharacterRoleInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   id: Scalars['UUID'];
 };
 
@@ -4061,7 +4280,7 @@ export type DeleteCharacterRolePayload = {
 
 /** The output of our delete `CharacterRole` mutation. */
 export type DeleteCharacterRolePayloadCharacterRoleEdgeArgs = {
-  orderBy?: Maybe<Array<CharacterRolesOrderBy>>;
+  orderBy?: InputMaybe<Array<CharacterRolesOrderBy>>;
 };
 
 /** All input for the `deleteGenreByGenre` mutation. */
@@ -4070,7 +4289,7 @@ export type DeleteGenreByGenreInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   genre: Scalars['String'];
 };
 
@@ -4080,7 +4299,7 @@ export type DeleteGenreByNodeIdInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   /** The globally unique `ID` which will identify a single `Genre` to be deleted. */
   nodeId: Scalars['ID'];
 };
@@ -4091,7 +4310,7 @@ export type DeleteGenreInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   id: Scalars['UUID'];
 };
 
@@ -4115,7 +4334,7 @@ export type DeleteGenrePayload = {
 
 /** The output of our delete `Genre` mutation. */
 export type DeleteGenrePayloadGenreEdgeArgs = {
-  orderBy?: Maybe<Array<GenresOrderBy>>;
+  orderBy?: InputMaybe<Array<GenresOrderBy>>;
 };
 
 /** All input for the `deleteImageByNodeId` mutation. */
@@ -4124,7 +4343,7 @@ export type DeleteImageByNodeIdInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   /** The globally unique `ID` which will identify a single `Image` to be deleted. */
   nodeId: Scalars['ID'];
 };
@@ -4135,7 +4354,7 @@ export type DeleteImageInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   id: Scalars['UUID'];
 };
 
@@ -4159,7 +4378,7 @@ export type DeleteImagePayload = {
 
 /** The output of our delete `Image` mutation. */
 export type DeleteImagePayloadImageEdgeArgs = {
-  orderBy?: Maybe<Array<ImagesOrderBy>>;
+  orderBy?: InputMaybe<Array<ImagesOrderBy>>;
 };
 
 /** All input for the `deleteLicensorByLicensor` mutation. */
@@ -4168,7 +4387,7 @@ export type DeleteLicensorByLicensorInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   licensor: Scalars['String'];
 };
 
@@ -4178,7 +4397,7 @@ export type DeleteLicensorByNodeIdInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   /** The globally unique `ID` which will identify a single `Licensor` to be deleted. */
   nodeId: Scalars['ID'];
 };
@@ -4189,7 +4408,7 @@ export type DeleteLicensorInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   id: Scalars['UUID'];
 };
 
@@ -4213,7 +4432,7 @@ export type DeleteLicensorPayload = {
 
 /** The output of our delete `Licensor` mutation. */
 export type DeleteLicensorPayloadLicensorEdgeArgs = {
-  orderBy?: Maybe<Array<LicensorsOrderBy>>;
+  orderBy?: InputMaybe<Array<LicensorsOrderBy>>;
 };
 
 /** All input for the `deletePersonByMalId` mutation. */
@@ -4222,7 +4441,7 @@ export type DeletePersonByMalIdInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   malId: Scalars['String'];
 };
 
@@ -4232,7 +4451,7 @@ export type DeletePersonByNodeIdInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   /** The globally unique `ID` which will identify a single `Person` to be deleted. */
   nodeId: Scalars['ID'];
 };
@@ -4243,7 +4462,7 @@ export type DeletePersonImageByNodeIdInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   /** The globally unique `ID` which will identify a single `PersonImage` to be deleted. */
   nodeId: Scalars['ID'];
 };
@@ -4254,7 +4473,7 @@ export type DeletePersonImageInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   imageId: Scalars['UUID'];
   personId: Scalars['UUID'];
 };
@@ -4283,7 +4502,7 @@ export type DeletePersonImagePayload = {
 
 /** The output of our delete `PersonImage` mutation. */
 export type DeletePersonImagePayloadPersonImageEdgeArgs = {
-  orderBy?: Maybe<Array<PersonImagesOrderBy>>;
+  orderBy?: InputMaybe<Array<PersonImagesOrderBy>>;
 };
 
 /** All input for the `deletePerson` mutation. */
@@ -4292,7 +4511,7 @@ export type DeletePersonInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   id: Scalars['UUID'];
 };
 
@@ -4318,7 +4537,7 @@ export type DeletePersonPayload = {
 
 /** The output of our delete `Person` mutation. */
 export type DeletePersonPayloadPersonEdgeArgs = {
-  orderBy?: Maybe<Array<PeopleOrderBy>>;
+  orderBy?: InputMaybe<Array<PeopleOrderBy>>;
 };
 
 /** All input for the `deleteProducerByNodeId` mutation. */
@@ -4327,7 +4546,7 @@ export type DeleteProducerByNodeIdInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   /** The globally unique `ID` which will identify a single `Producer` to be deleted. */
   nodeId: Scalars['ID'];
 };
@@ -4338,7 +4557,7 @@ export type DeleteProducerByProducerInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   producer: Scalars['String'];
 };
 
@@ -4348,7 +4567,7 @@ export type DeleteProducerInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   id: Scalars['UUID'];
 };
 
@@ -4372,7 +4591,7 @@ export type DeleteProducerPayload = {
 
 /** The output of our delete `Producer` mutation. */
 export type DeleteProducerPayloadProducerEdgeArgs = {
-  orderBy?: Maybe<Array<ProducersOrderBy>>;
+  orderBy?: InputMaybe<Array<ProducersOrderBy>>;
 };
 
 /** All input for the `deleteStaffRoleByNodeId` mutation. */
@@ -4381,7 +4600,7 @@ export type DeleteStaffRoleByNodeIdInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   /** The globally unique `ID` which will identify a single `StaffRole` to be deleted. */
   nodeId: Scalars['ID'];
 };
@@ -4392,7 +4611,7 @@ export type DeleteStaffRoleByRoleInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   role: Scalars['String'];
 };
 
@@ -4402,7 +4621,7 @@ export type DeleteStaffRoleInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   id: Scalars['UUID'];
 };
 
@@ -4426,7 +4645,7 @@ export type DeleteStaffRolePayload = {
 
 /** The output of our delete `StaffRole` mutation. */
 export type DeleteStaffRolePayloadStaffRoleEdgeArgs = {
-  orderBy?: Maybe<Array<StaffRolesOrderBy>>;
+  orderBy?: InputMaybe<Array<StaffRolesOrderBy>>;
 };
 
 /** All input for the `deleteStudioByNodeId` mutation. */
@@ -4435,7 +4654,7 @@ export type DeleteStudioByNodeIdInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   /** The globally unique `ID` which will identify a single `Studio` to be deleted. */
   nodeId: Scalars['ID'];
 };
@@ -4446,7 +4665,7 @@ export type DeleteStudioByStudioInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   studio: Scalars['String'];
 };
 
@@ -4456,7 +4675,7 @@ export type DeleteStudioInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   id: Scalars['UUID'];
 };
 
@@ -4480,7 +4699,7 @@ export type DeleteStudioPayload = {
 
 /** The output of our delete `Studio` mutation. */
 export type DeleteStudioPayloadStudioEdgeArgs = {
-  orderBy?: Maybe<Array<StudiosOrderBy>>;
+  orderBy?: InputMaybe<Array<StudiosOrderBy>>;
 };
 
 /** All input for the `deleteUserAnimeByNodeId` mutation. */
@@ -4489,7 +4708,7 @@ export type DeleteUserAnimeByNodeIdInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   /** The globally unique `ID` which will identify a single `UserAnime` to be deleted. */
   nodeId: Scalars['ID'];
 };
@@ -4501,7 +4720,7 @@ export type DeleteUserAnimeInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   userId: Scalars['String'];
 };
 
@@ -4513,7 +4732,7 @@ export type DeleteUserAnimeListByAnimeListIdAndAnimeIdInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
 };
 
 /** The output of our delete `UserAnimeList` mutation. */
@@ -4540,7 +4759,7 @@ export type DeleteUserAnimeListPayload = {
 
 /** The output of our delete `UserAnimeList` mutation. */
 export type DeleteUserAnimeListPayloadUserAnimeListEdgeArgs = {
-  orderBy?: Maybe<Array<UserAnimeListsOrderBy>>;
+  orderBy?: InputMaybe<Array<UserAnimeListsOrderBy>>;
 };
 
 /** The output of our delete `UserAnime` mutation. */
@@ -4567,7 +4786,7 @@ export type DeleteUserAnimePayload = {
 
 /** The output of our delete `UserAnime` mutation. */
 export type DeleteUserAnimePayloadUserAnimeEdgeArgs = {
-  orderBy?: Maybe<Array<UserAnimeOrderBy>>;
+  orderBy?: InputMaybe<Array<UserAnimeOrderBy>>;
 };
 
 /** All input for the `deleteUserByNodeId` mutation. */
@@ -4576,7 +4795,7 @@ export type DeleteUserByNodeIdInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   /** The globally unique `ID` which will identify a single `User` to be deleted. */
   nodeId: Scalars['ID'];
 };
@@ -4587,7 +4806,7 @@ export type DeleteUserInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   id: Scalars['String'];
 };
 
@@ -4611,7 +4830,7 @@ export type DeleteUserPayload = {
 
 /** The output of our delete `User` mutation. */
 export type DeleteUserPayloadUserEdgeArgs = {
-  orderBy?: Maybe<Array<UsersOrderBy>>;
+  orderBy?: InputMaybe<Array<UsersOrderBy>>;
 };
 
 /** All input for the `deleteUserWatchStatusByNodeId` mutation. */
@@ -4620,7 +4839,7 @@ export type DeleteUserWatchStatusByNodeIdInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   /** The globally unique `ID` which will identify a single `UserWatchStatus` to be deleted. */
   nodeId: Scalars['ID'];
 };
@@ -4632,7 +4851,7 @@ export type DeleteUserWatchStatusInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   userId: Scalars['String'];
 };
 
@@ -4660,7 +4879,7 @@ export type DeleteUserWatchStatusPayload = {
 
 /** The output of our delete `UserWatchStatus` mutation. */
 export type DeleteUserWatchStatusPayloadUserWatchStatusEdgeArgs = {
-  orderBy?: Maybe<Array<UserWatchStatusesOrderBy>>;
+  orderBy?: InputMaybe<Array<UserWatchStatusesOrderBy>>;
 };
 
 export type Genre = Node & {
@@ -4675,48 +4894,48 @@ export type Genre = Node & {
 
 
 export type GenreAnimeGenresArgs = {
-  after?: Maybe<Scalars['Cursor']>;
-  before?: Maybe<Scalars['Cursor']>;
-  condition?: Maybe<AnimeGenreCondition>;
-  filter?: Maybe<AnimeGenreFilter>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  orderBy?: Maybe<Array<AnimeGenresOrderBy>>;
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<AnimeGenreCondition>;
+  filter?: InputMaybe<AnimeGenreFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<AnimeGenresOrderBy>>;
 };
 
 /** A condition to be used against `Genre` object types. All fields are tested for equality and combined with a logical ‘and.’ */
 export type GenreCondition = {
   /** Checks for equality with the object’s `genre` field. */
-  genre?: Maybe<Scalars['String']>;
+  genre?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `id` field. */
-  id?: Maybe<Scalars['UUID']>;
+  id?: InputMaybe<Scalars['UUID']>;
 };
 
 /** A filter to be used against `Genre` object types. All fields are combined with a logical ‘and.’ */
 export type GenreFilter = {
   /** Checks for all expressions in this list. */
-  and?: Maybe<Array<GenreFilter>>;
+  and?: InputMaybe<Array<GenreFilter>>;
   /** Filter by the object’s `genre` field. */
-  genre?: Maybe<StringFilter>;
+  genre?: InputMaybe<StringFilter>;
   /** Filter by the object’s `id` field. */
-  id?: Maybe<UuidFilter>;
+  id?: InputMaybe<UuidFilter>;
   /** Negates the expression. */
-  not?: Maybe<GenreFilter>;
+  not?: InputMaybe<GenreFilter>;
   /** Checks for any expressions in this list. */
-  or?: Maybe<Array<GenreFilter>>;
+  or?: InputMaybe<Array<GenreFilter>>;
 };
 
 /** An input for mutations affecting `Genre` */
 export type GenreInput = {
   genre: Scalars['String'];
-  id?: Maybe<Scalars['UUID']>;
+  id?: InputMaybe<Scalars['UUID']>;
 };
 
 /** Represents an update to a `Genre`. Fields that are set will be updated. */
 export type GenrePatch = {
-  genre?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['UUID']>;
+  genre?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['UUID']>;
 };
 
 /** A connection to a list of `Genre` values. */
@@ -4775,102 +4994,102 @@ export type Image = Node & {
 
 
 export type ImageAnimeImagesArgs = {
-  after?: Maybe<Scalars['Cursor']>;
-  before?: Maybe<Scalars['Cursor']>;
-  condition?: Maybe<AnimeImageCondition>;
-  filter?: Maybe<AnimeImageFilter>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  orderBy?: Maybe<Array<AnimeImagesOrderBy>>;
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<AnimeImageCondition>;
+  filter?: InputMaybe<AnimeImageFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<AnimeImagesOrderBy>>;
 };
 
 
 export type ImageCharacterImagesArgs = {
-  after?: Maybe<Scalars['Cursor']>;
-  before?: Maybe<Scalars['Cursor']>;
-  condition?: Maybe<CharacterImageCondition>;
-  filter?: Maybe<CharacterImageFilter>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  orderBy?: Maybe<Array<CharacterImagesOrderBy>>;
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<CharacterImageCondition>;
+  filter?: InputMaybe<CharacterImageFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<CharacterImagesOrderBy>>;
 };
 
 
 export type ImageCharactersByCharacterImageIdArgs = {
-  after?: Maybe<Scalars['Cursor']>;
-  before?: Maybe<Scalars['Cursor']>;
-  condition?: Maybe<CharacterCondition>;
-  filter?: Maybe<CharacterFilter>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  orderBy?: Maybe<Array<CharactersOrderBy>>;
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<CharacterCondition>;
+  filter?: InputMaybe<CharacterFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<CharactersOrderBy>>;
 };
 
 
 export type ImagePeopleByPersonImageIdArgs = {
-  after?: Maybe<Scalars['Cursor']>;
-  before?: Maybe<Scalars['Cursor']>;
-  condition?: Maybe<PersonCondition>;
-  filter?: Maybe<PersonFilter>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  orderBy?: Maybe<Array<PeopleOrderBy>>;
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<PersonCondition>;
+  filter?: InputMaybe<PersonFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<PeopleOrderBy>>;
 };
 
 
 export type ImagePersonImagesArgs = {
-  after?: Maybe<Scalars['Cursor']>;
-  before?: Maybe<Scalars['Cursor']>;
-  condition?: Maybe<PersonImageCondition>;
-  filter?: Maybe<PersonImageFilter>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  orderBy?: Maybe<Array<PersonImagesOrderBy>>;
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<PersonImageCondition>;
+  filter?: InputMaybe<PersonImageFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<PersonImagesOrderBy>>;
 };
 
 /** A condition to be used against `Image` object types. All fields are tested for equality and combined with a logical ‘and.’ */
 export type ImageCondition = {
   /** Checks for equality with the object’s `id` field. */
-  id?: Maybe<Scalars['UUID']>;
+  id?: InputMaybe<Scalars['UUID']>;
   /** Checks for equality with the object’s `title` field. */
-  title?: Maybe<Scalars['String']>;
+  title?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `url` field. */
-  url?: Maybe<Scalars['String']>;
+  url?: InputMaybe<Scalars['String']>;
 };
 
 /** A filter to be used against `Image` object types. All fields are combined with a logical ‘and.’ */
 export type ImageFilter = {
   /** Checks for all expressions in this list. */
-  and?: Maybe<Array<ImageFilter>>;
+  and?: InputMaybe<Array<ImageFilter>>;
   /** Filter by the object’s `id` field. */
-  id?: Maybe<UuidFilter>;
+  id?: InputMaybe<UuidFilter>;
   /** Negates the expression. */
-  not?: Maybe<ImageFilter>;
+  not?: InputMaybe<ImageFilter>;
   /** Checks for any expressions in this list. */
-  or?: Maybe<Array<ImageFilter>>;
+  or?: InputMaybe<Array<ImageFilter>>;
   /** Filter by the object’s `title` field. */
-  title?: Maybe<StringFilter>;
+  title?: InputMaybe<StringFilter>;
   /** Filter by the object’s `url` field. */
-  url?: Maybe<StringFilter>;
+  url?: InputMaybe<StringFilter>;
 };
 
 /** An input for mutations affecting `Image` */
 export type ImageInput = {
-  id?: Maybe<Scalars['UUID']>;
+  id?: InputMaybe<Scalars['UUID']>;
   title: Scalars['String'];
   url: Scalars['String'];
 };
 
 /** Represents an update to a `Image`. Fields that are set will be updated. */
 export type ImagePatch = {
-  id?: Maybe<Scalars['UUID']>;
-  title?: Maybe<Scalars['String']>;
-  url?: Maybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['UUID']>;
+  title?: InputMaybe<Scalars['String']>;
+  url?: InputMaybe<Scalars['String']>;
 };
 
 /** A connection to a list of `Image` values. */
@@ -4924,11 +5143,11 @@ export type InsertAnimeToUserListInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
-  inputAnimeId?: Maybe<Scalars['UUID']>;
-  inputAnimeIndex?: Maybe<Scalars['String']>;
-  inputAnimeListId?: Maybe<Scalars['UUID']>;
-  inputWatchStatus?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  inputAnimeId?: InputMaybe<Scalars['UUID']>;
+  inputAnimeIndex?: InputMaybe<Scalars['String']>;
+  inputAnimeListId?: InputMaybe<Scalars['UUID']>;
+  inputWatchStatus?: InputMaybe<Scalars['String']>;
 };
 
 /** The output of our `insertAnimeToUserList` mutation. */
@@ -4953,7 +5172,7 @@ export type InsertAnimeToUserListPayload = {
 
 /** The output of our `insertAnimeToUserList` mutation. */
 export type InsertAnimeToUserListPayloadUserAnimeListEdgeArgs = {
-  orderBy?: Maybe<Array<UserAnimeListsOrderBy>>;
+  orderBy?: InputMaybe<Array<UserAnimeListsOrderBy>>;
 };
 
 /** All input for the `insertOrUpdateAnimeUserScore` mutation. */
@@ -4962,7 +5181,7 @@ export type InsertOrUpdateAnimeUserScoreInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   inputAnimeId: Scalars['UUID'];
   inputUserScore: Scalars['Int'];
 };
@@ -4989,33 +5208,33 @@ export type InsertOrUpdateAnimeUserScorePayload = {
 
 /** The output of our `insertOrUpdateAnimeUserScore` mutation. */
 export type InsertOrUpdateAnimeUserScorePayloadAnimeUserScoreEdgeArgs = {
-  orderBy?: Maybe<Array<AnimeUserScoresOrderBy>>;
+  orderBy?: InputMaybe<Array<AnimeUserScoresOrderBy>>;
 };
 
 /** A filter to be used against Int fields. All fields are combined with a logical ‘and.’ */
 export type IntFilter = {
   /** Not equal to the specified value, treating null like an ordinary value. */
-  distinctFrom?: Maybe<Scalars['Int']>;
+  distinctFrom?: InputMaybe<Scalars['Int']>;
   /** Equal to the specified value. */
-  equalTo?: Maybe<Scalars['Int']>;
+  equalTo?: InputMaybe<Scalars['Int']>;
   /** Greater than the specified value. */
-  greaterThan?: Maybe<Scalars['Int']>;
+  greaterThan?: InputMaybe<Scalars['Int']>;
   /** Greater than or equal to the specified value. */
-  greaterThanOrEqualTo?: Maybe<Scalars['Int']>;
+  greaterThanOrEqualTo?: InputMaybe<Scalars['Int']>;
   /** Included in the specified list. */
-  in?: Maybe<Array<Scalars['Int']>>;
+  in?: InputMaybe<Array<Scalars['Int']>>;
   /** Is null (if `true` is specified) or is not null (if `false` is specified). */
-  isNull?: Maybe<Scalars['Boolean']>;
+  isNull?: InputMaybe<Scalars['Boolean']>;
   /** Less than the specified value. */
-  lessThan?: Maybe<Scalars['Int']>;
+  lessThan?: InputMaybe<Scalars['Int']>;
   /** Less than or equal to the specified value. */
-  lessThanOrEqualTo?: Maybe<Scalars['Int']>;
+  lessThanOrEqualTo?: InputMaybe<Scalars['Int']>;
   /** Equal to the specified value, treating null like an ordinary value. */
-  notDistinctFrom?: Maybe<Scalars['Int']>;
+  notDistinctFrom?: InputMaybe<Scalars['Int']>;
   /** Not equal to the specified value. */
-  notEqualTo?: Maybe<Scalars['Int']>;
+  notEqualTo?: InputMaybe<Scalars['Int']>;
   /** Not included in the specified list. */
-  notIn?: Maybe<Array<Scalars['Int']>>;
+  notIn?: InputMaybe<Array<Scalars['Int']>>;
 };
 
 export enum LanguageType {
@@ -5033,27 +5252,27 @@ export enum LanguageType {
 /** A filter to be used against LanguageType fields. All fields are combined with a logical ‘and.’ */
 export type LanguageTypeFilter = {
   /** Not equal to the specified value, treating null like an ordinary value. */
-  distinctFrom?: Maybe<LanguageType>;
+  distinctFrom?: InputMaybe<LanguageType>;
   /** Equal to the specified value. */
-  equalTo?: Maybe<LanguageType>;
+  equalTo?: InputMaybe<LanguageType>;
   /** Greater than the specified value. */
-  greaterThan?: Maybe<LanguageType>;
+  greaterThan?: InputMaybe<LanguageType>;
   /** Greater than or equal to the specified value. */
-  greaterThanOrEqualTo?: Maybe<LanguageType>;
+  greaterThanOrEqualTo?: InputMaybe<LanguageType>;
   /** Included in the specified list. */
-  in?: Maybe<Array<LanguageType>>;
+  in?: InputMaybe<Array<LanguageType>>;
   /** Is null (if `true` is specified) or is not null (if `false` is specified). */
-  isNull?: Maybe<Scalars['Boolean']>;
+  isNull?: InputMaybe<Scalars['Boolean']>;
   /** Less than the specified value. */
-  lessThan?: Maybe<LanguageType>;
+  lessThan?: InputMaybe<LanguageType>;
   /** Less than or equal to the specified value. */
-  lessThanOrEqualTo?: Maybe<LanguageType>;
+  lessThanOrEqualTo?: InputMaybe<LanguageType>;
   /** Equal to the specified value, treating null like an ordinary value. */
-  notDistinctFrom?: Maybe<LanguageType>;
+  notDistinctFrom?: InputMaybe<LanguageType>;
   /** Not equal to the specified value. */
-  notEqualTo?: Maybe<LanguageType>;
+  notEqualTo?: InputMaybe<LanguageType>;
   /** Not included in the specified list. */
-  notIn?: Maybe<Array<LanguageType>>;
+  notIn?: InputMaybe<Array<LanguageType>>;
 };
 
 export type Licensor = Node & {
@@ -5068,14 +5287,14 @@ export type Licensor = Node & {
 
 
 export type LicensorAnimeLicensorsArgs = {
-  after?: Maybe<Scalars['Cursor']>;
-  before?: Maybe<Scalars['Cursor']>;
-  condition?: Maybe<AnimeLicensorCondition>;
-  filter?: Maybe<AnimeLicensorFilter>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  orderBy?: Maybe<Array<AnimeLicensorsOrderBy>>;
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<AnimeLicensorCondition>;
+  filter?: InputMaybe<AnimeLicensorFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<AnimeLicensorsOrderBy>>;
 };
 
 /**
@@ -5084,35 +5303,35 @@ export type LicensorAnimeLicensorsArgs = {
  */
 export type LicensorCondition = {
   /** Checks for equality with the object’s `id` field. */
-  id?: Maybe<Scalars['UUID']>;
+  id?: InputMaybe<Scalars['UUID']>;
   /** Checks for equality with the object’s `licensor` field. */
-  licensor?: Maybe<Scalars['String']>;
+  licensor?: InputMaybe<Scalars['String']>;
 };
 
 /** A filter to be used against `Licensor` object types. All fields are combined with a logical ‘and.’ */
 export type LicensorFilter = {
   /** Checks for all expressions in this list. */
-  and?: Maybe<Array<LicensorFilter>>;
+  and?: InputMaybe<Array<LicensorFilter>>;
   /** Filter by the object’s `id` field. */
-  id?: Maybe<UuidFilter>;
+  id?: InputMaybe<UuidFilter>;
   /** Filter by the object’s `licensor` field. */
-  licensor?: Maybe<StringFilter>;
+  licensor?: InputMaybe<StringFilter>;
   /** Negates the expression. */
-  not?: Maybe<LicensorFilter>;
+  not?: InputMaybe<LicensorFilter>;
   /** Checks for any expressions in this list. */
-  or?: Maybe<Array<LicensorFilter>>;
+  or?: InputMaybe<Array<LicensorFilter>>;
 };
 
 /** An input for mutations affecting `Licensor` */
 export type LicensorInput = {
-  id?: Maybe<Scalars['UUID']>;
+  id?: InputMaybe<Scalars['UUID']>;
   licensor: Scalars['String'];
 };
 
 /** Represents an update to a `Licensor`. Fields that are set will be updated. */
 export type LicensorPatch = {
-  id?: Maybe<Scalars['UUID']>;
-  licensor?: Maybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['UUID']>;
+  licensor?: InputMaybe<Scalars['String']>;
 };
 
 /** A connection to a list of `Licensor` values. */
@@ -5150,6 +5369,68 @@ export enum LicensorsOrderBy {
   PrimaryKeyDesc = 'PRIMARY_KEY_DESC'
 }
 
+export type MediaFormat = {
+  __typename?: 'MediaFormat';
+  id?: Maybe<Scalars['BigInt']>;
+  mediaType?: Maybe<Scalars['String']>;
+};
+
+/**
+ * A condition to be used against `MediaFormat` object types. All fields are tested
+ * for equality and combined with a logical ‘and.’
+ */
+export type MediaFormatCondition = {
+  /** Checks for equality with the object’s `id` field. */
+  id?: InputMaybe<Scalars['BigInt']>;
+  /** Checks for equality with the object’s `mediaType` field. */
+  mediaType?: InputMaybe<Scalars['String']>;
+};
+
+/** A filter to be used against `MediaFormat` object types. All fields are combined with a logical ‘and.’ */
+export type MediaFormatFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<MediaFormatFilter>>;
+  /** Filter by the object’s `id` field. */
+  id?: InputMaybe<BigIntFilter>;
+  /** Filter by the object’s `mediaType` field. */
+  mediaType?: InputMaybe<StringFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<MediaFormatFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<MediaFormatFilter>>;
+};
+
+/** A connection to a list of `MediaFormat` values. */
+export type MediaFormatsConnection = {
+  __typename?: 'MediaFormatsConnection';
+  /** A list of edges which contains the `MediaFormat` and cursor to aid in pagination. */
+  edges: Array<MediaFormatsEdge>;
+  /** A list of `MediaFormat` objects. */
+  nodes: Array<MediaFormat>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `MediaFormat` you could get from the connection. */
+  totalCount: Scalars['Int'];
+};
+
+/** A `MediaFormat` edge in the connection. */
+export type MediaFormatsEdge = {
+  __typename?: 'MediaFormatsEdge';
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>;
+  /** The `MediaFormat` at the end of the edge. */
+  node: MediaFormat;
+};
+
+/** Methods to use when ordering `MediaFormat`. */
+export enum MediaFormatsOrderBy {
+  IdAsc = 'ID_ASC',
+  IdDesc = 'ID_DESC',
+  MediaTypeAsc = 'MEDIA_TYPE_ASC',
+  MediaTypeDesc = 'MEDIA_TYPE_DESC',
+  Natural = 'NATURAL'
+}
+
 export enum MediaTypes {
   Movie = 'MOVIE',
   Ona = 'ONA',
@@ -5161,27 +5442,27 @@ export enum MediaTypes {
 /** A filter to be used against MediaTypes fields. All fields are combined with a logical ‘and.’ */
 export type MediaTypesFilter = {
   /** Not equal to the specified value, treating null like an ordinary value. */
-  distinctFrom?: Maybe<MediaTypes>;
+  distinctFrom?: InputMaybe<MediaTypes>;
   /** Equal to the specified value. */
-  equalTo?: Maybe<MediaTypes>;
+  equalTo?: InputMaybe<MediaTypes>;
   /** Greater than the specified value. */
-  greaterThan?: Maybe<MediaTypes>;
+  greaterThan?: InputMaybe<MediaTypes>;
   /** Greater than or equal to the specified value. */
-  greaterThanOrEqualTo?: Maybe<MediaTypes>;
+  greaterThanOrEqualTo?: InputMaybe<MediaTypes>;
   /** Included in the specified list. */
-  in?: Maybe<Array<MediaTypes>>;
+  in?: InputMaybe<Array<MediaTypes>>;
   /** Is null (if `true` is specified) or is not null (if `false` is specified). */
-  isNull?: Maybe<Scalars['Boolean']>;
+  isNull?: InputMaybe<Scalars['Boolean']>;
   /** Less than the specified value. */
-  lessThan?: Maybe<MediaTypes>;
+  lessThan?: InputMaybe<MediaTypes>;
   /** Less than or equal to the specified value. */
-  lessThanOrEqualTo?: Maybe<MediaTypes>;
+  lessThanOrEqualTo?: InputMaybe<MediaTypes>;
   /** Equal to the specified value, treating null like an ordinary value. */
-  notDistinctFrom?: Maybe<MediaTypes>;
+  notDistinctFrom?: InputMaybe<MediaTypes>;
   /** Not equal to the specified value. */
-  notEqualTo?: Maybe<MediaTypes>;
+  notEqualTo?: InputMaybe<MediaTypes>;
   /** Not included in the specified list. */
-  notIn?: Maybe<Array<MediaTypes>>;
+  notIn?: InputMaybe<Array<MediaTypes>>;
 };
 
 /** The root mutation type which contains root level fields which mutate data. */
@@ -6448,182 +6729,182 @@ export type MutationUpdateUserWatchStatusByNodeIdArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpsertAlternateAnimeNameArgs = {
   input: UpsertAlternateAnimeNameInput;
-  where?: Maybe<UpsertAlternateAnimeNameWhere>;
+  where?: InputMaybe<UpsertAlternateAnimeNameWhere>;
 };
 
 
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpsertAnimeArgs = {
   input: UpsertAnimeInput;
-  where?: Maybe<UpsertAnimeWhere>;
+  where?: InputMaybe<UpsertAnimeWhere>;
 };
 
 
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpsertAnimeCharacterArgs = {
   input: UpsertAnimeCharacterInput;
-  where?: Maybe<UpsertAnimeCharacterWhere>;
+  where?: InputMaybe<UpsertAnimeCharacterWhere>;
 };
 
 
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpsertAnimeGenreArgs = {
   input: UpsertAnimeGenreInput;
-  where?: Maybe<UpsertAnimeGenreWhere>;
+  where?: InputMaybe<UpsertAnimeGenreWhere>;
 };
 
 
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpsertAnimeImageArgs = {
   input: UpsertAnimeImageInput;
-  where?: Maybe<UpsertAnimeImageWhere>;
+  where?: InputMaybe<UpsertAnimeImageWhere>;
 };
 
 
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpsertAnimeLicensorArgs = {
   input: UpsertAnimeLicensorInput;
-  where?: Maybe<UpsertAnimeLicensorWhere>;
+  where?: InputMaybe<UpsertAnimeLicensorWhere>;
 };
 
 
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpsertAnimeListArgs = {
   input: UpsertAnimeListInput;
-  where?: Maybe<UpsertAnimeListWhere>;
+  where?: InputMaybe<UpsertAnimeListWhere>;
 };
 
 
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpsertAnimeProducerArgs = {
   input: UpsertAnimeProducerInput;
-  where?: Maybe<UpsertAnimeProducerWhere>;
+  where?: InputMaybe<UpsertAnimeProducerWhere>;
 };
 
 
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpsertAnimeStaffArgs = {
   input: UpsertAnimeStaffInput;
-  where?: Maybe<UpsertAnimeStaffWhere>;
+  where?: InputMaybe<UpsertAnimeStaffWhere>;
 };
 
 
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpsertAnimeStudioArgs = {
   input: UpsertAnimeStudioInput;
-  where?: Maybe<UpsertAnimeStudioWhere>;
+  where?: InputMaybe<UpsertAnimeStudioWhere>;
 };
 
 
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpsertAnimeUserScoreArgs = {
   input: UpsertAnimeUserScoreInput;
-  where?: Maybe<UpsertAnimeUserScoreWhere>;
+  where?: InputMaybe<UpsertAnimeUserScoreWhere>;
 };
 
 
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpsertCharacterArgs = {
   input: UpsertCharacterInput;
-  where?: Maybe<UpsertCharacterWhere>;
+  where?: InputMaybe<UpsertCharacterWhere>;
 };
 
 
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpsertCharacterImageArgs = {
   input: UpsertCharacterImageInput;
-  where?: Maybe<UpsertCharacterImageWhere>;
+  where?: InputMaybe<UpsertCharacterImageWhere>;
 };
 
 
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpsertCharacterRoleArgs = {
   input: UpsertCharacterRoleInput;
-  where?: Maybe<UpsertCharacterRoleWhere>;
+  where?: InputMaybe<UpsertCharacterRoleWhere>;
 };
 
 
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpsertGenreArgs = {
   input: UpsertGenreInput;
-  where?: Maybe<UpsertGenreWhere>;
+  where?: InputMaybe<UpsertGenreWhere>;
 };
 
 
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpsertImageArgs = {
   input: UpsertImageInput;
-  where?: Maybe<UpsertImageWhere>;
+  where?: InputMaybe<UpsertImageWhere>;
 };
 
 
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpsertLicensorArgs = {
   input: UpsertLicensorInput;
-  where?: Maybe<UpsertLicensorWhere>;
+  where?: InputMaybe<UpsertLicensorWhere>;
 };
 
 
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpsertPersonArgs = {
   input: UpsertPersonInput;
-  where?: Maybe<UpsertPersonWhere>;
+  where?: InputMaybe<UpsertPersonWhere>;
 };
 
 
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpsertPersonImageArgs = {
   input: UpsertPersonImageInput;
-  where?: Maybe<UpsertPersonImageWhere>;
+  where?: InputMaybe<UpsertPersonImageWhere>;
 };
 
 
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpsertProducerArgs = {
   input: UpsertProducerInput;
-  where?: Maybe<UpsertProducerWhere>;
+  where?: InputMaybe<UpsertProducerWhere>;
 };
 
 
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpsertStaffRoleArgs = {
   input: UpsertStaffRoleInput;
-  where?: Maybe<UpsertStaffRoleWhere>;
+  where?: InputMaybe<UpsertStaffRoleWhere>;
 };
 
 
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpsertStudioArgs = {
   input: UpsertStudioInput;
-  where?: Maybe<UpsertStudioWhere>;
+  where?: InputMaybe<UpsertStudioWhere>;
 };
 
 
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpsertUserArgs = {
   input: UpsertUserInput;
-  where?: Maybe<UpsertUserWhere>;
+  where?: InputMaybe<UpsertUserWhere>;
 };
 
 
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpsertUserAnimeArgs = {
   input: UpsertUserAnimeInput;
-  where?: Maybe<UpsertUserAnimeWhere>;
+  where?: InputMaybe<UpsertUserAnimeWhere>;
 };
 
 
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpsertUserAnimeListArgs = {
   input: UpsertUserAnimeListInput;
-  where?: Maybe<UpsertUserAnimeListWhere>;
+  where?: InputMaybe<UpsertUserAnimeListWhere>;
 };
 
 
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpsertUserWatchStatusArgs = {
   input: UpsertUserWatchStatusInput;
-  where?: Maybe<UpsertUserWatchStatusWhere>;
+  where?: InputMaybe<UpsertUserWatchStatusWhere>;
 };
 
 /** An object with a globally unique `ID`. */
@@ -6725,84 +7006,84 @@ export type Person = Node & {
 
 
 export type PersonAnimeCharactersArgs = {
-  after?: Maybe<Scalars['Cursor']>;
-  before?: Maybe<Scalars['Cursor']>;
-  condition?: Maybe<AnimeCharacterCondition>;
-  filter?: Maybe<AnimeCharacterFilter>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  orderBy?: Maybe<Array<AnimeCharactersOrderBy>>;
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<AnimeCharacterCondition>;
+  filter?: InputMaybe<AnimeCharacterFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<AnimeCharactersOrderBy>>;
 };
 
 
 export type PersonAnimeStaffsArgs = {
-  after?: Maybe<Scalars['Cursor']>;
-  before?: Maybe<Scalars['Cursor']>;
-  condition?: Maybe<AnimeStaffCondition>;
-  filter?: Maybe<AnimeStaffFilter>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  orderBy?: Maybe<Array<AnimeStaffOrderBy>>;
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<AnimeStaffCondition>;
+  filter?: InputMaybe<AnimeStaffFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<AnimeStaffOrderBy>>;
 };
 
 
 export type PersonPersonImagesArgs = {
-  after?: Maybe<Scalars['Cursor']>;
-  before?: Maybe<Scalars['Cursor']>;
-  condition?: Maybe<PersonImageCondition>;
-  filter?: Maybe<PersonImageFilter>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  orderBy?: Maybe<Array<PersonImagesOrderBy>>;
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<PersonImageCondition>;
+  filter?: InputMaybe<PersonImageFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<PersonImagesOrderBy>>;
 };
 
 /** A condition to be used against `Person` object types. All fields are tested for equality and combined with a logical ‘and.’ */
 export type PersonCondition = {
   /** Checks for equality with the object’s `alternateNames` field. */
-  alternateNames?: Maybe<Scalars['String']>;
+  alternateNames?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `description` field. */
-  description?: Maybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `firstName` field. */
-  firstName?: Maybe<Scalars['String']>;
+  firstName?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `id` field. */
-  id?: Maybe<Scalars['UUID']>;
+  id?: InputMaybe<Scalars['UUID']>;
   /** Checks for equality with the object’s `lastName` field. */
-  lastName?: Maybe<Scalars['String']>;
+  lastName?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `malId` field. */
-  malId?: Maybe<Scalars['String']>;
+  malId?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `nativeName` field. */
-  nativeName?: Maybe<Scalars['String']>;
+  nativeName?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `personImageId` field. */
-  personImageId?: Maybe<Scalars['UUID']>;
+  personImageId?: InputMaybe<Scalars['UUID']>;
 };
 
 /** A filter to be used against `Person` object types. All fields are combined with a logical ‘and.’ */
 export type PersonFilter = {
   /** Filter by the object’s `alternateNames` field. */
-  alternateNames?: Maybe<StringFilter>;
+  alternateNames?: InputMaybe<StringFilter>;
   /** Checks for all expressions in this list. */
-  and?: Maybe<Array<PersonFilter>>;
+  and?: InputMaybe<Array<PersonFilter>>;
   /** Filter by the object’s `description` field. */
-  description?: Maybe<StringFilter>;
+  description?: InputMaybe<StringFilter>;
   /** Filter by the object’s `firstName` field. */
-  firstName?: Maybe<StringFilter>;
+  firstName?: InputMaybe<StringFilter>;
   /** Filter by the object’s `id` field. */
-  id?: Maybe<UuidFilter>;
+  id?: InputMaybe<UuidFilter>;
   /** Filter by the object’s `lastName` field. */
-  lastName?: Maybe<StringFilter>;
+  lastName?: InputMaybe<StringFilter>;
   /** Filter by the object’s `malId` field. */
-  malId?: Maybe<StringFilter>;
+  malId?: InputMaybe<StringFilter>;
   /** Filter by the object’s `nativeName` field. */
-  nativeName?: Maybe<StringFilter>;
+  nativeName?: InputMaybe<StringFilter>;
   /** Negates the expression. */
-  not?: Maybe<PersonFilter>;
+  not?: InputMaybe<PersonFilter>;
   /** Checks for any expressions in this list. */
-  or?: Maybe<Array<PersonFilter>>;
+  or?: InputMaybe<Array<PersonFilter>>;
   /** Filter by the object’s `personImageId` field. */
-  personImageId?: Maybe<UuidFilter>;
+  personImageId?: InputMaybe<UuidFilter>;
 };
 
 export type PersonImage = Node & {
@@ -6823,23 +7104,23 @@ export type PersonImage = Node & {
  */
 export type PersonImageCondition = {
   /** Checks for equality with the object’s `imageId` field. */
-  imageId?: Maybe<Scalars['UUID']>;
+  imageId?: InputMaybe<Scalars['UUID']>;
   /** Checks for equality with the object’s `personId` field. */
-  personId?: Maybe<Scalars['UUID']>;
+  personId?: InputMaybe<Scalars['UUID']>;
 };
 
 /** A filter to be used against `PersonImage` object types. All fields are combined with a logical ‘and.’ */
 export type PersonImageFilter = {
   /** Checks for all expressions in this list. */
-  and?: Maybe<Array<PersonImageFilter>>;
+  and?: InputMaybe<Array<PersonImageFilter>>;
   /** Filter by the object’s `imageId` field. */
-  imageId?: Maybe<UuidFilter>;
+  imageId?: InputMaybe<UuidFilter>;
   /** Negates the expression. */
-  not?: Maybe<PersonImageFilter>;
+  not?: InputMaybe<PersonImageFilter>;
   /** Checks for any expressions in this list. */
-  or?: Maybe<Array<PersonImageFilter>>;
+  or?: InputMaybe<Array<PersonImageFilter>>;
   /** Filter by the object’s `personId` field. */
-  personId?: Maybe<UuidFilter>;
+  personId?: InputMaybe<UuidFilter>;
 };
 
 /** An input for mutations affecting `PersonImage` */
@@ -6850,8 +7131,8 @@ export type PersonImageInput = {
 
 /** Represents an update to a `PersonImage`. Fields that are set will be updated. */
 export type PersonImagePatch = {
-  imageId?: Maybe<Scalars['UUID']>;
-  personId?: Maybe<Scalars['UUID']>;
+  imageId?: InputMaybe<Scalars['UUID']>;
+  personId?: InputMaybe<Scalars['UUID']>;
 };
 
 /** A connection to a list of `PersonImage` values. */
@@ -6911,26 +7192,26 @@ export enum PersonImagesOrderBy {
 
 /** An input for mutations affecting `Person` */
 export type PersonInput = {
-  alternateNames?: Maybe<Scalars['String']>;
-  description?: Maybe<Scalars['String']>;
+  alternateNames?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']>;
   firstName: Scalars['String'];
-  id?: Maybe<Scalars['UUID']>;
-  lastName?: Maybe<Scalars['String']>;
-  malId?: Maybe<Scalars['String']>;
-  nativeName?: Maybe<Scalars['String']>;
-  personImageId?: Maybe<Scalars['UUID']>;
+  id?: InputMaybe<Scalars['UUID']>;
+  lastName?: InputMaybe<Scalars['String']>;
+  malId?: InputMaybe<Scalars['String']>;
+  nativeName?: InputMaybe<Scalars['String']>;
+  personImageId?: InputMaybe<Scalars['UUID']>;
 };
 
 /** Represents an update to a `Person`. Fields that are set will be updated. */
 export type PersonPatch = {
-  alternateNames?: Maybe<Scalars['String']>;
-  description?: Maybe<Scalars['String']>;
-  firstName?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['UUID']>;
-  lastName?: Maybe<Scalars['String']>;
-  malId?: Maybe<Scalars['String']>;
-  nativeName?: Maybe<Scalars['String']>;
-  personImageId?: Maybe<Scalars['UUID']>;
+  alternateNames?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']>;
+  firstName?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['UUID']>;
+  lastName?: InputMaybe<Scalars['String']>;
+  malId?: InputMaybe<Scalars['String']>;
+  nativeName?: InputMaybe<Scalars['String']>;
+  personImageId?: InputMaybe<Scalars['UUID']>;
 };
 
 export type Producer = Node & {
@@ -6945,14 +7226,14 @@ export type Producer = Node & {
 
 
 export type ProducerAnimeProducersArgs = {
-  after?: Maybe<Scalars['Cursor']>;
-  before?: Maybe<Scalars['Cursor']>;
-  condition?: Maybe<AnimeProducerCondition>;
-  filter?: Maybe<AnimeProducerFilter>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  orderBy?: Maybe<Array<AnimeProducersOrderBy>>;
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<AnimeProducerCondition>;
+  filter?: InputMaybe<AnimeProducerFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<AnimeProducersOrderBy>>;
 };
 
 /**
@@ -6961,35 +7242,35 @@ export type ProducerAnimeProducersArgs = {
  */
 export type ProducerCondition = {
   /** Checks for equality with the object’s `id` field. */
-  id?: Maybe<Scalars['UUID']>;
+  id?: InputMaybe<Scalars['UUID']>;
   /** Checks for equality with the object’s `producer` field. */
-  producer?: Maybe<Scalars['String']>;
+  producer?: InputMaybe<Scalars['String']>;
 };
 
 /** A filter to be used against `Producer` object types. All fields are combined with a logical ‘and.’ */
 export type ProducerFilter = {
   /** Checks for all expressions in this list. */
-  and?: Maybe<Array<ProducerFilter>>;
+  and?: InputMaybe<Array<ProducerFilter>>;
   /** Filter by the object’s `id` field. */
-  id?: Maybe<UuidFilter>;
+  id?: InputMaybe<UuidFilter>;
   /** Negates the expression. */
-  not?: Maybe<ProducerFilter>;
+  not?: InputMaybe<ProducerFilter>;
   /** Checks for any expressions in this list. */
-  or?: Maybe<Array<ProducerFilter>>;
+  or?: InputMaybe<Array<ProducerFilter>>;
   /** Filter by the object’s `producer` field. */
-  producer?: Maybe<StringFilter>;
+  producer?: InputMaybe<StringFilter>;
 };
 
 /** An input for mutations affecting `Producer` */
 export type ProducerInput = {
-  id?: Maybe<Scalars['UUID']>;
+  id?: InputMaybe<Scalars['UUID']>;
   producer: Scalars['String'];
 };
 
 /** Represents an update to a `Producer`. Fields that are set will be updated. */
 export type ProducerPatch = {
-  id?: Maybe<Scalars['UUID']>;
-  producer?: Maybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['UUID']>;
+  producer?: InputMaybe<Scalars['String']>;
 };
 
 /** A connection to a list of `Producer` values. */
@@ -7030,6 +7311,10 @@ export enum ProducersOrderBy {
 /** The root query type which gives access points into the data universe. */
 export type Query = Node & {
   __typename?: 'Query';
+  /** Reads and enables pagination through a set of `AgeRating`. */
+  ageRatings?: Maybe<AgeRatingsConnection>;
+  /** Reads and enables pagination through a set of `AiringStatus`. */
+  airingStatuses?: Maybe<AiringStatusesConnection>;
   /** Reads and enables pagination through a set of `UserAnimeListType`. */
   allUserAnimes?: Maybe<UserAnimeListTypesConnection>;
   alternateAnimeName?: Maybe<AlternateAnimeName>;
@@ -7088,6 +7373,8 @@ export type Query = Node & {
   animeUserScores?: Maybe<AnimeUserScoresConnection>;
   /** Reads and enables pagination through a set of `Anime`. */
   animes?: Maybe<AnimeConnection>;
+  /** Reads and enables pagination through a set of `AvailableLanguage`. */
+  availableLanguages?: Maybe<AvailableLanguagesConnection>;
   character?: Maybe<Character>;
   characterByMalId?: Maybe<Character>;
   /** Reads a single `Character` using its globally unique `ID`. */
@@ -7127,6 +7414,8 @@ export type Query = Node & {
   licensorByNodeId?: Maybe<Licensor>;
   /** Reads and enables pagination through a set of `Licensor`. */
   licensors?: Maybe<LicensorsConnection>;
+  /** Reads and enables pagination through a set of `MediaFormat`. */
+  mediaFormats?: Maybe<MediaFormatsConnection>;
   /** Fetches an object given its globally unique `ID`. */
   node?: Maybe<Node>;
   /** The root query type must be a `Node` to work well with Relay 1 mutations. This just resolves to `query`. */
@@ -7153,8 +7442,10 @@ export type Query = Node & {
    * which can only query top level fields if they are in a particular form.
    */
   query: Query;
-  /** Reads and enables pagination through a set of `Anime`. */
-  searchAnimes?: Maybe<AnimeConnection>;
+  /** Reads and enables pagination through a set of `SearchResult`. */
+  searchAnimes?: Maybe<SearchResultsConnection>;
+  /** Reads and enables pagination through a set of `SourceMaterial`. */
+  sourceMaterials?: Maybe<SourceMaterialsConnection>;
   staffRole?: Maybe<StaffRole>;
   /** Reads a single `StaffRole` using its globally unique `ID`. */
   staffRoleByNodeId?: Maybe<StaffRole>;
@@ -7193,13 +7484,39 @@ export type Query = Node & {
 
 
 /** The root query type which gives access points into the data universe. */
+export type QueryAgeRatingsArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<AgeRatingCondition>;
+  filter?: InputMaybe<AgeRatingFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<AgeRatingsOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryAiringStatusesArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<AiringStatusCondition>;
+  filter?: InputMaybe<AiringStatusFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<AiringStatusesOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
 export type QueryAllUserAnimesArgs = {
-  after?: Maybe<Scalars['Cursor']>;
-  before?: Maybe<Scalars['Cursor']>;
-  filter?: Maybe<UserAnimeListTypeFilter>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  filter?: InputMaybe<UserAnimeListTypeFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
 };
 
 
@@ -7217,14 +7534,14 @@ export type QueryAlternateAnimeNameByNodeIdArgs = {
 
 /** The root query type which gives access points into the data universe. */
 export type QueryAlternateAnimeNamesArgs = {
-  after?: Maybe<Scalars['Cursor']>;
-  before?: Maybe<Scalars['Cursor']>;
-  condition?: Maybe<AlternateAnimeNameCondition>;
-  filter?: Maybe<AlternateAnimeNameFilter>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  orderBy?: Maybe<Array<AlternateAnimeNamesOrderBy>>;
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<AlternateAnimeNameCondition>;
+  filter?: InputMaybe<AlternateAnimeNameFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<AlternateAnimeNamesOrderBy>>;
 };
 
 
@@ -7264,14 +7581,14 @@ export type QueryAnimeCharacterByNodeIdArgs = {
 
 /** The root query type which gives access points into the data universe. */
 export type QueryAnimeCharactersArgs = {
-  after?: Maybe<Scalars['Cursor']>;
-  before?: Maybe<Scalars['Cursor']>;
-  condition?: Maybe<AnimeCharacterCondition>;
-  filter?: Maybe<AnimeCharacterFilter>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  orderBy?: Maybe<Array<AnimeCharactersOrderBy>>;
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<AnimeCharacterCondition>;
+  filter?: InputMaybe<AnimeCharacterFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<AnimeCharactersOrderBy>>;
 };
 
 
@@ -7290,14 +7607,14 @@ export type QueryAnimeGenreByNodeIdArgs = {
 
 /** The root query type which gives access points into the data universe. */
 export type QueryAnimeGenresArgs = {
-  after?: Maybe<Scalars['Cursor']>;
-  before?: Maybe<Scalars['Cursor']>;
-  condition?: Maybe<AnimeGenreCondition>;
-  filter?: Maybe<AnimeGenreFilter>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  orderBy?: Maybe<Array<AnimeGenresOrderBy>>;
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<AnimeGenreCondition>;
+  filter?: InputMaybe<AnimeGenreFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<AnimeGenresOrderBy>>;
 };
 
 
@@ -7316,14 +7633,14 @@ export type QueryAnimeImageByNodeIdArgs = {
 
 /** The root query type which gives access points into the data universe. */
 export type QueryAnimeImagesArgs = {
-  after?: Maybe<Scalars['Cursor']>;
-  before?: Maybe<Scalars['Cursor']>;
-  condition?: Maybe<AnimeImageCondition>;
-  filter?: Maybe<AnimeImageFilter>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  orderBy?: Maybe<Array<AnimeImagesOrderBy>>;
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<AnimeImageCondition>;
+  filter?: InputMaybe<AnimeImageFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<AnimeImagesOrderBy>>;
 };
 
 
@@ -7342,14 +7659,14 @@ export type QueryAnimeLicensorByNodeIdArgs = {
 
 /** The root query type which gives access points into the data universe. */
 export type QueryAnimeLicensorsArgs = {
-  after?: Maybe<Scalars['Cursor']>;
-  before?: Maybe<Scalars['Cursor']>;
-  condition?: Maybe<AnimeLicensorCondition>;
-  filter?: Maybe<AnimeLicensorFilter>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  orderBy?: Maybe<Array<AnimeLicensorsOrderBy>>;
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<AnimeLicensorCondition>;
+  filter?: InputMaybe<AnimeLicensorFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<AnimeLicensorsOrderBy>>;
 };
 
 
@@ -7367,14 +7684,14 @@ export type QueryAnimeListByNodeIdArgs = {
 
 /** The root query type which gives access points into the data universe. */
 export type QueryAnimeListsArgs = {
-  after?: Maybe<Scalars['Cursor']>;
-  before?: Maybe<Scalars['Cursor']>;
-  condition?: Maybe<AnimeListCondition>;
-  filter?: Maybe<AnimeListFilter>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  orderBy?: Maybe<Array<AnimeListsOrderBy>>;
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<AnimeListCondition>;
+  filter?: InputMaybe<AnimeListFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<AnimeListsOrderBy>>;
 };
 
 
@@ -7393,14 +7710,14 @@ export type QueryAnimeProducerByNodeIdArgs = {
 
 /** The root query type which gives access points into the data universe. */
 export type QueryAnimeProducersArgs = {
-  after?: Maybe<Scalars['Cursor']>;
-  before?: Maybe<Scalars['Cursor']>;
-  condition?: Maybe<AnimeProducerCondition>;
-  filter?: Maybe<AnimeProducerFilter>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  orderBy?: Maybe<Array<AnimeProducersOrderBy>>;
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<AnimeProducerCondition>;
+  filter?: InputMaybe<AnimeProducerFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<AnimeProducersOrderBy>>;
 };
 
 
@@ -7420,14 +7737,14 @@ export type QueryAnimeStaffByNodeIdArgs = {
 
 /** The root query type which gives access points into the data universe. */
 export type QueryAnimeStaffsArgs = {
-  after?: Maybe<Scalars['Cursor']>;
-  before?: Maybe<Scalars['Cursor']>;
-  condition?: Maybe<AnimeStaffCondition>;
-  filter?: Maybe<AnimeStaffFilter>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  orderBy?: Maybe<Array<AnimeStaffOrderBy>>;
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<AnimeStaffCondition>;
+  filter?: InputMaybe<AnimeStaffFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<AnimeStaffOrderBy>>;
 };
 
 
@@ -7446,14 +7763,14 @@ export type QueryAnimeStudioByNodeIdArgs = {
 
 /** The root query type which gives access points into the data universe. */
 export type QueryAnimeStudiosArgs = {
-  after?: Maybe<Scalars['Cursor']>;
-  before?: Maybe<Scalars['Cursor']>;
-  condition?: Maybe<AnimeStudioCondition>;
-  filter?: Maybe<AnimeStudioFilter>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  orderBy?: Maybe<Array<AnimeStudiosOrderBy>>;
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<AnimeStudioCondition>;
+  filter?: InputMaybe<AnimeStudioFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<AnimeStudiosOrderBy>>;
 };
 
 
@@ -7472,27 +7789,40 @@ export type QueryAnimeUserScoreByNodeIdArgs = {
 
 /** The root query type which gives access points into the data universe. */
 export type QueryAnimeUserScoresArgs = {
-  after?: Maybe<Scalars['Cursor']>;
-  before?: Maybe<Scalars['Cursor']>;
-  condition?: Maybe<AnimeUserScoreCondition>;
-  filter?: Maybe<AnimeUserScoreFilter>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  orderBy?: Maybe<Array<AnimeUserScoresOrderBy>>;
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<AnimeUserScoreCondition>;
+  filter?: InputMaybe<AnimeUserScoreFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<AnimeUserScoresOrderBy>>;
 };
 
 
 /** The root query type which gives access points into the data universe. */
 export type QueryAnimesArgs = {
-  after?: Maybe<Scalars['Cursor']>;
-  before?: Maybe<Scalars['Cursor']>;
-  condition?: Maybe<AnimeCondition>;
-  filter?: Maybe<AnimeFilter>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  orderBy?: Maybe<Array<AnimeOrderBy>>;
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<AnimeCondition>;
+  filter?: InputMaybe<AnimeFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<AnimeOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryAvailableLanguagesArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<AvailableLanguageCondition>;
+  filter?: InputMaybe<AvailableLanguageFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<AvailableLanguagesOrderBy>>;
 };
 
 
@@ -7529,14 +7859,14 @@ export type QueryCharacterImageByNodeIdArgs = {
 
 /** The root query type which gives access points into the data universe. */
 export type QueryCharacterImagesArgs = {
-  after?: Maybe<Scalars['Cursor']>;
-  before?: Maybe<Scalars['Cursor']>;
-  condition?: Maybe<CharacterImageCondition>;
-  filter?: Maybe<CharacterImageFilter>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  orderBy?: Maybe<Array<CharacterImagesOrderBy>>;
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<CharacterImageCondition>;
+  filter?: InputMaybe<CharacterImageFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<CharacterImagesOrderBy>>;
 };
 
 
@@ -7560,27 +7890,27 @@ export type QueryCharacterRoleByRoleArgs = {
 
 /** The root query type which gives access points into the data universe. */
 export type QueryCharacterRolesArgs = {
-  after?: Maybe<Scalars['Cursor']>;
-  before?: Maybe<Scalars['Cursor']>;
-  condition?: Maybe<CharacterRoleCondition>;
-  filter?: Maybe<CharacterRoleFilter>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  orderBy?: Maybe<Array<CharacterRolesOrderBy>>;
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<CharacterRoleCondition>;
+  filter?: InputMaybe<CharacterRoleFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<CharacterRolesOrderBy>>;
 };
 
 
 /** The root query type which gives access points into the data universe. */
 export type QueryCharactersArgs = {
-  after?: Maybe<Scalars['Cursor']>;
-  before?: Maybe<Scalars['Cursor']>;
-  condition?: Maybe<CharacterCondition>;
-  filter?: Maybe<CharacterFilter>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  orderBy?: Maybe<Array<CharactersOrderBy>>;
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<CharacterCondition>;
+  filter?: InputMaybe<CharacterFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<CharactersOrderBy>>;
 };
 
 
@@ -7604,32 +7934,32 @@ export type QueryGenreByNodeIdArgs = {
 
 /** The root query type which gives access points into the data universe. */
 export type QueryGenresArgs = {
-  after?: Maybe<Scalars['Cursor']>;
-  before?: Maybe<Scalars['Cursor']>;
-  condition?: Maybe<GenreCondition>;
-  filter?: Maybe<GenreFilter>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  orderBy?: Maybe<Array<GenresOrderBy>>;
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<GenreCondition>;
+  filter?: InputMaybe<GenreFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<GenresOrderBy>>;
 };
 
 
 /** The root query type which gives access points into the data universe. */
 export type QueryGetUserArgs = {
-  uId?: Maybe<Scalars['String']>;
+  uId?: InputMaybe<Scalars['String']>;
 };
 
 
 /** The root query type which gives access points into the data universe. */
 export type QueryGetUserAnimeListsArgs = {
-  after?: Maybe<Scalars['Cursor']>;
-  before?: Maybe<Scalars['Cursor']>;
-  filter?: Maybe<UserListFilter>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  watchStatusInput?: Maybe<Scalars['String']>;
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  filter?: InputMaybe<UserListFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  watchStatusInput?: InputMaybe<Scalars['String']>;
 };
 
 
@@ -7647,14 +7977,14 @@ export type QueryImageByNodeIdArgs = {
 
 /** The root query type which gives access points into the data universe. */
 export type QueryImagesArgs = {
-  after?: Maybe<Scalars['Cursor']>;
-  before?: Maybe<Scalars['Cursor']>;
-  condition?: Maybe<ImageCondition>;
-  filter?: Maybe<ImageFilter>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  orderBy?: Maybe<Array<ImagesOrderBy>>;
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<ImageCondition>;
+  filter?: InputMaybe<ImageFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<ImagesOrderBy>>;
 };
 
 
@@ -7678,14 +8008,27 @@ export type QueryLicensorByNodeIdArgs = {
 
 /** The root query type which gives access points into the data universe. */
 export type QueryLicensorsArgs = {
-  after?: Maybe<Scalars['Cursor']>;
-  before?: Maybe<Scalars['Cursor']>;
-  condition?: Maybe<LicensorCondition>;
-  filter?: Maybe<LicensorFilter>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  orderBy?: Maybe<Array<LicensorsOrderBy>>;
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<LicensorCondition>;
+  filter?: InputMaybe<LicensorFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<LicensorsOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryMediaFormatsArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<MediaFormatCondition>;
+  filter?: InputMaybe<MediaFormatFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<MediaFormatsOrderBy>>;
 };
 
 
@@ -7697,14 +8040,14 @@ export type QueryNodeArgs = {
 
 /** The root query type which gives access points into the data universe. */
 export type QueryPeopleArgs = {
-  after?: Maybe<Scalars['Cursor']>;
-  before?: Maybe<Scalars['Cursor']>;
-  condition?: Maybe<PersonCondition>;
-  filter?: Maybe<PersonFilter>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  orderBy?: Maybe<Array<PeopleOrderBy>>;
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<PersonCondition>;
+  filter?: InputMaybe<PersonFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<PeopleOrderBy>>;
 };
 
 
@@ -7741,14 +8084,14 @@ export type QueryPersonImageByNodeIdArgs = {
 
 /** The root query type which gives access points into the data universe. */
 export type QueryPersonImagesArgs = {
-  after?: Maybe<Scalars['Cursor']>;
-  before?: Maybe<Scalars['Cursor']>;
-  condition?: Maybe<PersonImageCondition>;
-  filter?: Maybe<PersonImageFilter>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  orderBy?: Maybe<Array<PersonImagesOrderBy>>;
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<PersonImageCondition>;
+  filter?: InputMaybe<PersonImageFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<PersonImagesOrderBy>>;
 };
 
 
@@ -7772,26 +8115,39 @@ export type QueryProducerByProducerArgs = {
 
 /** The root query type which gives access points into the data universe. */
 export type QueryProducersArgs = {
-  after?: Maybe<Scalars['Cursor']>;
-  before?: Maybe<Scalars['Cursor']>;
-  condition?: Maybe<ProducerCondition>;
-  filter?: Maybe<ProducerFilter>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  orderBy?: Maybe<Array<ProducersOrderBy>>;
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<ProducerCondition>;
+  filter?: InputMaybe<ProducerFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<ProducersOrderBy>>;
 };
 
 
 /** The root query type which gives access points into the data universe. */
 export type QuerySearchAnimesArgs = {
-  after?: Maybe<Scalars['Cursor']>;
-  before?: Maybe<Scalars['Cursor']>;
-  filter?: Maybe<AnimeFilter>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  searchInput?: Maybe<Scalars['String']>;
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  filter?: InputMaybe<SearchResultFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  searchInput?: InputMaybe<Scalars['String']>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QuerySourceMaterialsArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<SourceMaterialCondition>;
+  filter?: InputMaybe<SourceMaterialFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<SourceMaterialsOrderBy>>;
 };
 
 
@@ -7815,14 +8171,14 @@ export type QueryStaffRoleByRoleArgs = {
 
 /** The root query type which gives access points into the data universe. */
 export type QueryStaffRolesArgs = {
-  after?: Maybe<Scalars['Cursor']>;
-  before?: Maybe<Scalars['Cursor']>;
-  condition?: Maybe<StaffRoleCondition>;
-  filter?: Maybe<StaffRoleFilter>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  orderBy?: Maybe<Array<StaffRolesOrderBy>>;
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<StaffRoleCondition>;
+  filter?: InputMaybe<StaffRoleFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<StaffRolesOrderBy>>;
 };
 
 
@@ -7846,14 +8202,14 @@ export type QueryStudioByStudioArgs = {
 
 /** The root query type which gives access points into the data universe. */
 export type QueryStudiosArgs = {
-  after?: Maybe<Scalars['Cursor']>;
-  before?: Maybe<Scalars['Cursor']>;
-  condition?: Maybe<StudioCondition>;
-  filter?: Maybe<StudioFilter>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  orderBy?: Maybe<Array<StudiosOrderBy>>;
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<StudioCondition>;
+  filter?: InputMaybe<StudioFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<StudiosOrderBy>>;
 };
 
 
@@ -7885,27 +8241,27 @@ export type QueryUserAnimeListByAnimeListIdAndAnimeIdArgs = {
 
 /** The root query type which gives access points into the data universe. */
 export type QueryUserAnimeListsArgs = {
-  after?: Maybe<Scalars['Cursor']>;
-  before?: Maybe<Scalars['Cursor']>;
-  condition?: Maybe<UserAnimeListCondition>;
-  filter?: Maybe<UserAnimeListFilter>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  orderBy?: Maybe<Array<UserAnimeListsOrderBy>>;
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<UserAnimeListCondition>;
+  filter?: InputMaybe<UserAnimeListFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<UserAnimeListsOrderBy>>;
 };
 
 
 /** The root query type which gives access points into the data universe. */
 export type QueryUserAnimesArgs = {
-  after?: Maybe<Scalars['Cursor']>;
-  before?: Maybe<Scalars['Cursor']>;
-  condition?: Maybe<UserAnimeCondition>;
-  filter?: Maybe<UserAnimeFilter>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  orderBy?: Maybe<Array<UserAnimeOrderBy>>;
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<UserAnimeCondition>;
+  filter?: InputMaybe<UserAnimeFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<UserAnimeOrderBy>>;
 };
 
 
@@ -7917,25 +8273,25 @@ export type QueryUserByNodeIdArgs = {
 
 /** The root query type which gives access points into the data universe. */
 export type QueryUserCustomAnimeListArgs = {
-  after?: Maybe<Scalars['Cursor']>;
-  before?: Maybe<Scalars['Cursor']>;
-  filter?: Maybe<CustomAnimeListFilter>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  listId?: Maybe<Scalars['UUID']>;
-  offset?: Maybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  filter?: InputMaybe<CustomAnimeListFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  listId?: InputMaybe<Scalars['UUID']>;
+  offset?: InputMaybe<Scalars['Int']>;
 };
 
 
 /** The root query type which gives access points into the data universe. */
 export type QueryUserCustomAnimeListByStatusArgs = {
-  after?: Maybe<Scalars['Cursor']>;
-  before?: Maybe<Scalars['Cursor']>;
-  filter?: Maybe<UserCustomAnimeListByStatusTypeFilter>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  watchStatusType?: Maybe<Scalars['String']>;
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  filter?: InputMaybe<UserCustomAnimeListByStatusTypeFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  watchStatusType?: InputMaybe<Scalars['String']>;
 };
 
 
@@ -7954,27 +8310,27 @@ export type QueryUserWatchStatusByNodeIdArgs = {
 
 /** The root query type which gives access points into the data universe. */
 export type QueryUserWatchStatusesArgs = {
-  after?: Maybe<Scalars['Cursor']>;
-  before?: Maybe<Scalars['Cursor']>;
-  condition?: Maybe<UserWatchStatusCondition>;
-  filter?: Maybe<UserWatchStatusFilter>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  orderBy?: Maybe<Array<UserWatchStatusesOrderBy>>;
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<UserWatchStatusCondition>;
+  filter?: InputMaybe<UserWatchStatusFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<UserWatchStatusesOrderBy>>;
 };
 
 
 /** The root query type which gives access points into the data universe. */
 export type QueryUsersArgs = {
-  after?: Maybe<Scalars['Cursor']>;
-  before?: Maybe<Scalars['Cursor']>;
-  condition?: Maybe<UserCondition>;
-  filter?: Maybe<UserFilter>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  orderBy?: Maybe<Array<UsersOrderBy>>;
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<UserCondition>;
+  filter?: InputMaybe<UserFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<UsersOrderBy>>;
 };
 
 /** All input for the `registerUser` mutation. */
@@ -7983,7 +8339,7 @@ export type RegisterUserInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   email: Scalars['String'];
   userId: Scalars['String'];
   username: Scalars['String'];
@@ -8007,7 +8363,94 @@ export type RegisterUserPayload = {
 
 /** The output of our `registerUser` mutation. */
 export type RegisterUserPayloadUserEdgeArgs = {
-  orderBy?: Maybe<Array<UsersOrderBy>>;
+  orderBy?: InputMaybe<Array<UsersOrderBy>>;
+};
+
+export type SearchResult = {
+  __typename?: 'SearchResult';
+  ageRatingType?: Maybe<Scalars['String']>;
+  airingStatusType?: Maybe<Scalars['String']>;
+  altName?: Maybe<Scalars['String']>;
+  averageWatcherRating?: Maybe<Scalars['BigFloat']>;
+  coverImage?: Maybe<Scalars['String']>;
+  description?: Maybe<Scalars['String']>;
+  duration?: Maybe<Scalars['Int']>;
+  endBroadcastDatetime?: Maybe<Scalars['Datetime']>;
+  id?: Maybe<Scalars['UUID']>;
+  malId?: Maybe<Scalars['Int']>;
+  mediaType?: Maybe<Scalars['String']>;
+  numberOfEpisodes?: Maybe<Scalars['Int']>;
+  season?: Maybe<Scalars['String']>;
+  seasonYear?: Maybe<Scalars['Int']>;
+  sourceMaterialType?: Maybe<Scalars['String']>;
+  startBroadcastDatetime?: Maybe<Scalars['Datetime']>;
+  title?: Maybe<Scalars['String']>;
+};
+
+/** A filter to be used against `SearchResult` object types. All fields are combined with a logical ‘and.’ */
+export type SearchResultFilter = {
+  /** Filter by the object’s `ageRatingType` field. */
+  ageRatingType?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `airingStatusType` field. */
+  airingStatusType?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `altName` field. */
+  altName?: InputMaybe<StringFilter>;
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<SearchResultFilter>>;
+  /** Filter by the object’s `averageWatcherRating` field. */
+  averageWatcherRating?: InputMaybe<BigFloatFilter>;
+  /** Filter by the object’s `coverImage` field. */
+  coverImage?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `description` field. */
+  description?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `duration` field. */
+  duration?: InputMaybe<IntFilter>;
+  /** Filter by the object’s `endBroadcastDatetime` field. */
+  endBroadcastDatetime?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `id` field. */
+  id?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `malId` field. */
+  malId?: InputMaybe<IntFilter>;
+  /** Filter by the object’s `mediaType` field. */
+  mediaType?: InputMaybe<StringFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<SearchResultFilter>;
+  /** Filter by the object’s `numberOfEpisodes` field. */
+  numberOfEpisodes?: InputMaybe<IntFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<SearchResultFilter>>;
+  /** Filter by the object’s `season` field. */
+  season?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `seasonYear` field. */
+  seasonYear?: InputMaybe<IntFilter>;
+  /** Filter by the object’s `sourceMaterialType` field. */
+  sourceMaterialType?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `startBroadcastDatetime` field. */
+  startBroadcastDatetime?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `title` field. */
+  title?: InputMaybe<StringFilter>;
+};
+
+/** A connection to a list of `SearchResult` values. */
+export type SearchResultsConnection = {
+  __typename?: 'SearchResultsConnection';
+  /** A list of edges which contains the `SearchResult` and cursor to aid in pagination. */
+  edges: Array<SearchResultsEdge>;
+  /** A list of `SearchResult` objects. */
+  nodes: Array<SearchResult>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `SearchResult` you could get from the connection. */
+  totalCount: Scalars['Int'];
+};
+
+/** A `SearchResult` edge in the connection. */
+export type SearchResultsEdge = {
+  __typename?: 'SearchResultsEdge';
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>;
+  /** The `SearchResult` at the end of the edge. */
+  node: SearchResult;
 };
 
 export enum Season {
@@ -8021,27 +8464,27 @@ export enum Season {
 /** A filter to be used against Season fields. All fields are combined with a logical ‘and.’ */
 export type SeasonFilter = {
   /** Not equal to the specified value, treating null like an ordinary value. */
-  distinctFrom?: Maybe<Season>;
+  distinctFrom?: InputMaybe<Season>;
   /** Equal to the specified value. */
-  equalTo?: Maybe<Season>;
+  equalTo?: InputMaybe<Season>;
   /** Greater than the specified value. */
-  greaterThan?: Maybe<Season>;
+  greaterThan?: InputMaybe<Season>;
   /** Greater than or equal to the specified value. */
-  greaterThanOrEqualTo?: Maybe<Season>;
+  greaterThanOrEqualTo?: InputMaybe<Season>;
   /** Included in the specified list. */
-  in?: Maybe<Array<Season>>;
+  in?: InputMaybe<Array<Season>>;
   /** Is null (if `true` is specified) or is not null (if `false` is specified). */
-  isNull?: Maybe<Scalars['Boolean']>;
+  isNull?: InputMaybe<Scalars['Boolean']>;
   /** Less than the specified value. */
-  lessThan?: Maybe<Season>;
+  lessThan?: InputMaybe<Season>;
   /** Less than or equal to the specified value. */
-  lessThanOrEqualTo?: Maybe<Season>;
+  lessThanOrEqualTo?: InputMaybe<Season>;
   /** Equal to the specified value, treating null like an ordinary value. */
-  notDistinctFrom?: Maybe<Season>;
+  notDistinctFrom?: InputMaybe<Season>;
   /** Not equal to the specified value. */
-  notEqualTo?: Maybe<Season>;
+  notEqualTo?: InputMaybe<Season>;
   /** Not included in the specified list. */
-  notIn?: Maybe<Array<Season>>;
+  notIn?: InputMaybe<Array<Season>>;
 };
 
 export type SmallUser = {
@@ -8049,6 +8492,37 @@ export type SmallUser = {
   email?: Maybe<Scalars['String']>;
   userId?: Maybe<Scalars['String']>;
   username?: Maybe<Scalars['String']>;
+};
+
+export type SourceMaterial = {
+  __typename?: 'SourceMaterial';
+  id?: Maybe<Scalars['BigInt']>;
+  sourceMaterialType?: Maybe<Scalars['String']>;
+};
+
+/**
+ * A condition to be used against `SourceMaterial` object types. All fields are
+ * tested for equality and combined with a logical ‘and.’
+ */
+export type SourceMaterialCondition = {
+  /** Checks for equality with the object’s `id` field. */
+  id?: InputMaybe<Scalars['BigInt']>;
+  /** Checks for equality with the object’s `sourceMaterialType` field. */
+  sourceMaterialType?: InputMaybe<Scalars['String']>;
+};
+
+/** A filter to be used against `SourceMaterial` object types. All fields are combined with a logical ‘and.’ */
+export type SourceMaterialFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<SourceMaterialFilter>>;
+  /** Filter by the object’s `id` field. */
+  id?: InputMaybe<BigIntFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<SourceMaterialFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<SourceMaterialFilter>>;
+  /** Filter by the object’s `sourceMaterialType` field. */
+  sourceMaterialType?: InputMaybe<StringFilter>;
 };
 
 export enum SourceMaterialTypes {
@@ -8063,28 +8537,59 @@ export enum SourceMaterialTypes {
 /** A filter to be used against SourceMaterialTypes fields. All fields are combined with a logical ‘and.’ */
 export type SourceMaterialTypesFilter = {
   /** Not equal to the specified value, treating null like an ordinary value. */
-  distinctFrom?: Maybe<SourceMaterialTypes>;
+  distinctFrom?: InputMaybe<SourceMaterialTypes>;
   /** Equal to the specified value. */
-  equalTo?: Maybe<SourceMaterialTypes>;
+  equalTo?: InputMaybe<SourceMaterialTypes>;
   /** Greater than the specified value. */
-  greaterThan?: Maybe<SourceMaterialTypes>;
+  greaterThan?: InputMaybe<SourceMaterialTypes>;
   /** Greater than or equal to the specified value. */
-  greaterThanOrEqualTo?: Maybe<SourceMaterialTypes>;
+  greaterThanOrEqualTo?: InputMaybe<SourceMaterialTypes>;
   /** Included in the specified list. */
-  in?: Maybe<Array<SourceMaterialTypes>>;
+  in?: InputMaybe<Array<SourceMaterialTypes>>;
   /** Is null (if `true` is specified) or is not null (if `false` is specified). */
-  isNull?: Maybe<Scalars['Boolean']>;
+  isNull?: InputMaybe<Scalars['Boolean']>;
   /** Less than the specified value. */
-  lessThan?: Maybe<SourceMaterialTypes>;
+  lessThan?: InputMaybe<SourceMaterialTypes>;
   /** Less than or equal to the specified value. */
-  lessThanOrEqualTo?: Maybe<SourceMaterialTypes>;
+  lessThanOrEqualTo?: InputMaybe<SourceMaterialTypes>;
   /** Equal to the specified value, treating null like an ordinary value. */
-  notDistinctFrom?: Maybe<SourceMaterialTypes>;
+  notDistinctFrom?: InputMaybe<SourceMaterialTypes>;
   /** Not equal to the specified value. */
-  notEqualTo?: Maybe<SourceMaterialTypes>;
+  notEqualTo?: InputMaybe<SourceMaterialTypes>;
   /** Not included in the specified list. */
-  notIn?: Maybe<Array<SourceMaterialTypes>>;
+  notIn?: InputMaybe<Array<SourceMaterialTypes>>;
 };
+
+/** A connection to a list of `SourceMaterial` values. */
+export type SourceMaterialsConnection = {
+  __typename?: 'SourceMaterialsConnection';
+  /** A list of edges which contains the `SourceMaterial` and cursor to aid in pagination. */
+  edges: Array<SourceMaterialsEdge>;
+  /** A list of `SourceMaterial` objects. */
+  nodes: Array<SourceMaterial>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `SourceMaterial` you could get from the connection. */
+  totalCount: Scalars['Int'];
+};
+
+/** A `SourceMaterial` edge in the connection. */
+export type SourceMaterialsEdge = {
+  __typename?: 'SourceMaterialsEdge';
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>;
+  /** The `SourceMaterial` at the end of the edge. */
+  node: SourceMaterial;
+};
+
+/** Methods to use when ordering `SourceMaterial`. */
+export enum SourceMaterialsOrderBy {
+  IdAsc = 'ID_ASC',
+  IdDesc = 'ID_DESC',
+  Natural = 'NATURAL',
+  SourceMaterialTypeAsc = 'SOURCE_MATERIAL_TYPE_ASC',
+  SourceMaterialTypeDesc = 'SOURCE_MATERIAL_TYPE_DESC'
+}
 
 export type StaffResult = {
   __typename?: 'StaffResult';
@@ -8103,31 +8608,31 @@ export type StaffResult = {
 /** A filter to be used against `StaffResult` object types. All fields are combined with a logical ‘and.’ */
 export type StaffResultFilter = {
   /** Filter by the object’s `actorFirstName` field. */
-  actorFirstName?: Maybe<StringFilter>;
+  actorFirstName?: InputMaybe<StringFilter>;
   /** Filter by the object’s `actorImage` field. */
-  actorImage?: Maybe<StringFilter>;
+  actorImage?: InputMaybe<StringFilter>;
   /** Filter by the object’s `actorLastName` field. */
-  actorLastName?: Maybe<StringFilter>;
+  actorLastName?: InputMaybe<StringFilter>;
   /** Checks for all expressions in this list. */
-  and?: Maybe<Array<StaffResultFilter>>;
+  and?: InputMaybe<Array<StaffResultFilter>>;
   /** Filter by the object’s `animeId` field. */
-  animeId?: Maybe<StringFilter>;
+  animeId?: InputMaybe<StringFilter>;
   /** Filter by the object’s `characterId` field. */
-  characterId?: Maybe<StringFilter>;
+  characterId?: InputMaybe<StringFilter>;
   /** Filter by the object’s `characterImage` field. */
-  characterImage?: Maybe<StringFilter>;
+  characterImage?: InputMaybe<StringFilter>;
   /** Filter by the object’s `characterName` field. */
-  characterName?: Maybe<StringFilter>;
+  characterName?: InputMaybe<StringFilter>;
   /** Filter by the object’s `characterRole` field. */
-  characterRole?: Maybe<StringFilter>;
+  characterRole?: InputMaybe<StringFilter>;
   /** Filter by the object’s `language` field. */
-  language?: Maybe<StringFilter>;
+  language?: InputMaybe<StringFilter>;
   /** Negates the expression. */
-  not?: Maybe<StaffResultFilter>;
+  not?: InputMaybe<StaffResultFilter>;
   /** Checks for any expressions in this list. */
-  or?: Maybe<Array<StaffResultFilter>>;
+  or?: InputMaybe<Array<StaffResultFilter>>;
   /** Filter by the object’s `personId` field. */
-  personId?: Maybe<StringFilter>;
+  personId?: InputMaybe<StringFilter>;
 };
 
 /** A connection to a list of `StaffResult` values. */
@@ -8164,14 +8669,14 @@ export type StaffRole = Node & {
 
 
 export type StaffRoleAnimeStaffsArgs = {
-  after?: Maybe<Scalars['Cursor']>;
-  before?: Maybe<Scalars['Cursor']>;
-  condition?: Maybe<AnimeStaffCondition>;
-  filter?: Maybe<AnimeStaffFilter>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  orderBy?: Maybe<Array<AnimeStaffOrderBy>>;
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<AnimeStaffCondition>;
+  filter?: InputMaybe<AnimeStaffFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<AnimeStaffOrderBy>>;
 };
 
 /**
@@ -8180,35 +8685,35 @@ export type StaffRoleAnimeStaffsArgs = {
  */
 export type StaffRoleCondition = {
   /** Checks for equality with the object’s `id` field. */
-  id?: Maybe<Scalars['UUID']>;
+  id?: InputMaybe<Scalars['UUID']>;
   /** Checks for equality with the object’s `role` field. */
-  role?: Maybe<Scalars['String']>;
+  role?: InputMaybe<Scalars['String']>;
 };
 
 /** A filter to be used against `StaffRole` object types. All fields are combined with a logical ‘and.’ */
 export type StaffRoleFilter = {
   /** Checks for all expressions in this list. */
-  and?: Maybe<Array<StaffRoleFilter>>;
+  and?: InputMaybe<Array<StaffRoleFilter>>;
   /** Filter by the object’s `id` field. */
-  id?: Maybe<UuidFilter>;
+  id?: InputMaybe<UuidFilter>;
   /** Negates the expression. */
-  not?: Maybe<StaffRoleFilter>;
+  not?: InputMaybe<StaffRoleFilter>;
   /** Checks for any expressions in this list. */
-  or?: Maybe<Array<StaffRoleFilter>>;
+  or?: InputMaybe<Array<StaffRoleFilter>>;
   /** Filter by the object’s `role` field. */
-  role?: Maybe<StringFilter>;
+  role?: InputMaybe<StringFilter>;
 };
 
 /** An input for mutations affecting `StaffRole` */
 export type StaffRoleInput = {
-  id?: Maybe<Scalars['UUID']>;
+  id?: InputMaybe<Scalars['UUID']>;
   role: Scalars['String'];
 };
 
 /** Represents an update to a `StaffRole`. Fields that are set will be updated. */
 export type StaffRolePatch = {
-  id?: Maybe<Scalars['UUID']>;
-  role?: Maybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['UUID']>;
+  role?: InputMaybe<Scalars['String']>;
 };
 
 /** A connection to a list of `StaffRole` values. */
@@ -8249,79 +8754,79 @@ export enum StaffRolesOrderBy {
 /** A filter to be used against String fields. All fields are combined with a logical ‘and.’ */
 export type StringFilter = {
   /** Not equal to the specified value, treating null like an ordinary value. */
-  distinctFrom?: Maybe<Scalars['String']>;
+  distinctFrom?: InputMaybe<Scalars['String']>;
   /** Not equal to the specified value, treating null like an ordinary value (case-insensitive). */
-  distinctFromInsensitive?: Maybe<Scalars['String']>;
+  distinctFromInsensitive?: InputMaybe<Scalars['String']>;
   /** Ends with the specified string (case-sensitive). */
-  endsWith?: Maybe<Scalars['String']>;
+  endsWith?: InputMaybe<Scalars['String']>;
   /** Ends with the specified string (case-insensitive). */
-  endsWithInsensitive?: Maybe<Scalars['String']>;
+  endsWithInsensitive?: InputMaybe<Scalars['String']>;
   /** Equal to the specified value. */
-  equalTo?: Maybe<Scalars['String']>;
+  equalTo?: InputMaybe<Scalars['String']>;
   /** Equal to the specified value (case-insensitive). */
-  equalToInsensitive?: Maybe<Scalars['String']>;
+  equalToInsensitive?: InputMaybe<Scalars['String']>;
   /** Greater than the specified value. */
-  greaterThan?: Maybe<Scalars['String']>;
+  greaterThan?: InputMaybe<Scalars['String']>;
   /** Greater than the specified value (case-insensitive). */
-  greaterThanInsensitive?: Maybe<Scalars['String']>;
+  greaterThanInsensitive?: InputMaybe<Scalars['String']>;
   /** Greater than or equal to the specified value. */
-  greaterThanOrEqualTo?: Maybe<Scalars['String']>;
+  greaterThanOrEqualTo?: InputMaybe<Scalars['String']>;
   /** Greater than or equal to the specified value (case-insensitive). */
-  greaterThanOrEqualToInsensitive?: Maybe<Scalars['String']>;
+  greaterThanOrEqualToInsensitive?: InputMaybe<Scalars['String']>;
   /** Included in the specified list. */
-  in?: Maybe<Array<Scalars['String']>>;
+  in?: InputMaybe<Array<Scalars['String']>>;
   /** Included in the specified list (case-insensitive). */
-  inInsensitive?: Maybe<Array<Scalars['String']>>;
+  inInsensitive?: InputMaybe<Array<Scalars['String']>>;
   /** Contains the specified string (case-sensitive). */
-  includes?: Maybe<Scalars['String']>;
+  includes?: InputMaybe<Scalars['String']>;
   /** Contains the specified string (case-insensitive). */
-  includesInsensitive?: Maybe<Scalars['String']>;
+  includesInsensitive?: InputMaybe<Scalars['String']>;
   /** Is null (if `true` is specified) or is not null (if `false` is specified). */
-  isNull?: Maybe<Scalars['Boolean']>;
+  isNull?: InputMaybe<Scalars['Boolean']>;
   /** Less than the specified value. */
-  lessThan?: Maybe<Scalars['String']>;
+  lessThan?: InputMaybe<Scalars['String']>;
   /** Less than the specified value (case-insensitive). */
-  lessThanInsensitive?: Maybe<Scalars['String']>;
+  lessThanInsensitive?: InputMaybe<Scalars['String']>;
   /** Less than or equal to the specified value. */
-  lessThanOrEqualTo?: Maybe<Scalars['String']>;
+  lessThanOrEqualTo?: InputMaybe<Scalars['String']>;
   /** Less than or equal to the specified value (case-insensitive). */
-  lessThanOrEqualToInsensitive?: Maybe<Scalars['String']>;
+  lessThanOrEqualToInsensitive?: InputMaybe<Scalars['String']>;
   /** Matches the specified pattern (case-sensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters. */
-  like?: Maybe<Scalars['String']>;
+  like?: InputMaybe<Scalars['String']>;
   /** Matches the specified pattern (case-insensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters. */
-  likeInsensitive?: Maybe<Scalars['String']>;
+  likeInsensitive?: InputMaybe<Scalars['String']>;
   /** Equal to the specified value, treating null like an ordinary value. */
-  notDistinctFrom?: Maybe<Scalars['String']>;
+  notDistinctFrom?: InputMaybe<Scalars['String']>;
   /** Equal to the specified value, treating null like an ordinary value (case-insensitive). */
-  notDistinctFromInsensitive?: Maybe<Scalars['String']>;
+  notDistinctFromInsensitive?: InputMaybe<Scalars['String']>;
   /** Does not end with the specified string (case-sensitive). */
-  notEndsWith?: Maybe<Scalars['String']>;
+  notEndsWith?: InputMaybe<Scalars['String']>;
   /** Does not end with the specified string (case-insensitive). */
-  notEndsWithInsensitive?: Maybe<Scalars['String']>;
+  notEndsWithInsensitive?: InputMaybe<Scalars['String']>;
   /** Not equal to the specified value. */
-  notEqualTo?: Maybe<Scalars['String']>;
+  notEqualTo?: InputMaybe<Scalars['String']>;
   /** Not equal to the specified value (case-insensitive). */
-  notEqualToInsensitive?: Maybe<Scalars['String']>;
+  notEqualToInsensitive?: InputMaybe<Scalars['String']>;
   /** Not included in the specified list. */
-  notIn?: Maybe<Array<Scalars['String']>>;
+  notIn?: InputMaybe<Array<Scalars['String']>>;
   /** Not included in the specified list (case-insensitive). */
-  notInInsensitive?: Maybe<Array<Scalars['String']>>;
+  notInInsensitive?: InputMaybe<Array<Scalars['String']>>;
   /** Does not contain the specified string (case-sensitive). */
-  notIncludes?: Maybe<Scalars['String']>;
+  notIncludes?: InputMaybe<Scalars['String']>;
   /** Does not contain the specified string (case-insensitive). */
-  notIncludesInsensitive?: Maybe<Scalars['String']>;
+  notIncludesInsensitive?: InputMaybe<Scalars['String']>;
   /** Does not match the specified pattern (case-sensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters. */
-  notLike?: Maybe<Scalars['String']>;
+  notLike?: InputMaybe<Scalars['String']>;
   /** Does not match the specified pattern (case-insensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters. */
-  notLikeInsensitive?: Maybe<Scalars['String']>;
+  notLikeInsensitive?: InputMaybe<Scalars['String']>;
   /** Does not start with the specified string (case-sensitive). */
-  notStartsWith?: Maybe<Scalars['String']>;
+  notStartsWith?: InputMaybe<Scalars['String']>;
   /** Does not start with the specified string (case-insensitive). */
-  notStartsWithInsensitive?: Maybe<Scalars['String']>;
+  notStartsWithInsensitive?: InputMaybe<Scalars['String']>;
   /** Starts with the specified string (case-sensitive). */
-  startsWith?: Maybe<Scalars['String']>;
+  startsWith?: InputMaybe<Scalars['String']>;
   /** Starts with the specified string (case-insensitive). */
-  startsWithInsensitive?: Maybe<Scalars['String']>;
+  startsWithInsensitive?: InputMaybe<Scalars['String']>;
 };
 
 export type Studio = Node & {
@@ -8336,48 +8841,48 @@ export type Studio = Node & {
 
 
 export type StudioAnimeStudiosArgs = {
-  after?: Maybe<Scalars['Cursor']>;
-  before?: Maybe<Scalars['Cursor']>;
-  condition?: Maybe<AnimeStudioCondition>;
-  filter?: Maybe<AnimeStudioFilter>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  orderBy?: Maybe<Array<AnimeStudiosOrderBy>>;
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<AnimeStudioCondition>;
+  filter?: InputMaybe<AnimeStudioFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<AnimeStudiosOrderBy>>;
 };
 
 /** A condition to be used against `Studio` object types. All fields are tested for equality and combined with a logical ‘and.’ */
 export type StudioCondition = {
   /** Checks for equality with the object’s `id` field. */
-  id?: Maybe<Scalars['UUID']>;
+  id?: InputMaybe<Scalars['UUID']>;
   /** Checks for equality with the object’s `studio` field. */
-  studio?: Maybe<Scalars['String']>;
+  studio?: InputMaybe<Scalars['String']>;
 };
 
 /** A filter to be used against `Studio` object types. All fields are combined with a logical ‘and.’ */
 export type StudioFilter = {
   /** Checks for all expressions in this list. */
-  and?: Maybe<Array<StudioFilter>>;
+  and?: InputMaybe<Array<StudioFilter>>;
   /** Filter by the object’s `id` field. */
-  id?: Maybe<UuidFilter>;
+  id?: InputMaybe<UuidFilter>;
   /** Negates the expression. */
-  not?: Maybe<StudioFilter>;
+  not?: InputMaybe<StudioFilter>;
   /** Checks for any expressions in this list. */
-  or?: Maybe<Array<StudioFilter>>;
+  or?: InputMaybe<Array<StudioFilter>>;
   /** Filter by the object’s `studio` field. */
-  studio?: Maybe<StringFilter>;
+  studio?: InputMaybe<StringFilter>;
 };
 
 /** An input for mutations affecting `Studio` */
 export type StudioInput = {
-  id?: Maybe<Scalars['UUID']>;
+  id?: InputMaybe<Scalars['UUID']>;
   studio: Scalars['String'];
 };
 
 /** Represents an update to a `Studio`. Fields that are set will be updated. */
 export type StudioPatch = {
-  id?: Maybe<Scalars['UUID']>;
-  studio?: Maybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['UUID']>;
+  studio?: InputMaybe<Scalars['String']>;
 };
 
 /** A connection to a list of `Studio` values. */
@@ -8418,27 +8923,27 @@ export enum StudiosOrderBy {
 /** A filter to be used against UUID fields. All fields are combined with a logical ‘and.’ */
 export type UuidFilter = {
   /** Not equal to the specified value, treating null like an ordinary value. */
-  distinctFrom?: Maybe<Scalars['UUID']>;
+  distinctFrom?: InputMaybe<Scalars['UUID']>;
   /** Equal to the specified value. */
-  equalTo?: Maybe<Scalars['UUID']>;
+  equalTo?: InputMaybe<Scalars['UUID']>;
   /** Greater than the specified value. */
-  greaterThan?: Maybe<Scalars['UUID']>;
+  greaterThan?: InputMaybe<Scalars['UUID']>;
   /** Greater than or equal to the specified value. */
-  greaterThanOrEqualTo?: Maybe<Scalars['UUID']>;
+  greaterThanOrEqualTo?: InputMaybe<Scalars['UUID']>;
   /** Included in the specified list. */
-  in?: Maybe<Array<Scalars['UUID']>>;
+  in?: InputMaybe<Array<Scalars['UUID']>>;
   /** Is null (if `true` is specified) or is not null (if `false` is specified). */
-  isNull?: Maybe<Scalars['Boolean']>;
+  isNull?: InputMaybe<Scalars['Boolean']>;
   /** Less than the specified value. */
-  lessThan?: Maybe<Scalars['UUID']>;
+  lessThan?: InputMaybe<Scalars['UUID']>;
   /** Less than or equal to the specified value. */
-  lessThanOrEqualTo?: Maybe<Scalars['UUID']>;
+  lessThanOrEqualTo?: InputMaybe<Scalars['UUID']>;
   /** Equal to the specified value, treating null like an ordinary value. */
-  notDistinctFrom?: Maybe<Scalars['UUID']>;
+  notDistinctFrom?: InputMaybe<Scalars['UUID']>;
   /** Not equal to the specified value. */
-  notEqualTo?: Maybe<Scalars['UUID']>;
+  notEqualTo?: InputMaybe<Scalars['UUID']>;
   /** Not included in the specified list. */
-  notIn?: Maybe<Array<Scalars['UUID']>>;
+  notIn?: InputMaybe<Array<Scalars['UUID']>>;
 };
 
 /** All input for the `updateAlternateAnimeNameByNodeId` mutation. */
@@ -8447,7 +8952,7 @@ export type UpdateAlternateAnimeNameByNodeIdInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   /** The globally unique `ID` which will identify a single `AlternateAnimeName` to be updated. */
   nodeId: Scalars['ID'];
   /** An object where the defined keys will be set on the `AlternateAnimeName` being updated. */
@@ -8460,7 +8965,7 @@ export type UpdateAlternateAnimeNameInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   id: Scalars['UUID'];
   /** An object where the defined keys will be set on the `AlternateAnimeName` being updated. */
   patch: AlternateAnimeNamePatch;
@@ -8487,7 +8992,7 @@ export type UpdateAlternateAnimeNamePayload = {
 
 /** The output of our update `AlternateAnimeName` mutation. */
 export type UpdateAlternateAnimeNamePayloadAlternateAnimeNameEdgeArgs = {
-  orderBy?: Maybe<Array<AlternateAnimeNamesOrderBy>>;
+  orderBy?: InputMaybe<Array<AlternateAnimeNamesOrderBy>>;
 };
 
 /** All input for the `updateAnimeByMalId` mutation. */
@@ -8496,7 +9001,7 @@ export type UpdateAnimeByMalIdInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   malId: Scalars['Int'];
   /** An object where the defined keys will be set on the `Anime` being updated. */
   patch: AnimePatch;
@@ -8508,7 +9013,7 @@ export type UpdateAnimeByNodeIdInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   /** The globally unique `ID` which will identify a single `Anime` to be updated. */
   nodeId: Scalars['ID'];
   /** An object where the defined keys will be set on the `Anime` being updated. */
@@ -8521,7 +9026,7 @@ export type UpdateAnimeCharacterByNodeIdInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   /** The globally unique `ID` which will identify a single `AnimeCharacter` to be updated. */
   nodeId: Scalars['ID'];
   /** An object where the defined keys will be set on the `AnimeCharacter` being updated. */
@@ -8537,7 +9042,7 @@ export type UpdateAnimeCharacterInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   language: LanguageType;
   /** An object where the defined keys will be set on the `AnimeCharacter` being updated. */
   patch: AnimeCharacterPatch;
@@ -8571,7 +9076,7 @@ export type UpdateAnimeCharacterPayload = {
 
 /** The output of our update `AnimeCharacter` mutation. */
 export type UpdateAnimeCharacterPayloadAnimeCharacterEdgeArgs = {
-  orderBy?: Maybe<Array<AnimeCharactersOrderBy>>;
+  orderBy?: InputMaybe<Array<AnimeCharactersOrderBy>>;
 };
 
 /** All input for the `updateAnimeGenreByNodeId` mutation. */
@@ -8580,7 +9085,7 @@ export type UpdateAnimeGenreByNodeIdInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   /** The globally unique `ID` which will identify a single `AnimeGenre` to be updated. */
   nodeId: Scalars['ID'];
   /** An object where the defined keys will be set on the `AnimeGenre` being updated. */
@@ -8594,7 +9099,7 @@ export type UpdateAnimeGenreInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   genreId: Scalars['UUID'];
   /** An object where the defined keys will be set on the `AnimeGenre` being updated. */
   patch: AnimeGenrePatch;
@@ -8623,7 +9128,7 @@ export type UpdateAnimeGenrePayload = {
 
 /** The output of our update `AnimeGenre` mutation. */
 export type UpdateAnimeGenrePayloadAnimeGenreEdgeArgs = {
-  orderBy?: Maybe<Array<AnimeGenresOrderBy>>;
+  orderBy?: InputMaybe<Array<AnimeGenresOrderBy>>;
 };
 
 /** All input for the `updateAnimeImageByNodeId` mutation. */
@@ -8632,7 +9137,7 @@ export type UpdateAnimeImageByNodeIdInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   /** The globally unique `ID` which will identify a single `AnimeImage` to be updated. */
   nodeId: Scalars['ID'];
   /** An object where the defined keys will be set on the `AnimeImage` being updated. */
@@ -8646,7 +9151,7 @@ export type UpdateAnimeImageInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   imageId: Scalars['UUID'];
   /** An object where the defined keys will be set on the `AnimeImage` being updated. */
   patch: AnimeImagePatch;
@@ -8675,7 +9180,7 @@ export type UpdateAnimeImagePayload = {
 
 /** The output of our update `AnimeImage` mutation. */
 export type UpdateAnimeImagePayloadAnimeImageEdgeArgs = {
-  orderBy?: Maybe<Array<AnimeImagesOrderBy>>;
+  orderBy?: InputMaybe<Array<AnimeImagesOrderBy>>;
 };
 
 /** All input for the `updateAnime` mutation. */
@@ -8684,7 +9189,7 @@ export type UpdateAnimeInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   id: Scalars['UUID'];
   /** An object where the defined keys will be set on the `Anime` being updated. */
   patch: AnimePatch;
@@ -8696,7 +9201,7 @@ export type UpdateAnimeLicensorByNodeIdInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   /** The globally unique `ID` which will identify a single `AnimeLicensor` to be updated. */
   nodeId: Scalars['ID'];
   /** An object where the defined keys will be set on the `AnimeLicensor` being updated. */
@@ -8710,7 +9215,7 @@ export type UpdateAnimeLicensorInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   licensorId: Scalars['UUID'];
   /** An object where the defined keys will be set on the `AnimeLicensor` being updated. */
   patch: AnimeLicensorPatch;
@@ -8739,7 +9244,7 @@ export type UpdateAnimeLicensorPayload = {
 
 /** The output of our update `AnimeLicensor` mutation. */
 export type UpdateAnimeLicensorPayloadAnimeLicensorEdgeArgs = {
-  orderBy?: Maybe<Array<AnimeLicensorsOrderBy>>;
+  orderBy?: InputMaybe<Array<AnimeLicensorsOrderBy>>;
 };
 
 /** All input for the `updateAnimeListByNodeId` mutation. */
@@ -8748,7 +9253,7 @@ export type UpdateAnimeListByNodeIdInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   /** The globally unique `ID` which will identify a single `AnimeList` to be updated. */
   nodeId: Scalars['ID'];
   /** An object where the defined keys will be set on the `AnimeList` being updated. */
@@ -8761,7 +9266,7 @@ export type UpdateAnimeListInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   id: Scalars['UUID'];
   /** An object where the defined keys will be set on the `AnimeList` being updated. */
   patch: AnimeListPatch;
@@ -8788,7 +9293,7 @@ export type UpdateAnimeListPayload = {
 
 /** The output of our update `AnimeList` mutation. */
 export type UpdateAnimeListPayloadAnimeListEdgeArgs = {
-  orderBy?: Maybe<Array<AnimeListsOrderBy>>;
+  orderBy?: InputMaybe<Array<AnimeListsOrderBy>>;
 };
 
 /** The output of our update `Anime` mutation. */
@@ -8810,7 +9315,7 @@ export type UpdateAnimePayload = {
 
 /** The output of our update `Anime` mutation. */
 export type UpdateAnimePayloadAnimeEdgeArgs = {
-  orderBy?: Maybe<Array<AnimeOrderBy>>;
+  orderBy?: InputMaybe<Array<AnimeOrderBy>>;
 };
 
 /** All input for the `updateAnimeProducerByNodeId` mutation. */
@@ -8819,7 +9324,7 @@ export type UpdateAnimeProducerByNodeIdInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   /** The globally unique `ID` which will identify a single `AnimeProducer` to be updated. */
   nodeId: Scalars['ID'];
   /** An object where the defined keys will be set on the `AnimeProducer` being updated. */
@@ -8833,7 +9338,7 @@ export type UpdateAnimeProducerInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   /** An object where the defined keys will be set on the `AnimeProducer` being updated. */
   patch: AnimeProducerPatch;
   producerId: Scalars['UUID'];
@@ -8862,7 +9367,7 @@ export type UpdateAnimeProducerPayload = {
 
 /** The output of our update `AnimeProducer` mutation. */
 export type UpdateAnimeProducerPayloadAnimeProducerEdgeArgs = {
-  orderBy?: Maybe<Array<AnimeProducersOrderBy>>;
+  orderBy?: InputMaybe<Array<AnimeProducersOrderBy>>;
 };
 
 /** All input for the `updateAnimeStaffByNodeId` mutation. */
@@ -8871,7 +9376,7 @@ export type UpdateAnimeStaffByNodeIdInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   /** The globally unique `ID` which will identify a single `AnimeStaff` to be updated. */
   nodeId: Scalars['ID'];
   /** An object where the defined keys will be set on the `AnimeStaff` being updated. */
@@ -8885,7 +9390,7 @@ export type UpdateAnimeStaffInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   /** An object where the defined keys will be set on the `AnimeStaff` being updated. */
   patch: AnimeStaffPatch;
   personId: Scalars['UUID'];
@@ -8917,7 +9422,7 @@ export type UpdateAnimeStaffPayload = {
 
 /** The output of our update `AnimeStaff` mutation. */
 export type UpdateAnimeStaffPayloadAnimeStaffEdgeArgs = {
-  orderBy?: Maybe<Array<AnimeStaffOrderBy>>;
+  orderBy?: InputMaybe<Array<AnimeStaffOrderBy>>;
 };
 
 /** All input for the `updateAnimeStudioByNodeId` mutation. */
@@ -8926,7 +9431,7 @@ export type UpdateAnimeStudioByNodeIdInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   /** The globally unique `ID` which will identify a single `AnimeStudio` to be updated. */
   nodeId: Scalars['ID'];
   /** An object where the defined keys will be set on the `AnimeStudio` being updated. */
@@ -8940,7 +9445,7 @@ export type UpdateAnimeStudioInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   /** An object where the defined keys will be set on the `AnimeStudio` being updated. */
   patch: AnimeStudioPatch;
   studioId: Scalars['UUID'];
@@ -8969,7 +9474,7 @@ export type UpdateAnimeStudioPayload = {
 
 /** The output of our update `AnimeStudio` mutation. */
 export type UpdateAnimeStudioPayloadAnimeStudioEdgeArgs = {
-  orderBy?: Maybe<Array<AnimeStudiosOrderBy>>;
+  orderBy?: InputMaybe<Array<AnimeStudiosOrderBy>>;
 };
 
 /** All input for the `updateAnimeUserScoreByNodeId` mutation. */
@@ -8978,7 +9483,7 @@ export type UpdateAnimeUserScoreByNodeIdInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   /** The globally unique `ID` which will identify a single `AnimeUserScore` to be updated. */
   nodeId: Scalars['ID'];
   /** An object where the defined keys will be set on the `AnimeUserScore` being updated. */
@@ -8992,7 +9497,7 @@ export type UpdateAnimeUserScoreInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   /** An object where the defined keys will be set on the `AnimeUserScore` being updated. */
   patch: AnimeUserScorePatch;
   userId: Scalars['String'];
@@ -9021,7 +9526,7 @@ export type UpdateAnimeUserScorePayload = {
 
 /** The output of our update `AnimeUserScore` mutation. */
 export type UpdateAnimeUserScorePayloadAnimeUserScoreEdgeArgs = {
-  orderBy?: Maybe<Array<AnimeUserScoresOrderBy>>;
+  orderBy?: InputMaybe<Array<AnimeUserScoresOrderBy>>;
 };
 
 /** All input for the `updateCharacterByMalId` mutation. */
@@ -9030,7 +9535,7 @@ export type UpdateCharacterByMalIdInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   malId: Scalars['String'];
   /** An object where the defined keys will be set on the `Character` being updated. */
   patch: CharacterPatch;
@@ -9042,7 +9547,7 @@ export type UpdateCharacterByNodeIdInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   /** The globally unique `ID` which will identify a single `Character` to be updated. */
   nodeId: Scalars['ID'];
   /** An object where the defined keys will be set on the `Character` being updated. */
@@ -9055,7 +9560,7 @@ export type UpdateCharacterImageByNodeIdInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   /** The globally unique `ID` which will identify a single `CharacterImage` to be updated. */
   nodeId: Scalars['ID'];
   /** An object where the defined keys will be set on the `CharacterImage` being updated. */
@@ -9069,7 +9574,7 @@ export type UpdateCharacterImageInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   imageId: Scalars['UUID'];
   /** An object where the defined keys will be set on the `CharacterImage` being updated. */
   patch: CharacterImagePatch;
@@ -9098,7 +9603,7 @@ export type UpdateCharacterImagePayload = {
 
 /** The output of our update `CharacterImage` mutation. */
 export type UpdateCharacterImagePayloadCharacterImageEdgeArgs = {
-  orderBy?: Maybe<Array<CharacterImagesOrderBy>>;
+  orderBy?: InputMaybe<Array<CharacterImagesOrderBy>>;
 };
 
 /** All input for the `updateCharacter` mutation. */
@@ -9107,7 +9612,7 @@ export type UpdateCharacterInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   id: Scalars['UUID'];
   /** An object where the defined keys will be set on the `Character` being updated. */
   patch: CharacterPatch;
@@ -9134,7 +9639,7 @@ export type UpdateCharacterPayload = {
 
 /** The output of our update `Character` mutation. */
 export type UpdateCharacterPayloadCharacterEdgeArgs = {
-  orderBy?: Maybe<Array<CharactersOrderBy>>;
+  orderBy?: InputMaybe<Array<CharactersOrderBy>>;
 };
 
 /** All input for the `updateCharacterRoleByNodeId` mutation. */
@@ -9143,7 +9648,7 @@ export type UpdateCharacterRoleByNodeIdInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   /** The globally unique `ID` which will identify a single `CharacterRole` to be updated. */
   nodeId: Scalars['ID'];
   /** An object where the defined keys will be set on the `CharacterRole` being updated. */
@@ -9156,7 +9661,7 @@ export type UpdateCharacterRoleByRoleInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   /** An object where the defined keys will be set on the `CharacterRole` being updated. */
   patch: CharacterRolePatch;
   role: Scalars['String'];
@@ -9168,7 +9673,7 @@ export type UpdateCharacterRoleInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   id: Scalars['UUID'];
   /** An object where the defined keys will be set on the `CharacterRole` being updated. */
   patch: CharacterRolePatch;
@@ -9193,7 +9698,7 @@ export type UpdateCharacterRolePayload = {
 
 /** The output of our update `CharacterRole` mutation. */
 export type UpdateCharacterRolePayloadCharacterRoleEdgeArgs = {
-  orderBy?: Maybe<Array<CharacterRolesOrderBy>>;
+  orderBy?: InputMaybe<Array<CharacterRolesOrderBy>>;
 };
 
 /** All input for the `updateGenreByGenre` mutation. */
@@ -9202,7 +9707,7 @@ export type UpdateGenreByGenreInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   genre: Scalars['String'];
   /** An object where the defined keys will be set on the `Genre` being updated. */
   patch: GenrePatch;
@@ -9214,7 +9719,7 @@ export type UpdateGenreByNodeIdInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   /** The globally unique `ID` which will identify a single `Genre` to be updated. */
   nodeId: Scalars['ID'];
   /** An object where the defined keys will be set on the `Genre` being updated. */
@@ -9227,7 +9732,7 @@ export type UpdateGenreInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   id: Scalars['UUID'];
   /** An object where the defined keys will be set on the `Genre` being updated. */
   patch: GenrePatch;
@@ -9252,7 +9757,7 @@ export type UpdateGenrePayload = {
 
 /** The output of our update `Genre` mutation. */
 export type UpdateGenrePayloadGenreEdgeArgs = {
-  orderBy?: Maybe<Array<GenresOrderBy>>;
+  orderBy?: InputMaybe<Array<GenresOrderBy>>;
 };
 
 /** All input for the `updateImageByNodeId` mutation. */
@@ -9261,7 +9766,7 @@ export type UpdateImageByNodeIdInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   /** The globally unique `ID` which will identify a single `Image` to be updated. */
   nodeId: Scalars['ID'];
   /** An object where the defined keys will be set on the `Image` being updated. */
@@ -9274,7 +9779,7 @@ export type UpdateImageInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   id: Scalars['UUID'];
   /** An object where the defined keys will be set on the `Image` being updated. */
   patch: ImagePatch;
@@ -9299,7 +9804,7 @@ export type UpdateImagePayload = {
 
 /** The output of our update `Image` mutation. */
 export type UpdateImagePayloadImageEdgeArgs = {
-  orderBy?: Maybe<Array<ImagesOrderBy>>;
+  orderBy?: InputMaybe<Array<ImagesOrderBy>>;
 };
 
 /** All input for the `updateLicensorByLicensor` mutation. */
@@ -9308,7 +9813,7 @@ export type UpdateLicensorByLicensorInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   licensor: Scalars['String'];
   /** An object where the defined keys will be set on the `Licensor` being updated. */
   patch: LicensorPatch;
@@ -9320,7 +9825,7 @@ export type UpdateLicensorByNodeIdInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   /** The globally unique `ID` which will identify a single `Licensor` to be updated. */
   nodeId: Scalars['ID'];
   /** An object where the defined keys will be set on the `Licensor` being updated. */
@@ -9333,7 +9838,7 @@ export type UpdateLicensorInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   id: Scalars['UUID'];
   /** An object where the defined keys will be set on the `Licensor` being updated. */
   patch: LicensorPatch;
@@ -9358,7 +9863,7 @@ export type UpdateLicensorPayload = {
 
 /** The output of our update `Licensor` mutation. */
 export type UpdateLicensorPayloadLicensorEdgeArgs = {
-  orderBy?: Maybe<Array<LicensorsOrderBy>>;
+  orderBy?: InputMaybe<Array<LicensorsOrderBy>>;
 };
 
 /** All input for the `updatePersonByMalId` mutation. */
@@ -9367,7 +9872,7 @@ export type UpdatePersonByMalIdInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   malId: Scalars['String'];
   /** An object where the defined keys will be set on the `Person` being updated. */
   patch: PersonPatch;
@@ -9379,7 +9884,7 @@ export type UpdatePersonByNodeIdInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   /** The globally unique `ID` which will identify a single `Person` to be updated. */
   nodeId: Scalars['ID'];
   /** An object where the defined keys will be set on the `Person` being updated. */
@@ -9392,7 +9897,7 @@ export type UpdatePersonImageByNodeIdInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   /** The globally unique `ID` which will identify a single `PersonImage` to be updated. */
   nodeId: Scalars['ID'];
   /** An object where the defined keys will be set on the `PersonImage` being updated. */
@@ -9405,7 +9910,7 @@ export type UpdatePersonImageInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   imageId: Scalars['UUID'];
   /** An object where the defined keys will be set on the `PersonImage` being updated. */
   patch: PersonImagePatch;
@@ -9435,7 +9940,7 @@ export type UpdatePersonImagePayload = {
 
 /** The output of our update `PersonImage` mutation. */
 export type UpdatePersonImagePayloadPersonImageEdgeArgs = {
-  orderBy?: Maybe<Array<PersonImagesOrderBy>>;
+  orderBy?: InputMaybe<Array<PersonImagesOrderBy>>;
 };
 
 /** All input for the `updatePerson` mutation. */
@@ -9444,7 +9949,7 @@ export type UpdatePersonInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   id: Scalars['UUID'];
   /** An object where the defined keys will be set on the `Person` being updated. */
   patch: PersonPatch;
@@ -9471,7 +9976,7 @@ export type UpdatePersonPayload = {
 
 /** The output of our update `Person` mutation. */
 export type UpdatePersonPayloadPersonEdgeArgs = {
-  orderBy?: Maybe<Array<PeopleOrderBy>>;
+  orderBy?: InputMaybe<Array<PeopleOrderBy>>;
 };
 
 /** All input for the `updateProducerByNodeId` mutation. */
@@ -9480,7 +9985,7 @@ export type UpdateProducerByNodeIdInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   /** The globally unique `ID` which will identify a single `Producer` to be updated. */
   nodeId: Scalars['ID'];
   /** An object where the defined keys will be set on the `Producer` being updated. */
@@ -9493,7 +9998,7 @@ export type UpdateProducerByProducerInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   /** An object where the defined keys will be set on the `Producer` being updated. */
   patch: ProducerPatch;
   producer: Scalars['String'];
@@ -9505,7 +10010,7 @@ export type UpdateProducerInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   id: Scalars['UUID'];
   /** An object where the defined keys will be set on the `Producer` being updated. */
   patch: ProducerPatch;
@@ -9530,7 +10035,7 @@ export type UpdateProducerPayload = {
 
 /** The output of our update `Producer` mutation. */
 export type UpdateProducerPayloadProducerEdgeArgs = {
-  orderBy?: Maybe<Array<ProducersOrderBy>>;
+  orderBy?: InputMaybe<Array<ProducersOrderBy>>;
 };
 
 /** All input for the `updateStaffRoleByNodeId` mutation. */
@@ -9539,7 +10044,7 @@ export type UpdateStaffRoleByNodeIdInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   /** The globally unique `ID` which will identify a single `StaffRole` to be updated. */
   nodeId: Scalars['ID'];
   /** An object where the defined keys will be set on the `StaffRole` being updated. */
@@ -9552,7 +10057,7 @@ export type UpdateStaffRoleByRoleInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   /** An object where the defined keys will be set on the `StaffRole` being updated. */
   patch: StaffRolePatch;
   role: Scalars['String'];
@@ -9564,7 +10069,7 @@ export type UpdateStaffRoleInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   id: Scalars['UUID'];
   /** An object where the defined keys will be set on the `StaffRole` being updated. */
   patch: StaffRolePatch;
@@ -9589,7 +10094,7 @@ export type UpdateStaffRolePayload = {
 
 /** The output of our update `StaffRole` mutation. */
 export type UpdateStaffRolePayloadStaffRoleEdgeArgs = {
-  orderBy?: Maybe<Array<StaffRolesOrderBy>>;
+  orderBy?: InputMaybe<Array<StaffRolesOrderBy>>;
 };
 
 /** All input for the `updateStudioByNodeId` mutation. */
@@ -9598,7 +10103,7 @@ export type UpdateStudioByNodeIdInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   /** The globally unique `ID` which will identify a single `Studio` to be updated. */
   nodeId: Scalars['ID'];
   /** An object where the defined keys will be set on the `Studio` being updated. */
@@ -9611,7 +10116,7 @@ export type UpdateStudioByStudioInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   /** An object where the defined keys will be set on the `Studio` being updated. */
   patch: StudioPatch;
   studio: Scalars['String'];
@@ -9623,7 +10128,7 @@ export type UpdateStudioInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   id: Scalars['UUID'];
   /** An object where the defined keys will be set on the `Studio` being updated. */
   patch: StudioPatch;
@@ -9648,7 +10153,7 @@ export type UpdateStudioPayload = {
 
 /** The output of our update `Studio` mutation. */
 export type UpdateStudioPayloadStudioEdgeArgs = {
-  orderBy?: Maybe<Array<StudiosOrderBy>>;
+  orderBy?: InputMaybe<Array<StudiosOrderBy>>;
 };
 
 /** All input for the `updateUserAnimeByNodeId` mutation. */
@@ -9657,7 +10162,7 @@ export type UpdateUserAnimeByNodeIdInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   /** The globally unique `ID` which will identify a single `UserAnime` to be updated. */
   nodeId: Scalars['ID'];
   /** An object where the defined keys will be set on the `UserAnime` being updated. */
@@ -9671,7 +10176,7 @@ export type UpdateUserAnimeInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   /** An object where the defined keys will be set on the `UserAnime` being updated. */
   patch: UserAnimePatch;
   userId: Scalars['String'];
@@ -9685,7 +10190,7 @@ export type UpdateUserAnimeListByAnimeListIdAndAnimeIdInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   /** An object where the defined keys will be set on the `UserAnimeList` being updated. */
   patch: UserAnimeListPatch;
 };
@@ -9713,7 +10218,7 @@ export type UpdateUserAnimeListPayload = {
 
 /** The output of our update `UserAnimeList` mutation. */
 export type UpdateUserAnimeListPayloadUserAnimeListEdgeArgs = {
-  orderBy?: Maybe<Array<UserAnimeListsOrderBy>>;
+  orderBy?: InputMaybe<Array<UserAnimeListsOrderBy>>;
 };
 
 /** The output of our update `UserAnime` mutation. */
@@ -9739,7 +10244,7 @@ export type UpdateUserAnimePayload = {
 
 /** The output of our update `UserAnime` mutation. */
 export type UpdateUserAnimePayloadUserAnimeEdgeArgs = {
-  orderBy?: Maybe<Array<UserAnimeOrderBy>>;
+  orderBy?: InputMaybe<Array<UserAnimeOrderBy>>;
 };
 
 /** All input for the `updateUserByNodeId` mutation. */
@@ -9748,7 +10253,7 @@ export type UpdateUserByNodeIdInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   /** The globally unique `ID` which will identify a single `User` to be updated. */
   nodeId: Scalars['ID'];
   /** An object where the defined keys will be set on the `User` being updated. */
@@ -9761,7 +10266,7 @@ export type UpdateUserInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   id: Scalars['String'];
   /** An object where the defined keys will be set on the `User` being updated. */
   patch: UserPatch;
@@ -9786,7 +10291,7 @@ export type UpdateUserPayload = {
 
 /** The output of our update `User` mutation. */
 export type UpdateUserPayloadUserEdgeArgs = {
-  orderBy?: Maybe<Array<UsersOrderBy>>;
+  orderBy?: InputMaybe<Array<UsersOrderBy>>;
 };
 
 /** All input for the `updateUserWatchStatusByNodeId` mutation. */
@@ -9795,7 +10300,7 @@ export type UpdateUserWatchStatusByNodeIdInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   /** The globally unique `ID` which will identify a single `UserWatchStatus` to be updated. */
   nodeId: Scalars['ID'];
   /** An object where the defined keys will be set on the `UserWatchStatus` being updated. */
@@ -9809,7 +10314,7 @@ export type UpdateUserWatchStatusInput = {
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   /** An object where the defined keys will be set on the `UserWatchStatus` being updated. */
   patch: UserWatchStatusPatch;
   userId: Scalars['String'];
@@ -9838,7 +10343,7 @@ export type UpdateUserWatchStatusPayload = {
 
 /** The output of our update `UserWatchStatus` mutation. */
 export type UpdateUserWatchStatusPayloadUserWatchStatusEdgeArgs = {
-  orderBy?: Maybe<Array<UserWatchStatusesOrderBy>>;
+  orderBy?: InputMaybe<Array<UserWatchStatusesOrderBy>>;
 };
 
 /** All input for the upsert `AlternateAnimeName` mutation. */
@@ -9846,7 +10351,7 @@ export type UpsertAlternateAnimeNameInput = {
   /** The `AlternateAnimeName` to be upserted by this mutation. */
   alternateAnimeName: AlternateAnimeNameInput;
   /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
 };
 
 /** The output of our upsert `AlternateAnimeName` mutation. */
@@ -9867,12 +10372,12 @@ export type UpsertAlternateAnimeNamePayload = {
 
 /** The output of our upsert `AlternateAnimeName` mutation. */
 export type UpsertAlternateAnimeNamePayloadAlternateAnimeNameEdgeArgs = {
-  orderBy?: Maybe<Array<AlternateAnimeNamesOrderBy>>;
+  orderBy?: InputMaybe<Array<AlternateAnimeNamesOrderBy>>;
 };
 
 /** Where conditions for the upsert `AlternateAnimeName` mutation. */
 export type UpsertAlternateAnimeNameWhere = {
-  id?: Maybe<Scalars['UUID']>;
+  id?: InputMaybe<Scalars['UUID']>;
 };
 
 /** All input for the upsert `AnimeCharacter` mutation. */
@@ -9880,7 +10385,7 @@ export type UpsertAnimeCharacterInput = {
   /** The `AnimeCharacter` to be upserted by this mutation. */
   animeCharacter: AnimeCharacterInput;
   /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
 };
 
 /** The output of our upsert `AnimeCharacter` mutation. */
@@ -9907,16 +10412,16 @@ export type UpsertAnimeCharacterPayload = {
 
 /** The output of our upsert `AnimeCharacter` mutation. */
 export type UpsertAnimeCharacterPayloadAnimeCharacterEdgeArgs = {
-  orderBy?: Maybe<Array<AnimeCharactersOrderBy>>;
+  orderBy?: InputMaybe<Array<AnimeCharactersOrderBy>>;
 };
 
 /** Where conditions for the upsert `AnimeCharacter` mutation. */
 export type UpsertAnimeCharacterWhere = {
-  animeId?: Maybe<Scalars['UUID']>;
-  characterId?: Maybe<Scalars['UUID']>;
-  characterRoleId?: Maybe<Scalars['UUID']>;
-  language?: Maybe<LanguageType>;
-  personId?: Maybe<Scalars['UUID']>;
+  animeId?: InputMaybe<Scalars['UUID']>;
+  characterId?: InputMaybe<Scalars['UUID']>;
+  characterRoleId?: InputMaybe<Scalars['UUID']>;
+  language?: InputMaybe<LanguageType>;
+  personId?: InputMaybe<Scalars['UUID']>;
 };
 
 /** All input for the upsert `AnimeGenre` mutation. */
@@ -9924,7 +10429,7 @@ export type UpsertAnimeGenreInput = {
   /** The `AnimeGenre` to be upserted by this mutation. */
   animeGenre: AnimeGenreInput;
   /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
 };
 
 /** The output of our upsert `AnimeGenre` mutation. */
@@ -9947,13 +10452,13 @@ export type UpsertAnimeGenrePayload = {
 
 /** The output of our upsert `AnimeGenre` mutation. */
 export type UpsertAnimeGenrePayloadAnimeGenreEdgeArgs = {
-  orderBy?: Maybe<Array<AnimeGenresOrderBy>>;
+  orderBy?: InputMaybe<Array<AnimeGenresOrderBy>>;
 };
 
 /** Where conditions for the upsert `AnimeGenre` mutation. */
 export type UpsertAnimeGenreWhere = {
-  animeId?: Maybe<Scalars['UUID']>;
-  genreId?: Maybe<Scalars['UUID']>;
+  animeId?: InputMaybe<Scalars['UUID']>;
+  genreId?: InputMaybe<Scalars['UUID']>;
 };
 
 /** All input for the upsert `AnimeImage` mutation. */
@@ -9961,7 +10466,7 @@ export type UpsertAnimeImageInput = {
   /** The `AnimeImage` to be upserted by this mutation. */
   animeImage: AnimeImageInput;
   /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
 };
 
 /** The output of our upsert `AnimeImage` mutation. */
@@ -9984,13 +10489,13 @@ export type UpsertAnimeImagePayload = {
 
 /** The output of our upsert `AnimeImage` mutation. */
 export type UpsertAnimeImagePayloadAnimeImageEdgeArgs = {
-  orderBy?: Maybe<Array<AnimeImagesOrderBy>>;
+  orderBy?: InputMaybe<Array<AnimeImagesOrderBy>>;
 };
 
 /** Where conditions for the upsert `AnimeImage` mutation. */
 export type UpsertAnimeImageWhere = {
-  animeId?: Maybe<Scalars['UUID']>;
-  imageId?: Maybe<Scalars['UUID']>;
+  animeId?: InputMaybe<Scalars['UUID']>;
+  imageId?: InputMaybe<Scalars['UUID']>;
 };
 
 /** All input for the upsert `Anime` mutation. */
@@ -9998,7 +10503,7 @@ export type UpsertAnimeInput = {
   /** The `Anime` to be upserted by this mutation. */
   anime: AnimeInput;
   /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
 };
 
 /** All input for the upsert `AnimeLicensor` mutation. */
@@ -10006,7 +10511,7 @@ export type UpsertAnimeLicensorInput = {
   /** The `AnimeLicensor` to be upserted by this mutation. */
   animeLicensor: AnimeLicensorInput;
   /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
 };
 
 /** The output of our upsert `AnimeLicensor` mutation. */
@@ -10029,13 +10534,13 @@ export type UpsertAnimeLicensorPayload = {
 
 /** The output of our upsert `AnimeLicensor` mutation. */
 export type UpsertAnimeLicensorPayloadAnimeLicensorEdgeArgs = {
-  orderBy?: Maybe<Array<AnimeLicensorsOrderBy>>;
+  orderBy?: InputMaybe<Array<AnimeLicensorsOrderBy>>;
 };
 
 /** Where conditions for the upsert `AnimeLicensor` mutation. */
 export type UpsertAnimeLicensorWhere = {
-  animeId?: Maybe<Scalars['UUID']>;
-  licensorId?: Maybe<Scalars['UUID']>;
+  animeId?: InputMaybe<Scalars['UUID']>;
+  licensorId?: InputMaybe<Scalars['UUID']>;
 };
 
 /** All input for the upsert `AnimeList` mutation. */
@@ -10043,7 +10548,7 @@ export type UpsertAnimeListInput = {
   /** The `AnimeList` to be upserted by this mutation. */
   animeList: AnimeListInput;
   /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
 };
 
 /** The output of our upsert `AnimeList` mutation. */
@@ -10064,12 +10569,12 @@ export type UpsertAnimeListPayload = {
 
 /** The output of our upsert `AnimeList` mutation. */
 export type UpsertAnimeListPayloadAnimeListEdgeArgs = {
-  orderBy?: Maybe<Array<AnimeListsOrderBy>>;
+  orderBy?: InputMaybe<Array<AnimeListsOrderBy>>;
 };
 
 /** Where conditions for the upsert `AnimeList` mutation. */
 export type UpsertAnimeListWhere = {
-  id?: Maybe<Scalars['UUID']>;
+  id?: InputMaybe<Scalars['UUID']>;
 };
 
 /** The output of our upsert `Anime` mutation. */
@@ -10088,7 +10593,7 @@ export type UpsertAnimePayload = {
 
 /** The output of our upsert `Anime` mutation. */
 export type UpsertAnimePayloadAnimeEdgeArgs = {
-  orderBy?: Maybe<Array<AnimeOrderBy>>;
+  orderBy?: InputMaybe<Array<AnimeOrderBy>>;
 };
 
 /** All input for the upsert `AnimeProducer` mutation. */
@@ -10096,7 +10601,7 @@ export type UpsertAnimeProducerInput = {
   /** The `AnimeProducer` to be upserted by this mutation. */
   animeProducer: AnimeProducerInput;
   /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
 };
 
 /** The output of our upsert `AnimeProducer` mutation. */
@@ -10119,13 +10624,13 @@ export type UpsertAnimeProducerPayload = {
 
 /** The output of our upsert `AnimeProducer` mutation. */
 export type UpsertAnimeProducerPayloadAnimeProducerEdgeArgs = {
-  orderBy?: Maybe<Array<AnimeProducersOrderBy>>;
+  orderBy?: InputMaybe<Array<AnimeProducersOrderBy>>;
 };
 
 /** Where conditions for the upsert `AnimeProducer` mutation. */
 export type UpsertAnimeProducerWhere = {
-  animeId?: Maybe<Scalars['UUID']>;
-  producerId?: Maybe<Scalars['UUID']>;
+  animeId?: InputMaybe<Scalars['UUID']>;
+  producerId?: InputMaybe<Scalars['UUID']>;
 };
 
 /** All input for the upsert `AnimeStaff` mutation. */
@@ -10133,7 +10638,7 @@ export type UpsertAnimeStaffInput = {
   /** The `AnimeStaff` to be upserted by this mutation. */
   animeStaff: AnimeStaffInput;
   /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
 };
 
 /** The output of our upsert `AnimeStaff` mutation. */
@@ -10158,14 +10663,14 @@ export type UpsertAnimeStaffPayload = {
 
 /** The output of our upsert `AnimeStaff` mutation. */
 export type UpsertAnimeStaffPayloadAnimeStaffEdgeArgs = {
-  orderBy?: Maybe<Array<AnimeStaffOrderBy>>;
+  orderBy?: InputMaybe<Array<AnimeStaffOrderBy>>;
 };
 
 /** Where conditions for the upsert `AnimeStaff` mutation. */
 export type UpsertAnimeStaffWhere = {
-  animeId?: Maybe<Scalars['UUID']>;
-  personId?: Maybe<Scalars['UUID']>;
-  staffRoleId?: Maybe<Scalars['UUID']>;
+  animeId?: InputMaybe<Scalars['UUID']>;
+  personId?: InputMaybe<Scalars['UUID']>;
+  staffRoleId?: InputMaybe<Scalars['UUID']>;
 };
 
 /** All input for the upsert `AnimeStudio` mutation. */
@@ -10173,7 +10678,7 @@ export type UpsertAnimeStudioInput = {
   /** The `AnimeStudio` to be upserted by this mutation. */
   animeStudio: AnimeStudioInput;
   /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
 };
 
 /** The output of our upsert `AnimeStudio` mutation. */
@@ -10196,13 +10701,13 @@ export type UpsertAnimeStudioPayload = {
 
 /** The output of our upsert `AnimeStudio` mutation. */
 export type UpsertAnimeStudioPayloadAnimeStudioEdgeArgs = {
-  orderBy?: Maybe<Array<AnimeStudiosOrderBy>>;
+  orderBy?: InputMaybe<Array<AnimeStudiosOrderBy>>;
 };
 
 /** Where conditions for the upsert `AnimeStudio` mutation. */
 export type UpsertAnimeStudioWhere = {
-  animeId?: Maybe<Scalars['UUID']>;
-  studioId?: Maybe<Scalars['UUID']>;
+  animeId?: InputMaybe<Scalars['UUID']>;
+  studioId?: InputMaybe<Scalars['UUID']>;
 };
 
 /** All input for the upsert `AnimeUserScore` mutation. */
@@ -10210,7 +10715,7 @@ export type UpsertAnimeUserScoreInput = {
   /** The `AnimeUserScore` to be upserted by this mutation. */
   animeUserScore: AnimeUserScoreInput;
   /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
 };
 
 /** The output of our upsert `AnimeUserScore` mutation. */
@@ -10233,19 +10738,19 @@ export type UpsertAnimeUserScorePayload = {
 
 /** The output of our upsert `AnimeUserScore` mutation. */
 export type UpsertAnimeUserScorePayloadAnimeUserScoreEdgeArgs = {
-  orderBy?: Maybe<Array<AnimeUserScoresOrderBy>>;
+  orderBy?: InputMaybe<Array<AnimeUserScoresOrderBy>>;
 };
 
 /** Where conditions for the upsert `AnimeUserScore` mutation. */
 export type UpsertAnimeUserScoreWhere = {
-  animeId?: Maybe<Scalars['UUID']>;
-  userId?: Maybe<Scalars['String']>;
+  animeId?: InputMaybe<Scalars['UUID']>;
+  userId?: InputMaybe<Scalars['String']>;
 };
 
 /** Where conditions for the upsert `Anime` mutation. */
 export type UpsertAnimeWhere = {
-  id?: Maybe<Scalars['UUID']>;
-  malId?: Maybe<Scalars['Int']>;
+  id?: InputMaybe<Scalars['UUID']>;
+  malId?: InputMaybe<Scalars['Int']>;
 };
 
 /** All input for the upsert `CharacterImage` mutation. */
@@ -10253,7 +10758,7 @@ export type UpsertCharacterImageInput = {
   /** The `CharacterImage` to be upserted by this mutation. */
   characterImage: CharacterImageInput;
   /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
 };
 
 /** The output of our upsert `CharacterImage` mutation. */
@@ -10276,13 +10781,13 @@ export type UpsertCharacterImagePayload = {
 
 /** The output of our upsert `CharacterImage` mutation. */
 export type UpsertCharacterImagePayloadCharacterImageEdgeArgs = {
-  orderBy?: Maybe<Array<CharacterImagesOrderBy>>;
+  orderBy?: InputMaybe<Array<CharacterImagesOrderBy>>;
 };
 
 /** Where conditions for the upsert `CharacterImage` mutation. */
 export type UpsertCharacterImageWhere = {
-  characterId?: Maybe<Scalars['UUID']>;
-  imageId?: Maybe<Scalars['UUID']>;
+  characterId?: InputMaybe<Scalars['UUID']>;
+  imageId?: InputMaybe<Scalars['UUID']>;
 };
 
 /** All input for the upsert `Character` mutation. */
@@ -10290,7 +10795,7 @@ export type UpsertCharacterInput = {
   /** The `Character` to be upserted by this mutation. */
   character: CharacterInput;
   /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
 };
 
 /** The output of our upsert `Character` mutation. */
@@ -10311,7 +10816,7 @@ export type UpsertCharacterPayload = {
 
 /** The output of our upsert `Character` mutation. */
 export type UpsertCharacterPayloadCharacterEdgeArgs = {
-  orderBy?: Maybe<Array<CharactersOrderBy>>;
+  orderBy?: InputMaybe<Array<CharactersOrderBy>>;
 };
 
 /** All input for the upsert `CharacterRole` mutation. */
@@ -10319,7 +10824,7 @@ export type UpsertCharacterRoleInput = {
   /** The `CharacterRole` to be upserted by this mutation. */
   characterRole: CharacterRoleInput;
   /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
 };
 
 /** The output of our upsert `CharacterRole` mutation. */
@@ -10338,25 +10843,25 @@ export type UpsertCharacterRolePayload = {
 
 /** The output of our upsert `CharacterRole` mutation. */
 export type UpsertCharacterRolePayloadCharacterRoleEdgeArgs = {
-  orderBy?: Maybe<Array<CharacterRolesOrderBy>>;
+  orderBy?: InputMaybe<Array<CharacterRolesOrderBy>>;
 };
 
 /** Where conditions for the upsert `CharacterRole` mutation. */
 export type UpsertCharacterRoleWhere = {
-  id?: Maybe<Scalars['UUID']>;
-  role?: Maybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['UUID']>;
+  role?: InputMaybe<Scalars['String']>;
 };
 
 /** Where conditions for the upsert `Character` mutation. */
 export type UpsertCharacterWhere = {
-  id?: Maybe<Scalars['UUID']>;
-  malId?: Maybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['UUID']>;
+  malId?: InputMaybe<Scalars['String']>;
 };
 
 /** All input for the upsert `Genre` mutation. */
 export type UpsertGenreInput = {
   /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   /** The `Genre` to be upserted by this mutation. */
   genre: GenreInput;
 };
@@ -10377,19 +10882,19 @@ export type UpsertGenrePayload = {
 
 /** The output of our upsert `Genre` mutation. */
 export type UpsertGenrePayloadGenreEdgeArgs = {
-  orderBy?: Maybe<Array<GenresOrderBy>>;
+  orderBy?: InputMaybe<Array<GenresOrderBy>>;
 };
 
 /** Where conditions for the upsert `Genre` mutation. */
 export type UpsertGenreWhere = {
-  genre?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['UUID']>;
+  genre?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['UUID']>;
 };
 
 /** All input for the upsert `Image` mutation. */
 export type UpsertImageInput = {
   /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   /** The `Image` to be upserted by this mutation. */
   image: ImageInput;
 };
@@ -10410,18 +10915,18 @@ export type UpsertImagePayload = {
 
 /** The output of our upsert `Image` mutation. */
 export type UpsertImagePayloadImageEdgeArgs = {
-  orderBy?: Maybe<Array<ImagesOrderBy>>;
+  orderBy?: InputMaybe<Array<ImagesOrderBy>>;
 };
 
 /** Where conditions for the upsert `Image` mutation. */
 export type UpsertImageWhere = {
-  id?: Maybe<Scalars['UUID']>;
+  id?: InputMaybe<Scalars['UUID']>;
 };
 
 /** All input for the upsert `Licensor` mutation. */
 export type UpsertLicensorInput = {
   /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   /** The `Licensor` to be upserted by this mutation. */
   licensor: LicensorInput;
 };
@@ -10442,19 +10947,19 @@ export type UpsertLicensorPayload = {
 
 /** The output of our upsert `Licensor` mutation. */
 export type UpsertLicensorPayloadLicensorEdgeArgs = {
-  orderBy?: Maybe<Array<LicensorsOrderBy>>;
+  orderBy?: InputMaybe<Array<LicensorsOrderBy>>;
 };
 
 /** Where conditions for the upsert `Licensor` mutation. */
 export type UpsertLicensorWhere = {
-  id?: Maybe<Scalars['UUID']>;
-  licensor?: Maybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['UUID']>;
+  licensor?: InputMaybe<Scalars['String']>;
 };
 
 /** All input for the upsert `PersonImage` mutation. */
 export type UpsertPersonImageInput = {
   /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   /** The `PersonImage` to be upserted by this mutation. */
   personImage: PersonImageInput;
 };
@@ -10479,19 +10984,19 @@ export type UpsertPersonImagePayload = {
 
 /** The output of our upsert `PersonImage` mutation. */
 export type UpsertPersonImagePayloadPersonImageEdgeArgs = {
-  orderBy?: Maybe<Array<PersonImagesOrderBy>>;
+  orderBy?: InputMaybe<Array<PersonImagesOrderBy>>;
 };
 
 /** Where conditions for the upsert `PersonImage` mutation. */
 export type UpsertPersonImageWhere = {
-  imageId?: Maybe<Scalars['UUID']>;
-  personId?: Maybe<Scalars['UUID']>;
+  imageId?: InputMaybe<Scalars['UUID']>;
+  personId?: InputMaybe<Scalars['UUID']>;
 };
 
 /** All input for the upsert `Person` mutation. */
 export type UpsertPersonInput = {
   /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   /** The `Person` to be upserted by this mutation. */
   person: PersonInput;
 };
@@ -10514,19 +11019,19 @@ export type UpsertPersonPayload = {
 
 /** The output of our upsert `Person` mutation. */
 export type UpsertPersonPayloadPersonEdgeArgs = {
-  orderBy?: Maybe<Array<PeopleOrderBy>>;
+  orderBy?: InputMaybe<Array<PeopleOrderBy>>;
 };
 
 /** Where conditions for the upsert `Person` mutation. */
 export type UpsertPersonWhere = {
-  id?: Maybe<Scalars['UUID']>;
-  malId?: Maybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['UUID']>;
+  malId?: InputMaybe<Scalars['String']>;
 };
 
 /** All input for the upsert `Producer` mutation. */
 export type UpsertProducerInput = {
   /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   /** The `Producer` to be upserted by this mutation. */
   producer: ProducerInput;
 };
@@ -10547,19 +11052,19 @@ export type UpsertProducerPayload = {
 
 /** The output of our upsert `Producer` mutation. */
 export type UpsertProducerPayloadProducerEdgeArgs = {
-  orderBy?: Maybe<Array<ProducersOrderBy>>;
+  orderBy?: InputMaybe<Array<ProducersOrderBy>>;
 };
 
 /** Where conditions for the upsert `Producer` mutation. */
 export type UpsertProducerWhere = {
-  id?: Maybe<Scalars['UUID']>;
-  producer?: Maybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['UUID']>;
+  producer?: InputMaybe<Scalars['String']>;
 };
 
 /** All input for the upsert `StaffRole` mutation. */
 export type UpsertStaffRoleInput = {
   /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   /** The `StaffRole` to be upserted by this mutation. */
   staffRole: StaffRoleInput;
 };
@@ -10580,19 +11085,19 @@ export type UpsertStaffRolePayload = {
 
 /** The output of our upsert `StaffRole` mutation. */
 export type UpsertStaffRolePayloadStaffRoleEdgeArgs = {
-  orderBy?: Maybe<Array<StaffRolesOrderBy>>;
+  orderBy?: InputMaybe<Array<StaffRolesOrderBy>>;
 };
 
 /** Where conditions for the upsert `StaffRole` mutation. */
 export type UpsertStaffRoleWhere = {
-  id?: Maybe<Scalars['UUID']>;
-  role?: Maybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['UUID']>;
+  role?: InputMaybe<Scalars['String']>;
 };
 
 /** All input for the upsert `Studio` mutation. */
 export type UpsertStudioInput = {
   /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   /** The `Studio` to be upserted by this mutation. */
   studio: StudioInput;
 };
@@ -10613,19 +11118,19 @@ export type UpsertStudioPayload = {
 
 /** The output of our upsert `Studio` mutation. */
 export type UpsertStudioPayloadStudioEdgeArgs = {
-  orderBy?: Maybe<Array<StudiosOrderBy>>;
+  orderBy?: InputMaybe<Array<StudiosOrderBy>>;
 };
 
 /** Where conditions for the upsert `Studio` mutation. */
 export type UpsertStudioWhere = {
-  id?: Maybe<Scalars['UUID']>;
-  studio?: Maybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['UUID']>;
+  studio?: InputMaybe<Scalars['String']>;
 };
 
 /** All input for the upsert `UserAnime` mutation. */
 export type UpsertUserAnimeInput = {
   /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   /** The `UserAnime` to be upserted by this mutation. */
   userAnime: UserAnimeInput;
 };
@@ -10633,7 +11138,7 @@ export type UpsertUserAnimeInput = {
 /** All input for the upsert `UserAnimeList` mutation. */
 export type UpsertUserAnimeListInput = {
   /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   /** The `UserAnimeList` to be upserted by this mutation. */
   userAnimeList: UserAnimeListInput;
 };
@@ -10658,13 +11163,13 @@ export type UpsertUserAnimeListPayload = {
 
 /** The output of our upsert `UserAnimeList` mutation. */
 export type UpsertUserAnimeListPayloadUserAnimeListEdgeArgs = {
-  orderBy?: Maybe<Array<UserAnimeListsOrderBy>>;
+  orderBy?: InputMaybe<Array<UserAnimeListsOrderBy>>;
 };
 
 /** Where conditions for the upsert `UserAnimeList` mutation. */
 export type UpsertUserAnimeListWhere = {
-  animeId?: Maybe<Scalars['UUID']>;
-  animeListId?: Maybe<Scalars['UUID']>;
+  animeId?: InputMaybe<Scalars['UUID']>;
+  animeListId?: InputMaybe<Scalars['UUID']>;
 };
 
 /** The output of our upsert `UserAnime` mutation. */
@@ -10687,19 +11192,19 @@ export type UpsertUserAnimePayload = {
 
 /** The output of our upsert `UserAnime` mutation. */
 export type UpsertUserAnimePayloadUserAnimeEdgeArgs = {
-  orderBy?: Maybe<Array<UserAnimeOrderBy>>;
+  orderBy?: InputMaybe<Array<UserAnimeOrderBy>>;
 };
 
 /** Where conditions for the upsert `UserAnime` mutation. */
 export type UpsertUserAnimeWhere = {
-  animeId?: Maybe<Scalars['UUID']>;
-  userId?: Maybe<Scalars['String']>;
+  animeId?: InputMaybe<Scalars['UUID']>;
+  userId?: InputMaybe<Scalars['String']>;
 };
 
 /** All input for the upsert `User` mutation. */
 export type UpsertUserInput = {
   /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   /** The `User` to be upserted by this mutation. */
   user: UserInput;
 };
@@ -10720,13 +11225,13 @@ export type UpsertUserPayload = {
 
 /** The output of our upsert `User` mutation. */
 export type UpsertUserPayloadUserEdgeArgs = {
-  orderBy?: Maybe<Array<UsersOrderBy>>;
+  orderBy?: InputMaybe<Array<UsersOrderBy>>;
 };
 
 /** All input for the upsert `UserWatchStatus` mutation. */
 export type UpsertUserWatchStatusInput = {
   /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
-  clientMutationId?: Maybe<Scalars['String']>;
+  clientMutationId?: InputMaybe<Scalars['String']>;
   /** The `UserWatchStatus` to be upserted by this mutation. */
   userWatchStatus: UserWatchStatusInput;
 };
@@ -10751,18 +11256,18 @@ export type UpsertUserWatchStatusPayload = {
 
 /** The output of our upsert `UserWatchStatus` mutation. */
 export type UpsertUserWatchStatusPayloadUserWatchStatusEdgeArgs = {
-  orderBy?: Maybe<Array<UserWatchStatusesOrderBy>>;
+  orderBy?: InputMaybe<Array<UserWatchStatusesOrderBy>>;
 };
 
 /** Where conditions for the upsert `UserWatchStatus` mutation. */
 export type UpsertUserWatchStatusWhere = {
-  animeId?: Maybe<Scalars['UUID']>;
-  userId?: Maybe<Scalars['String']>;
+  animeId?: InputMaybe<Scalars['UUID']>;
+  userId?: InputMaybe<Scalars['String']>;
 };
 
 /** Where conditions for the upsert `User` mutation. */
 export type UpsertUserWhere = {
-  id?: Maybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['String']>;
 };
 
 export type User = Node & {
@@ -10782,50 +11287,50 @@ export type User = Node & {
 
 
 export type UserAnimeListsArgs = {
-  after?: Maybe<Scalars['Cursor']>;
-  before?: Maybe<Scalars['Cursor']>;
-  condition?: Maybe<AnimeListCondition>;
-  filter?: Maybe<AnimeListFilter>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  orderBy?: Maybe<Array<AnimeListsOrderBy>>;
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<AnimeListCondition>;
+  filter?: InputMaybe<AnimeListFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<AnimeListsOrderBy>>;
 };
 
 
 export type UserAnimeUserScoresArgs = {
-  after?: Maybe<Scalars['Cursor']>;
-  before?: Maybe<Scalars['Cursor']>;
-  condition?: Maybe<AnimeUserScoreCondition>;
-  filter?: Maybe<AnimeUserScoreFilter>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  orderBy?: Maybe<Array<AnimeUserScoresOrderBy>>;
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<AnimeUserScoreCondition>;
+  filter?: InputMaybe<AnimeUserScoreFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<AnimeUserScoresOrderBy>>;
 };
 
 
 export type UserUserAnimesArgs = {
-  after?: Maybe<Scalars['Cursor']>;
-  before?: Maybe<Scalars['Cursor']>;
-  condition?: Maybe<UserAnimeCondition>;
-  filter?: Maybe<UserAnimeFilter>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  orderBy?: Maybe<Array<UserAnimeOrderBy>>;
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<UserAnimeCondition>;
+  filter?: InputMaybe<UserAnimeFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<UserAnimeOrderBy>>;
 };
 
 
 export type UserUserWatchStatusesArgs = {
-  after?: Maybe<Scalars['Cursor']>;
-  before?: Maybe<Scalars['Cursor']>;
-  condition?: Maybe<UserWatchStatusCondition>;
-  filter?: Maybe<UserWatchStatusFilter>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  orderBy?: Maybe<Array<UserWatchStatusesOrderBy>>;
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<UserWatchStatusCondition>;
+  filter?: InputMaybe<UserWatchStatusFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<UserWatchStatusesOrderBy>>;
 };
 
 export type UserAnime = Node & {
@@ -10846,9 +11351,9 @@ export type UserAnime = Node & {
  */
 export type UserAnimeCondition = {
   /** Checks for equality with the object’s `animeId` field. */
-  animeId?: Maybe<Scalars['UUID']>;
+  animeId?: InputMaybe<Scalars['UUID']>;
   /** Checks for equality with the object’s `userId` field. */
-  userId?: Maybe<Scalars['String']>;
+  userId?: InputMaybe<Scalars['String']>;
 };
 
 /** A connection to a list of `UserAnime` values. */
@@ -10876,15 +11381,15 @@ export type UserAnimeEdge = {
 /** A filter to be used against `UserAnime` object types. All fields are combined with a logical ‘and.’ */
 export type UserAnimeFilter = {
   /** Checks for all expressions in this list. */
-  and?: Maybe<Array<UserAnimeFilter>>;
+  and?: InputMaybe<Array<UserAnimeFilter>>;
   /** Filter by the object’s `animeId` field. */
-  animeId?: Maybe<UuidFilter>;
+  animeId?: InputMaybe<UuidFilter>;
   /** Negates the expression. */
-  not?: Maybe<UserAnimeFilter>;
+  not?: InputMaybe<UserAnimeFilter>;
   /** Checks for any expressions in this list. */
-  or?: Maybe<Array<UserAnimeFilter>>;
+  or?: InputMaybe<Array<UserAnimeFilter>>;
   /** Filter by the object’s `userId` field. */
-  userId?: Maybe<StringFilter>;
+  userId?: InputMaybe<StringFilter>;
 };
 
 /** An input for mutations affecting `UserAnime` */
@@ -10908,41 +11413,41 @@ export type UserAnimeList = {
  */
 export type UserAnimeListCondition = {
   /** Checks for equality with the object’s `animeId` field. */
-  animeId?: Maybe<Scalars['UUID']>;
+  animeId?: InputMaybe<Scalars['UUID']>;
   /** Checks for equality with the object’s `animeIndex` field. */
-  animeIndex?: Maybe<Scalars['String']>;
+  animeIndex?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `animeListId` field. */
-  animeListId?: Maybe<Scalars['UUID']>;
+  animeListId?: InputMaybe<Scalars['UUID']>;
 };
 
 /** A filter to be used against `UserAnimeList` object types. All fields are combined with a logical ‘and.’ */
 export type UserAnimeListFilter = {
   /** Checks for all expressions in this list. */
-  and?: Maybe<Array<UserAnimeListFilter>>;
+  and?: InputMaybe<Array<UserAnimeListFilter>>;
   /** Filter by the object’s `animeId` field. */
-  animeId?: Maybe<UuidFilter>;
+  animeId?: InputMaybe<UuidFilter>;
   /** Filter by the object’s `animeIndex` field. */
-  animeIndex?: Maybe<StringFilter>;
+  animeIndex?: InputMaybe<StringFilter>;
   /** Filter by the object’s `animeListId` field. */
-  animeListId?: Maybe<UuidFilter>;
+  animeListId?: InputMaybe<UuidFilter>;
   /** Negates the expression. */
-  not?: Maybe<UserAnimeListFilter>;
+  not?: InputMaybe<UserAnimeListFilter>;
   /** Checks for any expressions in this list. */
-  or?: Maybe<Array<UserAnimeListFilter>>;
+  or?: InputMaybe<Array<UserAnimeListFilter>>;
 };
 
 /** An input for mutations affecting `UserAnimeList` */
 export type UserAnimeListInput = {
   animeId: Scalars['UUID'];
-  animeIndex?: Maybe<Scalars['String']>;
+  animeIndex?: InputMaybe<Scalars['String']>;
   animeListId: Scalars['UUID'];
 };
 
 /** Represents an update to a `UserAnimeList`. Fields that are set will be updated. */
 export type UserAnimeListPatch = {
-  animeId?: Maybe<Scalars['UUID']>;
-  animeIndex?: Maybe<Scalars['String']>;
-  animeListId?: Maybe<Scalars['UUID']>;
+  animeId?: InputMaybe<Scalars['UUID']>;
+  animeIndex?: InputMaybe<Scalars['String']>;
+  animeListId?: InputMaybe<Scalars['UUID']>;
 };
 
 export type UserAnimeListType = {
@@ -10958,23 +11463,23 @@ export type UserAnimeListType = {
 /** A filter to be used against `UserAnimeListType` object types. All fields are combined with a logical ‘and.’ */
 export type UserAnimeListTypeFilter = {
   /** Checks for all expressions in this list. */
-  and?: Maybe<Array<UserAnimeListTypeFilter>>;
+  and?: InputMaybe<Array<UserAnimeListTypeFilter>>;
   /** Filter by the object’s `coverImage` field. */
-  coverImage?: Maybe<StringFilter>;
+  coverImage?: InputMaybe<StringFilter>;
   /** Filter by the object’s `id` field. */
-  id?: Maybe<UuidFilter>;
+  id?: InputMaybe<UuidFilter>;
   /** Filter by the object’s `listId` field. */
-  listId?: Maybe<UuidFilter>;
+  listId?: InputMaybe<UuidFilter>;
   /** Filter by the object’s `listName` field. */
-  listName?: Maybe<StringFilter>;
+  listName?: InputMaybe<StringFilter>;
   /** Negates the expression. */
-  not?: Maybe<UserAnimeListTypeFilter>;
+  not?: InputMaybe<UserAnimeListTypeFilter>;
   /** Checks for any expressions in this list. */
-  or?: Maybe<Array<UserAnimeListTypeFilter>>;
+  or?: InputMaybe<Array<UserAnimeListTypeFilter>>;
   /** Filter by the object’s `privacy` field. */
-  privacy?: Maybe<AnimeListPrivacyFilter>;
+  privacy?: InputMaybe<AnimeListPrivacyFilter>;
   /** Filter by the object’s `title` field. */
-  title?: Maybe<StringFilter>;
+  title?: InputMaybe<StringFilter>;
 };
 
 /** A connection to a list of `UserAnimeListType` values. */
@@ -11123,14 +11628,14 @@ export enum UserAnimeOrderBy {
 
 /** Represents an update to a `UserAnime`. Fields that are set will be updated. */
 export type UserAnimePatch = {
-  animeId?: Maybe<Scalars['UUID']>;
-  userId?: Maybe<Scalars['String']>;
+  animeId?: InputMaybe<Scalars['UUID']>;
+  userId?: InputMaybe<Scalars['String']>;
 };
 
 /** A condition to be used against `User` object types. All fields are tested for equality and combined with a logical ‘and.’ */
 export type UserCondition = {
   /** Checks for equality with the object’s `id` field. */
-  id?: Maybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['String']>;
 };
 
 export type UserCustomAnimeListByStatusType = {
@@ -11149,29 +11654,29 @@ export type UserCustomAnimeListByStatusType = {
 /** A filter to be used against `UserCustomAnimeListByStatusType` object types. All fields are combined with a logical ‘and.’ */
 export type UserCustomAnimeListByStatusTypeFilter = {
   /** Checks for all expressions in this list. */
-  and?: Maybe<Array<UserCustomAnimeListByStatusTypeFilter>>;
+  and?: InputMaybe<Array<UserCustomAnimeListByStatusTypeFilter>>;
   /** Filter by the object’s `averageWatcherRating` field. */
-  averageWatcherRating?: Maybe<BigFloatFilter>;
+  averageWatcherRating?: InputMaybe<BigFloatFilter>;
   /** Filter by the object’s `id` field. */
-  id?: Maybe<UuidFilter>;
+  id?: InputMaybe<UuidFilter>;
   /** Filter by the object’s `imageUrl` field. */
-  imageUrl?: Maybe<StringFilter>;
+  imageUrl?: InputMaybe<StringFilter>;
   /** Filter by the object’s `mediaType` field. */
-  mediaType?: Maybe<StringFilter>;
+  mediaType?: InputMaybe<StringFilter>;
   /** Negates the expression. */
-  not?: Maybe<UserCustomAnimeListByStatusTypeFilter>;
+  not?: InputMaybe<UserCustomAnimeListByStatusTypeFilter>;
   /** Filter by the object’s `numberOfEpisodes` field. */
-  numberOfEpisodes?: Maybe<BigFloatFilter>;
+  numberOfEpisodes?: InputMaybe<BigFloatFilter>;
   /** Checks for any expressions in this list. */
-  or?: Maybe<Array<UserCustomAnimeListByStatusTypeFilter>>;
+  or?: InputMaybe<Array<UserCustomAnimeListByStatusTypeFilter>>;
   /** Filter by the object’s `title` field. */
-  title?: Maybe<StringFilter>;
+  title?: InputMaybe<StringFilter>;
   /** Filter by the object’s `userEpisodesWatched` field. */
-  userEpisodesWatched?: Maybe<BigFloatFilter>;
+  userEpisodesWatched?: InputMaybe<BigFloatFilter>;
   /** Filter by the object’s `userScore` field. */
-  userScore?: Maybe<BigFloatFilter>;
+  userScore?: InputMaybe<BigFloatFilter>;
   /** Filter by the object’s `watchStatus` field. */
-  watchStatus?: Maybe<StringFilter>;
+  watchStatus?: InputMaybe<StringFilter>;
 };
 
 /** A connection to a list of `UserCustomAnimeListByStatusType` values. */
@@ -11199,13 +11704,13 @@ export type UserCustomAnimeListByStatusTypesEdge = {
 /** A filter to be used against `User` object types. All fields are combined with a logical ‘and.’ */
 export type UserFilter = {
   /** Checks for all expressions in this list. */
-  and?: Maybe<Array<UserFilter>>;
+  and?: InputMaybe<Array<UserFilter>>;
   /** Filter by the object’s `id` field. */
-  id?: Maybe<StringFilter>;
+  id?: InputMaybe<StringFilter>;
   /** Negates the expression. */
-  not?: Maybe<UserFilter>;
+  not?: InputMaybe<UserFilter>;
   /** Checks for any expressions in this list. */
-  or?: Maybe<Array<UserFilter>>;
+  or?: InputMaybe<Array<UserFilter>>;
 };
 
 /** An input for mutations affecting `User` */
@@ -11239,17 +11744,17 @@ export type UserListAnime = {
 /** A filter to be used against `UserList` object types. All fields are combined with a logical ‘and.’ */
 export type UserListFilter = {
   /** Checks for all expressions in this list. */
-  and?: Maybe<Array<UserListFilter>>;
+  and?: InputMaybe<Array<UserListFilter>>;
   /** Filter by the object’s `id` field. */
-  id?: Maybe<UuidFilter>;
+  id?: InputMaybe<UuidFilter>;
   /** Negates the expression. */
-  not?: Maybe<UserListFilter>;
+  not?: InputMaybe<UserListFilter>;
   /** Checks for any expressions in this list. */
-  or?: Maybe<Array<UserListFilter>>;
+  or?: InputMaybe<Array<UserListFilter>>;
   /** Filter by the object’s `title` field. */
-  title?: Maybe<StringFilter>;
+  title?: InputMaybe<StringFilter>;
   /** Filter by the object’s `userId` field. */
-  userId?: Maybe<StringFilter>;
+  userId?: InputMaybe<StringFilter>;
 };
 
 /** A connection to a list of `UserList` values. */
@@ -11276,7 +11781,7 @@ export type UserListsEdge = {
 
 /** Represents an update to a `User`. Fields that are set will be updated. */
 export type UserPatch = {
-  id?: Maybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['String']>;
 };
 
 export type UserWatchStatus = Node & {
@@ -11299,47 +11804,47 @@ export type UserWatchStatus = Node & {
  */
 export type UserWatchStatusCondition = {
   /** Checks for equality with the object’s `animeId` field. */
-  animeId?: Maybe<Scalars['UUID']>;
+  animeId?: InputMaybe<Scalars['UUID']>;
   /** Checks for equality with the object’s `userEpisodesWatched` field. */
-  userEpisodesWatched?: Maybe<Scalars['Int']>;
+  userEpisodesWatched?: InputMaybe<Scalars['Int']>;
   /** Checks for equality with the object’s `userId` field. */
-  userId?: Maybe<Scalars['String']>;
+  userId?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `watchStatus` field. */
-  watchStatus?: Maybe<WatchStatusTypes>;
+  watchStatus?: InputMaybe<WatchStatusTypes>;
 };
 
 /** A filter to be used against `UserWatchStatus` object types. All fields are combined with a logical ‘and.’ */
 export type UserWatchStatusFilter = {
   /** Checks for all expressions in this list. */
-  and?: Maybe<Array<UserWatchStatusFilter>>;
+  and?: InputMaybe<Array<UserWatchStatusFilter>>;
   /** Filter by the object’s `animeId` field. */
-  animeId?: Maybe<UuidFilter>;
+  animeId?: InputMaybe<UuidFilter>;
   /** Negates the expression. */
-  not?: Maybe<UserWatchStatusFilter>;
+  not?: InputMaybe<UserWatchStatusFilter>;
   /** Checks for any expressions in this list. */
-  or?: Maybe<Array<UserWatchStatusFilter>>;
+  or?: InputMaybe<Array<UserWatchStatusFilter>>;
   /** Filter by the object’s `userEpisodesWatched` field. */
-  userEpisodesWatched?: Maybe<IntFilter>;
+  userEpisodesWatched?: InputMaybe<IntFilter>;
   /** Filter by the object’s `userId` field. */
-  userId?: Maybe<StringFilter>;
+  userId?: InputMaybe<StringFilter>;
   /** Filter by the object’s `watchStatus` field. */
-  watchStatus?: Maybe<WatchStatusTypesFilter>;
+  watchStatus?: InputMaybe<WatchStatusTypesFilter>;
 };
 
 /** An input for mutations affecting `UserWatchStatus` */
 export type UserWatchStatusInput = {
   animeId: Scalars['UUID'];
-  userEpisodesWatched?: Maybe<Scalars['Int']>;
+  userEpisodesWatched?: InputMaybe<Scalars['Int']>;
   userId: Scalars['String'];
-  watchStatus?: Maybe<WatchStatusTypes>;
+  watchStatus?: InputMaybe<WatchStatusTypes>;
 };
 
 /** Represents an update to a `UserWatchStatus`. Fields that are set will be updated. */
 export type UserWatchStatusPatch = {
-  animeId?: Maybe<Scalars['UUID']>;
-  userEpisodesWatched?: Maybe<Scalars['Int']>;
-  userId?: Maybe<Scalars['String']>;
-  watchStatus?: Maybe<WatchStatusTypes>;
+  animeId?: InputMaybe<Scalars['UUID']>;
+  userEpisodesWatched?: InputMaybe<Scalars['Int']>;
+  userId?: InputMaybe<Scalars['String']>;
+  watchStatus?: InputMaybe<WatchStatusTypes>;
 };
 
 /** A connection to a list of `UserWatchStatus` values. */
@@ -11465,32 +11970,34 @@ export enum WatchStatusTypes {
 /** A filter to be used against WatchStatusTypes fields. All fields are combined with a logical ‘and.’ */
 export type WatchStatusTypesFilter = {
   /** Not equal to the specified value, treating null like an ordinary value. */
-  distinctFrom?: Maybe<WatchStatusTypes>;
+  distinctFrom?: InputMaybe<WatchStatusTypes>;
   /** Equal to the specified value. */
-  equalTo?: Maybe<WatchStatusTypes>;
+  equalTo?: InputMaybe<WatchStatusTypes>;
   /** Greater than the specified value. */
-  greaterThan?: Maybe<WatchStatusTypes>;
+  greaterThan?: InputMaybe<WatchStatusTypes>;
   /** Greater than or equal to the specified value. */
-  greaterThanOrEqualTo?: Maybe<WatchStatusTypes>;
+  greaterThanOrEqualTo?: InputMaybe<WatchStatusTypes>;
   /** Included in the specified list. */
-  in?: Maybe<Array<WatchStatusTypes>>;
+  in?: InputMaybe<Array<WatchStatusTypes>>;
   /** Is null (if `true` is specified) or is not null (if `false` is specified). */
-  isNull?: Maybe<Scalars['Boolean']>;
+  isNull?: InputMaybe<Scalars['Boolean']>;
   /** Less than the specified value. */
-  lessThan?: Maybe<WatchStatusTypes>;
+  lessThan?: InputMaybe<WatchStatusTypes>;
   /** Less than or equal to the specified value. */
-  lessThanOrEqualTo?: Maybe<WatchStatusTypes>;
+  lessThanOrEqualTo?: InputMaybe<WatchStatusTypes>;
   /** Equal to the specified value, treating null like an ordinary value. */
-  notDistinctFrom?: Maybe<WatchStatusTypes>;
+  notDistinctFrom?: InputMaybe<WatchStatusTypes>;
   /** Not equal to the specified value. */
-  notEqualTo?: Maybe<WatchStatusTypes>;
+  notEqualTo?: InputMaybe<WatchStatusTypes>;
   /** Not included in the specified list. */
-  notIn?: Maybe<Array<WatchStatusTypes>>;
+  notIn?: InputMaybe<Array<WatchStatusTypes>>;
 };
 
 export type AnimeCardFragmentFragment = { __typename?: 'Anime', id: any, title: string, coverImage?: string | null | undefined, numberOfEpisodes?: number | null | undefined, averageWatcherRating?: any | null | undefined, userLiked?: boolean | null | undefined, userRating?: any | null | undefined, userWatchStatus?: string | null | undefined, userEpisodeCount?: any | null | undefined, startBroadcastDatetime?: any | null | undefined, airingStatusType?: AiringStatusTypes | null | undefined };
 
 export type AnimeListFragmentFragment = { __typename?: 'AnimeList', id: any, nodeId: string, privacy: AnimeListPrivacy, title: string };
+
+export type SearchResultFragmentFragment = { __typename?: 'SearchResult', title?: string | null | undefined, id?: any | null | undefined, malId?: number | null | undefined, mediaType?: string | null | undefined, numberOfEpisodes?: number | null | undefined, season?: string | null | undefined, seasonYear?: number | null | undefined, sourceMaterialType?: string | null | undefined, startBroadcastDatetime?: any | null | undefined, ageRatingType?: string | null | undefined, airingStatusType?: string | null | undefined, averageWatcherRating?: any | null | undefined, coverImage?: string | null | undefined, description?: string | null | undefined, duration?: number | null | undefined, endBroadcastDatetime?: any | null | undefined };
 
 export type CustomAnimeListFragmentFragment = { __typename?: 'CustomAnimeList', id?: string | null | undefined, animeId?: any | null | undefined, averageWatcherRating?: any | null | undefined, imageUrl?: string | null | undefined, listName?: string | null | undefined, mediaType?: string | null | undefined, numberOfEpisodes?: number | null | undefined, title?: string | null | undefined, userEpisodesWatched?: number | null | undefined, userScore?: any | null | undefined, watchStatus?: string | null | undefined, animeIndex?: string | null | undefined };
 
@@ -11647,22 +12154,13 @@ export type WeeklyAnimesQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type WeeklyAnimesQuery = { __typename?: 'Query', animes?: { __typename?: 'AnimeConnection', nodes: Array<{ __typename?: 'Anime', id: any, title: string, coverImage?: string | null | undefined, numberOfEpisodes?: number | null | undefined, averageWatcherRating?: any | null | undefined, userLiked?: boolean | null | undefined, userRating?: any | null | undefined, userWatchStatus?: string | null | undefined, userEpisodeCount?: any | null | undefined, startBroadcastDatetime?: any | null | undefined, airingStatusType?: AiringStatusTypes | null | undefined }> } | null | undefined };
 
-export type SearchAnimesQueryVariables = Exact<{
-  after?: Maybe<Scalars['Cursor']>;
-  first?: Maybe<Scalars['Int']>;
-  searchInput?: Maybe<Scalars['String']>;
-}>;
-
-
-export type SearchAnimesQuery = { __typename?: 'Query', searchAnimes?: { __typename?: 'AnimeConnection', totalCount: number, nodes: Array<{ __typename?: 'Anime', id: any, title: string, coverImage?: string | null | undefined, numberOfEpisodes?: number | null | undefined, averageWatcherRating?: any | null | undefined, userLiked?: boolean | null | undefined, userRating?: any | null | undefined, userWatchStatus?: string | null | undefined, userEpisodeCount?: any | null | undefined, startBroadcastDatetime?: any | null | undefined, airingStatusType?: AiringStatusTypes | null | undefined }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: any | null | undefined, hasPreviousPage: boolean, startCursor?: any | null | undefined } } | null | undefined };
-
 export type GetAnimeQueryVariables = Exact<{
   animeId: Scalars['UUID'];
   voiceActorLanguage: LanguageType;
-  afterCursor?: Maybe<Scalars['Cursor']>;
+  afterCursor?: InputMaybe<Scalars['Cursor']>;
   numOfAnimeToDisplay: Scalars['Int'];
   numOfStaffToDisplay: Scalars['Int'];
-  StaffCursor?: Maybe<Scalars['Cursor']>;
+  StaffCursor?: InputMaybe<Scalars['Cursor']>;
 }>;
 
 
@@ -11688,6 +12186,20 @@ export type UserCustomAnimeListByWatchStatusQueryVariables = Exact<{
 
 
 export type UserCustomAnimeListByWatchStatusQuery = { __typename?: 'Query', animes?: { __typename?: 'AnimeConnection', nodes: Array<{ __typename?: 'Anime', id: any, title: string, coverImage?: string | null | undefined, numberOfEpisodes?: number | null | undefined, averageWatcherRating?: any | null | undefined, userLiked?: boolean | null | undefined, userRating?: any | null | undefined, userWatchStatus?: string | null | undefined, userEpisodeCount?: any | null | undefined, startBroadcastDatetime?: any | null | undefined, airingStatusType?: AiringStatusTypes | null | undefined }> } | null | undefined };
+
+export type SearchAnimesQueryVariables = Exact<{
+  after?: InputMaybe<Scalars['Cursor']>;
+  first?: InputMaybe<Scalars['Int']>;
+  searchInput?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type SearchAnimesQuery = { __typename?: 'Query', searchAnimes?: { __typename?: 'SearchResultsConnection', totalCount: number, nodes: Array<{ __typename?: 'SearchResult', altName?: string | null | undefined, title?: string | null | undefined, id?: any | null | undefined, malId?: number | null | undefined, mediaType?: string | null | undefined, numberOfEpisodes?: number | null | undefined, season?: string | null | undefined, seasonYear?: number | null | undefined, sourceMaterialType?: string | null | undefined, startBroadcastDatetime?: any | null | undefined, ageRatingType?: string | null | undefined, airingStatusType?: string | null | undefined, averageWatcherRating?: any | null | undefined, coverImage?: string | null | undefined, description?: string | null | undefined, duration?: number | null | undefined, endBroadcastDatetime?: any | null | undefined }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: any | null | undefined, hasPreviousPage: boolean, startCursor?: any | null | undefined } } | null | undefined };
+
+export type AdvanceFilterDataQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AdvanceFilterDataQuery = { __typename?: 'Query', genres?: { __typename?: 'GenresConnection', nodes: Array<{ __typename?: 'Genre', genre: string }> } | null | undefined, mediaFormats?: { __typename?: 'MediaFormatsConnection', nodes: Array<{ __typename?: 'MediaFormat', mediaType?: string | null | undefined }> } | null | undefined, airingStatuses?: { __typename?: 'AiringStatusesConnection', nodes: Array<{ __typename?: 'AiringStatus', airingStatusType?: string | null | undefined }> } | null | undefined, sourceMaterials?: { __typename?: 'SourceMaterialsConnection', nodes: Array<{ __typename?: 'SourceMaterial', sourceMaterialType?: string | null | undefined }> } | null | undefined, producers?: { __typename?: 'ProducersConnection', nodes: Array<{ __typename?: 'Producer', producer: string }> } | null | undefined, studios?: { __typename?: 'StudiosConnection', nodes: Array<{ __typename?: 'Studio', studio: string }> } | null | undefined, ageRatings?: { __typename?: 'AgeRatingsConnection', nodes: Array<{ __typename?: 'AgeRating', ageRatingType?: string | null | undefined }> } | null | undefined };
 
 export type UserAnimeListsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -11722,6 +12234,26 @@ export const AnimeListFragmentFragmentDoc = gql`
   nodeId
   privacy
   title
+}
+    `;
+export const SearchResultFragmentFragmentDoc = gql`
+    fragment SearchResultFragment on SearchResult {
+  title
+  id
+  malId
+  mediaType
+  numberOfEpisodes
+  season
+  seasonYear
+  sourceMaterialType
+  startBroadcastDatetime
+  ageRatingType
+  airingStatusType
+  averageWatcherRating
+  coverImage
+  description
+  duration
+  endBroadcastDatetime
 }
     `;
 export const CustomAnimeListFragmentFragmentDoc = gql`
@@ -12081,26 +12613,6 @@ export const WeeklyAnimesDocument = gql`
 export function useWeeklyAnimesQuery(options: Omit<Urql.UseQueryArgs<WeeklyAnimesQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<WeeklyAnimesQuery>({ query: WeeklyAnimesDocument, ...options });
 };
-export const SearchAnimesDocument = gql`
-    query SearchAnimes($after: Cursor = null, $first: Int = null, $searchInput: String) {
-  searchAnimes(searchInput: $searchInput, after: $after, first: $first) {
-    nodes {
-      ...AnimeCardFragment
-    }
-    pageInfo {
-      hasNextPage
-      endCursor
-      hasPreviousPage
-      startCursor
-    }
-    totalCount
-  }
-}
-    ${AnimeCardFragmentFragmentDoc}`;
-
-export function useSearchAnimesQuery(options: Omit<Urql.UseQueryArgs<SearchAnimesQueryVariables>, 'query'> = {}) {
-  return Urql.useQuery<SearchAnimesQuery>({ query: SearchAnimesDocument, ...options });
-};
 export const GetAnimeDocument = gql`
     query GetAnime($animeId: UUID!, $voiceActorLanguage: LanguageType!, $afterCursor: Cursor, $numOfAnimeToDisplay: Int!, $numOfStaffToDisplay: Int!, $StaffCursor: Cursor) {
   anime(id: $animeId) {
@@ -12253,6 +12765,70 @@ export const UserCustomAnimeListByWatchStatusDocument = gql`
 export function useUserCustomAnimeListByWatchStatusQuery(options: Omit<Urql.UseQueryArgs<UserCustomAnimeListByWatchStatusQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<UserCustomAnimeListByWatchStatusQuery>({ query: UserCustomAnimeListByWatchStatusDocument, ...options });
 };
+export const SearchAnimesDocument = gql`
+    query SearchAnimes($after: Cursor = null, $first: Int = null, $searchInput: String) {
+  searchAnimes(searchInput: $searchInput, after: $after, first: $first) {
+    nodes {
+      altName
+      ...SearchResultFragment
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+      hasPreviousPage
+      startCursor
+    }
+    totalCount
+  }
+}
+    ${SearchResultFragmentFragmentDoc}`;
+
+export function useSearchAnimesQuery(options: Omit<Urql.UseQueryArgs<SearchAnimesQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<SearchAnimesQuery>({ query: SearchAnimesDocument, ...options });
+};
+export const AdvanceFilterDataDocument = gql`
+    query AdvanceFilterData {
+  genres(orderBy: GENRE_ASC) {
+    nodes {
+      genre
+    }
+  }
+  mediaFormats {
+    nodes {
+      mediaType
+    }
+  }
+  airingStatuses {
+    nodes {
+      airingStatusType
+    }
+  }
+  sourceMaterials {
+    nodes {
+      sourceMaterialType
+    }
+  }
+  producers(orderBy: PRODUCER_ASC) {
+    nodes {
+      producer
+    }
+  }
+  studios(orderBy: STUDIO_ASC) {
+    nodes {
+      studio
+    }
+  }
+  ageRatings {
+    nodes {
+      ageRatingType
+    }
+  }
+}
+    `;
+
+export function useAdvanceFilterDataQuery(options: Omit<Urql.UseQueryArgs<AdvanceFilterDataQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<AdvanceFilterDataQuery>({ query: AdvanceFilterDataDocument, ...options });
+};
 export const UserAnimeListsDocument = gql`
     query UserAnimeLists {
   allUserAnimes {
@@ -12359,6 +12935,238 @@ export default {
               "kind": "OBJECT",
               "name": "User",
               "ofType": null
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "AgeRating",
+        "fields": [
+          {
+            "name": "ageRatingType",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "id",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "AgeRatingsConnection",
+        "fields": [
+          {
+            "name": "edges",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "LIST",
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "AgeRatingsEdge",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "nodes",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "LIST",
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "AgeRating",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "pageInfo",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "PageInfo",
+                "ofType": null
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "totalCount",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "AgeRatingsEdge",
+        "fields": [
+          {
+            "name": "cursor",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "node",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "AgeRating",
+                "ofType": null
+              }
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "AiringStatus",
+        "fields": [
+          {
+            "name": "airingStatusType",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "id",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "AiringStatusesConnection",
+        "fields": [
+          {
+            "name": "edges",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "LIST",
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "AiringStatusesEdge",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "nodes",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "LIST",
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "AiringStatus",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "pageInfo",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "PageInfo",
+                "ofType": null
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "totalCount",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "AiringStatusesEdge",
+        "fields": [
+          {
+            "name": "cursor",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "node",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "AiringStatus",
+                "ofType": null
+              }
             },
             "args": []
           }
@@ -15540,6 +16348,122 @@ export default {
               "ofType": {
                 "kind": "OBJECT",
                 "name": "AnimeUserScore",
+                "ofType": null
+              }
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "AvailableLanguage",
+        "fields": [
+          {
+            "name": "id",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "language",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "AvailableLanguagesConnection",
+        "fields": [
+          {
+            "name": "edges",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "LIST",
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "AvailableLanguagesEdge",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "nodes",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "LIST",
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "AvailableLanguage",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "pageInfo",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "PageInfo",
+                "ofType": null
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "totalCount",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "AvailableLanguagesEdge",
+        "fields": [
+          {
+            "name": "cursor",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "node",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "AvailableLanguage",
                 "ofType": null
               }
             },
@@ -21305,6 +22229,122 @@ export default {
       },
       {
         "kind": "OBJECT",
+        "name": "MediaFormat",
+        "fields": [
+          {
+            "name": "id",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "mediaType",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "MediaFormatsConnection",
+        "fields": [
+          {
+            "name": "edges",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "LIST",
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "MediaFormatsEdge",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "nodes",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "LIST",
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "MediaFormat",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "pageInfo",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "PageInfo",
+                "ofType": null
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "totalCount",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "MediaFormatsEdge",
+        "fields": [
+          {
+            "name": "cursor",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "node",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "MediaFormat",
+                "ofType": null
+              }
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
         "name": "Mutation",
         "fields": [
           {
@@ -25987,6 +27027,150 @@ export default {
         "name": "Query",
         "fields": [
           {
+            "name": "ageRatings",
+            "type": {
+              "kind": "OBJECT",
+              "name": "AgeRatingsConnection",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "after",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "before",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "condition",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "filter",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "first",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "last",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "offset",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "orderBy",
+                "type": {
+                  "kind": "LIST",
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "Any"
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "airingStatuses",
+            "type": {
+              "kind": "OBJECT",
+              "name": "AiringStatusesConnection",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "after",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "before",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "condition",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "filter",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "first",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "last",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "offset",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "orderBy",
+                "type": {
+                  "kind": "LIST",
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "Any"
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
             "name": "allUserAnimes",
             "type": {
               "kind": "OBJECT",
@@ -27411,6 +28595,78 @@ export default {
             ]
           },
           {
+            "name": "availableLanguages",
+            "type": {
+              "kind": "OBJECT",
+              "name": "AvailableLanguagesConnection",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "after",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "before",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "condition",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "filter",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "first",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "last",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "offset",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "orderBy",
+                "type": {
+                  "kind": "LIST",
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "Any"
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
             "name": "character",
             "type": {
               "kind": "OBJECT",
@@ -28265,6 +29521,78 @@ export default {
             ]
           },
           {
+            "name": "mediaFormats",
+            "type": {
+              "kind": "OBJECT",
+              "name": "MediaFormatsConnection",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "after",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "before",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "condition",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "filter",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "first",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "last",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "offset",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "orderBy",
+                "type": {
+                  "kind": "LIST",
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "Any"
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
             "name": "node",
             "type": {
               "kind": "INTERFACE",
@@ -28697,7 +30025,7 @@ export default {
             "name": "searchAnimes",
             "type": {
               "kind": "OBJECT",
-              "name": "AnimeConnection",
+              "name": "SearchResultsConnection",
               "ofType": null
             },
             "args": [
@@ -28748,6 +30076,78 @@ export default {
                 "type": {
                   "kind": "SCALAR",
                   "name": "Any"
+                }
+              }
+            ]
+          },
+          {
+            "name": "sourceMaterials",
+            "type": {
+              "kind": "OBJECT",
+              "name": "SourceMaterialsConnection",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "after",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "before",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "condition",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "filter",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "first",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "last",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "offset",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "orderBy",
+                "type": {
+                  "kind": "LIST",
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "Any"
+                    }
+                  }
                 }
               }
             ]
@@ -29658,6 +31058,242 @@ export default {
       },
       {
         "kind": "OBJECT",
+        "name": "SearchResult",
+        "fields": [
+          {
+            "name": "ageRatingType",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "airingStatusType",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "altName",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "averageWatcherRating",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "coverImage",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "description",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "duration",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "endBroadcastDatetime",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "id",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "malId",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "mediaType",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "numberOfEpisodes",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "season",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "seasonYear",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "sourceMaterialType",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "startBroadcastDatetime",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "title",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "SearchResultsConnection",
+        "fields": [
+          {
+            "name": "edges",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "LIST",
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "SearchResultsEdge",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "nodes",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "LIST",
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "SearchResult",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "pageInfo",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "PageInfo",
+                "ofType": null
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "totalCount",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "SearchResultsEdge",
+        "fields": [
+          {
+            "name": "cursor",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "node",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "SearchResult",
+                "ofType": null
+              }
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
         "name": "SmallUser",
         "fields": [
           {
@@ -29681,6 +31317,122 @@ export default {
             "type": {
               "kind": "SCALAR",
               "name": "Any"
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "SourceMaterial",
+        "fields": [
+          {
+            "name": "id",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "sourceMaterialType",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "SourceMaterialsConnection",
+        "fields": [
+          {
+            "name": "edges",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "LIST",
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "SourceMaterialsEdge",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "nodes",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "LIST",
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "SourceMaterial",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "pageInfo",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "PageInfo",
+                "ofType": null
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "totalCount",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "SourceMaterialsEdge",
+        "fields": [
+          {
+            "name": "cursor",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "node",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "SourceMaterial",
+                "ofType": null
+              }
             },
             "args": []
           }

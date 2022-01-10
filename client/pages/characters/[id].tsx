@@ -92,7 +92,11 @@ const characterPage = ({ character }) => {
     <Box>
       <Flex justifyContent="flex-start" p="6">
         <Box minW="225px" h="350px" position="relative" m="2">
-          <ImageLoader image_url={characterImage?.url} alt={name} />
+          <ImageLoader
+            image_url={characterImage?.url}
+            alt={name}
+            maxW="225px"
+          />
         </Box>
         <Box ml="6" position="relative">
           <Heading>{name}</Heading>
@@ -135,6 +139,7 @@ const characterPage = ({ character }) => {
                               " " +
                               (actor?.actorLastName ?? "")
                             }
+                            maxW="125px"
                           />
                         </Box>
                       </NextLink>
@@ -165,6 +170,7 @@ const characterPage = ({ character }) => {
                         <ImageLoader
                           image_url={anime?.animeImageUrl}
                           alt={anime?.title}
+                          maxW="125px"
                         />
                       </Box>
                     </Td>

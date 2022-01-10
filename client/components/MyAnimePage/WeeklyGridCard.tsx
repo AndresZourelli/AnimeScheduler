@@ -85,7 +85,7 @@ const WeeklyGridCard = ({
               role="group"
               position="relative"
             >
-              <NextLink href={`/anime/${id}`}>
+              <NextLink href={`/animes/${id}`}>
                 <Box
                   minW="167px"
                   h="242px"

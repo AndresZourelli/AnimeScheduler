@@ -133,6 +133,17 @@ const Nav = () => {
     setSearch(e.target.value);
   };
 
+  const onKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      if (search !== "") {
+        router.push({
+          pathname: "/search",
+          query: { search },
+        });
+      }
+    }
+  };
+
   return (
     <Box>
       <Flex
@@ -173,6 +184,7 @@ const Nav = () => {
                   placeholder="Search"
                   value={search}
                   onChange={onSearchChange}
+                  onKeyPress={onKeyPress}
                 />
               </InputGroup>
             </PopoverTrigger>
@@ -199,7 +211,7 @@ const Nav = () => {
                             }}
                           >
                             <Td onClick={onPopoverClose}>
-                              <NextLink href={`/anime/${anime.id}`}>
+                              <NextLink href={`/animes/${anime.id}`}>
                                 {anime.title}
                               </NextLink>
                             </Td>
@@ -240,15 +252,15 @@ const Nav = () => {
           <NextLink href="/">
             <Link mr="4">Home</Link>
           </NextLink>
-          <NextLink href="/Anime">
-            <Link mr="4">Animé</Link>
+          <NextLink href="/animes">
+            <Link mr="4">Animés</Link>
           </NextLink>
           {signedIn ? (
             <>
-              <NextLink href="/anime/myanimes">
+              <NextLink href="/animes/myanimes">
                 <Link mr="4">My Animes</Link>
               </NextLink>
-              <NextLink href="/user/account">
+              <NextLink href="/users/account">
                 <Link>My Account</Link>
               </NextLink>
             </>

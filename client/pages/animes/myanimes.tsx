@@ -27,7 +27,7 @@ const MyAnimes = (props) => {
 
   const onChangeTabs = (index: number) => {
     router.push(
-      { pathname: "/anime/myanimes", query: { tabIndex: index } },
+      { pathname: "/animes/myanimes", query: { tabIndex: index } },
       undefined,
       { shallow: true }
     );

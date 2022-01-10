@@ -84,7 +84,7 @@ const ActorPage = ({ actor }) => {
                   <Tr key={anime.anime.id}>
                     <Td mb="2" fontSize="sm">
                       <NextLink
-                        href={`/character/${encodeURIComponent(
+                        href={`/characters/${encodeURIComponent(
                           anime.character.character_id
                         )}`}
                       >
@@ -96,12 +96,13 @@ const ActorPage = ({ actor }) => {
                         <ImageLoader
                           image_url={anime.character.image_url}
                           alt={anime.character.name}
+                          maxW="125px"
                         />
                       </Box>
                     </Td>
                     <Td mb="2" fontSize="sm">
                       <NextLink
-                        href={`/anime/${encodeURIComponent(anime.anime.id)}`}
+                        href={`/animes/${encodeURIComponent(anime.anime.id)}`}
                       >
                         {anime.anime.title}
                       </NextLink>
@@ -111,6 +112,7 @@ const ActorPage = ({ actor }) => {
                         <ImageLoader
                           image_url={anime.anime.image_url}
                           alt={anime.anime.name}
+                          maxW="125px"
                         />
                       </Box>
                     </Td>

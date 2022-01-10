@@ -121,7 +121,7 @@ const personPage = ({ staff }) => {
                       <Tr key={uuidv4()}>
                         <Td>
                           <NextLink
-                            href={`/anime/${encodeURIComponent(
+                            href={`/animes/${encodeURIComponent(
                               character.anime.id
                             )}`}
                           >
@@ -136,13 +136,14 @@ const personPage = ({ staff }) => {
                               <ImageLoader
                                 image_url={character.anime.profileImage.url}
                                 alt={character.anime.title}
+                                maxW="125px"
                               />
                             </Box>
                           </NextLink>
                         </Td>
                         <Td key={uuidv4()} fontSize="sm" textAlign="center">
                           <NextLink
-                            href={`/anime/${encodeURIComponent(
+                            href={`/animes/${encodeURIComponent(
                               character.anime.id
                             )}`}
                           >
@@ -151,7 +152,7 @@ const personPage = ({ staff }) => {
                         </Td>
                         <Td>
                           <NextLink
-                            href={`/character/${encodeURIComponent(
+                            href={`/characters/${encodeURIComponent(
                               character.character.id
                             )}`}
                           >
@@ -168,6 +169,7 @@ const personPage = ({ staff }) => {
                                   character.character.characterImage.url
                                 }
                                 alt={character.character.name}
+                                maxW="125px"
                               />
                             </Box>
                           </NextLink>
@@ -199,14 +201,14 @@ const personPage = ({ staff }) => {
                       </Td>
                       <Td key={uuidv4()} fontSize="sm" textAlign="center">
                         <NextLink
-                          href={`/anime/${encodeURIComponent(staff.anime.id)}`}
+                          href={`/animes/${encodeURIComponent(staff.anime.id)}`}
                         >
                           {staff.anime.title}
                         </NextLink>
                       </Td>
                       <Td>
                         <NextLink
-                          href={`/anime/${encodeURIComponent(staff.anime.id)}`}
+                          href={`/animes/${encodeURIComponent(staff.anime.id)}`}
                         >
                           <Box
                             w="125px"
@@ -218,6 +220,7 @@ const personPage = ({ staff }) => {
                             <ImageLoader
                               image_url={staff.anime.profileImage.url}
                               alt={staff.anime.title}
+                              maxW="125px"
                             />
                           </Box>
                         </NextLink>
