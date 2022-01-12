@@ -81,7 +81,12 @@ const MultiSelect = (props: MultiSelectProps) => {
           />
         </Flex>
       </Box>
-      <Box position="absolute" zIndex="overlay" w="full">
+      <Box
+        position="absolute"
+        zIndex="overlay"
+        w="full"
+        display={isOpen ? "block" : "none"}
+      >
         <ScaleFade initialScale={0.9} in={isOpen} style={{ zIndex: 9999 }}>
           <Box
             mt="1"
@@ -121,7 +126,7 @@ const MultiSelect = (props: MultiSelectProps) => {
                   onClick={() => toggleItem(item.name)}
                 >
                   <HStack px="3" spacing="4">
-                    {selectedItems.includes(item.name) ? (
+                    {selectedItems?.includes(item.name) ? (
                       <Icon as={AiFillCheckCircle} color="green.200" />
                     ) : (
                       <Icon
