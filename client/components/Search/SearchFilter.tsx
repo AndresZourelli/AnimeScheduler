@@ -17,41 +17,62 @@ import {
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import { useAdvanceFilterDataQuery, Season } from "@/graphql";
+import {
+  useAdvanceFilterDataQuery,
+  Season,
+  SearchResultFilter,
+  StringListFilter,
+} from "@/graphql";
 import { FieldArray, Form, Formik } from "formik";
 import MultiSelect from "@/components/Common/MultiSelect";
 
 interface Score {
-  Min: number;
-  Max: number;
+  min: number;
+  max: number;
+}
+
+interface Options {
+  name: string;
+  value: string | number;
 }
 interface SearchFilters {
-  Genres: string[] | null;
-  Year: number | null;
-  Season: Season | null;
-  Format: string[] | null;
-  AiringStatus: string | null;
-  StreamingOn: string[] | null;
-  SourceMaterial: string | null;
-  Producer: string[] | null;
-  Studio: string[] | null;
-  AgeRating: string[] | null;
-  Score: Score | null;
-  Tags: string[] | null;
+  genres: Options[];
+  year: Options[];
+  season: Options[];
+  mediaFormat: string[];
+  airingStatus: string[];
+  streamingOn: string[];
+  sourceMaterial: string[];
+  producer: string[];
+  studio: string[];
+  ageRating: string[];
+  score: Score;
+  tags: string[];
 }
+
+interface SearchProps {
+  searchFilter: (item: SearchResultFilter) => void;
+}
+
+const seasonArray = [
+  { name: "Winter", value: "Winter" },
+  { name: "Spring", value: "Spring" },
+  { name: "Summer", value: "Summer" },
+  { name: "Fall", value: "Fall" },
+];
 
 let initialSearchFilters = {
   genres: [],
-  year: null,
-  season: null,
+  year: [],
+  season: [],
   mediaFormat: [],
-  airingStatus: null,
+  airingStatus: [],
   streamingOn: [],
-  sourceMaterial: null,
+  sourceMaterial: [],
   producer: [],
   studio: [],
   ageRating: [],
-  score: null,
+  score: { min: 0, max: 10 },
   tags: [],
 };
 
@@ -62,7 +83,79 @@ const filterStyle = {
   },
 };
 
-const SearchFilter = () => {
+const generateFilters = (value: SearchFilters): SearchResultFilter => {
+  let searchResultFilters: SearchResultFilter = {
+    ageRatingType: { in: null },
+    airingStatusType: { in: null },
+    genres: { contains: null },
+    mediaType: { in: null },
+    producers: { contains: null },
+    averageWatcherRating: {
+      greaterThanOrEqualTo: null,
+      lessThanOrEqualTo: null,
+    },
+    season: { in: null },
+    sourceMaterialType: { in: null },
+    streamingOn: { in: null },
+    studios: { contains: null },
+    seasonYear: { in: null },
+  };
+  if (value.ageRating.length > 0) {
+    searchResultFilters.ageRatingType.in = value.ageRating;
+  }
+
+  if (value.airingStatus.length > 0) {
+    searchResultFilters.airingStatusType.in = value.airingStatus;
+  }
+
+  if (value.genres.length > 0) {
+    searchResultFilters.genres.contains = value.genres.map(
+      (item) => item.value as string
+    );
+  }
+
+  if (value.mediaFormat.length > 0) {
+    searchResultFilters.mediaType.in = value.mediaFormat;
+  }
+
+  if (value.producer.length > 0) {
+    searchResultFilters.producers.contains = value.producer;
+  }
+
+  if (value.score !== initialSearchFilters.score) {
+    searchResultFilters.averageWatcherRating.greaterThanOrEqualTo =
+      value.score[0];
+    searchResultFilters.averageWatcherRating.lessThanOrEqualTo = value.score[1];
+  }
+
+  if (value.season.length > 0) {
+    searchResultFilters.season.in = value.season.map(
+      (item) => item.value as string
+    );
+  }
+
+  if (value.sourceMaterial.length > 0) {
+    searchResultFilters.sourceMaterialType.in = value.sourceMaterial;
+  }
+
+  if (value.streamingOn.length > 0) {
+    searchResultFilters.streamingOn.in = value.streamingOn;
+  }
+
+  if (value.studio.length > 0) {
+    searchResultFilters.studios.contains = value.studio;
+  }
+
+  if (value.year.length > 0) {
+    searchResultFilters.seasonYear.in = value.year.map(
+      (item) => item.value as number
+    );
+  }
+
+  return searchResultFilters;
+};
+
+const SearchFilter = (props: SearchProps) => {
   const router = useRouter();
   const [range, setRange] = useState([0, 10]);
   const [advancedFilterFields, _] = useAdvanceFilterDataQuery();
@@ -74,17 +167,16 @@ const SearchFilter = () => {
   }
 
   if (!currentQueryParams.hasOwnProperty("year")) {
-    currentQueryParams["year"] = 2010;
+    currentQueryParams["year"] = [2010, 2012];
     router.push({
       pathname: "/search",
       query: currentQueryParams,
     });
   }
 
-  for (let i = 1900; i <= currentDate.getFullYear() + 3; i++) {
-    yearsArray.push(i);
+  for (let i = currentDate.getFullYear() + 3; i >= 1900; i--) {
+    yearsArray.push({ name: i.toString(), value: i });
   }
-
   let availableTags = [];
 
   useEffect(() => {
@@ -104,7 +196,10 @@ const SearchFilter = () => {
   return (
     <Formik
       initialValues={initialSearchFilters}
-      onSubmit={(values) => console.log(values)}
+      onSubmit={(values: SearchFilters) => {
+        console.log(generateFilters(values));
+        props.searchFilter(generateFilters(values));
+      }}
     >
       {({ values, handleChange, setFieldValue }) => (
         <Form>
@@ -134,45 +229,44 @@ const SearchFilter = () => {
               </FieldArray>
             </GridItem>
             <GridItem>
-              <Heading
-                size={filterStyle.advancedFilter.headingSize}
-                mb={filterStyle.advancedFilter.marginBottom}
-              >
-                Year
-              </Heading>
-              <Select
-                placeholder="Select"
-                id="year"
-                name="year"
-                onChange={handleChange}
-              >
-                {yearsArray
-                  .sort((a, b) => b - a)
-                  .map((year, i) => (
-                    <option key={i} value={year}>
-                      {year}
-                    </option>
-                  ))}
-              </Select>
+              <FieldArray name="year">
+                {({ remove, push }) => (
+                  <>
+                    <Heading
+                      size={filterStyle.advancedFilter.headingSize}
+                      mb={filterStyle.advancedFilter.marginBottom}
+                    >
+                      Year
+                    </Heading>
+                    <MultiSelect
+                      itemOptions={yearsArray}
+                      addSelectedItem={push}
+                      removeSelectedItem={remove}
+                      selectedItems={values.year}
+                    />
+                  </>
+                )}
+              </FieldArray>
             </GridItem>
             <GridItem>
-              <Heading
-                size={filterStyle.advancedFilter.headingSize}
-                mb={filterStyle.advancedFilter.marginBottom}
-              >
-                Season
-              </Heading>
-              <Select
-                placeholder="Select"
-                id="season"
-                name="season"
-                onChange={handleChange}
-              >
-                <option value={Season.Winter}>Winter</option>
-                <option value={Season.Spring}>Spring</option>
-                <option value={Season.Summer}>Summer</option>
-                <option value={Season.Fall}>Fall</option>
-              </Select>
+              <FieldArray name="season">
+                {({ remove, push }) => (
+                  <>
+                    <Heading
+                      size={filterStyle.advancedFilter.headingSize}
+                      mb={filterStyle.advancedFilter.marginBottom}
+                    >
+                      Season
+                    </Heading>
+                    <MultiSelect
+                      itemOptions={seasonArray}
+                      addSelectedItem={push}
+                      removeSelectedItem={remove}
+                      selectedItems={values.season}
+                    />
+                  </>
+                )}
+              </FieldArray>
             </GridItem>
             <GridItem>
               <Heading

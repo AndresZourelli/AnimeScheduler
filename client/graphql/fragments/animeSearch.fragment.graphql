@@ -15,4 +15,8 @@ fragment SearchResultFragment on SearchResult {
   description
   duration
   endBroadcastDatetime
+  userEpisodeCount
+  userLiked
+  userRating
+  userWatchStatus
 }

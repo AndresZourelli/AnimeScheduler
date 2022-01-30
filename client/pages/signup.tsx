@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { useAuth } from "@/lib/Auth/FirebaseAuth";
+import { Provider, useAuth } from "@/lib/Auth/FirebaseAuth";
 import { withAuthPublic } from "@/lib/Auth/withAuth";
 import { ArrowLeftIcon } from "@chakra-ui/icons";
 import {
@@ -30,7 +30,7 @@ const signup = () => {
   });
 
   const onGoogleSignUpClick = () => {
-    registerUser("google");
+    registerUser(Provider.GOOGLE);
   };
 
   const goBackClick = () => {
@@ -38,7 +38,7 @@ const signup = () => {
   };
   const onSignupSubmit = () => {
     registerUser(
-      "email",
+      Provider.EMAIL,
       signupData.username,
       signupData.email,
       signupData.password

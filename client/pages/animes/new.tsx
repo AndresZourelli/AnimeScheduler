@@ -102,7 +102,6 @@ const AddNewAnime = () => {
                     errors={errors}
                     touched={touched}
                     handleChange={handleChange}
-                    initialTouched={initialTouched}
                   />
                 </TabPanel>
                 <TabPanel>
@@ -112,8 +111,8 @@ const AddNewAnime = () => {
                     errors={errors}
                     touched={touched}
                     handleChange={handleChange}
-                    initialTouched={initialTouched}
                     setFieldValue={setFieldValue}
+                    push={undefined}
                   />
                 </TabPanel>
                 <TabPanel>
@@ -123,8 +122,8 @@ const AddNewAnime = () => {
                     errors={errors}
                     touched={touched}
                     handleChange={handleChange}
-                    initialTouched={initialTouched}
                     setFieldValue={setFieldValue}
+                    push={undefined}
                   />
                 </TabPanel>
                 <TabPanel>
@@ -134,8 +133,8 @@ const AddNewAnime = () => {
                     errors={errors}
                     touched={touched}
                     handleChange={handleChange}
-                    initialTouched={initialTouched}
                     setFieldValue={setFieldValue}
+                    push={undefined}
                   />
                 </TabPanel>
                 <TabPanel>
@@ -145,8 +144,8 @@ const AddNewAnime = () => {
                     errors={errors}
                     touched={touched}
                     handleChange={handleChange}
-                    initialTouched={initialTouched}
                     setFieldValue={setFieldValue}
+                    push={undefined}
                   />
                 </TabPanel>
                 <TabPanel>
@@ -156,14 +155,13 @@ const AddNewAnime = () => {
                     errors={errors}
                     touched={touched}
                     handleChange={handleChange}
-                    initialTouched={initialTouched}
                     setFieldValue={setFieldValue}
                   />
                 </TabPanel>
               </TabPanels>
             </Tabs>
             <Box>
-              <Button onClick={handleSubmit}>Submit</Button>
+              <Button>Submit</Button>
             </Box>
             <Box>{JSON.stringify(values, null, 2)}</Box>
           </>

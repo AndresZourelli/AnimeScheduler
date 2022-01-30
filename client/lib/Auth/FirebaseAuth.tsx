@@ -72,7 +72,7 @@ const AuthContext = createContext<FirebaseAuthInterface>(
   {} as FirebaseAuthInterface
 );
 
-enum Provider {
+export enum Provider {
   GOOGLE = "google",
   EMAIL = "email",
 }

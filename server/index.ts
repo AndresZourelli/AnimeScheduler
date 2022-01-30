@@ -92,6 +92,10 @@ app.use(
     },
     enableQueryBatching: true,
     legacyRelations: "omit",
+    graphileBuildOptions: {
+      connectionFilterAllowNullInput: true,
+      connectionFilterAllowEmptyObjectInput: true,
+    },
   })
 );
 // eslint-disable-next-line no-unused-vars

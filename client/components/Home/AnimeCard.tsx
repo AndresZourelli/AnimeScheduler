@@ -23,19 +23,6 @@ import {
   AiOutlinePlus,
 } from "react-icons/ai";
 import useCountDown from "../Hooks/useCountDown";
-interface IAnime {
-  id: any;
-  title: string;
-  coverImage?: string;
-  numberOfEpisodes?: number;
-  averageWatcherRating?: any;
-  userLiked?: boolean;
-  userRating?: any;
-  userWatchStatus?: WatchStatusTypes;
-  userEpisodeCount?: any;
-  startBroadcastDatetime?: any;
-  airingStatusType?: AiringStatusTypes;
-}
 interface AnimeCard {
   id?: any;
   title?: string;
@@ -89,9 +76,9 @@ const AnimeCard = ({
     onChangeUserAnimeRating,
     onClickUserEpisodeCount,
   } = useAnimeList({ inputAnimeId: id, animeTitle: title });
-  const { days, hours, minutes } = useCountDown({
-    endInputDate: startBroadcastDatetime,
-  });
+  // const { days, hours, minutes } = useCountDown({
+  //   endInputDate: startBroadcastDatetime,
+  // });
 
   const redirectToAnime = (e) => {
     router.push(`/animes/${id}`);
@@ -152,7 +139,7 @@ const AnimeCard = ({
       >
         {user ? (
           <>
-            {(airingStatusType as AiringStatusTypes) ===
+            {/* {(airingStatusType as AiringStatusTypes) ===
               AiringStatusTypes.CurrentlyAiring && showNextEpisode ? (
               <Box
                 w="full"
@@ -160,7 +147,7 @@ const AnimeCard = ({
                 fontSize="md"
                 textAlign="center"
               >{`Next ep in ${days}d ${hours}h ${minutes}m`}</Box>
-            ) : null}
+            ) : null} */}
             <Box d="flex" bg="gray.600" w="full" justifyContent="space-between">
               <Box>
                 <Tooltip label="Choose your watch status">

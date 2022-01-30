@@ -10,6 +10,13 @@ import { checkTokenExpiration } from "../../utilities/checkTokenExpiration";
 
 interface ExtendedData extends Data {
   nodeId: string;
+  genre?: string;
+  mediaType?: string;
+  airingStatusType?: string;
+  sourceMaterialType?: string;
+  producer?: string;
+  studio?: string;
+  ageRatingType?: string;
 }
 
 const client = createClient({
@@ -30,6 +37,13 @@ const client = createClient({
         StaffRole: (data) => null,
         AnimeCharacter: (data: ExtendedData) => data.nodeId,
         AnimeStaff: (data: ExtendedData) => data.nodeId,
+        Genre: (data: ExtendedData) => data.genre,
+        MediaFormat: (data: ExtendedData) => data.mediaType,
+        AiringStatus: (data: ExtendedData) => data.mediaType,
+        SourceMaterial: (data: ExtendedData) => data.sourceMaterialType,
+        Producer: (data: ExtendedData) => data.producer,
+        Studio: (data: ExtendedData) => data.studio,
+        AgeRating: (data: ExtendedData) => data.ageRatingType,
       },
     }),
     authExchange({

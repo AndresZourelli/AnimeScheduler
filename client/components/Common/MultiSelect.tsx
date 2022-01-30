@@ -18,13 +18,13 @@ import { BsCircle } from "react-icons/bs";
 
 interface Options {
   name: string;
-  value: string;
+  value: string | number;
 }
 
 interface MultiSelectProps {
   itemOptions: Options[];
-  selectedItems: string[];
-  addSelectedItem: (index: string) => void;
+  selectedItems: Options[];
+  addSelectedItem: (index: Options) => void;
   removeSelectedItem: (index: number) => void;
 }
 
@@ -42,9 +42,11 @@ const MultiSelect = (props: MultiSelectProps) => {
   const ref = useRef();
   useOutsideClick({ ref: ref, handler: () => onClose() });
 
-  const toggleItem = (value: string) => {
-    if (selectedItems.includes(value)) {
-      removeSelectedItem(selectedItems.indexOf(value));
+  const toggleItem = (value: Options) => {
+    if (selectedItems.find((item) => item.name === value.name)) {
+      removeSelectedItem(
+        selectedItems.findIndex(({ name }) => name === value.name)
+      );
     } else {
       addSelectedItem(value);
     }
@@ -61,7 +63,7 @@ const MultiSelect = (props: MultiSelectProps) => {
           <HStack pr="2">
             {selectedItems?.length > 0 ? (
               <Tag size="lg">
-                <TagLabel>{selectedItems[0]}</TagLabel>
+                <TagLabel>{selectedItems[0].name}</TagLabel>
                 <TagCloseButton onClick={() => removeSelectedItem(0)} />
               </Tag>
             ) : null}
@@ -123,10 +125,12 @@ const MultiSelect = (props: MultiSelectProps) => {
                   cursor="pointer"
                   key={itemIndex}
                   py="1"
-                  onClick={() => toggleItem(item.name)}
+                  onClick={() => toggleItem(item)}
                 >
                   <HStack px="3" spacing="4">
-                    {selectedItems?.includes(item.name) ? (
+                    {selectedItems.find(
+                      (existingItem) => existingItem.name === item.name
+                    ) ? (
                       <Icon as={AiFillCheckCircle} color="green.200" />
                     ) : (
                       <Icon

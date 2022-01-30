@@ -24,7 +24,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 
 const NewStaff = ({ values, setFieldValue }) => {
-  const [file, setFile] = useState();
+  const [file, setFile] = useState<any>();
   const [error, setError] = useState({ code: "", message: "" });
   const [altName, setAltName] = useState({
     givenNameSearchBar: "",
@@ -115,6 +115,7 @@ const NewStaff = ({ values, setFieldValue }) => {
       altNamesSearchBar: [{ name: "" }],
       description: "",
       image: "",
+      language: "",
     });
     onClose();
   };
@@ -137,7 +138,7 @@ const NewStaff = ({ values, setFieldValue }) => {
 
   useEffect(() => {
     const validateImageSize = async (src) => {
-      let image = await addImageProcess(src);
+      let image = (await addImageProcess(src)) as any;
       let error;
       if (image.width < 230 || image.height < 345) {
         error = {
@@ -267,7 +268,7 @@ const NewStaff = ({ values, setFieldValue }) => {
                   cursor="pointer"
                   mb={3}
                 >
-                  <Input {...getInputProps()} />
+                  {/* <Input {...getInputProps()} /> */}
                   <Text>
                     Drag &apos;n&apos; drop some files here, or click to select
                     files

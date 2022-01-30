@@ -2,8 +2,14 @@ query SearchAnimes(
   $after: Cursor = null
   $first: Int = null
   $searchInput: String
+  $filter: SearchResultFilter = {}
 ) {
-  searchAnimes(searchInput: $searchInput, after: $after, first: $first) {
+  searchAnimes(
+    searchInput: $searchInput
+    after: $after
+    first: $first
+    filter: $filter
+  ) {
     nodes {
       altName
       ...SearchResultFragment
@@ -22,36 +28,43 @@ query AdvanceFilterData {
   genres(orderBy: GENRE_ASC) {
     nodes {
       genre
+      id
     }
   }
   mediaFormats {
     nodes {
       mediaType
+      id
     }
   }
   airingStatuses {
     nodes {
       airingStatusType
+      id
     }
   }
   sourceMaterials {
     nodes {
       sourceMaterialType
+      id
     }
   }
   producers(orderBy: PRODUCER_ASC) {
     nodes {
       producer
+      id
     }
   }
   studios(orderBy: STUDIO_ASC) {
     nodes {
       studio
+      id
     }
   }
   ageRatings {
     nodes {
       ageRatingType
+      id
     }
   }
 }

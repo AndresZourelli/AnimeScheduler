@@ -13,6 +13,15 @@ const useCountDown = ({ endInputDate = null }) => {
     seconds: "00",
   });
 
+  let interval = useRef<NodeJS.Timer | number>(0);
+  useEffect(() => {
+    interval.current = setInterval(() => {
+      setTimeLeft(calculateTimeLeft());
+    }, 10000);
+    return () => {
+      clearInterval(interval.current as NodeJS.Timeout);
+    };
+  });
   if (!endInputDate) {
     return timeLeft;
   }
@@ -40,8 +49,6 @@ const useCountDown = ({ endInputDate = null }) => {
     return "0" + value.toString();
   };
 
-  let interval = useRef<NodeJS.Timer | number>(0);
-
   const calculateTimeLeft = () => {
     const diff: moment.Duration = moment.duration(endDate.diff(startDate));
     if (diff.asMilliseconds() > 0) {
@@ -67,15 +74,6 @@ const useCountDown = ({ endInputDate = null }) => {
       seconds: rSeconds,
     };
   };
-
-  useEffect(() => {
-    interval.current = setInterval(() => {
-      setTimeLeft(calculateTimeLeft());
-    }, 10000);
-    return () => {
-      clearInterval(interval.current as NodeJS.Timeout);
-    };
-  });
 
   return timeLeft;
 };
