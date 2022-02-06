@@ -1,5 +1,4 @@
 import { Request, Response, CookieOptions } from "express";
-import { createClient } from "@urql/core";
 import { DecodedIdToken, getAuth } from "firebase-admin/auth";
 import { FirebaseError } from "firebase-admin";
 import fetch from "node-fetch";
@@ -24,6 +23,14 @@ const FIREBASE_ENDPOINT_CUSTOM_TOKEN = `https://identitytoolkit.googleapis.com/v
 //     res.json({ status: "ineligible" });
 //   }
 // };
+
+const ME_QUERY = `
+ {
+  me {
+    role
+  }
+}
+`;
 
 interface CustomVerifyIdToken {
   firebaseUser: DecodedIdToken;
@@ -108,21 +115,29 @@ interface CustomTokenIdAndRefreshToken {
   firebaseUser: DecodedIdToken;
 }
 
+interface Me {
+  data: {
+    me: {
+      role: string;
+    };
+  };
+}
+
 const getCustomIdAndRefreshToken = async (
   token: string
 ): Promise<CustomTokenIdAndRefreshToken> => {
   const auth = getAuth(fb);
   const { firebaseUser } = await customVerifyIdToken(token);
-  const client = createClient({
-    url: "http://localhost:4000/graphql",
-    fetchOptions: {
-      headers: {
-        authorization: "Bearer " + token,
-      },
+  const client = await fetch("http://localhost:4000/graphql", {
+    method: "POST",
+    headers: {
+      authorization: "Bearer " + token,
+      "Content-Type": "application/json",
     },
+    body: JSON.stringify({ query: ME_QUERY }),
   });
-  // const { role } = (await client.query("test").toPromise()) as any;
-  const role = "anime_user";
+  const result = (await client.json()) as Me;
+  const role = result.data.me.role;
   const customToken = await auth.createCustomToken(firebaseUser.uid, { role });
   const requestBody: CustomTokenForIdRefreshBody = {
     token: customToken,
@@ -157,7 +172,6 @@ const setAuthCookies = async (req: Request, res: Response) => {
   const { idToken, refreshToken } = await getCustomIdAndRefreshToken(token);
   const newDateTimeIdToken = add(new Date(), { hours: 1 });
   const newDateTimeRefreshToken = add(new Date(), { days: 14 });
-  console.log(newDateTimeIdToken, newDateTimeRefreshToken);
   const idTokenCookieOpt: CookieOptions = {
     httpOnly: true,
     secure: false,

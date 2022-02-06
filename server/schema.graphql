@@ -1197,6 +1197,7 @@ type Query implements Node {
     """
     filter: UserListFilter
   ): UserListsConnection
+  me: MeType
 
   """Reads and enables pagination through a set of `SearchResult`."""
   searchAnimes(
@@ -7397,6 +7398,12 @@ input UserListFilter {
 
   """Negates the expression."""
   not: UserListFilter
+}
+
+type MeType {
+  userId: String
+  role: String
+  username: String
 }
 
 """A connection to a list of `SearchResult` values."""
