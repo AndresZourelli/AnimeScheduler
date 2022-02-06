@@ -14,7 +14,7 @@ import {
 import { ArrowLeftIcon } from "@chakra-ui/icons";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
-import { useAuth } from "@/lib/Auth/FirebaseAuth";
+import { Provider, useAuth } from "@/lib/Auth/FirebaseAuth";
 import { FcGoogle } from "react-icons/fc";
 import { set } from "lodash";
 import firebase from "firebase/app";
@@ -47,7 +47,7 @@ const login = () => {
     setLoading(true);
     try {
       if (email && password) {
-        await signInUser("email", email, password);
+        await signInUser(Provider.EMAIL, email, password);
       }
     } catch (e) {
       console.log(e);
@@ -58,7 +58,7 @@ const login = () => {
   const onGoogleLoginClick = () => {
     setLoading(true);
     // router.push("/", undefined, { shallow: true });
-    return signInUser("google").then(() => setLoading(false));
+    return signInUser(Provider.GOOGLE).then(() => setLoading(false));
   };
   const resetPasswordResult = true;
   const resetPassword = () => {

@@ -1,39 +1,68 @@
-const express = require("express");
+import express, {
+  ErrorRequestHandler,
+  NextFunction,
+  Request,
+  RequestHandler,
+  Response,
+} from "express";
 import { postgraphile } from "postgraphile";
-const cookieParser = require("cookie-parser");
-const cors = require("cors");
-const morgan = require("morgan");
-const postgraphilePluginConnectionFilter = require("postgraphile-plugin-connection-filter");
-const PgSimplifyInflectorPlugin = require("@graphile-contrib/pg-simplify-inflector");
-const PgOrderByRelatedPlugin = require("@graphile-contrib/pg-order-by-related");
-const {
-  RemoveForeignKeyFieldsPlugin,
-} = require("postgraphile-remove-foreign-key-fields-plugin");
-const { PgMutationUpsertPlugin } = require("postgraphile-upsert-plugin");
-const isAuth = require("./middleware/isAuth");
-require("dotenv").config();
-require("./db/dbConfig");
-const { addCustomClaims } = require("./utils/AuthHelpers");
+import cookieParser from "cookie-parser";
+import cors from "cors";
+import morgan from "morgan";
+import ConnectionFilterPlugin from "postgraphile-plugin-connection-filter";
+import PgSimplifyInflectorPlugin from "@graphile-contrib/pg-simplify-inflector";
+// @ts-ignore
+import PgOrderByRelatedPlugin from "@graphile-contrib/pg-order-by-related";
+import { RemoveForeignKeyFieldsPlugin } from "postgraphile-remove-foreign-key-fields-plugin";
+import { PgMutationUpsertPlugin } from "postgraphile-upsert-plugin";
+import { isAuth } from "./middleware/isAuth.js";
+import dotenv from "dotenv";
+import { setAuthCookies, deleteAuthCookies } from "./utils/AuthHelpers.js";
+dotenv.config();
 
 const app = express();
 
 interface ISettings {
   role?: string;
+  "jwt.claims.user_id"?: string;
+  "jwt.claims.role"?: string;
 }
 
 app.use(cookieParser());
-app.use(express.json());
-app.use(express.urlencoded());
+app.use(express.json() as RequestHandler);
+app.use(express.urlencoded() as RequestHandler);
+app.use(morgan("dev") as RequestHandler);
+
 app.use(
   cors({
     credentials: true,
     origin: "http://localhost:3001",
   })
 );
+app.post("/login", async (req, res) => {
+  try {
+    await setAuthCookies(req, res);
+  } catch (e) {
+    console.error(e);
+    return res
+      .status(500)
+      .json({ error: "An Unexpected Error Occured", success: false });
+  }
+  return res.status(200).json({ success: true });
+});
 
-app.post("/setCustomClaims", addCustomClaims);
-
-app.use(morgan("dev"));
+app.post("/logout", async (req, res) => {
+  try {
+    await deleteAuthCookies(req, res);
+  } catch (e) {
+    console.error(e);
+    return res
+      .status(500)
+      .json({ error: "An Unexpected Error Occured", success: false });
+  }
+  return res.status(200).json({ success: true });
+});
+app.post("/logout");
 
 app.use("/graphql", isAuth);
 app.use(
@@ -45,7 +74,7 @@ app.use(
     ownerConnectionString: process.env.POSTGRES_DATABASE_URL_OWNER,
     retryOnInitFail: false,
     appendPlugins: [
-      postgraphilePluginConnectionFilter,
+      ConnectionFilterPlugin,
       PgSimplifyInflectorPlugin,
       PgOrderByRelatedPlugin,
       RemoveForeignKeyFieldsPlugin,
@@ -87,17 +116,24 @@ app.use(
       "routine",
     ],
     exportGqlSchemaPath: "schema.graphql",
-    allowExplain(req) {
+    allowExplain() {
       return true;
     },
     enableQueryBatching: true,
     legacyRelations: "omit",
-  })
+  }) as RequestHandler
 );
 // eslint-disable-next-line no-unused-vars
-app.use((err, req, res, next) => {
-  console.log(err);
-});
+app.use(
+  (
+    err: ErrorRequestHandler,
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    console.log(err);
+  }
+);
 app.listen({ port: 4000 }, () => {
   /* eslint-disable-next-line no-console */
   console.log(`🚀 Server ready at http://localhost:4000/graphiql`);

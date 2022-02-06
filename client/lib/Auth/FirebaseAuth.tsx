@@ -72,7 +72,7 @@ const AuthContext = createContext<FirebaseAuthInterface>(
   {} as FirebaseAuthInterface
 );
 
-enum Provider {
+export enum Provider {
   GOOGLE = "google",
   EMAIL = "email",
 }
@@ -142,12 +142,20 @@ export const AppAuthProvider = ({ children }) => {
       }
       const user = response.user;
       const idToken = await getIdToken(user);
-      const result = await axios.post("http://localhost:4000/setCustomClaims", {
-        idToken: idToken,
-      });
-      if (result.data.status === "success") {
-        const token = await getIdToken(user, true);
-      }
+      const session = await axios.post(
+        "http://localhost:4000/login",
+        {},
+        {
+          headers: { Authorization: `Bearer ${idToken}` },
+          withCredentials: true,
+        }
+      );
+      // const result = await axios.post("http://localhost:4000/setCustomClaims", {
+      //   idToken: idToken,
+      // });
+      // if (result.data.status === "success") {
+      //   const token = await getIdToken(user, true);
+      // }
       router.push("/");
     } catch (e) {
       console.log(e);
