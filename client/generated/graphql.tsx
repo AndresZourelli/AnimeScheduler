@@ -396,6 +396,8 @@ export type Anime = Node & {
   animeProducers: AnimeProducersConnection;
   /** Reads and enables pagination through a set of `AnimeStaff`. */
   animeStaffs: AnimeStaffConnection;
+  /** Reads and enables pagination through a set of `AnimeStreamingOn`. */
+  animeStreamingOns: AnimeStreamingOnsConnection;
   /** Reads and enables pagination through a set of `AnimeStudio`. */
   animeStudios: AnimeStudiosConnection;
   /** Reads and enables pagination through a set of `AnimeUserScore`. */
@@ -520,6 +522,18 @@ export type AnimeAnimeStaffsArgs = {
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<Array<AnimeStaffOrderBy>>;
+};
+
+
+export type AnimeAnimeStreamingOnsArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<AnimeStreamingOnCondition>;
+  filter?: InputMaybe<AnimeStreamingOnFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<AnimeStreamingOnsOrderBy>>;
 };
 
 
@@ -1476,6 +1490,8 @@ export enum AnimeOrderBy {
   AnimeProducersByAnimeIdCountDesc = 'ANIME_PRODUCERS_BY_ANIME_ID__COUNT_DESC',
   AnimeStaffByAnimeIdCountAsc = 'ANIME_STAFF_BY_ANIME_ID__COUNT_ASC',
   AnimeStaffByAnimeIdCountDesc = 'ANIME_STAFF_BY_ANIME_ID__COUNT_DESC',
+  AnimeStreamingOnsByAnimeIdCountAsc = 'ANIME_STREAMING_ONS_BY_ANIME_ID__COUNT_ASC',
+  AnimeStreamingOnsByAnimeIdCountDesc = 'ANIME_STREAMING_ONS_BY_ANIME_ID__COUNT_DESC',
   AnimeStudiosByAnimeIdCountAsc = 'ANIME_STUDIOS_BY_ANIME_ID__COUNT_ASC',
   AnimeStudiosByAnimeIdCountDesc = 'ANIME_STUDIOS_BY_ANIME_ID__COUNT_DESC',
   AnimeUserScoresByAnimeIdCountAsc = 'ANIME_USER_SCORES_BY_ANIME_ID__COUNT_ASC',
@@ -1801,6 +1817,127 @@ export type AnimeStaffPatch = {
   personId?: InputMaybe<Scalars['UUID']>;
   staffRoleId?: InputMaybe<Scalars['UUID']>;
 };
+
+export type AnimeStreamingOn = Node & {
+  __typename?: 'AnimeStreamingOn';
+  /** Reads a single `Anime` that is related to this `AnimeStreamingOn`. */
+  anime?: Maybe<Anime>;
+  animeId: Scalars['UUID'];
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  nodeId: Scalars['ID'];
+  streamServiceId: StreamingServices;
+  url?: Maybe<Scalars['String']>;
+};
+
+/**
+ * A condition to be used against `AnimeStreamingOn` object types. All fields are
+ * tested for equality and combined with a logical ‘and.’
+ */
+export type AnimeStreamingOnCondition = {
+  /** Checks for equality with the object’s `animeId` field. */
+  animeId?: InputMaybe<Scalars['UUID']>;
+  /** Checks for equality with the object’s `streamServiceId` field. */
+  streamServiceId?: InputMaybe<StreamingServices>;
+  /** Checks for equality with the object’s `url` field. */
+  url?: InputMaybe<Scalars['String']>;
+};
+
+/** A filter to be used against `AnimeStreamingOn` object types. All fields are combined with a logical ‘and.’ */
+export type AnimeStreamingOnFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<AnimeStreamingOnFilter>>;
+  /** Filter by the object’s `animeId` field. */
+  animeId?: InputMaybe<UuidFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<AnimeStreamingOnFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<AnimeStreamingOnFilter>>;
+  /** Filter by the object’s `streamServiceId` field. */
+  streamServiceId?: InputMaybe<StreamingServicesFilter>;
+  /** Filter by the object’s `url` field. */
+  url?: InputMaybe<StringFilter>;
+};
+
+/** An input for mutations affecting `AnimeStreamingOn` */
+export type AnimeStreamingOnInput = {
+  animeId: Scalars['UUID'];
+  streamServiceId: StreamingServices;
+  url?: InputMaybe<Scalars['String']>;
+};
+
+/** Represents an update to a `AnimeStreamingOn`. Fields that are set will be updated. */
+export type AnimeStreamingOnPatch = {
+  animeId?: InputMaybe<Scalars['UUID']>;
+  streamServiceId?: InputMaybe<StreamingServices>;
+  url?: InputMaybe<Scalars['String']>;
+};
+
+/** A connection to a list of `AnimeStreamingOn` values. */
+export type AnimeStreamingOnsConnection = {
+  __typename?: 'AnimeStreamingOnsConnection';
+  /** A list of edges which contains the `AnimeStreamingOn` and cursor to aid in pagination. */
+  edges: Array<AnimeStreamingOnsEdge>;
+  /** A list of `AnimeStreamingOn` objects. */
+  nodes: Array<AnimeStreamingOn>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `AnimeStreamingOn` you could get from the connection. */
+  totalCount: Scalars['Int'];
+};
+
+/** A `AnimeStreamingOn` edge in the connection. */
+export type AnimeStreamingOnsEdge = {
+  __typename?: 'AnimeStreamingOnsEdge';
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>;
+  /** The `AnimeStreamingOn` at the end of the edge. */
+  node: AnimeStreamingOn;
+};
+
+/** Methods to use when ordering `AnimeStreamingOn`. */
+export enum AnimeStreamingOnsOrderBy {
+  AnimeByAnimeIdAgeRatingTypeAsc = 'ANIME_BY_ANIME_ID__AGE_RATING_TYPE_ASC',
+  AnimeByAnimeIdAgeRatingTypeDesc = 'ANIME_BY_ANIME_ID__AGE_RATING_TYPE_DESC',
+  AnimeByAnimeIdAiringStatusTypeAsc = 'ANIME_BY_ANIME_ID__AIRING_STATUS_TYPE_ASC',
+  AnimeByAnimeIdAiringStatusTypeDesc = 'ANIME_BY_ANIME_ID__AIRING_STATUS_TYPE_DESC',
+  AnimeByAnimeIdAverageWatcherRatingAsc = 'ANIME_BY_ANIME_ID__AVERAGE_WATCHER_RATING_ASC',
+  AnimeByAnimeIdAverageWatcherRatingDesc = 'ANIME_BY_ANIME_ID__AVERAGE_WATCHER_RATING_DESC',
+  AnimeByAnimeIdCoverImageAsc = 'ANIME_BY_ANIME_ID__COVER_IMAGE_ASC',
+  AnimeByAnimeIdCoverImageDesc = 'ANIME_BY_ANIME_ID__COVER_IMAGE_DESC',
+  AnimeByAnimeIdDescriptionAsc = 'ANIME_BY_ANIME_ID__DESCRIPTION_ASC',
+  AnimeByAnimeIdDescriptionDesc = 'ANIME_BY_ANIME_ID__DESCRIPTION_DESC',
+  AnimeByAnimeIdDurationAsc = 'ANIME_BY_ANIME_ID__DURATION_ASC',
+  AnimeByAnimeIdDurationDesc = 'ANIME_BY_ANIME_ID__DURATION_DESC',
+  AnimeByAnimeIdEndBroadcastDatetimeAsc = 'ANIME_BY_ANIME_ID__END_BROADCAST_DATETIME_ASC',
+  AnimeByAnimeIdEndBroadcastDatetimeDesc = 'ANIME_BY_ANIME_ID__END_BROADCAST_DATETIME_DESC',
+  AnimeByAnimeIdIdAsc = 'ANIME_BY_ANIME_ID__ID_ASC',
+  AnimeByAnimeIdIdDesc = 'ANIME_BY_ANIME_ID__ID_DESC',
+  AnimeByAnimeIdMalIdAsc = 'ANIME_BY_ANIME_ID__MAL_ID_ASC',
+  AnimeByAnimeIdMalIdDesc = 'ANIME_BY_ANIME_ID__MAL_ID_DESC',
+  AnimeByAnimeIdMediaTypeAsc = 'ANIME_BY_ANIME_ID__MEDIA_TYPE_ASC',
+  AnimeByAnimeIdMediaTypeDesc = 'ANIME_BY_ANIME_ID__MEDIA_TYPE_DESC',
+  AnimeByAnimeIdNumberOfEpisodesAsc = 'ANIME_BY_ANIME_ID__NUMBER_OF_EPISODES_ASC',
+  AnimeByAnimeIdNumberOfEpisodesDesc = 'ANIME_BY_ANIME_ID__NUMBER_OF_EPISODES_DESC',
+  AnimeByAnimeIdSeasonAsc = 'ANIME_BY_ANIME_ID__SEASON_ASC',
+  AnimeByAnimeIdSeasonDesc = 'ANIME_BY_ANIME_ID__SEASON_DESC',
+  AnimeByAnimeIdSeasonYearAsc = 'ANIME_BY_ANIME_ID__SEASON_YEAR_ASC',
+  AnimeByAnimeIdSeasonYearDesc = 'ANIME_BY_ANIME_ID__SEASON_YEAR_DESC',
+  AnimeByAnimeIdSourceMaterialTypeAsc = 'ANIME_BY_ANIME_ID__SOURCE_MATERIAL_TYPE_ASC',
+  AnimeByAnimeIdSourceMaterialTypeDesc = 'ANIME_BY_ANIME_ID__SOURCE_MATERIAL_TYPE_DESC',
+  AnimeByAnimeIdStartBroadcastDatetimeAsc = 'ANIME_BY_ANIME_ID__START_BROADCAST_DATETIME_ASC',
+  AnimeByAnimeIdStartBroadcastDatetimeDesc = 'ANIME_BY_ANIME_ID__START_BROADCAST_DATETIME_DESC',
+  AnimeByAnimeIdTitleAsc = 'ANIME_BY_ANIME_ID__TITLE_ASC',
+  AnimeByAnimeIdTitleDesc = 'ANIME_BY_ANIME_ID__TITLE_DESC',
+  AnimeIdAsc = 'ANIME_ID_ASC',
+  AnimeIdDesc = 'ANIME_ID_DESC',
+  Natural = 'NATURAL',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  StreamServiceIdAsc = 'STREAM_SERVICE_ID_ASC',
+  StreamServiceIdDesc = 'STREAM_SERVICE_ID_DESC',
+  UrlAsc = 'URL_ASC',
+  UrlDesc = 'URL_DESC'
+}
 
 export type AnimeStudio = Node & {
   __typename?: 'AnimeStudio';
@@ -2850,6 +2987,41 @@ export type CreateAnimeStaffPayload = {
 /** The output of our create `AnimeStaff` mutation. */
 export type CreateAnimeStaffPayloadAnimeStaffEdgeArgs = {
   orderBy?: InputMaybe<Array<AnimeStaffOrderBy>>;
+};
+
+/** All input for the create `AnimeStreamingOn` mutation. */
+export type CreateAnimeStreamingOnInput = {
+  /** The `AnimeStreamingOn` to be created by this mutation. */
+  animeStreamingOn: AnimeStreamingOnInput;
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+};
+
+/** The output of our create `AnimeStreamingOn` mutation. */
+export type CreateAnimeStreamingOnPayload = {
+  __typename?: 'CreateAnimeStreamingOnPayload';
+  /** Reads a single `Anime` that is related to this `AnimeStreamingOn`. */
+  anime?: Maybe<Anime>;
+  /** The `AnimeStreamingOn` that was created by this mutation. */
+  animeStreamingOn?: Maybe<AnimeStreamingOn>;
+  /** An edge for our `AnimeStreamingOn`. May be used by Relay 1. */
+  animeStreamingOnEdge?: Maybe<AnimeStreamingOnsEdge>;
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
+
+/** The output of our create `AnimeStreamingOn` mutation. */
+export type CreateAnimeStreamingOnPayloadAnimeStreamingOnEdgeArgs = {
+  orderBy?: InputMaybe<Array<AnimeStreamingOnsOrderBy>>;
 };
 
 /** All input for the create `AnimeStudio` mutation. */
@@ -4024,6 +4196,53 @@ export type DeleteAnimeStaffPayload = {
 /** The output of our delete `AnimeStaff` mutation. */
 export type DeleteAnimeStaffPayloadAnimeStaffEdgeArgs = {
   orderBy?: InputMaybe<Array<AnimeStaffOrderBy>>;
+};
+
+/** All input for the `deleteAnimeStreamingOnByNodeId` mutation. */
+export type DeleteAnimeStreamingOnByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The globally unique `ID` which will identify a single `AnimeStreamingOn` to be deleted. */
+  nodeId: Scalars['ID'];
+};
+
+/** All input for the `deleteAnimeStreamingOn` mutation. */
+export type DeleteAnimeStreamingOnInput = {
+  animeId: Scalars['UUID'];
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  streamServiceId: StreamingServices;
+};
+
+/** The output of our delete `AnimeStreamingOn` mutation. */
+export type DeleteAnimeStreamingOnPayload = {
+  __typename?: 'DeleteAnimeStreamingOnPayload';
+  /** Reads a single `Anime` that is related to this `AnimeStreamingOn`. */
+  anime?: Maybe<Anime>;
+  /** The `AnimeStreamingOn` that was deleted by this mutation. */
+  animeStreamingOn?: Maybe<AnimeStreamingOn>;
+  /** An edge for our `AnimeStreamingOn`. May be used by Relay 1. */
+  animeStreamingOnEdge?: Maybe<AnimeStreamingOnsEdge>;
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  deletedAnimeStreamingOnNodeId?: Maybe<Scalars['ID']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
+
+/** The output of our delete `AnimeStreamingOn` mutation. */
+export type DeleteAnimeStreamingOnPayloadAnimeStreamingOnEdgeArgs = {
+  orderBy?: InputMaybe<Array<AnimeStreamingOnsOrderBy>>;
 };
 
 /** All input for the `deleteAnimeStudioByNodeId` mutation. */
@@ -5369,6 +5588,13 @@ export enum LicensorsOrderBy {
   PrimaryKeyDesc = 'PRIMARY_KEY_DESC'
 }
 
+export type MeType = {
+  __typename?: 'MeType';
+  role?: Maybe<Scalars['String']>;
+  userId?: Maybe<Scalars['String']>;
+  username?: Maybe<Scalars['String']>;
+};
+
 export type MediaFormat = {
   __typename?: 'MediaFormat';
   id?: Maybe<Scalars['BigInt']>;
@@ -5487,6 +5713,8 @@ export type Mutation = {
   createAnimeProducer?: Maybe<CreateAnimeProducerPayload>;
   /** Creates a single `AnimeStaff`. */
   createAnimeStaff?: Maybe<CreateAnimeStaffPayload>;
+  /** Creates a single `AnimeStreamingOn`. */
+  createAnimeStreamingOn?: Maybe<CreateAnimeStreamingOnPayload>;
   /** Creates a single `AnimeStudio`. */
   createAnimeStudio?: Maybe<CreateAnimeStudioPayload>;
   /** Creates a single `AnimeUserScore`. */
@@ -5560,6 +5788,10 @@ export type Mutation = {
   deleteAnimeStaff?: Maybe<DeleteAnimeStaffPayload>;
   /** Deletes a single `AnimeStaff` using its globally unique id. */
   deleteAnimeStaffByNodeId?: Maybe<DeleteAnimeStaffPayload>;
+  /** Deletes a single `AnimeStreamingOn` using a unique key. */
+  deleteAnimeStreamingOn?: Maybe<DeleteAnimeStreamingOnPayload>;
+  /** Deletes a single `AnimeStreamingOn` using its globally unique id. */
+  deleteAnimeStreamingOnByNodeId?: Maybe<DeleteAnimeStreamingOnPayload>;
   /** Deletes a single `AnimeStudio` using a unique key. */
   deleteAnimeStudio?: Maybe<DeleteAnimeStudioPayload>;
   /** Deletes a single `AnimeStudio` using its globally unique id. */
@@ -5683,6 +5915,10 @@ export type Mutation = {
   updateAnimeStaff?: Maybe<UpdateAnimeStaffPayload>;
   /** Updates a single `AnimeStaff` using its globally unique id and a patch. */
   updateAnimeStaffByNodeId?: Maybe<UpdateAnimeStaffPayload>;
+  /** Updates a single `AnimeStreamingOn` using a unique key and a patch. */
+  updateAnimeStreamingOn?: Maybe<UpdateAnimeStreamingOnPayload>;
+  /** Updates a single `AnimeStreamingOn` using its globally unique id and a patch. */
+  updateAnimeStreamingOnByNodeId?: Maybe<UpdateAnimeStreamingOnPayload>;
   /** Updates a single `AnimeStudio` using a unique key and a patch. */
   updateAnimeStudio?: Maybe<UpdateAnimeStudioPayload>;
   /** Updates a single `AnimeStudio` using its globally unique id and a patch. */
@@ -5783,6 +6019,8 @@ export type Mutation = {
   upsertAnimeProducer?: Maybe<UpsertAnimeProducerPayload>;
   /** Upserts a single `AnimeStaff`. */
   upsertAnimeStaff?: Maybe<UpsertAnimeStaffPayload>;
+  /** Upserts a single `AnimeStreamingOn`. */
+  upsertAnimeStreamingOn?: Maybe<UpsertAnimeStreamingOnPayload>;
   /** Upserts a single `AnimeStudio`. */
   upsertAnimeStudio?: Maybe<UpsertAnimeStudioPayload>;
   /** Upserts a single `AnimeUserScore`. */
@@ -5877,6 +6115,12 @@ export type MutationCreateAnimeProducerArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationCreateAnimeStaffArgs = {
   input: CreateAnimeStaffInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationCreateAnimeStreamingOnArgs = {
+  input: CreateAnimeStreamingOnInput;
 };
 
 
@@ -6099,6 +6343,18 @@ export type MutationDeleteAnimeStaffArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationDeleteAnimeStaffByNodeIdArgs = {
   input: DeleteAnimeStaffByNodeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteAnimeStreamingOnArgs = {
+  input: DeleteAnimeStreamingOnInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteAnimeStreamingOnByNodeIdArgs = {
+  input: DeleteAnimeStreamingOnByNodeIdInput;
 };
 
 
@@ -6481,6 +6737,18 @@ export type MutationUpdateAnimeStaffByNodeIdArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateAnimeStreamingOnArgs = {
+  input: UpdateAnimeStreamingOnInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateAnimeStreamingOnByNodeIdArgs = {
+  input: UpdateAnimeStreamingOnByNodeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpdateAnimeStudioArgs = {
   input: UpdateAnimeStudioInput;
 };
@@ -6786,6 +7054,13 @@ export type MutationUpsertAnimeProducerArgs = {
 export type MutationUpsertAnimeStaffArgs = {
   input: UpsertAnimeStaffInput;
   where?: InputMaybe<UpsertAnimeStaffWhere>;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpsertAnimeStreamingOnArgs = {
+  input: UpsertAnimeStreamingOnInput;
+  where?: InputMaybe<UpsertAnimeStreamingOnWhere>;
 };
 
 
@@ -7361,6 +7636,11 @@ export type Query = Node & {
   animeStaffByNodeId?: Maybe<AnimeStaff>;
   /** Reads and enables pagination through a set of `AnimeStaff`. */
   animeStaffs?: Maybe<AnimeStaffConnection>;
+  animeStreamingOn?: Maybe<AnimeStreamingOn>;
+  /** Reads a single `AnimeStreamingOn` using its globally unique `ID`. */
+  animeStreamingOnByNodeId?: Maybe<AnimeStreamingOn>;
+  /** Reads and enables pagination through a set of `AnimeStreamingOn`. */
+  animeStreamingOns?: Maybe<AnimeStreamingOnsConnection>;
   animeStudio?: Maybe<AnimeStudio>;
   /** Reads a single `AnimeStudio` using its globally unique `ID`. */
   animeStudioByNodeId?: Maybe<AnimeStudio>;
@@ -7414,6 +7694,7 @@ export type Query = Node & {
   licensorByNodeId?: Maybe<Licensor>;
   /** Reads and enables pagination through a set of `Licensor`. */
   licensors?: Maybe<LicensorsConnection>;
+  me?: Maybe<MeType>;
   /** Reads and enables pagination through a set of `MediaFormat`. */
   mediaFormats?: Maybe<MediaFormatsConnection>;
   /** Fetches an object given its globally unique `ID`. */
@@ -7745,6 +8026,32 @@ export type QueryAnimeStaffsArgs = {
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<Array<AnimeStaffOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryAnimeStreamingOnArgs = {
+  animeId: Scalars['UUID'];
+  streamServiceId: StreamingServices;
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryAnimeStreamingOnByNodeIdArgs = {
+  nodeId: Scalars['ID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryAnimeStreamingOnsArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<AnimeStreamingOnCondition>;
+  filter?: InputMaybe<AnimeStreamingOnFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<AnimeStreamingOnsOrderBy>>;
 };
 
 
@@ -8376,15 +8683,23 @@ export type SearchResult = {
   description?: Maybe<Scalars['String']>;
   duration?: Maybe<Scalars['Int']>;
   endBroadcastDatetime?: Maybe<Scalars['Datetime']>;
+  genres?: Maybe<Array<Maybe<Scalars['String']>>>;
   id?: Maybe<Scalars['UUID']>;
   malId?: Maybe<Scalars['Int']>;
   mediaType?: Maybe<Scalars['String']>;
   numberOfEpisodes?: Maybe<Scalars['Int']>;
+  producers?: Maybe<Array<Maybe<Scalars['String']>>>;
   season?: Maybe<Scalars['String']>;
   seasonYear?: Maybe<Scalars['Int']>;
   sourceMaterialType?: Maybe<Scalars['String']>;
   startBroadcastDatetime?: Maybe<Scalars['Datetime']>;
+  streamingOn?: Maybe<Scalars['String']>;
+  studios?: Maybe<Array<Maybe<Scalars['String']>>>;
   title?: Maybe<Scalars['String']>;
+  userEpisodeCount?: Maybe<Scalars['Int']>;
+  userLiked?: Maybe<Scalars['Boolean']>;
+  userRating?: Maybe<Scalars['BigFloat']>;
+  userWatchStatus?: Maybe<Scalars['String']>;
 };
 
 /** A filter to be used against `SearchResult` object types. All fields are combined with a logical ‘and.’ */
@@ -8407,6 +8722,8 @@ export type SearchResultFilter = {
   duration?: InputMaybe<IntFilter>;
   /** Filter by the object’s `endBroadcastDatetime` field. */
   endBroadcastDatetime?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `genres` field. */
+  genres?: InputMaybe<StringListFilter>;
   /** Filter by the object’s `id` field. */
   id?: InputMaybe<UuidFilter>;
   /** Filter by the object’s `malId` field. */
@@ -8419,6 +8736,8 @@ export type SearchResultFilter = {
   numberOfEpisodes?: InputMaybe<IntFilter>;
   /** Checks for any expressions in this list. */
   or?: InputMaybe<Array<SearchResultFilter>>;
+  /** Filter by the object’s `producers` field. */
+  producers?: InputMaybe<StringListFilter>;
   /** Filter by the object’s `season` field. */
   season?: InputMaybe<StringFilter>;
   /** Filter by the object’s `seasonYear` field. */
@@ -8427,8 +8746,20 @@ export type SearchResultFilter = {
   sourceMaterialType?: InputMaybe<StringFilter>;
   /** Filter by the object’s `startBroadcastDatetime` field. */
   startBroadcastDatetime?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `streamingOn` field. */
+  streamingOn?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `studios` field. */
+  studios?: InputMaybe<StringListFilter>;
   /** Filter by the object’s `title` field. */
   title?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `userEpisodeCount` field. */
+  userEpisodeCount?: InputMaybe<IntFilter>;
+  /** Filter by the object’s `userLiked` field. */
+  userLiked?: InputMaybe<BooleanFilter>;
+  /** Filter by the object’s `userRating` field. */
+  userRating?: InputMaybe<BigFloatFilter>;
+  /** Filter by the object’s `userWatchStatus` field. */
+  userWatchStatus?: InputMaybe<StringFilter>;
 };
 
 /** A connection to a list of `SearchResult` values. */
@@ -8751,6 +9082,36 @@ export enum StaffRolesOrderBy {
   RoleDesc = 'ROLE_DESC'
 }
 
+export enum StreamingServices {
+  Crunchyroll = 'CRUNCHYROLL'
+}
+
+/** A filter to be used against StreamingServices fields. All fields are combined with a logical ‘and.’ */
+export type StreamingServicesFilter = {
+  /** Not equal to the specified value, treating null like an ordinary value. */
+  distinctFrom?: InputMaybe<StreamingServices>;
+  /** Equal to the specified value. */
+  equalTo?: InputMaybe<StreamingServices>;
+  /** Greater than the specified value. */
+  greaterThan?: InputMaybe<StreamingServices>;
+  /** Greater than or equal to the specified value. */
+  greaterThanOrEqualTo?: InputMaybe<StreamingServices>;
+  /** Included in the specified list. */
+  in?: InputMaybe<Array<StreamingServices>>;
+  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
+  isNull?: InputMaybe<Scalars['Boolean']>;
+  /** Less than the specified value. */
+  lessThan?: InputMaybe<StreamingServices>;
+  /** Less than or equal to the specified value. */
+  lessThanOrEqualTo?: InputMaybe<StreamingServices>;
+  /** Equal to the specified value, treating null like an ordinary value. */
+  notDistinctFrom?: InputMaybe<StreamingServices>;
+  /** Not equal to the specified value. */
+  notEqualTo?: InputMaybe<StreamingServices>;
+  /** Not included in the specified list. */
+  notIn?: InputMaybe<Array<StreamingServices>>;
+};
+
 /** A filter to be used against String fields. All fields are combined with a logical ‘and.’ */
 export type StringFilter = {
   /** Not equal to the specified value, treating null like an ordinary value. */
@@ -8827,6 +9188,46 @@ export type StringFilter = {
   startsWith?: InputMaybe<Scalars['String']>;
   /** Starts with the specified string (case-insensitive). */
   startsWithInsensitive?: InputMaybe<Scalars['String']>;
+};
+
+/** A filter to be used against String List fields. All fields are combined with a logical ‘and.’ */
+export type StringListFilter = {
+  /** Any array item is equal to the specified value. */
+  anyEqualTo?: InputMaybe<Scalars['String']>;
+  /** Any array item is greater than the specified value. */
+  anyGreaterThan?: InputMaybe<Scalars['String']>;
+  /** Any array item is greater than or equal to the specified value. */
+  anyGreaterThanOrEqualTo?: InputMaybe<Scalars['String']>;
+  /** Any array item is less than the specified value. */
+  anyLessThan?: InputMaybe<Scalars['String']>;
+  /** Any array item is less than or equal to the specified value. */
+  anyLessThanOrEqualTo?: InputMaybe<Scalars['String']>;
+  /** Any array item is not equal to the specified value. */
+  anyNotEqualTo?: InputMaybe<Scalars['String']>;
+  /** Contained by the specified list of values. */
+  containedBy?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Contains the specified list of values. */
+  contains?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Not equal to the specified value, treating null like an ordinary value. */
+  distinctFrom?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Equal to the specified value. */
+  equalTo?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Greater than the specified value. */
+  greaterThan?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Greater than or equal to the specified value. */
+  greaterThanOrEqualTo?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
+  isNull?: InputMaybe<Scalars['Boolean']>;
+  /** Less than the specified value. */
+  lessThan?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Less than or equal to the specified value. */
+  lessThanOrEqualTo?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Equal to the specified value, treating null like an ordinary value. */
+  notDistinctFrom?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Not equal to the specified value. */
+  notEqualTo?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Overlaps the specified list of values. */
+  overlaps?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
 export type Studio = Node & {
@@ -9423,6 +9824,56 @@ export type UpdateAnimeStaffPayload = {
 /** The output of our update `AnimeStaff` mutation. */
 export type UpdateAnimeStaffPayloadAnimeStaffEdgeArgs = {
   orderBy?: InputMaybe<Array<AnimeStaffOrderBy>>;
+};
+
+/** All input for the `updateAnimeStreamingOnByNodeId` mutation. */
+export type UpdateAnimeStreamingOnByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The globally unique `ID` which will identify a single `AnimeStreamingOn` to be updated. */
+  nodeId: Scalars['ID'];
+  /** An object where the defined keys will be set on the `AnimeStreamingOn` being updated. */
+  patch: AnimeStreamingOnPatch;
+};
+
+/** All input for the `updateAnimeStreamingOn` mutation. */
+export type UpdateAnimeStreamingOnInput = {
+  animeId: Scalars['UUID'];
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** An object where the defined keys will be set on the `AnimeStreamingOn` being updated. */
+  patch: AnimeStreamingOnPatch;
+  streamServiceId: StreamingServices;
+};
+
+/** The output of our update `AnimeStreamingOn` mutation. */
+export type UpdateAnimeStreamingOnPayload = {
+  __typename?: 'UpdateAnimeStreamingOnPayload';
+  /** Reads a single `Anime` that is related to this `AnimeStreamingOn`. */
+  anime?: Maybe<Anime>;
+  /** The `AnimeStreamingOn` that was updated by this mutation. */
+  animeStreamingOn?: Maybe<AnimeStreamingOn>;
+  /** An edge for our `AnimeStreamingOn`. May be used by Relay 1. */
+  animeStreamingOnEdge?: Maybe<AnimeStreamingOnsEdge>;
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
+
+/** The output of our update `AnimeStreamingOn` mutation. */
+export type UpdateAnimeStreamingOnPayloadAnimeStreamingOnEdgeArgs = {
+  orderBy?: InputMaybe<Array<AnimeStreamingOnsOrderBy>>;
 };
 
 /** All input for the `updateAnimeStudioByNodeId` mutation. */
@@ -10671,6 +11122,41 @@ export type UpsertAnimeStaffWhere = {
   animeId?: InputMaybe<Scalars['UUID']>;
   personId?: InputMaybe<Scalars['UUID']>;
   staffRoleId?: InputMaybe<Scalars['UUID']>;
+};
+
+/** All input for the upsert `AnimeStreamingOn` mutation. */
+export type UpsertAnimeStreamingOnInput = {
+  /** The `AnimeStreamingOn` to be upserted by this mutation. */
+  animeStreamingOn: AnimeStreamingOnInput;
+  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+};
+
+/** The output of our upsert `AnimeStreamingOn` mutation. */
+export type UpsertAnimeStreamingOnPayload = {
+  __typename?: 'UpsertAnimeStreamingOnPayload';
+  /** Reads a single `Anime` that is related to this `AnimeStreamingOn`. */
+  anime?: Maybe<Anime>;
+  /** The `AnimeStreamingOn` that was upserted by this mutation. */
+  animeStreamingOn?: Maybe<AnimeStreamingOn>;
+  /** An edge for our `AnimeStreamingOn`. May be used by Relay 1. */
+  animeStreamingOnEdge?: Maybe<AnimeStreamingOnsEdge>;
+  /** The exact same `clientMutationId` that was provided in the mutation input, unchanged and unused. May be used by a client to track mutations. */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
+
+/** The output of our upsert `AnimeStreamingOn` mutation. */
+export type UpsertAnimeStreamingOnPayloadAnimeStreamingOnEdgeArgs = {
+  orderBy?: InputMaybe<Array<AnimeStreamingOnsOrderBy>>;
+};
+
+/** Where conditions for the upsert `AnimeStreamingOn` mutation. */
+export type UpsertAnimeStreamingOnWhere = {
+  animeId?: InputMaybe<Scalars['UUID']>;
+  streamServiceId?: InputMaybe<StreamingServices>;
 };
 
 /** All input for the upsert `AnimeStudio` mutation. */
@@ -12201,6 +12687,11 @@ export type AdvanceFilterDataQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type AdvanceFilterDataQuery = { __typename?: 'Query', genres?: { __typename?: 'GenresConnection', nodes: Array<{ __typename?: 'Genre', genre: string }> } | null | undefined, mediaFormats?: { __typename?: 'MediaFormatsConnection', nodes: Array<{ __typename?: 'MediaFormat', mediaType?: string | null | undefined }> } | null | undefined, airingStatuses?: { __typename?: 'AiringStatusesConnection', nodes: Array<{ __typename?: 'AiringStatus', airingStatusType?: string | null | undefined }> } | null | undefined, sourceMaterials?: { __typename?: 'SourceMaterialsConnection', nodes: Array<{ __typename?: 'SourceMaterial', sourceMaterialType?: string | null | undefined }> } | null | undefined, producers?: { __typename?: 'ProducersConnection', nodes: Array<{ __typename?: 'Producer', producer: string }> } | null | undefined, studios?: { __typename?: 'StudiosConnection', nodes: Array<{ __typename?: 'Studio', studio: string }> } | null | undefined, ageRatings?: { __typename?: 'AgeRatingsConnection', nodes: Array<{ __typename?: 'AgeRating', ageRatingType?: string | null | undefined }> } | null | undefined };
 
+export type MeQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'MeType', userId?: string | null | undefined, username?: string | null | undefined, role?: string | null | undefined } | null | undefined };
+
 export type UserAnimeListsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -12828,6 +13319,19 @@ export const AdvanceFilterDataDocument = gql`
 
 export function useAdvanceFilterDataQuery(options: Omit<Urql.UseQueryArgs<AdvanceFilterDataQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<AdvanceFilterDataQuery>({ query: AdvanceFilterDataDocument, ...options });
+};
+export const MeDocument = gql`
+    query Me {
+  me {
+    userId
+    username
+    role
+  }
+}
+    `;
+
+export function useMeQuery(options: Omit<Urql.UseQueryArgs<MeQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<MeQuery>({ query: MeDocument, ...options });
 };
 export const UserAnimeListsDocument = gql`
     query UserAnimeLists {
@@ -13797,6 +14301,81 @@ export default {
               "ofType": {
                 "kind": "OBJECT",
                 "name": "AnimeStaffConnection",
+                "ofType": null
+              }
+            },
+            "args": [
+              {
+                "name": "after",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "before",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "condition",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "filter",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "first",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "last",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "offset",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "orderBy",
+                "type": {
+                  "kind": "LIST",
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "Any"
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "animeStreamingOns",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "AnimeStreamingOnsConnection",
                 "ofType": null
               }
             },
@@ -16035,6 +16614,161 @@ export default {
       },
       {
         "kind": "OBJECT",
+        "name": "AnimeStreamingOn",
+        "fields": [
+          {
+            "name": "anime",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Anime",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "animeId",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "nodeId",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "streamServiceId",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "url",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          }
+        ],
+        "interfaces": [
+          {
+            "kind": "INTERFACE",
+            "name": "Node"
+          }
+        ]
+      },
+      {
+        "kind": "OBJECT",
+        "name": "AnimeStreamingOnsConnection",
+        "fields": [
+          {
+            "name": "edges",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "LIST",
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "AnimeStreamingOnsEdge",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "nodes",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "LIST",
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "AnimeStreamingOn",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "pageInfo",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "PageInfo",
+                "ofType": null
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "totalCount",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "AnimeStreamingOnsEdge",
+        "fields": [
+          {
+            "name": "cursor",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "node",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "AnimeStreamingOn",
+                "ofType": null
+              }
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
         "name": "AnimeStudio",
         "fields": [
           {
@@ -17804,6 +18538,71 @@ export default {
             "type": {
               "kind": "OBJECT",
               "name": "StaffRole",
+              "ofType": null
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "CreateAnimeStreamingOnPayload",
+        "fields": [
+          {
+            "name": "anime",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Anime",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "animeStreamingOn",
+            "type": {
+              "kind": "OBJECT",
+              "name": "AnimeStreamingOn",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "animeStreamingOnEdge",
+            "type": {
+              "kind": "OBJECT",
+              "name": "AnimeStreamingOnsEdge",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "orderBy",
+                "type": {
+                  "kind": "LIST",
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "Any"
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "clientMutationId",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "query",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Query",
               "ofType": null
             },
             "args": []
@@ -19890,6 +20689,79 @@ export default {
             "type": {
               "kind": "OBJECT",
               "name": "StaffRole",
+              "ofType": null
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "DeleteAnimeStreamingOnPayload",
+        "fields": [
+          {
+            "name": "anime",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Anime",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "animeStreamingOn",
+            "type": {
+              "kind": "OBJECT",
+              "name": "AnimeStreamingOn",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "animeStreamingOnEdge",
+            "type": {
+              "kind": "OBJECT",
+              "name": "AnimeStreamingOnsEdge",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "orderBy",
+                "type": {
+                  "kind": "LIST",
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "Any"
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "clientMutationId",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "deletedAnimeStreamingOnNodeId",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "query",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Query",
               "ofType": null
             },
             "args": []
@@ -22229,6 +23101,37 @@ export default {
       },
       {
         "kind": "OBJECT",
+        "name": "MeType",
+        "fields": [
+          {
+            "name": "role",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "userId",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "username",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
         "name": "MediaFormat",
         "fields": [
           {
@@ -22532,6 +23435,26 @@ export default {
             "type": {
               "kind": "OBJECT",
               "name": "CreateAnimeStaffPayload",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "input",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "createAnimeStreamingOn",
+            "type": {
+              "kind": "OBJECT",
+              "name": "CreateAnimeStreamingOnPayload",
               "ofType": null
             },
             "args": [
@@ -23272,6 +24195,46 @@ export default {
             "type": {
               "kind": "OBJECT",
               "name": "DeleteAnimeStaffPayload",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "input",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "deleteAnimeStreamingOn",
+            "type": {
+              "kind": "OBJECT",
+              "name": "DeleteAnimeStreamingOnPayload",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "input",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "deleteAnimeStreamingOnByNodeId",
+            "type": {
+              "kind": "OBJECT",
+              "name": "DeleteAnimeStreamingOnPayload",
               "ofType": null
             },
             "args": [
@@ -24548,6 +25511,46 @@ export default {
             ]
           },
           {
+            "name": "updateAnimeStreamingOn",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UpdateAnimeStreamingOnPayload",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "input",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "updateAnimeStreamingOnByNodeId",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UpdateAnimeStreamingOnPayload",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "input",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              }
+            ]
+          },
+          {
             "name": "updateAnimeStudio",
             "type": {
               "kind": "OBJECT",
@@ -25611,6 +26614,33 @@ export default {
             ]
           },
           {
+            "name": "upsertAnimeStreamingOn",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UpsertAnimeStreamingOnPayload",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "input",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              },
+              {
+                "name": "where",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              }
+            ]
+          },
+          {
             "name": "upsertAnimeStudio",
             "type": {
               "kind": "OBJECT",
@@ -26125,6 +27155,10 @@ export default {
           {
             "kind": "OBJECT",
             "name": "AnimeStaff"
+          },
+          {
+            "kind": "OBJECT",
+            "name": "AnimeStreamingOn"
           },
           {
             "kind": "OBJECT",
@@ -28279,6 +29313,128 @@ export default {
             ]
           },
           {
+            "name": "animeStreamingOn",
+            "type": {
+              "kind": "OBJECT",
+              "name": "AnimeStreamingOn",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "animeId",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              },
+              {
+                "name": "streamServiceId",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "animeStreamingOnByNodeId",
+            "type": {
+              "kind": "OBJECT",
+              "name": "AnimeStreamingOn",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "nodeId",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "animeStreamingOns",
+            "type": {
+              "kind": "OBJECT",
+              "name": "AnimeStreamingOnsConnection",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "after",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "before",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "condition",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "filter",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "first",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "last",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "offset",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "orderBy",
+                "type": {
+                  "kind": "LIST",
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "Any"
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
             "name": "animeStudio",
             "type": {
               "kind": "OBJECT",
@@ -29519,6 +30675,15 @@ export default {
                 }
               }
             ]
+          },
+          {
+            "name": "me",
+            "type": {
+              "kind": "OBJECT",
+              "name": "MeType",
+              "ofType": null
+            },
+            "args": []
           },
           {
             "name": "mediaFormats",
@@ -31125,6 +32290,17 @@ export default {
             "args": []
           },
           {
+            "name": "genres",
+            "type": {
+              "kind": "LIST",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          },
+          {
             "name": "id",
             "type": {
               "kind": "SCALAR",
@@ -31153,6 +32329,17 @@ export default {
             "type": {
               "kind": "SCALAR",
               "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "producers",
+            "type": {
+              "kind": "LIST",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
             },
             "args": []
           },
@@ -31189,7 +32376,58 @@ export default {
             "args": []
           },
           {
+            "name": "streamingOn",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "studios",
+            "type": {
+              "kind": "LIST",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          },
+          {
             "name": "title",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "userEpisodeCount",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "userLiked",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "userRating",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "userWatchStatus",
             "type": {
               "kind": "SCALAR",
               "name": "Any"
@@ -32695,6 +33933,71 @@ export default {
             "type": {
               "kind": "OBJECT",
               "name": "StaffRole",
+              "ofType": null
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "UpdateAnimeStreamingOnPayload",
+        "fields": [
+          {
+            "name": "anime",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Anime",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "animeStreamingOn",
+            "type": {
+              "kind": "OBJECT",
+              "name": "AnimeStreamingOn",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "animeStreamingOnEdge",
+            "type": {
+              "kind": "OBJECT",
+              "name": "AnimeStreamingOnsEdge",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "orderBy",
+                "type": {
+                  "kind": "LIST",
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "Any"
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "clientMutationId",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "query",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Query",
               "ofType": null
             },
             "args": []
@@ -34448,6 +35751,71 @@ export default {
             "type": {
               "kind": "OBJECT",
               "name": "StaffRole",
+              "ofType": null
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "UpsertAnimeStreamingOnPayload",
+        "fields": [
+          {
+            "name": "anime",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Anime",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "animeStreamingOn",
+            "type": {
+              "kind": "OBJECT",
+              "name": "AnimeStreamingOn",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "animeStreamingOnEdge",
+            "type": {
+              "kind": "OBJECT",
+              "name": "AnimeStreamingOnsEdge",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "orderBy",
+                "type": {
+                  "kind": "LIST",
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "Any"
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "clientMutationId",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "query",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Query",
               "ofType": null
             },
             "args": []

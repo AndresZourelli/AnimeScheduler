@@ -24,9 +24,9 @@ const FIREBASE_ENDPOINT_CUSTOM_TOKEN = `https://identitytoolkit.googleapis.com/v
 //   }
 // };
 
-const ME_QUERY = `
- {
-  me {
+const query = `
+ query GetUser($userId: String!){
+  getUser(uId: $userId) {
     role
   }
 }
@@ -85,7 +85,7 @@ const refreshExpiredIdToken = async (
   const response = await fetch(FIREBASE_ENDPOINT_GET_TOKEN, {
     method: "POST",
     headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
+      "Content-Type": "application/json",
     },
     body: JSON.stringify(requestBody),
   });
@@ -117,27 +117,29 @@ interface CustomTokenIdAndRefreshToken {
 
 interface Me {
   data: {
-    me: {
+    getUser: {
       role: string;
     };
   };
 }
 
 const getCustomIdAndRefreshToken = async (
-  token: string
+  token: string,
+  reqRefreshToken: string | null = null
 ): Promise<CustomTokenIdAndRefreshToken> => {
   const auth = getAuth(fb);
-  const { firebaseUser } = await customVerifyIdToken(token);
+  const { firebaseUser } = await customVerifyIdToken(token, reqRefreshToken);
+  const variables = { userId: firebaseUser.uid };
   const client = await fetch("http://localhost:4000/graphql", {
     method: "POST",
     headers: {
       authorization: "Bearer " + token,
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ query: ME_QUERY }),
+    body: JSON.stringify({ query, variables }),
   });
   const result = (await client.json()) as Me;
-  const role = result.data.me.role;
+  const role = result.data.getUser.role;
   const customToken = await auth.createCustomToken(firebaseUser.uid, { role });
   const requestBody: CustomTokenForIdRefreshBody = {
     token: customToken,
@@ -164,12 +166,24 @@ const getCustomIdAndRefreshToken = async (
   };
 };
 
-const setAuthCookies = async (req: Request, res: Response) => {
-  const token = req?.headers?.authorization?.split(" ")[1];
+const setAuthCookies = async (
+  req: Request,
+  res: Response,
+  reqToken: string | null = null
+) => {
+  const token =
+    req?.headers?.authorization?.split(" ")[1] ??
+    getCookie(req, "idt") ??
+    reqToken;
+  const reqRefreshToken = getCookie(req, "rft");
+
   if (token == null) {
     throw new Error("Authorization header is missing the token");
   }
-  const { idToken, refreshToken } = await getCustomIdAndRefreshToken(token);
+  const { idToken, refreshToken } = await getCustomIdAndRefreshToken(
+    token,
+    reqRefreshToken
+  );
   const newDateTimeIdToken = add(new Date(), { hours: 1 });
   const newDateTimeRefreshToken = add(new Date(), { days: 14 });
   const idTokenCookieOpt: CookieOptions = {
@@ -183,6 +197,7 @@ const setAuthCookies = async (req: Request, res: Response) => {
   };
   res.cookie("idt", idToken, idTokenCookieOpt);
   res.cookie("rft", refreshToken, refreshTokenCookieOpt);
+  return idToken;
 };
 
 const deleteAuthCookies = async (req: Request, res: Response) => {
@@ -194,6 +209,25 @@ const getCookie = (req: Request, name: string) => {
   return req.cookies[name];
 };
 
+interface Tokens {
+  accessToken: string | null;
+  refreshToken: string | null;
+}
+
+const getTokens = async (req: Request, res: Response): Promise<Tokens> => {
+  let accessToken = getCookie(req, "idt");
+  const refreshToken = getCookie(req, "rft");
+  if (!accessToken && !refreshToken) {
+    return { accessToken: null, refreshToken: null };
+  }
+
+  if (refreshToken) {
+    const idToken = await refreshExpiredIdToken(refreshToken);
+    accessToken = await setAuthCookies(req, res, idToken);
+  }
+  return { accessToken, refreshToken };
+};
+
 export {
   customVerifyIdToken,
   refreshExpiredIdToken,
@@ -201,4 +235,5 @@ export {
   setAuthCookies,
   getCookie,
   deleteAuthCookies,
+  getTokens,
 };

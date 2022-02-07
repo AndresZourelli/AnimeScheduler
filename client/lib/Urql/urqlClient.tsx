@@ -30,6 +30,7 @@ const client = createClient({
         StaffRole: (data) => null,
         AnimeCharacter: (data: ExtendedData) => data.nodeId,
         AnimeStaff: (data: ExtendedData) => data.nodeId,
+        Me: (data) => data.userId as string,
       },
     }),
     authExchange({
@@ -52,10 +53,6 @@ const client = createClient({
         return null;
       },
       addAuthToOperation: ({ authState, operation }) => {
-        if (!authState || !(authState as any).token) {
-          return operation;
-        }
-
         const fetchOptions =
           typeof operation.context.fetchOptions === "function"
             ? operation.context.fetchOptions()
@@ -67,8 +64,8 @@ const client = createClient({
             ...fetchOptions,
             headers: {
               ...fetchOptions.headers,
-              Authorization: `Bearer ${(authState as any).token}`,
             },
+            credentials: "include",
           },
         });
       },
