@@ -44,6 +44,7 @@ const client = createClient({
         Producer: (data: ExtendedData) => data.producer,
         Studio: (data: ExtendedData) => data.studio,
         AgeRating: (data: ExtendedData) => data.ageRatingType,
+        Me: (data) => data.userId as string,
       },
     }),
     authExchange({
@@ -66,10 +67,6 @@ const client = createClient({
         return null;
       },
       addAuthToOperation: ({ authState, operation }) => {
-        if (!authState || !(authState as any).token) {
-          return operation;
-        }
-
         const fetchOptions =
           typeof operation.context.fetchOptions === "function"
             ? operation.context.fetchOptions()
@@ -81,8 +78,8 @@ const client = createClient({
             ...fetchOptions,
             headers: {
               ...fetchOptions.headers,
-              Authorization: `Bearer ${(authState as any).token}`,
             },
+            credentials: "include",
           },
         });
       },

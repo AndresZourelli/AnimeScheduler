@@ -5588,6 +5588,13 @@ export enum LicensorsOrderBy {
   PrimaryKeyDesc = 'PRIMARY_KEY_DESC'
 }
 
+export type MeType = {
+  __typename?: 'MeType';
+  role?: Maybe<Scalars['String']>;
+  userId?: Maybe<Scalars['String']>;
+  username?: Maybe<Scalars['String']>;
+};
+
 export type MediaFormat = {
   __typename?: 'MediaFormat';
   id?: Maybe<Scalars['BigInt']>;
@@ -7687,6 +7694,7 @@ export type Query = Node & {
   licensorByNodeId?: Maybe<Licensor>;
   /** Reads and enables pagination through a set of `Licensor`. */
   licensors?: Maybe<LicensorsConnection>;
+  me?: Maybe<MeType>;
   /** Reads and enables pagination through a set of `MediaFormat`. */
   mediaFormats?: Maybe<MediaFormatsConnection>;
   /** Fetches an object given its globally unique `ID`. */
@@ -12680,6 +12688,11 @@ export type AdvanceFilterDataQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type AdvanceFilterDataQuery = { __typename?: 'Query', genres?: { __typename?: 'GenresConnection', nodes: Array<{ __typename?: 'Genre', genre: string, id: any }> } | null | undefined, mediaFormats?: { __typename?: 'MediaFormatsConnection', nodes: Array<{ __typename?: 'MediaFormat', mediaType?: string | null | undefined, id?: any | null | undefined }> } | null | undefined, airingStatuses?: { __typename?: 'AiringStatusesConnection', nodes: Array<{ __typename?: 'AiringStatus', airingStatusType?: string | null | undefined, id?: any | null | undefined }> } | null | undefined, sourceMaterials?: { __typename?: 'SourceMaterialsConnection', nodes: Array<{ __typename?: 'SourceMaterial', sourceMaterialType?: string | null | undefined, id?: any | null | undefined }> } | null | undefined, producers?: { __typename?: 'ProducersConnection', nodes: Array<{ __typename?: 'Producer', producer: string, id: any }> } | null | undefined, studios?: { __typename?: 'StudiosConnection', nodes: Array<{ __typename?: 'Studio', studio: string, id: any }> } | null | undefined, ageRatings?: { __typename?: 'AgeRatingsConnection', nodes: Array<{ __typename?: 'AgeRating', ageRatingType?: string | null | undefined, id?: any | null | undefined }> } | null | undefined };
 
+export type MeQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'MeType', userId?: string | null | undefined, username?: string | null | undefined, role?: string | null | undefined } | null | undefined };
+
 export type UserAnimeListsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -13323,6 +13336,19 @@ export const AdvanceFilterDataDocument = gql`
 
 export function useAdvanceFilterDataQuery(options: Omit<Urql.UseQueryArgs<AdvanceFilterDataQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<AdvanceFilterDataQuery>({ query: AdvanceFilterDataDocument, ...options });
+};
+export const MeDocument = gql`
+    query Me {
+  me {
+    userId
+    username
+    role
+  }
+}
+    `;
+
+export function useMeQuery(options: Omit<Urql.UseQueryArgs<MeQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<MeQuery>({ query: MeDocument, ...options });
 };
 export const UserAnimeListsDocument = gql`
     query UserAnimeLists {
@@ -18615,6 +18641,71 @@ export default {
             "args": []
           },
           {
+            "name": "animeStreamingOn",
+            "type": {
+              "kind": "OBJECT",
+              "name": "AnimeStreamingOn",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "animeStreamingOnEdge",
+            "type": {
+              "kind": "OBJECT",
+              "name": "AnimeStreamingOnsEdge",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "orderBy",
+                "type": {
+                  "kind": "LIST",
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "Any"
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "clientMutationId",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "query",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Query",
+              "ofType": null
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "CreateAnimeStudioPayload",
+        "fields": [
+          {
+            "name": "anime",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Anime",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
             "name": "animeStudio",
             "type": {
               "kind": "OBJECT",
@@ -23084,6 +23175,37 @@ export default {
                 "name": "Licensor",
                 "ofType": null
               }
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "MeType",
+        "fields": [
+          {
+            "name": "role",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "userId",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "username",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
             },
             "args": []
           }
@@ -30635,6 +30757,15 @@ export default {
                 }
               }
             ]
+          },
+          {
+            "name": "me",
+            "type": {
+              "kind": "OBJECT",
+              "name": "MeType",
+              "ofType": null
+            },
+            "args": []
           },
           {
             "name": "mediaFormats",

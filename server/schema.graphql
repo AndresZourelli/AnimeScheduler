@@ -1168,7 +1168,7 @@ type Query implements Node {
   ): UserAnimeListTypesConnection
   currentRole: String
   currentUser: String
-  getUser(uId: String): SmallUser
+  getUser(uId: String): MeType
 
   """Reads and enables pagination through a set of `UserList`."""
   getUserAnimeLists(
@@ -1197,6 +1197,7 @@ type Query implements Node {
     """
     filter: UserListFilter
   ): UserListsConnection
+  me: MeType
 
   """Reads and enables pagination through a set of `SearchResult`."""
   searchAnimes(
@@ -7323,10 +7324,10 @@ input UserAnimeListTypeFilter {
   not: UserAnimeListTypeFilter
 }
 
-type SmallUser {
+type MeType {
   userId: String
+  role: String
   username: String
-  email: String
 }
 
 """A connection to a list of `UserList` values."""
