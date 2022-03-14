@@ -23,8 +23,8 @@ interface Options {
 
 interface MultiSelectProps {
   itemOptions: Options[];
-  selectedItems: Options[];
-  addSelectedItem: (index: Options) => void;
+  selectedItems: string[];
+  addSelectedItem: (index: string) => void;
   removeSelectedItem: (index: number) => void;
 }
 
@@ -41,14 +41,13 @@ const MultiSelect = (props: MultiSelectProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const ref = useRef();
   useOutsideClick({ ref: ref, handler: () => onClose() });
-
   const toggleItem = (value: Options) => {
-    if (selectedItems.find((item) => item.name === value.name)) {
+    if (selectedItems.find((item) => item === value.name)) {
       removeSelectedItem(
-        selectedItems.findIndex(({ name }) => name === value.name)
+        selectedItems.findIndex((item) => item === value.name)
       );
     } else {
-      addSelectedItem(value);
+      addSelectedItem(value.name);
     }
   };
 
@@ -60,15 +59,20 @@ const MultiSelect = (props: MultiSelectProps) => {
     <Box position="relative" ref={ref}>
       <Box id="item" __css={styles.field} {...rest}>
         <Flex alignContent="center" w="full" height="full">
-          <HStack pr="2">
+          <HStack maxW="full" alignItems="center">
             {selectedItems?.length > 0 ? (
-              <Tag size="lg">
-                <TagLabel>{selectedItems[0].name}</TagLabel>
+              <Tag size="lg" onClick={onOpen} cursor="pointer">
+                <TagLabel>{selectedItems[0]}</TagLabel>
                 <TagCloseButton onClick={() => removeSelectedItem(0)} />
               </Tag>
             ) : null}
             {selectedItems?.length > 1 ? (
-              <Tag size="lg" onClick={onOpen} cursor="pointer">
+              <Tag
+                size="lg"
+                onClick={onOpen}
+                cursor="pointer"
+                minWidth="fit-content"
+              >
                 <TagLabel>+{selectedItems.length - 1}</TagLabel>
               </Tag>
             ) : null}
@@ -129,7 +133,7 @@ const MultiSelect = (props: MultiSelectProps) => {
                 >
                   <HStack px="3" spacing="4">
                     {selectedItems.find(
-                      (existingItem) => existingItem.name === item.name
+                      (existingItem) => existingItem === item.name
                     ) ? (
                       <Icon as={AiFillCheckCircle} color="green.200" />
                     ) : (

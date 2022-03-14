@@ -5,7 +5,7 @@ import fetch from "node-fetch";
 import add from "date-fns/add/index.js";
 import dotenv from "dotenv";
 import fb from "../lib/fb.js";
-dotenv.config({ debug: true });
+dotenv.config();
 const FIREBASE_ERROR_TOKEN_EXPIRED = "auth/id-token-expired";
 const FIREBASE_ENDPOINT_GET_TOKEN = `https://securetoken.googleapis.com/v1/token?key=${process.env.FIREBASE_API_KEY}`;
 const FIREBASE_ENDPOINT_CUSTOM_TOKEN = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithCustomToken?key=${process.env.FIREBASE_API_KEY}`;
@@ -217,6 +217,7 @@ interface Tokens {
 const getTokens = async (req: Request, res: Response): Promise<Tokens> => {
   let accessToken = getCookie(req, "idt");
   const refreshToken = getCookie(req, "rft");
+  console.log("accessToken", accessToken, "refreshToken", refreshToken);
   if (!accessToken && !refreshToken) {
     return { accessToken: null, refreshToken: null };
   }

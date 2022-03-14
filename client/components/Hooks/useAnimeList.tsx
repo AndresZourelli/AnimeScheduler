@@ -14,7 +14,7 @@ import {
   GetLastItemInCustomListDocument,
   WatchStatusTypes,
 } from "@/graphql";
-import { useAuth, ExtendedUser } from "@/lib/Auth/FirebaseAuth";
+import { useAuth, User } from "@/lib/Auth/FirebaseAuth";
 import { useToast } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useClient, UseMutationState } from "urql";
@@ -51,7 +51,7 @@ interface UserAnimeListHook {
       animeListId: any;
     }>
   >;
-  user: ExtendedUser | null;
+  user: User;
   error: boolean;
   userAnimeLists: UserAnimeListInterface[];
   updateWatchStatus: (animeId: String, watchStatus: WatchStatusTypes) => void;
@@ -133,7 +133,7 @@ const useAnimeList = ({
     mutationUserEpisodeCount({
       animeId,
       userEpisodesWatched,
-      userId: user.uid,
+      userId: user.userId,
     });
   };
 
@@ -147,7 +147,7 @@ const useAnimeList = ({
   ) => {
     addWatchStatus({
       animeId: animeId,
-      userId: user.uid,
+      userId: user.userId,
       watchStatus: watchStatus,
     });
   };
@@ -290,7 +290,7 @@ const useAnimeList = ({
   }, [userListResult]);
 
   useEffect(() => {
-    if (user?.uid) {
+    if (user?.userId) {
       getAnimeListResult();
     }
   }, [user, getAnimeListResult]);

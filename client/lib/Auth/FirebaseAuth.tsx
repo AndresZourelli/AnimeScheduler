@@ -22,6 +22,7 @@ export interface User {
   role?: string;
   username?: string;
   userId?: string;
+  loggedIn: boolean;
 }
 
 interface FirebaseAuthInterface {
@@ -68,7 +69,7 @@ export enum Provider {
 
 export const AppAuthProvider = ({ children }) => {
   const router = useRouter();
-  const [user, setUser] = useState<User>(null);
+  const [user, setUser] = useState<User>({ loggedIn: false });
   const [loading, setLoading] = useState(true);
   const [registerUserResult, registerUserCall] = useMutation(REGISTER_USER);
   const [meResult, meCall] = useMeQuery({ requestPolicy: "network-only" });
@@ -144,14 +145,26 @@ export const AppAuthProvider = ({ children }) => {
       }
       meCall();
       setLoading(false);
+      setUser({ ...user, loggedIn: true });
       router.push("/");
     } catch (e) {
       console.log(e);
     }
   };
 
-  const logoutUser = (): Promise<void> => {
-    return signOut(auth);
+  const logoutUser = async (): Promise<void> => {
+    const session = await axios.post(
+      "http://localhost:4000/logout",
+      {},
+      {
+        withCredentials: true,
+      }
+    );
+    if (session.status === 200) {
+      setUser({ loggedIn: false });
+      localStorage.removeItem("loggedIn");
+      router.push("/");
+    }
   };
 
   const resetPasswordSendEmail = (email: string): Promise<void> => {
@@ -170,12 +183,28 @@ export const AppAuthProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    console.log(meResult.data?.me);
-    if (meResult.data?.me) {
-      setUser(meResult.data.me);
+    if (!meResult.fetching && meResult.data) {
+      if (meResult.data.me) {
+        setUser({ ...meResult.data.me, loggedIn: true });
+        localStorage.setItem("loggedIn", "true");
+      } else {
+        if (localStorage.getItem("loggedIn")) {
+          localStorage.removeItem("loggedIn");
+          setUser({ loggedIn: false });
+        }
+      }
+    } else if (!meResult.fetching && meResult?.error) {
+      localStorage.removeItem("loggedIn");
     }
     setLoading(false);
-  }, [meResult]);
+  }, [meResult, router]);
+
+  useEffect(() => {
+    if (localStorage.getItem("loggedIn")) {
+      setUser({ loggedIn: true });
+      meCall();
+    }
+  }, [meCall]);
 
   return (
     <AuthContext.Provider

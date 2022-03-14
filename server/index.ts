@@ -89,7 +89,6 @@ app.use(
       } else {
         settings.role = "anime_default";
       }
-      console.log(settings);
       return settings as any;
     },
     subscriptions: true,
@@ -121,6 +120,10 @@ app.use(
     },
     enableQueryBatching: true,
     legacyRelations: "omit",
+    graphileBuildOptions: {
+      connectionFilterAllowNullInput: true,
+      connectionFilterAllowEmptyObjectInput: true,
+    },
   }) as RequestHandler
 );
 // eslint-disable-next-line no-unused-vars

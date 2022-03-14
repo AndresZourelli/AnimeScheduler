@@ -110,6 +110,7 @@ const Nav = () => {
     searchQuery();
     setOpenPopover(true);
   };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const delayedSearch = useCallback(debouce.debounce(updateQuery, 500), [
     search,
   ]);
@@ -122,7 +123,7 @@ const Nav = () => {
   }, [search, delayedSearch]);
 
   useEffect(() => {
-    if (user) {
+    if (user.loggedIn) {
       setSignedIn(true);
     } else {
       setSignedIn(false);
@@ -140,6 +141,7 @@ const Nav = () => {
           pathname: "/search",
           query: { search },
         });
+        setOpenPopover(false);
       }
     }
   };

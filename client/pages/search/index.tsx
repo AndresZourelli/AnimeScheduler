@@ -48,6 +48,7 @@ const Search = () => {
     querySearch();
   };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const delayedSearch = useCallback(debounce(callApi, 500), [searchQuery]);
 
   useEffect(() => {

@@ -44,7 +44,7 @@ const client = createClient({
         Producer: (data: ExtendedData) => data.producer,
         Studio: (data: ExtendedData) => data.studio,
         AgeRating: (data: ExtendedData) => data.ageRatingType,
-        Me: (data) => data.userId as string,
+        MeType: (data) => data.userId as string,
       },
     }),
     authExchange({

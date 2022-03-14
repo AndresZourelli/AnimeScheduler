@@ -128,6 +128,7 @@ const AnimeCard = ({
       setUserEpisodeCount(userEpisodesCount);
     }
   }, [userEpisodesCount]);
+
   return (
     <>
       <Box
@@ -137,7 +138,7 @@ const AnimeCard = ({
         position="relative"
         maxW="225px"
       >
-        {user ? (
+        {user.loggedIn ? (
           <>
             {/* {(airingStatusType as AiringStatusTypes) ===
               AiringStatusTypes.CurrentlyAiring && showNextEpisode ? (

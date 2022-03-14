@@ -17,7 +17,7 @@ const MyAnimePageList = ({ watchingStatus }: MyAnimePageListInterface) => {
   const [dataLoaded, setDataLoaded] = useState(false);
   const [animesResult, fetchAnimes] = useUserCustomAnimeListByWatchStatusQuery({
     variables: { watchStatusType: watchingStatus },
-    pause: !user?.uid,
+    pause: !user?.userId,
   });
 
   const [animeLists, setAnimeLists] = useState([]);

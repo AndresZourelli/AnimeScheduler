@@ -48,7 +48,6 @@ const AnimePage = () => {
   return (
     <Box position="relative">
       <Flex position="relative">
-        {console.log(AnimeResult.data)}
         <AnimePageInfoCol
           {...AnimeResult.data?.anime}
           fetching={AnimeResult.fetching}

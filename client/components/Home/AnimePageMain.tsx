@@ -52,7 +52,6 @@ const AnimePageMain = ({
     animeStaffs?.nodes?.length ?? 0
   );
   const [currentStaffDisplayed, setStaffDisplayed] = useState(10);
-  console.log(hasMoreCharacters, animeCharacters.pageInfo);
   useEffect(() => {
     if (animeCharacters.pageInfo.hasNextPage) {
       setHasMoreCharacters(true);

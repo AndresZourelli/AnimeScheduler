@@ -10,7 +10,6 @@ interface SearchProps {
 }
 
 const SearchResult = ({ isLoading, searchResult }: SearchProps) => {
-  console.log(isLoading, searchResult);
   return (
     <Box>
       {isLoading && (

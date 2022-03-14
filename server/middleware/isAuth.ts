@@ -34,7 +34,6 @@ const isAuth = async (
     req.user.role = firebaseUser.role;
     return next();
   } catch (e) {
-    console.log(e);
     return next();
   }
 };

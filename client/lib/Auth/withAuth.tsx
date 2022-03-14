@@ -11,7 +11,7 @@ export const withAuthPrivate = (
     const router = useRouter();
     const { user } = useAuth();
 
-    if (!user) {
+    if (!user.loggedIn) {
       router.replace("/login");
       return <FullPageSpinner />;
     }
@@ -30,7 +30,7 @@ export const withAuthPublic = (
     const router = useRouter();
     const { user, loading } = useAuth();
 
-    if (user) {
+    if (user.loggedIn) {
       router.replace("/");
       return <FullPageSpinner />;
     }
