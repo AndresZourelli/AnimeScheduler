@@ -15,6 +15,7 @@ import {
 import React, { useRef, useState } from "react";
 import { AiFillCheckCircle } from "react-icons/ai";
 import { BsCircle } from "react-icons/bs";
+import { useFormContext, useFieldArray } from "react-hook-form";
 
 interface Options {
   name: string;
@@ -23,57 +24,53 @@ interface Options {
 
 interface MultiSelectProps {
   itemOptions: Options[];
-  selectedItems: string[];
-  addSelectedItem: (index: string) => void;
-  removeSelectedItem: (index: number) => void;
+  fieldName: string;
 }
 
 const MultiSelect = (props: MultiSelectProps) => {
-  const {
-    itemOptions,
-    selectedItems,
-    removeSelectedItem,
-    addSelectedItem,
-    ...rest
-  } = props;
+  const { itemOptions, fieldName, ...rest } = props;
+  const { control, register } = useFormContext();
+  const { fields, append, prepend, remove, swap, move, insert } = useFieldArray(
+    {
+      control,
+      name: fieldName,
+    }
+  );
   const [inputSearch, setInputSearch] = useState("");
   const styles = useMultiStyleConfig("Input", props);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const ref = useRef();
   useOutsideClick({ ref: ref, handler: () => onClose() });
   const toggleItem = (value: Options) => {
-    if (selectedItems.find((item) => item === value.name)) {
-      removeSelectedItem(
-        selectedItems.findIndex((item) => item === value.name)
-      );
+    if (fields.find((item) => (item.name as any) === value.name)) {
+      remove(fields.findIndex((item) => item.name === value.name));
     } else {
-      addSelectedItem(value.name);
+      append(value);
     }
   };
 
   const inputSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputSearch(e.target.value);
   };
-
   return (
     <Box position="relative" ref={ref}>
       <Box id="item" __css={styles.field} {...rest}>
         <Flex alignContent="center" w="full" height="full">
           <HStack maxW="full" alignItems="center">
-            {selectedItems?.length > 0 ? (
+            {fields?.length > 0 ? (
               <Tag size="lg" onClick={onOpen} cursor="pointer">
-                <TagLabel>{selectedItems[0]}</TagLabel>
-                <TagCloseButton onClick={() => removeSelectedItem(0)} />
+                <TagLabel>{fields[0].name}</TagLabel>
+                <TagCloseButton onClick={() => remove(0)} />
               </Tag>
             ) : null}
-            {selectedItems?.length > 1 ? (
+            {fields?.length > 1 ? (
               <Tag
                 size="lg"
                 onClick={onOpen}
                 cursor="pointer"
                 minWidth="fit-content"
               >
-                <TagLabel>+{selectedItems.length - 1}</TagLabel>
+                <TagLabel>+{fields.length - 1}</TagLabel>
               </Tag>
             ) : null}
           </HStack>
@@ -132,8 +129,8 @@ const MultiSelect = (props: MultiSelectProps) => {
                   onClick={() => toggleItem(item)}
                 >
                   <HStack px="3" spacing="4">
-                    {selectedItems.find(
-                      (existingItem) => existingItem === item.name
+                    {fields.find(
+                      (existingItem) => existingItem.name === item.name
                     ) ? (
                       <Icon as={AiFillCheckCircle} color="green.200" />
                     ) : (

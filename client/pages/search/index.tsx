@@ -15,80 +15,68 @@ import { useSearchAnimesQuery, SearchResultFilter } from "@/graphql";
 import React, { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/router";
 import SearchFilter from "@/components/Search/SearchFilter";
-import { FaSearch } from "react-icons/fa";
+
 import AnimeCard from "@/components/Home/AnimeCard";
-import { debounce } from "lodash";
+
 import SearchResult from "@/components/Search/SearchResult";
+import SearchBar from "@/components/Search/SearchBar";
+import { stringify, parse } from "qs";
+import { useUrlSearchParams } from "@/lib/zustand/state";
 
 const Search = () => {
-  const router = useRouter();
-
   const [showAdvfilter, setShowAdvFilter] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
+  const [queryString, setQueryString] = useState({});
   const [searchFilter, setSearchFilter] = useState<SearchResultFilter>({});
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const urlSearchParams = useUrlSearchParams((state) => state.urlSearchParams);
+  const addSearchQuery = useUrlSearchParams((state) => state.addSearchQuery);
+  const addFilterParams = useUrlSearchParams((state) => state.addFilterParams);
+  const addUrlSearchParams = useUrlSearchParams(
+    (state) => state.addUrlSearchParams
+  );
+
   const [searchResult, querySearch] = useSearchAnimesQuery({
     variables: {
       searchInput: searchQuery,
       filter: searchFilter,
       first: 15,
     },
-    pause: true,
   });
-  const { search } = router.query;
 
   const onClickAdvFilter = () => {
     setShowAdvFilter(!showAdvfilter);
   };
 
-  const onChangeSearchQuery = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(e.target.value);
-  };
-
-  const callApi = () => {
-    querySearch();
-  };
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const delayedSearch = useCallback(debounce(callApi, 500), [searchQuery]);
-
   useEffect(() => {
-    if (search) {
-      setSearchQuery(search as string);
-    }
-  }, [search]);
-
-  useEffect(() => {
-    if (searchQuery || searchQuery === "") {
-      delayedSearch();
-    }
-    return delayedSearch.cancel;
-  }, [searchQuery, delayedSearch]);
-
-  useEffect(() => {
-    if (searchFilter !== {}) {
+    if (!isObjEmpty(searchFilter)) {
       querySearch();
+      setShowAdvFilter(true);
     }
-  }, [searchFilter, querySearch]);
+  }, [searchFilter, searchQuery, querySearch]);
+
+  useEffect(() => {
+    let url = window.location.search;
+    let cleanedUrl = url.replace("?", "");
+    const parsedUrl = parse(cleanedUrl);
+    addUrlSearchParams(parsedUrl);
+  }, []);
 
   return (
     <Box p="5">
       <Flex py="5" justifyContent="center">
         <Box>
-          <InputGroup w="30rem" mb="2">
-            <Input
-              placeholder="Search"
-              onChange={onChangeSearchQuery}
-              value={searchQuery}
-            />
-            <InputRightElement children={<Icon as={FaSearch} />} />
-          </InputGroup>
+          <SearchBar querySearch={setSearchQuery} />
           <Button float="right" size="sm" onClick={onClickAdvFilter}>
             {showAdvfilter ? "Hide" : "Show"} Advanced Filter
           </Button>
         </Box>
       </Flex>
       <Collapse in={showAdvfilter} animateOpacity>
-        <SearchFilter searchFilter={setSearchFilter} />
+        <SearchFilter
+          searchFilter={setSearchFilter}
+          querySearch={setSearchQuery}
+        />
       </Collapse>
       <Box mt="8">
         <SearchResult
@@ -101,3 +89,7 @@ const Search = () => {
 };
 
 export default Search;
+
+const isObjEmpty = (obj) => {
+  return Object.keys(obj).length === 0;
+};

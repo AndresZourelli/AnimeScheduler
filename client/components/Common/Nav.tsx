@@ -139,7 +139,7 @@ const Nav = () => {
       if (search !== "") {
         router.push({
           pathname: "/search",
-          query: { search },
+          query: { q: search },
         });
         setOpenPopover(false);
       }
