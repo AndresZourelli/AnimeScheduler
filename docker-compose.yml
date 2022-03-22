@@ -12,3 +12,14 @@ services:
       - "5433:5432"
     volumes:
       - ./pg-data:/var/lib/postgresql/data
+  supertokens:
+    image: "registry.supertokens.io/supertokens/supertokens-postgresql"
+    container_name: "supertokens"
+    restart: always
+    ports:
+      - "3567:3567"
+    environment:
+      POSTGRESQL_USER: admin
+      POSTGRESQL_HOST: db
+      POSTGRESQL_PORT: 5432
+      POSTGRESQL_PASSWORD: admin
