@@ -118,10 +118,6 @@ const generateFilters = (value: SearchFilters): SearchResultFilter => {
     value?.score &&
     (Number(value?.score?.min) !== 0 || Number(value?.score?.max) !== 10)
   ) {
-    console.log(
-      Number(value?.score?.min) !== 0,
-      Number(value?.score?.max) !== 10
-    );
     searchResultFilters.averageWatcherRating = {
       greaterThanOrEqualTo: value.score.min,
       lessThanOrEqualTo: value.score.max,
@@ -212,7 +208,6 @@ const SearchFilter = (props: SearchProps) => {
 
   useEffect(() => {
     if (formState.isDirty) {
-      console.log(methods.getValues());
       onSubmit(methods.getValues());
     }
   }, [formState.isDirty]);

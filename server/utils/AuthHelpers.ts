@@ -217,7 +217,6 @@ interface Tokens {
 const getTokens = async (req: Request, res: Response): Promise<Tokens> => {
   let accessToken = getCookie(req, "idt");
   const refreshToken = getCookie(req, "rft");
-  console.log("accessToken", accessToken, "refreshToken", refreshToken);
   if (!accessToken && !refreshToken) {
     return { accessToken: null, refreshToken: null };
   }

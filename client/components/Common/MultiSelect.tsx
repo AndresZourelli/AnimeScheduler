@@ -16,6 +16,7 @@ import React, { useRef, useState } from "react";
 import { AiFillCheckCircle } from "react-icons/ai";
 import { BsCircle } from "react-icons/bs";
 import { useFormContext, useFieldArray } from "react-hook-form";
+import { MouseEventHandler } from "react";
 
 interface Options {
   name: string;
@@ -40,8 +41,13 @@ const MultiSelect = (props: MultiSelectProps) => {
   const styles = useMultiStyleConfig("Input", props);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const ref = useRef();
-  useOutsideClick({ ref: ref, handler: () => onClose() });
-  const toggleItem = (value: Options) => {
+  const onMultiElementClickOut = () => {
+    setInputSearch("");
+    onClose();
+  };
+  useOutsideClick({ ref: ref, handler: () => onMultiElementClickOut() });
+  const toggleItem = (e: React.MouseEvent<HTMLDivElement>, value: Options) => {
+    e.stopPropagation();
     if (fields.find((item) => (item.name as any) === value.name)) {
       remove(fields.findIndex((item) => item.name === value.name));
     } else {
@@ -126,7 +132,7 @@ const MultiSelect = (props: MultiSelectProps) => {
                   cursor="pointer"
                   key={itemIndex}
                   py="1"
-                  onClick={() => toggleItem(item)}
+                  onClick={(e) => toggleItem(e, item)}
                 >
                   <HStack px="3" spacing="4">
                     {fields.find(

@@ -59,8 +59,9 @@ const Search = () => {
     let url = window.location.search;
     let cleanedUrl = url.replace("?", "");
     const parsedUrl = parse(cleanedUrl);
+    console.log(parsedUrl);
     addUrlSearchParams(parsedUrl);
-  }, []);
+  }, [addUrlSearchParams]);
 
   return (
     <Box p="5">

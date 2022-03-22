@@ -38,6 +38,7 @@ const SearchBar = ({ querySearch }) => {
   const delayedSearch = useCallback(debounce(callApi, 500), [searchQuery]);
 
   useEffect(() => {
+    console.log(urlSearchParams);
     const cleanedObj = removeEmptyString(urlSearchParams);
 
     if (!isObjEmpty(urlSearchParams)) {

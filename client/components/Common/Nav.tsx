@@ -68,6 +68,7 @@ const Nav = () => {
   const { colorMode, toggleColorMode } = useColorMode();
   const { user, logoutUser } = useAuth();
   const [signedIn, setSignedIn] = useState(false);
+  const [searchBarVisible, setSearchBarVisible] = useState(true);
 
   const handleLoginClick = () => {
     router.push("/login");
@@ -146,6 +147,14 @@ const Nav = () => {
     }
   };
 
+  useEffect(() => {
+    if (router.pathname === "/search") {
+      setSearchBarVisible(false);
+    } else {
+      setSearchBarVisible(true);
+    }
+  }, [router]);
+
   return (
     <Box>
       <Flex
@@ -167,76 +176,80 @@ const Nav = () => {
           </Heading>
         </Box>
         <Spacer />
-        <Box w="300px" mr="3">
-          <Popover
-            isOpen={openPopover}
-            onClose={onPopoverClose}
-            placement="bottom"
-            autoFocus={false}
-            gutter={0}
-            closeOnBlur={true}
-          >
-            <PopoverTrigger>
-              <InputGroup>
-                <InputLeftElement
-                  pointerEvents="none"
-                  children={<Search2Icon />}
-                />
-                <Input
-                  placeholder="Search"
-                  value={search}
-                  onChange={onSearchChange}
-                  onKeyPress={onKeyPress}
-                />
-              </InputGroup>
-            </PopoverTrigger>
-            <PopoverContent>
-              <PopoverHeader>
-                Total found: {searchResult?.data?.searchAnimes?.totalCount ?? 0}
-              </PopoverHeader>
+        {searchBarVisible ? (
+          <Box w="300px" mr="3">
+            <Popover
+              isOpen={openPopover}
+              onClose={onPopoverClose}
+              placement="bottom"
+              autoFocus={false}
+              gutter={0}
+              closeOnBlur={true}
+            >
+              <PopoverTrigger>
+                <InputGroup>
+                  <InputLeftElement
+                    pointerEvents="none"
+                    children={<Search2Icon />}
+                  />
+                  <Input
+                    placeholder="Search"
+                    value={search}
+                    onChange={onSearchChange}
+                    onKeyPress={onKeyPress}
+                  />
+                </InputGroup>
+              </PopoverTrigger>
+              <PopoverContent>
+                <PopoverHeader>
+                  Total found:{" "}
+                  {searchResult?.data?.searchAnimes?.totalCount ?? 0}
+                </PopoverHeader>
 
-              {searchResult.fetching ? (
-                <PopoverBody m="auto">
-                  <Spinner size="xl" />
-                </PopoverBody>
-              ) : (
-                <PopoverBody>
-                  <Table>
-                    <Tbody>
-                      {searchResult?.data?.searchAnimes.nodes.map((anime) => {
-                        return (
-                          <Tr
-                            key={anime.id}
-                            _hover={{
-                              background: "blue.600",
-                              color: "blue.50",
-                            }}
-                          >
-                            <Td onClick={onPopoverClose}>
-                              <NextLink href={`/animes/${anime.id}`}>
-                                {anime.title}
-                              </NextLink>
-                            </Td>
-                            <Td display="relative">
-                              <Box w="70px" h="100px" position="relative">
-                                <ImageLoader
-                                  image_url={anime.coverImage}
-                                  alt={anime.title}
-                                  maxW="70px"
-                                  minH="100px"
-                                />
-                              </Box>
-                            </Td>
-                          </Tr>
-                        );
-                      })}
-                    </Tbody>
-                  </Table>
-                </PopoverBody>
-              )}
-            </PopoverContent>
-          </Popover>
-        </Box>
+                {searchResult.fetching ? (
+                  <PopoverBody m="auto">
+                    <Spinner size="xl" />
+                  </PopoverBody>
+                ) : (
+                  <PopoverBody>
+                    <Table>
+                      <Tbody>
+                        {searchResult?.data?.searchAnimes.nodes.map((anime) => {
+                          return (
+                            <Tr
+                              key={anime.id}
+                              _hover={{
+                                background: "blue.600",
+                                color: "blue.50",
+                              }}
+                            >
+                              <Td onClick={onPopoverClose}>
+                                <NextLink href={`/animes/${anime.id}`}>
+                                  {anime.title}
+                                </NextLink>
+                              </Td>
+                              <Td display="relative">
+                                <Box w="70px" h="100px" position="relative">
+                                  <ImageLoader
+                                    image_url={anime.coverImage}
+                                    alt={anime.title}
+                                    maxW="70px"
+                                    minH="100px"
+                                  />
+                                </Box>
+                              </Td>
+                            </Tr>
+                          );
+                        })}
+                      </Tbody>
+                    </Table>
+                  </PopoverBody>
+                )}
+              </PopoverContent>
+            </Popover>
+          </Box>
+        ) : null}
+
         <Box>
           {buttons}
           <IconButton
