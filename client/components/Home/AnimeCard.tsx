@@ -54,7 +54,6 @@ const AnimeCard = ({
   showNextEpisode = false,
 }: AnimeCard) => {
   const router = useRouter();
-
   const [userEpisodesCount, setUserEpisodeCount] = useState<number>(0);
   const [userAnimeWatchStatus, setUserAnimeWatchStatus] =
     useState<WatchStatusTypes>(WatchStatusTypes.NotWatched);
@@ -222,124 +221,126 @@ const AnimeCard = ({
           role="group"
         >
           <LoadImage image_url={coverImage} alt={title} maxW="225px" />
-
-          <Box
-            position="absolute"
-            top="0"
-            bottom="0"
-            left="0"
-            right="0"
-            h="full"
-            w="full"
-            opacity="0"
-            transition="all .3s ease-in-out"
-            bg="rgba(0,0,0,0.7)"
-            _groupHover={{ opacity: 1 }}
-            zIndex="100"
-          >
+          <Box>
             <Box
-              d="flex"
+              position="absolute"
+              top="0"
+              bottom="0"
+              left="0"
+              right="0"
+              h="full"
               w="full"
-              justifyContent="center"
-              alignContent="center"
-              pt="2"
+              opacity="0"
+              transition="all .3s ease-in-out"
+              bg="rgba(0,0,0,0.7)"
+              _groupHover={{ opacity: 1 }}
+              zIndex="100"
             >
-              <Box d="flex" justifyContent="flex-start" alignItems="center">
-                <Tooltip label="Decrease your episode count">
-                  <IconButton
-                    colorScheme="gray"
-                    aria-label="Decrease your episode count"
-                    icon={<AiOutlineMinus />}
-                    size="xs"
-                    name="episodeDecrease"
-                    onClick={(e) =>
-                      onClickUserEpisodeCount(e, numberOfEpisodes, id)
-                    }
-                  />
-                </Tooltip>
-                <Tooltip label="Number of episodes you have watched">
-                  <Text textAlign="center" fontSize="small" px="2">
-                    {`${userEpisodesCount}/${
-                      numberOfEpisodes ? numberOfEpisodes : "???"
-                    }`}{" "}
-                    eps watched
-                  </Text>
-                </Tooltip>
+              <Box
+                d="flex"
+                w="full"
+                justifyContent="center"
+                alignContent="center"
+                pt="2"
+                hidden={!user.loggedIn}
+              >
+                <Box d="flex" justifyContent="flex-start" alignItems="center">
+                  <Tooltip label="Decrease your episode count">
+                    <IconButton
+                      colorScheme="gray"
+                      aria-label="Decrease your episode count"
+                      icon={<AiOutlineMinus />}
+                      size="xs"
+                      name="episodeDecrease"
+                      onClick={(e) =>
+                        onClickUserEpisodeCount(e, numberOfEpisodes, id)
+                      }
+                    />
+                  </Tooltip>
+                  <Tooltip label="Number of episodes you have watched">
+                    <Text textAlign="center" fontSize="small" px="2">
+                      {`${userEpisodesCount}/${
+                        numberOfEpisodes ? numberOfEpisodes : "???"
+                      }`}{" "}
+                      eps watched
+                    </Text>
+                  </Tooltip>
 
-                <Tooltip label="Increase your episode count">
-                  <IconButton
-                    colorScheme="gray"
-                    aria-label="Increase your episode count"
-                    icon={<AiOutlinePlus />}
-                    size="xs"
-                    name="episodeIncrease"
-                    onClick={(e) =>
-                      onClickUserEpisodeCount(e, numberOfEpisodes, id)
-                    }
+                  <Tooltip label="Increase your episode count">
+                    <IconButton
+                      colorScheme="gray"
+                      aria-label="Increase your episode count"
+                      icon={<AiOutlinePlus />}
+                      size="xs"
+                      name="episodeIncrease"
+                      onClick={(e) =>
+                        onClickUserEpisodeCount(e, numberOfEpisodes, id)
+                      }
+                    />
+                  </Tooltip>
+                </Box>
+                <Flex
+                  position="absolute"
+                  right="3%"
+                  bottom="3%"
+                  flexDirection={"column"}
+                  justifyContent="center"
+                  alignContent="center"
+                  w="auto"
+                  opacity="0"
+                  _groupHover={{ opacity: 1 }}
+                  transition="all .3s ease-in-out"
+                  zIndex="200"
+                >
+                  <PopupMenuButton
+                    customList={userAnimeLists}
+                    animeId={id}
+                    addToNewList={AddToNewList}
+                    addToExistingList={AddToExistingList}
                   />
-                </Tooltip>
+
+                  {userLiked ? (
+                    <Tooltip label="Remove anime from list">
+                      <IconButton
+                        aria-label="Remove anime from list button"
+                        icon={<AiFillHeart color="red.300" size="1.4rem" />}
+                        isRound
+                        bg="teal"
+                        onClick={(e) => removeAnimeFromDefaultList(e, id)}
+                        isLoading={addAnimeResult.fetching}
+                        visibility={user ? "visible" : "hidden"}
+                      />
+                    </Tooltip>
+                  ) : (
+                    <Tooltip label="Add anime to list">
+                      <IconButton
+                        aria-label="Add anime from list button"
+                        icon={<AiOutlineHeart size="1.4rem" />}
+                        isRound
+                        bg="teal"
+                        isLoading={removeAnimeResult.fetching}
+                        onClick={(e) => addAnimeToDefaultList(e, id)}
+                        visibility={user ? "visible" : "hidden"}
+                      />
+                    </Tooltip>
+                  )}
+                </Flex>
               </Box>
             </Box>
-          </Box>
-          {userLiked ? (
-            <Tag
-              zIndex="75"
-              position="absolute"
-              variant="solid"
-              mb={1}
-              mr={1}
-              bottom="0"
-              right="0"
-            >
-              <TagLeftIcon as={AiFillHeart} mr="0" color={"red.300"} />
-            </Tag>
-          ) : null}
-          <Flex
-            position="absolute"
-            right="3%"
-            bottom="3%"
-            flexDirection={"column"}
-            justifyContent="center"
-            alignContent="center"
-            w="auto"
-            opacity="0"
-            _groupHover={{ opacity: 1 }}
-            transition="all .3s ease-in-out"
-            zIndex="200"
-          >
-            <PopupMenuButton
-              customList={userAnimeLists}
-              animeId={id}
-              addToNewList={AddToNewList}
-              addToExistingList={AddToExistingList}
-            />
-
             {userLiked ? (
-              <Tooltip label="Remove anime from list">
-                <IconButton
-                  aria-label="Remove anime from list button"
-                  icon={<AiFillHeart color="red.300" size="1.4rem" />}
-                  isRound
-                  bg="teal"
-                  onClick={(e) => removeAnimeFromDefaultList(e, id)}
-                  isLoading={addAnimeResult.fetching}
-                  visibility={user ? "visible" : "hidden"}
-                />
-              </Tooltip>
-            ) : (
-              <Tooltip label="Add anime to list">
-                <IconButton
-                  aria-label="Add anime from list button"
-                  icon={<AiOutlineHeart size="1.4rem" />}
-                  isRound
-                  bg="teal"
-                  isLoading={removeAnimeResult.fetching}
-                  onClick={(e) => addAnimeToDefaultList(e, id)}
-                  visibility={user ? "visible" : "hidden"}
-                />
-              </Tooltip>
-            )}
-          </Flex>
+              <Tag
+                zIndex="75"
+                position="absolute"
+                variant="solid"
+                mb={1}
+                mr={1}
+                bottom="0"
+                right="0"
+              >
+                <TagLeftIcon as={AiFillHeart} mr="0" color={"red.300"} />
+              </Tag>
+            ) : null}
+          </Box>
         </Box>
         <Box d="flex" w="full" pt="3">
           <Badge>{averageWatcherRating}</Badge>
