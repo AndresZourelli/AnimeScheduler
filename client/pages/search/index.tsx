@@ -14,7 +14,7 @@ import {
 import { useSearchAnimesQuery, SearchResultFilter } from "@/graphql";
 import React, { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/router";
-import SearchFilter from "@/components/Search/SearchFilter";
+import SearchFilter, { SearchFilters } from "@/components/Search/SearchFilter";
 
 import AnimeCard from "@/components/Home/AnimeCard";
 
@@ -23,17 +23,17 @@ import SearchBar from "@/components/Search/SearchBar";
 import { stringify, parse } from "qs";
 import { useUrlSearchParams } from "@/lib/zustand/state";
 
+export interface SearchFilterExtended extends SearchFilters {
+  q?: string;
+}
+
 const Search = () => {
   const [showAdvfilter, setShowAdvFilter] = useState(false);
   const [queryString, setQueryString] = useState({});
   const [searchFilter, setSearchFilter] = useState<SearchResultFilter>({});
   const [searchQuery, setSearchQuery] = useState("");
-
-  const urlSearchParams = useUrlSearchParams((state) => state.urlSearchParams);
-  const addSearchQuery = useUrlSearchParams((state) => state.addSearchQuery);
-  const addFilterParams = useUrlSearchParams((state) => state.addFilterParams);
-  const addUrlSearchParams = useUrlSearchParams(
-    (state) => state.addUrlSearchParams
+  const [urlSearchParams, setUrlSearchParams] = useState<SearchFilterExtended>(
+    {}
   );
 
   const [searchResult, querySearch] = useSearchAnimesQuery({
@@ -59,15 +59,18 @@ const Search = () => {
     let url = window.location.search;
     let cleanedUrl = url.replace("?", "");
     const parsedUrl = parse(cleanedUrl);
-    console.log(parsedUrl);
-    addUrlSearchParams(parsedUrl);
-  }, [addUrlSearchParams]);
+    setUrlSearchParams({ ...urlSearchParams, ...parsedUrl });
+  }, [setUrlSearchParams]);
 
   return (
     <Box p="5">
       <Flex py="5" justifyContent="center">
         <Box>
-          <SearchBar querySearch={setSearchQuery} />
+          <SearchBar
+            querySearch={setSearchQuery}
+            setUrlSearchParams={setUrlSearchParams}
+            urlSearchParams={urlSearchParams}
+          />
           <Button float="right" size="sm" onClick={onClickAdvFilter}>
             {showAdvfilter ? "Hide" : "Show"} Advanced Filter
           </Button>
@@ -77,6 +80,8 @@ const Search = () => {
         <SearchFilter
           searchFilter={setSearchFilter}
           querySearch={setSearchQuery}
+          setUrlSearchParams={setUrlSearchParams}
+          urlSearchParams={urlSearchParams}
         />
       </Collapse>
       <Box mt="8">

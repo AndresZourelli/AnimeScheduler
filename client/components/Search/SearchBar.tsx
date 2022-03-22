@@ -14,16 +14,9 @@ import { SearchResultFilter } from "@/graphql";
 import { stringify, parse } from "qs";
 import { useUrlSearchParams } from "@/lib/zustand/state";
 
-const SearchBar = ({ querySearch }) => {
+const SearchBar = ({ querySearch, setUrlSearchParams, urlSearchParams }) => {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState("");
-
-  const urlSearchParams = useUrlSearchParams((state) => state.urlSearchParams);
-  const addSearchQuery = useUrlSearchParams((state) => state.addSearchQuery);
-  const addFilterParams = useUrlSearchParams((state) => state.addFilterParams);
-  const addUrlSearchParams = useUrlSearchParams(
-    (state) => state.addUrlSearchParams
-  );
 
   const onChangeSearchQuery = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
@@ -31,26 +24,29 @@ const SearchBar = ({ querySearch }) => {
 
   const callApi = () => {
     querySearch(searchQuery);
-    addSearchQuery(searchQuery);
+    setUrlSearchParams({ ...urlSearchParams, q: searchQuery });
   };
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const delayedSearch = useCallback(debounce(callApi, 500), [searchQuery]);
 
   useEffect(() => {
-    console.log(urlSearchParams);
     const cleanedObj = removeEmptyString(urlSearchParams);
 
     if (!isObjEmpty(urlSearchParams)) {
       if (!isObjEmpty(cleanedObj)) {
-        history.replaceState(
-          null,
-          "",
-          stringify(cleanedObj, { addQueryPrefix: true })
+        router.replace(
+          "/search" + stringify(cleanedObj, { addQueryPrefix: true }),
+          undefined,
+          {
+            shallow: true,
+          }
         );
         setSearchQuery(cleanedObj?.q);
       } else {
-        history.replaceState(null, "", location.pathname);
+        router.replace("/search", undefined, {
+          shallow: true,
+        });
       }
     }
   }, [urlSearchParams]);

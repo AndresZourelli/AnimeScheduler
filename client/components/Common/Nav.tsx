@@ -142,6 +142,7 @@ const Nav = () => {
           pathname: "/search",
           query: { q: search },
         });
+        setSearch("");
         setOpenPopover(false);
       }
     }

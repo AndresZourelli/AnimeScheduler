@@ -12,9 +12,10 @@ import { Controller, useFormContext, useWatch } from "react-hook-form";
 const RatingRangeSlider = () => {
   const { control, getValues, setValue } = useFormContext();
   const ranges = useWatch({ control, name: "score" });
+  const [localRange, setLocalRange] = useState(ranges || { min: 0, max: 10 });
   return (
     <Flex px="4">
-      <Box>{ranges.min}</Box>
+      <Box>{localRange.min}</Box>
       <Controller
         name="score"
         control={control}
@@ -26,9 +27,12 @@ const RatingRangeSlider = () => {
             max={10}
             step={1}
             onChange={(val) => {
+              setLocalRange({ min: val[0], max: val[1] });
+            }}
+            onChangeEnd={(val) => {
               onChange({ min: val[0], max: val[1] });
             }}
-            value={[value.min, value.max]}
+            value={[localRange.min, localRange.max]}
             mx="4"
           >
             <RangeSliderTrack>
@@ -40,7 +44,7 @@ const RatingRangeSlider = () => {
         )}
       />
 
-      <Box>{ranges.max}</Box>
+      <Box>{localRange.max}</Box>
     </Flex>
   );
 };

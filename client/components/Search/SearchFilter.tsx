@@ -8,6 +8,7 @@ import { parse, stringify } from "qs";
 import React, { useEffect, useState } from "react";
 import { FormProvider, useForm, useFormState } from "react-hook-form";
 import { isEqual } from "lodash";
+import { SearchFilterExtended } from "pages/search";
 
 interface Score {
   min: number;
@@ -36,6 +37,8 @@ export interface SearchFilters {
 interface SearchProps {
   searchFilter: (item: SearchResultFilter) => void;
   querySearch: (item) => void;
+  setUrlSearchParams: (item: SearchFilterExtended) => void;
+  urlSearchParams: SearchFilterExtended;
 }
 
 interface SearchFiltersReactHookForm {
@@ -161,7 +164,8 @@ interface MultiSelectItems {
 }
 
 const SearchFilter = (props: SearchProps) => {
-  const { searchFilter, querySearch } = props;
+  const { searchFilter, querySearch, urlSearchParams, setUrlSearchParams } =
+    props;
   const router = useRouter();
   const [multiSelectItems, setMultiSelectItems] = useState<MultiSelectItems[]>(
     []
@@ -172,12 +176,6 @@ const SearchFilter = (props: SearchProps) => {
   });
   const {} = useFormState({ control: methods.control });
   const { register, handleSubmit, reset, formState } = methods;
-  const urlSearchParams = useUrlSearchParams((state) => state.urlSearchParams);
-  const addSearchQuery = useUrlSearchParams((state) => state.addSearchQuery);
-  const addFilterParams = useUrlSearchParams((state) => state.addFilterParams);
-  const addUrlSearchParams = useUrlSearchParams(
-    (state) => state.addUrlSearchParams
-  );
 
   const onSubmit = (data) => {
     let queryParams: SearchFilters = {};
@@ -195,8 +193,10 @@ const SearchFilter = (props: SearchProps) => {
       }
     }
     const searchParams = { ...queryParams, q: urlSearchParams.q };
-    addFilterParams(queryParams);
-    history.replaceState(null, "", "?" + stringify(searchParams));
+    setUrlSearchParams(searchParams);
+    router.replace("/search?" + stringify(searchParams), undefined, {
+      shallow: true,
+    });
     searchFilter(generateFilters(queryParams));
   };
 
@@ -207,9 +207,12 @@ const SearchFilter = (props: SearchProps) => {
   };
 
   useEffect(() => {
-    if (formState.isDirty) {
-      onSubmit(methods.getValues());
-    }
+    const handler = setTimeout(() => {
+      if (formState.isDirty) {
+        onSubmit(methods.getValues());
+      }
+    }, 300);
+    return () => clearTimeout(handler);
   }, [formState.isDirty]);
 
   useEffect(() => {
