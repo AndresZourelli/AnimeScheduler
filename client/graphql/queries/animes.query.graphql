@@ -1,8 +1,8 @@
-query WeeklyAnimes {
+query WeeklyAnimes($isNull: Boolean = false) {
   animes(
     filter: {
       airingStatusType: { equalTo: CURRENTLY_AIRING }
-      userWatchStatus: { isNull: false }
+      userWatchStatus: { isNull: $isNull }
     }
   ) {
     nodes {

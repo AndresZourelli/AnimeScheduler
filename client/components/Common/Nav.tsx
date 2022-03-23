@@ -268,8 +268,8 @@ const Nav = () => {
           <NextLink href="/">
             <Link mr="4">Home</Link>
           </NextLink>
-          <NextLink href="/animes">
-            <Link mr="4">Animés</Link>
+          <NextLink href="/animes/weekly">
+            <Link mr="4">Airing This Week</Link>
           </NextLink>
           {signedIn ? (
             <>

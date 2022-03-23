@@ -37,6 +37,7 @@ interface AnimeCard {
   airingStatusType?: string;
   animeInfo?: any;
   showNextEpisode?: boolean;
+  airingTime?: string;
 }
 
 const AnimeCard = ({
@@ -52,6 +53,7 @@ const AnimeCard = ({
   userRating = null,
   userEpisodeCount = null,
   showNextEpisode = false,
+  airingTime = null,
 }: AnimeCard) => {
   const router = useRouter();
   const [userEpisodesCount, setUserEpisodeCount] = useState<number>(0);
@@ -232,7 +234,7 @@ const AnimeCard = ({
               w="full"
               opacity="0"
               transition="all .3s ease-in-out"
-              bg="rgba(0,0,0,0.7)"
+              bg="rgba(0,0,0,0.85)"
               _groupHover={{ opacity: 1 }}
               zIndex="100"
             >
@@ -340,6 +342,20 @@ const AnimeCard = ({
                 <TagLeftIcon as={AiFillHeart} mr="0" color={"red.300"} />
               </Tag>
             ) : null}
+            {airingTime && (
+              <Tag
+                zIndex="75"
+                position="absolute"
+                variant="solid"
+                background="teal.600"
+                mb={1}
+                mr={1}
+                top="2"
+                left="2"
+              >
+                {airingTime}
+              </Tag>
+            )}
           </Box>
         </Box>
         <Box d="flex" w="full" pt="3">

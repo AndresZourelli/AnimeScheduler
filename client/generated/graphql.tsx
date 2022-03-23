@@ -7680,7 +7680,7 @@ export type Query = Node & {
   genreByNodeId?: Maybe<Genre>;
   /** Reads and enables pagination through a set of `Genre`. */
   genres?: Maybe<GenresConnection>;
-  getUser?: Maybe<SmallUser>;
+  getUser?: Maybe<MeType>;
   /** Reads and enables pagination through a set of `UserList`. */
   getUserAnimeLists?: Maybe<UserListsConnection>;
   image?: Maybe<Image>;
@@ -8816,13 +8816,6 @@ export type SeasonFilter = {
   notEqualTo?: InputMaybe<Season>;
   /** Not included in the specified list. */
   notIn?: InputMaybe<Array<Season>>;
-};
-
-export type SmallUser = {
-  __typename?: 'SmallUser';
-  email?: Maybe<Scalars['String']>;
-  userId?: Maybe<Scalars['String']>;
-  username?: Maybe<Scalars['String']>;
 };
 
 export type SourceMaterial = {
@@ -12635,7 +12628,9 @@ export type UserListsQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type UserListsQuery = { __typename?: 'Query', animeLists?: { __typename?: 'AnimeListsConnection', nodes: Array<{ __typename?: 'AnimeList', id: any, nodeId: string, privacy: AnimeListPrivacy, title: string }> } | null | undefined };
 
-export type WeeklyAnimesQueryVariables = Exact<{ [key: string]: never; }>;
+export type WeeklyAnimesQueryVariables = Exact<{
+  isNull?: InputMaybe<Scalars['Boolean']>;
+}>;
 
 
 export type WeeklyAnimesQuery = { __typename?: 'Query', animes?: { __typename?: 'AnimeConnection', nodes: Array<{ __typename?: 'Anime', id: any, title: string, coverImage?: string | null | undefined, numberOfEpisodes?: number | null | undefined, averageWatcherRating?: any | null | undefined, userLiked?: boolean | null | undefined, userRating?: any | null | undefined, userWatchStatus?: string | null | undefined, userEpisodeCount?: any | null | undefined, startBroadcastDatetime?: any | null | undefined, airingStatusType?: AiringStatusTypes | null | undefined }> } | null | undefined };
@@ -13095,9 +13090,9 @@ export function useUserListsQuery(options: Omit<Urql.UseQueryArgs<UserListsQuery
   return Urql.useQuery<UserListsQuery>({ query: UserListsDocument, ...options });
 };
 export const WeeklyAnimesDocument = gql`
-    query WeeklyAnimes {
+    query WeeklyAnimes($isNull: Boolean = false) {
   animes(
-    filter: {airingStatusType: {equalTo: CURRENTLY_AIRING}, userWatchStatus: {isNull: false}}
+    filter: {airingStatusType: {equalTo: CURRENTLY_AIRING}, userWatchStatus: {isNull: $isNull}}
   ) {
     nodes {
       ...AnimeCardFragment
@@ -18565,71 +18560,6 @@ export default {
       {
         "kind": "OBJECT",
         "name": "CreateAnimeStreamingOnPayload",
-        "fields": [
-          {
-            "name": "anime",
-            "type": {
-              "kind": "OBJECT",
-              "name": "Anime",
-              "ofType": null
-            },
-            "args": []
-          },
-          {
-            "name": "animeStreamingOn",
-            "type": {
-              "kind": "OBJECT",
-              "name": "AnimeStreamingOn",
-              "ofType": null
-            },
-            "args": []
-          },
-          {
-            "name": "animeStreamingOnEdge",
-            "type": {
-              "kind": "OBJECT",
-              "name": "AnimeStreamingOnsEdge",
-              "ofType": null
-            },
-            "args": [
-              {
-                "name": "orderBy",
-                "type": {
-                  "kind": "LIST",
-                  "ofType": {
-                    "kind": "NON_NULL",
-                    "ofType": {
-                      "kind": "SCALAR",
-                      "name": "Any"
-                    }
-                  }
-                }
-              }
-            ]
-          },
-          {
-            "name": "clientMutationId",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          },
-          {
-            "name": "query",
-            "type": {
-              "kind": "OBJECT",
-              "name": "Query",
-              "ofType": null
-            },
-            "args": []
-          }
-        ],
-        "interfaces": []
-      },
-      {
-        "kind": "OBJECT",
-        "name": "CreateAnimeStudioPayload",
         "fields": [
           {
             "name": "anime",
@@ -30442,7 +30372,7 @@ export default {
             "name": "getUser",
             "type": {
               "kind": "OBJECT",
-              "name": "SmallUser",
+              "name": "MeType",
               "ofType": null
             },
             "args": [
@@ -32606,37 +32536,6 @@ export default {
                 "name": "SearchResult",
                 "ofType": null
               }
-            },
-            "args": []
-          }
-        ],
-        "interfaces": []
-      },
-      {
-        "kind": "OBJECT",
-        "name": "SmallUser",
-        "fields": [
-          {
-            "name": "email",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          },
-          {
-            "name": "userId",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          },
-          {
-            "name": "username",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
             },
             "args": []
           }
