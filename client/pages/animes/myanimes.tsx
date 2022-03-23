@@ -1,7 +1,7 @@
 import useAnimeList from "@/components/Hooks/useAnimeList";
 import CustomList from "@/components/MyAnimePage/CustomList";
 import MyAnimePageList from "@/components/MyAnimePage/MyAnimePageList";
-import WeeklyGrid from "@/components/MyAnimePage/WeeklyGrid";
+import CurrentlyAiringTab from "@/components/MyAnimePage/CurrentlyAiringTab";
 import { WatchStatusTypes } from "@/graphql";
 import { useAuth } from "@/lib/Auth/FirebaseAuth";
 import { withAuthPrivate } from "@/lib/Auth/withAuth";
@@ -54,19 +54,26 @@ const MyAnimes = (props) => {
           <Tab>Completed</Tab>
           <Tab>Rewatching</Tab>
           <Tab>Dropped</Tab>
-          <Box fontSize="md" textAlign="center" px="2" py="3">
-            Custom Lists
+          <Box fontSize="md" textAlign="center" px="2" py="3" mt="5">
+            <Heading size="sm">Custom Lists</Heading>
           </Box>
           <Divider ml={2} />
-          {userAnimeLists.map((list, idx) => (
-            <Tab key={list.id}>
-              {idx + 1} {list.title}
-            </Tab>
-          ))}
+          {userAnimeLists
+            .sort((a, b) => {
+              if (a.title === "default") {
+                return -1;
+              } else if (b.title === "default") {
+                return 1;
+              }
+              return 0;
+            })
+            .map((list, idx) => (
+              <Tab key={list.id}>{list.title}</Tab>
+            ))}
         </TabList>
         <TabPanels>
           <TabPanel>
-            <WeeklyGrid />
+            <CurrentlyAiringTab />
           </TabPanel>
           <TabPanel>
             <Box m={5}>

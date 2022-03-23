@@ -22,6 +22,7 @@ import {
   AiOutlineMinus,
   AiOutlinePlus,
 } from "react-icons/ai";
+import CountDownTag from "../Common/CountDownTag";
 import useCountDown from "../Hooks/useCountDown";
 interface AnimeCard {
   id?: any;
@@ -38,6 +39,7 @@ interface AnimeCard {
   animeInfo?: any;
   showNextEpisode?: boolean;
   airingTime?: string;
+  countDown?: boolean;
 }
 
 const AnimeCard = ({
@@ -54,6 +56,7 @@ const AnimeCard = ({
   userEpisodeCount = null,
   showNextEpisode = false,
   airingTime = null,
+  countDown = false,
 }: AnimeCard) => {
   const router = useRouter();
   const [userEpisodesCount, setUserEpisodeCount] = useState<number>(0);
@@ -355,6 +358,19 @@ const AnimeCard = ({
               >
                 {airingTime}
               </Tag>
+            )}
+            {countDown && (
+              <CountDownTag
+                zIndex="75"
+                position="absolute"
+                variant="solid"
+                background="red.600"
+                mb={1}
+                ml={1}
+                bottom="0"
+                left="0"
+                startDate={startBroadcastDatetime}
+              />
             )}
           </Box>
         </Box>

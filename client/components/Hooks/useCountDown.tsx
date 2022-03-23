@@ -17,7 +17,7 @@ const useCountDown = ({ endInputDate = null }) => {
   useEffect(() => {
     interval.current = setInterval(() => {
       setTimeLeft(calculateTimeLeft());
-    }, 10000);
+    }, 1000);
     return () => {
       clearInterval(interval.current as NodeJS.Timeout);
     };

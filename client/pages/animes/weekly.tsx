@@ -79,8 +79,6 @@ const Weekly = () => {
                             {...anime}
                             airingTime={format(todayDate, "EEE, LLL d HH:mm")}
                           />
-
-                          <Text>{}</Text>
                         </GridItem>
                       );
                     })
@@ -137,17 +135,15 @@ const sortToWeekday = (nodes: Anime[]): Anime[][] => {
 };
 
 const convertDateToHours = (time: string): Date => {
-  let obj = new Date();
   let currentTime = new Date(time);
-  let timeObj = {
+
+  let finalTime = set(new Date(), {
     hours: getHours(currentTime),
     minutes: getMinutes(currentTime),
     seconds: getSeconds(currentTime),
-  };
-  setHours(obj, timeObj.hours);
-  setMinutes(obj, timeObj.minutes);
-  setSeconds(obj, timeObj.seconds);
-  return obj;
+  });
+
+  return finalTime;
 };
 
 export default Weekly;
