@@ -1,31 +1,25 @@
-import { useState } from "react";
-import {
-  Box,
-  Heading,
-  Stack,
-  Grid,
-  GridItem,
-  Text,
-  Tag,
-  Select,
-  Flex,
-} from "@chakra-ui/react";
+import AnimeCard from "@/components/Home/AnimeCard";
 import { useWeeklyAnimesQuery, WeeklyAnimesQuery } from "@/graphql";
 import {
-  getDay,
+  Box,
+  Flex,
+  Grid,
+  GridItem,
+  Heading,
+  Select,
+  Stack,
+} from "@chakra-ui/react";
+import {
+  compareAsc,
   format,
-  setHours,
-  setMinutes,
-  setSeconds,
-  set,
+  getDay,
   getHours,
   getMinutes,
   getSeconds,
-  getDate,
+  set,
   setDay,
-  compareAsc,
 } from "date-fns";
-import AnimeCard from "@/components/Home/AnimeCard";
+import { useState } from "react";
 
 type Anime = WeeklyAnimesQuery["animes"]["nodes"][0];
 

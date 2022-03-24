@@ -1,5 +1,16 @@
-import { useState, useEffect, useRef } from "react";
-import moment from "moment";
+import {
+  addWeeks,
+  getDay,
+  getHours,
+  getMinutes,
+  getSeconds,
+  intervalToDuration,
+  isAfter,
+  isFuture,
+  set,
+  setDay,
+} from "date-fns";
+import { useEffect, useRef, useState } from "react";
 
 const useCountDown = ({ endInputDate = null }) => {
   const [rDays, setRDays] = useState("00");
@@ -14,6 +25,7 @@ const useCountDown = ({ endInputDate = null }) => {
   });
 
   let interval = useRef<NodeJS.Timer | number>(0);
+
   useEffect(() => {
     interval.current = setInterval(() => {
       setTimeLeft(calculateTimeLeft());
@@ -25,17 +37,19 @@ const useCountDown = ({ endInputDate = null }) => {
   if (!endInputDate) {
     return timeLeft;
   }
-  const startDate = moment();
-  const airDate = moment(endInputDate);
-  let endDate = moment()
-    .day(airDate.day())
-    .hour(airDate.hour())
-    .minute(airDate.minute())
-    .second(airDate.second());
-  if (startDate.weekday() >= airDate.weekday()) {
-    endDate.add(1, "week");
-  }
+  const startDate = new Date();
+  const airDate = new Date(endInputDate);
+  let thisWeekEpisode = set(new Date(), {
+    hours: getHours(airDate),
+    minutes: getMinutes(airDate),
+    seconds: getSeconds(airDate),
+  });
 
+  thisWeekEpisode = setDay(thisWeekEpisode, getDay(airDate));
+
+  if (isAfter(startDate, thisWeekEpisode)) {
+    thisWeekEpisode = addWeeks(thisWeekEpisode, 1);
+  }
   const getFormatDigit = (digit) => {
     const value = Math.floor(digit);
 
@@ -50,12 +64,15 @@ const useCountDown = ({ endInputDate = null }) => {
   };
 
   const calculateTimeLeft = () => {
-    const diff: moment.Duration = moment.duration(endDate.diff(startDate));
-    if (diff.asMilliseconds() > 0) {
-      const days = getFormatDigit(diff.asDays());
-      const hours = getFormatDigit(diff.asHours() % 24);
-      const minutes = getFormatDigit(diff.asMinutes() % 60);
-      const seconds = getFormatDigit(diff.asSeconds() % 60);
+    if (isFuture(thisWeekEpisode)) {
+      const interval = intervalToDuration({
+        start: startDate,
+        end: thisWeekEpisode,
+      });
+      const days = getFormatDigit(interval.days);
+      const hours = getFormatDigit(interval.hours);
+      const minutes = getFormatDigit(interval.minutes);
+      const seconds = getFormatDigit(interval.seconds);
       setRDays(days);
       setRHours(hours);
       setRMinutes(minutes);
