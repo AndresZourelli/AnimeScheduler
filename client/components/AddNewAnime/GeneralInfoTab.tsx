@@ -18,22 +18,34 @@ import {
   Select,
   Text,
 } from "@chakra-ui/react";
-import { Field, FieldArray, getIn } from "formik";
-import moment from "moment";
+import { useFormContext, useFieldArray, Controller } from "react-hook-form";
+import { add, differenceInYears, getYear, set, subYears } from "date-fns";
+import { useGetGenresQuery } from "@/graphql";
 
-const GeneralInfoTab = ({
-  values,
-  errors,
-  touched,
-  handleChange,
-  inputSpacingCommon,
-}) => {
+const GeneralInfoTab = ({ inputSpacingCommon }) => {
+  const [genreQueryResult, fetchGenres] = useGetGenresQuery();
+  const {
+    register,
+    formState: { errors },
+  } = useFormContext();
+  const { fields, append, remove } = useFieldArray({
+    name: "otherNames",
+  });
+  const {
+    fields: fieldsGenres,
+    append: appendGenre,
+    remove: removeGenre,
+  } = useFieldArray({
+    name: "genres",
+  });
+
   const seasonList = getSeasons();
   const yearsList = getYears();
   const monthsList = getMonths();
   const daysList = getDays();
   const hoursList = getHours();
   const minutesList = getMinutes();
+
   return (
     <>
       <Box>
@@ -42,12 +54,7 @@ const GeneralInfoTab = ({
           <Flex wrap="wrap">
             <FormControl
               id="titles.english"
-              isInvalid={
-                errors.titles &&
-                getIn(errors.titles, "english") &&
-                touched.titles &&
-                getIn(errors.titles, "english")
-              }
+              isInvalid={errors.title?.english}
               w={inputSpacingCommon.width}
               mb={inputSpacingCommon.marginBottom}
               mr={inputSpacingCommon.marginRight}
@@ -55,22 +62,14 @@ const GeneralInfoTab = ({
               <FormLabel>English Title</FormLabel>
               <Input
                 placeholder="English Title"
-                value={values.titles.english}
-                onChange={handleChange}
+                {...register("titles.english")}
               />
-              <FormErrorMessage>
-                {getIn(errors.titles, "english")}
-              </FormErrorMessage>
+              <FormErrorMessage>{errors.titles?.english}</FormErrorMessage>
             </FormControl>
 
             <FormControl
               id="titles.japanese"
-              isInvalid={
-                errors.titles &&
-                getIn(errors.titles, "japanese") &&
-                touched.titles &&
-                getIn(errors.titles, "japanese")
-              }
+              isInvalid={errors.titles?.japanese}
               w={inputSpacingCommon.width}
               mb={inputSpacingCommon.marginBottom}
               mr={inputSpacingCommon.marginRight}
@@ -78,22 +77,14 @@ const GeneralInfoTab = ({
               <FormLabel>Japanese Title</FormLabel>
               <Input
                 placeholder="Japanese Title"
-                value={values.titles.japanese}
-                onChange={handleChange}
+                {...register("titles.japanese")}
               />
-              <FormErrorMessage>
-                {getIn(errors.titles, "japanese")}
-              </FormErrorMessage>
+              <FormErrorMessage>{errors.titles?.japanese}</FormErrorMessage>
             </FormControl>
 
             <FormControl
               id="titles.romaji"
-              isInvalid={
-                errors.titles &&
-                getIn(errors.titles, "romaji") &&
-                touched.titles &&
-                getIn(errors.titles, "romaji")
-              }
+              isInvalid={errors.titles?.romaji}
               w={inputSpacingCommon.width}
               mb={inputSpacingCommon.marginBottom}
               mr={inputSpacingCommon.marginRight}
@@ -101,61 +92,51 @@ const GeneralInfoTab = ({
               <FormLabel>Romaji Title</FormLabel>
               <Input
                 placeholder="Romaji Title"
-                value={values.titles.romaji}
-                onChange={handleChange}
+                {...register("titles.romaji")}
               />
-              <FormErrorMessage>
-                {getIn(errors.titles, "romaji")}
-              </FormErrorMessage>
+              <FormErrorMessage>{errors.titles?.romaji}</FormErrorMessage>
             </FormControl>
           </Flex>
         </Box>
         <Text fontSize="md" mb={inputSpacingCommon.marginBottom}>
           Other Names
         </Text>
-        <FieldArray name="otherNames">
-          {({ push, remove }) => (
-            <>
-              {values.otherNames.map((name, nameIndex) => (
-                <FormControl
-                  id="otherNames"
-                  isInvalid={errors.otherNames && touched.otherNames}
-                  w={inputSpacingCommon.width}
-                  mb={inputSpacingCommon.marginBottom}
-                  key={nameIndex}
-                  mr={inputSpacingCommon.marginRight}
-                >
-                  <InputGroup>
-                    <Field
-                      as={Input}
-                      name={`otherNames[${nameIndex}].name`}
-                      placeholder="Other Names"
-                      onChange={handleChange}
+
+        {fields.map((field, nameIndex) => (
+          <FormControl
+            isInvalid={errors.otherNames}
+            w={inputSpacingCommon.width}
+            mb={inputSpacingCommon.marginBottom}
+            key={field.id}
+            mr={inputSpacingCommon.marginRight}
+          >
+            <InputGroup>
+              <Input
+                name={`otherNames[${nameIndex}].name`}
+                placeholder="Other Names"
+                {...register(`otherNames[${nameIndex}].name`)}
+              />
+              {fields.length > 1 ? (
+                <InputRightElement
+                  children={
+                    <CloseButton
+                      color="red.500"
+                      onClick={() => remove(nameIndex)}
                     />
-                    {values.otherNames.length > 1 ? (
-                      <InputRightElement
-                        children={
-                          <CloseButton
-                            color="red.500"
-                            onClick={() => remove(nameIndex)}
-                          />
-                        }
-                      />
-                    ) : null}
-                  </InputGroup>
-                  <FormErrorMessage>{errors.otherNames}</FormErrorMessage>
-                </FormControl>
-              ))}
-              <Button
-                onClick={() => push({ name: "" })}
-                mb={inputSpacingCommon.marginBottom}
-                alignSelf="flex-end"
-              >
-                Add
-              </Button>
-            </>
-          )}
-        </FieldArray>
+                  }
+                />
+              ) : null}
+            </InputGroup>
+            <FormErrorMessage>{errors.otherNames}</FormErrorMessage>
+          </FormControl>
+        ))}
+        <Button
+          onClick={() => append({ name: "", value: "" })}
+          mb={inputSpacingCommon.marginBottom}
+          alignSelf="flex-end"
+        >
+          Add
+        </Button>
       </Box>
       <Box>
         <Heading>Release Info</Heading>
@@ -167,13 +148,17 @@ const GeneralInfoTab = ({
               mb={inputSpacingCommon.marginBottom}
             >
               <FormLabel>Status</FormLabel>
-              <Field name="status" as={Select} placeholder="Select Option">
+              <Select
+                name="status"
+                {...register("status")}
+                placeholder="Select Option"
+              >
                 <option value="finishedAiring">Finished Airing</option>
                 <option value="currentlyAiring">Currently Airing</option>
                 <option value="notYetAired">Not Yet Aired</option>
                 <option value="cancelled">Cancelled</option>
                 <option value="hiatus">Haitus</option>
-              </Field>
+              </Select>
               <FormErrorMessage>{errors.status}</FormErrorMessage>
             </FormControl>
             <FormControl
@@ -181,13 +166,31 @@ const GeneralInfoTab = ({
               mr={inputSpacingCommon.marginRight}
             >
               <FormLabel>Season</FormLabel>
-              <Field name="season" as={Select} placeholder="Select Option">
-                {seasonList.map((season) => (
-                  <option key={season} value={season}>
-                    {season}
-                  </option>
-                ))}
-              </Field>
+              <Flex gap={3}>
+                <Select
+                  name="airingSeason.season"
+                  {...register("airingSeason.season")}
+                  placeholder="Select Option"
+                >
+                  {seasonList.map((season) => (
+                    <option key={season} value={season.toLowerCase()}>
+                      {season}
+                    </option>
+                  ))}
+                </Select>
+                <Select
+                  name="airingSeason.year"
+                  {...register("airingSeason.year")}
+                  placeholder="Select Option"
+                >
+                  {yearsList.map((year) => (
+                    <option key={year} value={year}>
+                      {year}
+                    </option>
+                  ))}
+                </Select>
+              </Flex>
+
               <FormErrorMessage>{errors.status}</FormErrorMessage>
             </FormControl>
           </Flex>
@@ -195,19 +198,17 @@ const GeneralInfoTab = ({
         <Box>
           <Flex wrap="wrap">
             <FormControl
-              isInvalid={errors.numberOfEpisodes && touched.numberOfEpisodes}
+              isInvalid={errors.numberOfEpisodes}
               mr={inputSpacingCommon.marginRight}
               mb={inputSpacingCommon.marginBottom}
               min={0}
               w={inputSpacingCommon.width}
             >
               <FormLabel>Number of Episodes</FormLabel>
-              <Field name="numberOfEpisodes">
-                {({ field, form }) => (
-                  <NumberInput
-                    min={0}
-                    onChange={(val) => form.setFieldValue(field.name, val)}
-                  >
+              <Controller
+                name="numberOfEpisodes"
+                render={({ field }) => (
+                  <NumberInput {...field} min={0}>
                     <NumberInputField />
                     <NumberInputStepper>
                       <NumberIncrementStepper />
@@ -215,23 +216,23 @@ const GeneralInfoTab = ({
                     </NumberInputStepper>
                   </NumberInput>
                 )}
-              </Field>
+              />
+
               <FormErrorMessage>{errors.numberOfEpisodes}</FormErrorMessage>
             </FormControl>
             <FormControl
-              isInvalid={errors.duration && touched.duration}
+              isInvalid={errors.duration}
               mr={inputSpacingCommon.marginRight}
               mb={inputSpacingCommon.marginBottom}
               min={0}
               w={inputSpacingCommon.width}
             >
               <FormLabel>Length (in minutes)</FormLabel>
-              <Field name="duration">
-                {({ field, form }) => (
-                  <NumberInput
-                    onChange={(val) => form.setFieldValue(field.name, val)}
-                    min={0}
-                  >
+
+              <Controller
+                name="duration"
+                render={({ field }) => (
+                  <NumberInput {...field} min={0}>
                     <NumberInputField />
                     <NumberInputStepper>
                       <NumberIncrementStepper />
@@ -239,7 +240,7 @@ const GeneralInfoTab = ({
                     </NumberInputStepper>
                   </NumberInput>
                 )}
-              </Field>
+              />
               <FormErrorMessage>{errors.duration}</FormErrorMessage>
             </FormControl>
           </Flex>
@@ -253,20 +254,18 @@ const GeneralInfoTab = ({
               mb={inputSpacingCommon.marginBottom}
             >
               <FormLabel>year</FormLabel>
-              <Field
+              <Select
                 name="startDate.year"
-                as={Select}
                 placeholder="Select Option"
+                {...register("startDate.year")}
               >
                 {yearsList.map((year) => (
                   <option key={year} value={year}>
                     {year}
                   </option>
                 ))}
-              </Field>
-              <FormErrorMessage>
-                {getIn(errors.startDate, "year")}
-              </FormErrorMessage>
+              </Select>
+              <FormErrorMessage>{errors.startDate?.year}</FormErrorMessage>
             </FormControl>
             <FormControl
               w={inputSpacingCommon.width}
@@ -274,20 +273,18 @@ const GeneralInfoTab = ({
               mb={inputSpacingCommon.marginBottom}
             >
               <FormLabel>Month</FormLabel>
-              <Field
+              <Select
                 name="startDate.month"
-                as={Select}
                 placeholder="Select Option"
+                {...register("startDate.month")}
               >
-                {monthsList.map((month) => (
-                  <option key={month.index} value={month.index}>
-                    {month.monthName}
+                {monthsList.map((month, index) => (
+                  <option key={month} value={index}>
+                    {month}
                   </option>
                 ))}
-              </Field>
-              <FormErrorMessage>
-                {getIn(errors.startDate, "month")}
-              </FormErrorMessage>
+              </Select>
+              <FormErrorMessage>{errors.startDate?.month}</FormErrorMessage>
             </FormControl>
             <FormControl
               w={inputSpacingCommon.width}
@@ -295,20 +292,18 @@ const GeneralInfoTab = ({
               mb={inputSpacingCommon.marginBottom}
             >
               <FormLabel>Day</FormLabel>
-              <Field
+              <Select
                 name="startDate.day"
-                as={Select}
                 placeholder="Select Option"
+                {...register("startDate.day")}
               >
                 {daysList.map((day) => (
                   <option key={day} value={day}>
                     {day}
                   </option>
                 ))}
-              </Field>
-              <FormErrorMessage>
-                {getIn(errors.startDate, "day")}
-              </FormErrorMessage>
+              </Select>
+              <FormErrorMessage>{errors.startDate?.day}</FormErrorMessage>
             </FormControl>
           </Flex>
         </Box>
@@ -321,20 +316,18 @@ const GeneralInfoTab = ({
               mb={inputSpacingCommon.marginBottom}
             >
               <FormLabel>year</FormLabel>
-              <Field
+              <Select
                 name="endDate.year"
-                as={Select}
                 placeholder="Select Option"
+                {...register("endDate.year")}
               >
                 {yearsList.map((year) => (
                   <option key={year} value={year}>
                     {year}
                   </option>
                 ))}
-              </Field>
-              <FormErrorMessage>
-                {getIn(errors.endDate, "year")}
-              </FormErrorMessage>
+              </Select>
+              <FormErrorMessage>{errors.endDate?.year}</FormErrorMessage>
             </FormControl>
             <FormControl
               w={inputSpacingCommon.width}
@@ -342,20 +335,18 @@ const GeneralInfoTab = ({
               mb={inputSpacingCommon.marginBottom}
             >
               <FormLabel>Month</FormLabel>
-              <Field
+              <Select
                 name="endDate.month"
-                as={Select}
                 placeholder="Select Option"
+                {...register("endDate.month")}
               >
-                {monthsList.map((month) => (
-                  <option key={month.index} value={month.index}>
-                    {month.monthName}
+                {monthsList.map((month, index) => (
+                  <option key={month} value={index}>
+                    {month}
                   </option>
                 ))}
-              </Field>
-              <FormErrorMessage>
-                {getIn(errors.endDate, "month")}
-              </FormErrorMessage>
+              </Select>
+              <FormErrorMessage>{errors.endDate?.month}</FormErrorMessage>
             </FormControl>
             <FormControl
               w={inputSpacingCommon.width}
@@ -363,16 +354,18 @@ const GeneralInfoTab = ({
               mb={inputSpacingCommon.marginBottom}
             >
               <FormLabel>Day</FormLabel>
-              <Field name="endDate.day" as={Select} placeholder="Select Option">
+              <Select
+                name="endDate.day"
+                {...register("endDate.day")}
+                placeholder="Select Option"
+              >
                 {daysList.map((day) => (
                   <option key={day} value={day}>
                     {day}
                   </option>
                 ))}
-              </Field>
-              <FormErrorMessage>
-                {getIn(errors.endDate, "day")}
-              </FormErrorMessage>
+              </Select>
+              <FormErrorMessage>{errors.endDate?.day}</FormErrorMessage>
             </FormControl>
           </Flex>
         </Box>
@@ -385,20 +378,18 @@ const GeneralInfoTab = ({
               mb={inputSpacingCommon.marginBottom}
             >
               <FormLabel>Hour (24-hour format)</FormLabel>
-              <Field
+              <Select
                 name="airTimeJst.hour"
-                as={Select}
                 placeholder="Select Option"
+                {...register("airTimeJst.hour")}
               >
                 {hoursList.map((hour) => (
                   <option key={hour} value={hour}>
                     {hour}
                   </option>
                 ))}
-              </Field>
-              <FormErrorMessage>
-                {getIn(errors.airTimeJst, "hour")}
-              </FormErrorMessage>
+              </Select>
+              <FormErrorMessage>{errors.airTimeJst?.hour}</FormErrorMessage>
             </FormControl>
             <FormControl
               w={inputSpacingCommon.width}
@@ -406,20 +397,18 @@ const GeneralInfoTab = ({
               mb={inputSpacingCommon.marginBottom}
             >
               <FormLabel>Minute</FormLabel>
-              <Field
+              <Select
                 name="airTimeJst.minute"
-                as={Select}
                 placeholder="Select Option"
+                {...register("airTimeJst.minute")}
               >
                 {minutesList.map((minute) => (
                   <option key={minute} value={minute}>
                     {minute}
                   </option>
                 ))}
-              </Field>
-              <FormErrorMessage>
-                {getIn(errors.airTimeJst, "minute")}
-              </FormErrorMessage>
+              </Select>
+              <FormErrorMessage>{errors.airTimeJst?.minute}</FormErrorMessage>
             </FormControl>
           </Flex>
         </Box>
@@ -432,7 +421,11 @@ const GeneralInfoTab = ({
               mb={inputSpacingCommon.marginBottom}
             >
               <FormLabel>Format Type</FormLabel>
-              <Field name="formatType" as={Select} placeholder="Select Option">
+              <Select
+                name="formatType"
+                {...register("formatType")}
+                placeholder="Select Option"
+              >
                 <option value="tv">TV</option>
                 <option value="tv short">TV Short</option>
                 <option value="movie">Movie</option>
@@ -440,7 +433,7 @@ const GeneralInfoTab = ({
                 <option value="ova">OVA</option>
                 <option value="ona">ONA</option>
                 <option value="music">Music</option>
-              </Field>
+              </Select>
               <FormErrorMessage>{errors.formatType}</FormErrorMessage>
             </FormControl>
             <FormControl
@@ -449,7 +442,11 @@ const GeneralInfoTab = ({
               mb={inputSpacingCommon.marginBottom}
             >
               <FormLabel>Source</FormLabel>
-              <Field name="source" as={Select} placeholder="Select Option">
+              <Select
+                name="source"
+                {...register("source")}
+                placeholder="Select Option"
+              >
                 <option value="original">Original</option>
                 <option value="manga">Manga</option>
                 <option value="anime">Anime</option>
@@ -459,7 +456,7 @@ const GeneralInfoTab = ({
                 <option value="web novel">Web Novel</option>
                 <option value="video game">Video Game</option>
                 <option value="doujinshi">Doujinshi</option>
-              </Field>
+              </Select>
               <FormErrorMessage>{errors.source}</FormErrorMessage>
             </FormControl>
             <FormControl
@@ -468,9 +465,9 @@ const GeneralInfoTab = ({
               mb={inputSpacingCommon.marginBottom}
             >
               <FormLabel>Source</FormLabel>
-              <Field
+              <Select
                 name="countryOfOrigin"
-                as={Select}
+                {...register("countryOfOrigin")}
                 placeholder="Select Option"
               >
                 <option value="japan">Japan</option>
@@ -478,7 +475,7 @@ const GeneralInfoTab = ({
                 <option value="china">China</option>
                 <option value="taiwan">Taiwan</option>
                 <option value="usa">USA</option>
-              </Field>
+              </Select>
               <FormErrorMessage>{errors.countryOfOrigin}</FormErrorMessage>
             </FormControl>
           </Flex>
@@ -488,49 +485,41 @@ const GeneralInfoTab = ({
             Genres
           </Heading>
           <Flex wrap="wrap">
-            <FieldArray name="genres">
-              {({ push, remove }) => (
-                <>
-                  <Flex wrap="wrap">
-                    {values.genres.map((genreInput, genreIndex) => (
-                      <FormControl
-                        id="genres"
-                        isInvalid={errors.genres && touched.genres}
-                        w={inputSpacingCommon.width}
-                        mb={inputSpacingCommon.marginBottom}
-                        key={genreIndex}
-                        mr={2}
-                      >
-                        <Flex>
-                          <Field
-                            as={Select}
-                            name={`genres[${genreIndex}].genreId`}
-                            placeholder="Select Option"
-                          >
-                            {["Action", "SciFi", "Ecchi"].map(
-                              (genre, index2) => (
-                                <option value={genre} key={index2}>
-                                  {genre}
-                                </option>
-                              )
-                            )}
-                          </Field>
-                          {values.genres.length > 1 ? (
-                            <CloseButton
-                              alignSelf="center"
-                              color="red.500"
-                              onClick={() => remove(genreIndex)}
-                            />
-                          ) : null}
-                          <FormErrorMessage>{errors.genres}</FormErrorMessage>
-                        </Flex>
-                      </FormControl>
-                    ))}
+            <Flex wrap="wrap">
+              {fieldsGenres.map((field, genreIndex) => (
+                <FormControl
+                  id="genres"
+                  isInvalid={errors.genres}
+                  w={inputSpacingCommon.width}
+                  mb={inputSpacingCommon.marginBottom}
+                  key={genreIndex}
+                  mr={2}
+                >
+                  <Flex>
+                    <Select
+                      name={`genres[${genreIndex}].genreId`}
+                      placeholder="Select Option"
+                      {...register(`genres[${genreIndex}].genreId`)}
+                    >
+                      {genreQueryResult.data?.genres.nodes.map((genre) => (
+                        <option value={genre.id} key={genre.id}>
+                          {genre.genre}
+                        </option>
+                      ))}
+                    </Select>
+                    {fieldsGenres.length > 1 ? (
+                      <CloseButton
+                        alignSelf="center"
+                        color="red.500"
+                        onClick={() => removeGenre(genreIndex)}
+                      />
+                    ) : null}
+                    <FormErrorMessage>{errors.genres}</FormErrorMessage>
                   </Flex>
-                  <Button onClick={() => push({ genreId: "" })}>Add</Button>
-                </>
-              )}
-            </FieldArray>
+                </FormControl>
+              ))}
+            </Flex>
+            <Button onClick={() => appendGenre({ genreId: "" })}>Add</Button>
           </Flex>
         </Box>
       </Box>
@@ -541,35 +530,37 @@ const GeneralInfoTab = ({
 export default GeneralInfoTab;
 
 const getSeasons = () => {
-  let yearList = [];
   const seasonList = ["Winter", "Spring", "Summer", "Fall"];
-  let startDate = moment().add(3, "year");
-  let endDate = moment([1950, 1]);
-  while (endDate.diff(startDate, "years") <= 0) {
-    seasonList.map((season) => {
-      yearList.push(`${season} ${startDate.format("YYYY")}`);
-    });
-    startDate.subtract(1, "year");
-  }
-  return yearList;
+  return seasonList;
 };
 
 const getYears = () => {
   let yearList = [];
-  let startDate = moment().add(3, "year");
-  let endDate = moment([1950, 1]);
-  while (endDate.diff(startDate, "years") <= 0) {
-    yearList.push(`${startDate.format("YYYY")}`);
-    startDate.subtract(1, "year");
+  let startDate = add(new Date(), { years: 3 });
+  let endDate = set(new Date(), { year: 1900, month: 0, date: 1 });
+  while (differenceInYears(endDate, startDate) <= 0) {
+    yearList.push(`${getYear(startDate)}`);
+    startDate = subYears(startDate, 1);
   }
   return yearList;
 };
 
 const getMonths = () => {
-  const monthList = [];
-  for (let i = 0; i < 12; i++) {
-    monthList.push({ index: i, monthName: moment().month(i).format("MMM") });
-  }
+  const monthList = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+
   return monthList;
 };
 

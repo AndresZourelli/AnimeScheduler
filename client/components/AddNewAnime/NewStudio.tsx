@@ -20,7 +20,7 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 
-const NewStudio = ({ values, setFieldValue }) => {
+const NewStudio = ({ append }) => {
   const [studioData, setStudioData] = useState({
     studioName: "",
     isPrimary: false,
@@ -38,7 +38,7 @@ const NewStudio = ({ values, setFieldValue }) => {
   };
 
   const onSave = () => {
-    setFieldValue("newStudiosList", [...values.newStudiosList, studioData]);
+    append(studioData);
     setStudioData({
       studioName: "",
       isPrimary: false,

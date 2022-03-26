@@ -1,67 +1,71 @@
-import InfoSearchTab from "@/components/AddNewAnime/InfoSearchTab";
-import NewStudio from "@/components/AddNewAnime/NewStudio";
-import { Box, CloseButton, Flex, Heading } from "@chakra-ui/react";
-import { FieldArray } from "formik";
+import StudioSearchBar from "@/components/AddNewAnime/StudioSearchBar";
+import { Box, CloseButton, Flex, Heading, theme } from "@chakra-ui/react";
+import { transparentize } from "@chakra-ui/theme-tools";
+import { useFieldArray, useFormContext } from "react-hook-form";
 
-const CharacterTab = ({
-  values,
-  errors,
-  touched,
-  handleChange,
-  inputSpacingCommon,
-  setFieldValue,
-  push,
-}) => {
+const StudioTab = ({ inputSpacingCommon }) => {
+  const {
+    register,
+    formState: { errors },
+    control,
+  } = useFormContext();
+  const { fields, append, remove } = useFieldArray({
+    name: "newStudiosList",
+  });
+  const {
+    fields: studioListFields,
+    append: appendStudioList,
+    remove: removeStudioList,
+  } = useFieldArray({
+    name: "studioList",
+  });
   return (
     <>
-      <InfoSearchTab
-        push={push}
-        values={values}
-        setFieldValue={setFieldValue}
-        placeholder="Search For Existing Studio"
-        newItem={<NewStudio values={values} setFieldValue={setFieldValue} />}
+      <StudioSearchBar
+        newStudioAppend={append}
+        existingStudioAppend={appendStudioList}
       />
       <Heading>Added Studios</Heading>
-      <Flex wrap="wrap">
-        <>
-          <FieldArray name="newStudiosList">
-            {({ push, remove }) => (
-              <>
-                {values.newStudiosList
-                  .filter((value) => value.studioName != "")
-                  .map((studio, studioIndex) => (
-                    <Box key={studioIndex} w="full">
-                      {studio.studioName}
-                      <CloseButton
-                        color="red.500"
-                        onClick={() => remove(studioIndex)}
-                      />
-                    </Box>
-                  ))}
-              </>
-            )}
-          </FieldArray>
-          <FieldArray name="studioList">
-            {({ push, remove }) => (
-              <>
-                {values.studioList
-                  .filter((value) => value.studioId != "")
-                  .map((studio, studioIndex) => (
-                    <Box w="full" key={studioIndex}>
-                      {studio.studioId}
-                      <CloseButton
-                        color="red.500"
-                        onClick={() => remove(studioIndex)}
-                      />
-                    </Box>
-                  ))}
-              </>
-            )}
-          </FieldArray>
-        </>
+      <Flex wrap="wrap" gap={2}>
+        {fields.map((studio, studioIndex) => (
+          <Flex
+            key={studioIndex}
+            py="2"
+            px="2"
+            borderRadius={"md"}
+            bg={transparentize("gray.500", 0.4)(theme)}
+            gap="3"
+            minW="250px"
+            justifyContent="space-between"
+          >
+            {/*  @ts-ignore */}
+            {studio.studioName}
+            <CloseButton color="red.500" onClick={() => remove(studioIndex)} />
+          </Flex>
+        ))}
+
+        {studioListFields.map((studio, studioIndex) => (
+          <Flex
+            key={studioIndex}
+            py="2"
+            px="2"
+            borderRadius={"md"}
+            bg={transparentize("gray.500", 0.4)(theme)}
+            gap="3"
+            minW="250px"
+            justifyContent="space-between"
+          >
+            {/*  @ts-ignore */}
+            {studio.studioName}
+            <CloseButton
+              color="red.500"
+              onClick={() => removeStudioList(studioIndex)}
+            />
+          </Flex>
+        ))}
       </Flex>
     </>
   );
 };
 
-export default CharacterTab;
+export default StudioTab;

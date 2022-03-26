@@ -17,7 +17,7 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 
-const NewStudio = ({ values, setFieldValue }) => {
+const NewStudio = ({ append, ...props }) => {
   const [externalLinkData, setExternalLinkData] = useState({
     linkUrl: "",
     linkName: "",
@@ -33,7 +33,7 @@ const NewStudio = ({ values, setFieldValue }) => {
   };
 
   const onSave = () => {
-    setFieldValue("externalLinks", [...values.externalLinks, externalLinkData]);
+    append({ title: externalLinkData.linkName, url: externalLinkData.linkUrl });
     setExternalLinkData({
       linkUrl: "",
       linkName: "",
@@ -42,14 +42,14 @@ const NewStudio = ({ values, setFieldValue }) => {
   };
 
   return (
-    <Box>
+    <Box {...props}>
       <Button
         onClick={onOpen}
         leftIcon={<AddIcon />}
         colorScheme="teal"
         variant="solid"
       >
-        Create New Studio
+        Create New Link
       </Button>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />

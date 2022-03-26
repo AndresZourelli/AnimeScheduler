@@ -12668,6 +12668,39 @@ export type UserCustomAnimeListByWatchStatusQueryVariables = Exact<{
 
 export type UserCustomAnimeListByWatchStatusQuery = { __typename?: 'Query', animes?: { __typename?: 'AnimeConnection', nodes: Array<{ __typename?: 'Anime', id: any, title: string, coverImage?: string | null | undefined, numberOfEpisodes?: number | null | undefined, averageWatcherRating?: any | null | undefined, userLiked?: boolean | null | undefined, userRating?: any | null | undefined, userWatchStatus?: string | null | undefined, userEpisodeCount?: any | null | undefined, startBroadcastDatetime?: any | null | undefined, airingStatusType?: AiringStatusTypes | null | undefined }> } | null | undefined };
 
+export type GetGenresQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetGenresQuery = { __typename?: 'Query', genres?: { __typename?: 'GenresConnection', nodes: Array<{ __typename?: 'Genre', genre: string, id: any }> } | null | undefined };
+
+export type GetCharactersQueryVariables = Exact<{
+  like?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type GetCharactersQuery = { __typename?: 'Query', characters?: { __typename?: 'CharactersConnection', totalCount: number, nodes: Array<{ __typename?: 'Character', id: any, name: string, characterImage?: { __typename?: 'Image', url: string } | null | undefined }> } | null | undefined };
+
+export type GetPeopleQueryVariables = Exact<{
+  like?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type GetPeopleQuery = { __typename?: 'Query', people?: { __typename?: 'PeopleConnection', nodes: Array<{ __typename?: 'Person', id: any, firstName: string, lastName?: string | null | undefined, personImage?: { __typename?: 'Image', url: string } | null | undefined }> } | null | undefined };
+
+export type GetStudiosQueryVariables = Exact<{
+  like?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type GetStudiosQuery = { __typename?: 'Query', studios?: { __typename?: 'StudiosConnection', nodes: Array<{ __typename?: 'Studio', id: any, studio: string }> } | null | undefined };
+
+export type GetRelatedMediaQueryVariables = Exact<{
+  like?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type GetRelatedMediaQuery = { __typename?: 'Query', animes?: { __typename?: 'AnimeConnection', nodes: Array<{ __typename?: 'Anime', id: any, mediaType?: MediaTypes | null | undefined, title: string, coverImage?: string | null | undefined }> } | null | undefined };
+
 export type SearchAnimesQueryVariables = Exact<{
   after?: InputMaybe<Scalars['Cursor']>;
   first?: InputMaybe<Scalars['Int']>;
@@ -13255,6 +13288,89 @@ export const UserCustomAnimeListByWatchStatusDocument = gql`
 
 export function useUserCustomAnimeListByWatchStatusQuery(options: Omit<Urql.UseQueryArgs<UserCustomAnimeListByWatchStatusQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<UserCustomAnimeListByWatchStatusQuery>({ query: UserCustomAnimeListByWatchStatusDocument, ...options });
+};
+export const GetGenresDocument = gql`
+    query GetGenres {
+  genres {
+    nodes {
+      genre
+      id
+    }
+  }
+}
+    `;
+
+export function useGetGenresQuery(options: Omit<Urql.UseQueryArgs<GetGenresQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<GetGenresQuery>({ query: GetGenresDocument, ...options });
+};
+export const GetCharactersDocument = gql`
+    query GetCharacters($like: String = "") {
+  characters(filter: {name: {likeInsensitive: $like}}, first: 25) {
+    nodes {
+      id
+      name
+      characterImage {
+        url
+      }
+    }
+    totalCount
+  }
+}
+    `;
+
+export function useGetCharactersQuery(options: Omit<Urql.UseQueryArgs<GetCharactersQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<GetCharactersQuery>({ query: GetCharactersDocument, ...options });
+};
+export const GetPeopleDocument = gql`
+    query GetPeople($like: String = "") {
+  people(
+    filter: {or: [{lastName: {likeInsensitive: $like}}, {firstName: {likeInsensitive: $like}}]}
+    first: 25
+  ) {
+    nodes {
+      id
+      firstName
+      lastName
+      personImage {
+        url
+      }
+    }
+  }
+}
+    `;
+
+export function useGetPeopleQuery(options: Omit<Urql.UseQueryArgs<GetPeopleQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<GetPeopleQuery>({ query: GetPeopleDocument, ...options });
+};
+export const GetStudiosDocument = gql`
+    query GetStudios($like: String) {
+  studios(first: 25, filter: {studio: {likeInsensitive: $like}}) {
+    nodes {
+      id
+      studio
+    }
+  }
+}
+    `;
+
+export function useGetStudiosQuery(options: Omit<Urql.UseQueryArgs<GetStudiosQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<GetStudiosQuery>({ query: GetStudiosDocument, ...options });
+};
+export const GetRelatedMediaDocument = gql`
+    query GetRelatedMedia($like: String) {
+  animes(first: 25, filter: {title: {likeInsensitive: $like}}) {
+    nodes {
+      id
+      mediaType
+      title
+      coverImage
+    }
+  }
+}
+    `;
+
+export function useGetRelatedMediaQuery(options: Omit<Urql.UseQueryArgs<GetRelatedMediaQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<GetRelatedMediaQuery>({ query: GetRelatedMediaDocument, ...options });
 };
 export const SearchAnimesDocument = gql`
     query SearchAnimes($after: Cursor = null, $first: Int = null, $searchInput: String, $filter: SearchResultFilter = {}) {

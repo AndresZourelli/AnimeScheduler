@@ -1,0 +1,62 @@
+query GetGenres {
+  genres {
+    nodes {
+      genre
+      id
+    }
+  }
+}
+
+query GetCharacters($like: String = "") {
+  characters(filter: { name: { likeInsensitive: $like } }, first: 25) {
+    nodes {
+      id
+      name
+      characterImage {
+        url
+      }
+    }
+    totalCount
+  }
+}
+
+query GetPeople($like: String = "") {
+  people(
+    filter: {
+      or: [
+        { lastName: { likeInsensitive: $like } }
+        { firstName: { likeInsensitive: $like } }
+      ]
+    }
+    first: 25
+  ) {
+    nodes {
+      id
+      firstName
+      lastName
+      personImage {
+        url
+      }
+    }
+  }
+}
+
+query GetStudios($like: String) {
+  studios(first: 25, filter: { studio: { likeInsensitive: $like } }) {
+    nodes {
+      id
+      studio
+    }
+  }
+}
+
+query GetRelatedMedia($like: String) {
+  animes(first: 25, filter: { title: { likeInsensitive: $like } }) {
+    nodes {
+      id
+      mediaType
+      title
+      coverImage
+    }
+  }
+}

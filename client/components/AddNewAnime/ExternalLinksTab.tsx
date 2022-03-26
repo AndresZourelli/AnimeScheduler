@@ -1,39 +1,43 @@
 import NewExternalLink from "@/components/AddNewAnime/NewExternalLink";
-import { Box, CloseButton, Flex, Heading } from "@chakra-ui/react";
+import { Box, CloseButton, Flex, Heading, Text, theme } from "@chakra-ui/react";
+import { transparentize } from "@chakra-ui/theme-tools";
 import { FieldArray } from "formik";
+import { useFieldArray } from "react-hook-form";
 
-const CharacterTab = ({
-  values,
-  errors,
-  touched,
-  handleChange,
-  inputSpacingCommon,
-  setFieldValue,
-}) => {
+const CharacterTab = ({ inputSpacingCommon }) => {
+  const {
+    fields: externalLinksListFields,
+    append: appendExternalLinksList,
+    remove: removeExternalLinksList,
+  } = useFieldArray({
+    name: "externalLinks",
+  });
   return (
     <>
-      <Heading>Added External Links</Heading>
-      <NewExternalLink values={values} setFieldValue={setFieldValue} />
+      <Flex justifyContent="space-between" mb={3}>
+        <Heading>Add External Links</Heading>
+        <NewExternalLink append={appendExternalLinksList} />
+      </Flex>
       <Flex wrap="wrap">
-        <>
-          <FieldArray name="externalLinks">
-            {({ push, remove }) => (
-              <>
-                {values.externalLinks
-                  .filter((value) => value.externalLinks != "")
-                  .map((externalLink, externalLinkIndex) => (
-                    <Box w="full" key={externalLinkIndex}>
-                      {externalLink.linkName}
-                      <CloseButton
-                        color="red.500"
-                        onClick={() => remove(externalLinkIndex)}
-                      />
-                    </Box>
-                  ))}
-              </>
-            )}
-          </FieldArray>
-        </>
+        {externalLinksListFields.map((externalLink, externalLinkIndex) => (
+          <Flex
+            key={externalLinkIndex}
+            minW="250px"
+            gap={3}
+            justifyContent="space-between"
+            bg={transparentize("gray.500", 0.4)(theme)}
+            borderRadius={"md"}
+            py="2"
+            px="2"
+          >
+            {/*  @ts-ignore */}
+            <Text>{externalLink.title}</Text>
+            <CloseButton
+              color="red.500"
+              onClick={() => removeExternalLinksList(externalLinkIndex)}
+            />
+          </Flex>
+        ))}
       </Flex>
     </>
   );

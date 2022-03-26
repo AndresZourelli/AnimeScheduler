@@ -30,7 +30,7 @@ type File = {
   name?: string;
 };
 
-const NewCharacter = ({ values, setFieldValue }) => {
+const NewCharacter = ({ append }) => {
   const [file, setFile] = useState<File>({
     preview: "",
     width: 0,
@@ -113,7 +113,7 @@ const NewCharacter = ({ values, setFieldValue }) => {
   };
 
   const onSave = () => {
-    setFieldValue("newCharactersList", [...values.newCharactersList, altName]);
+    append(altName);
     setAltName({
       givenNameSearchBar: "",
       surnameSearchBar: "",

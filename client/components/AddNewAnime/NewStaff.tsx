@@ -23,7 +23,7 @@ import {
 import { useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 
-const NewStaff = ({ values, setFieldValue }) => {
+const NewStaff = ({ append }) => {
   const [file, setFile] = useState<any>();
   const [error, setError] = useState({ code: "", message: "" });
   const [altName, setAltName] = useState({
@@ -107,7 +107,7 @@ const NewStaff = ({ values, setFieldValue }) => {
   };
 
   const onSave = () => {
-    setFieldValue("newStaffList", [...values.newStaffList, altName]);
+    append(altName);
     setAltName({
       givenNameSearchBar: "",
       surnameSearchBar: "",

@@ -13,12 +13,12 @@ import {
   TabPanels,
   Tabs,
 } from "@chakra-ui/react";
-import {} from "react-hook-form";
+import { useForm, FormProvider } from "react-hook-form";
 
 interface NewAnimeForm {
   titles: Titles;
   status: string;
-  season: string;
+  airingSeason: Season;
   startDate: DateType;
   endDate: DateType;
   airTimeJST: TimeType;
@@ -50,6 +50,16 @@ interface NewAnimeForm {
   newStudiosList: NewStudio[];
 }
 
+enum SeasonEnum {
+  Winter = "winter",
+  Spring = "spring",
+  Summer = "summer",
+  Fall = "fall",
+}
+interface Season {
+  season: SeasonEnum;
+  year: number;
+}
 interface ExternalLinks {
   title: string;
   url: string;
@@ -70,12 +80,14 @@ interface NewPersonCharacter {
 }
 
 enum MediaType {
-  movie,
-  tv,
+  Movie,
+  Tv,
 }
 interface RelatedMedia {
   mediaId: string;
   type: MediaType;
+  name: string;
+  imageUrl: string;
 }
 interface Licensor {
   licensorId: string;
@@ -88,12 +100,17 @@ interface Genre {
 }
 interface Character {
   characterId: string;
+  name: string;
+  imageUrl: string;
 }
 interface Staff {
-  staffId: string;
+  personId: string;
+  name: string;
+  imageUrl: string;
 }
 interface Studio {
   studioId: string;
+  studioName: string;
 }
 interface AlternateName {
   name: string;
@@ -102,7 +119,7 @@ interface AlternateName {
 interface DateType {
   year: number;
   month: number;
-  date: number;
+  day: number;
 }
 
 interface TimeType {
@@ -116,18 +133,18 @@ interface Titles {
   romaji?: string;
 }
 
-const defaultList = {
+const defaultList: NewAnimeForm = {
   titles: { english: "", japanese: "", romaji: "" },
   status: "",
-  season: "",
-  startDate: { year: "", month: "", day: "" },
-  endDate: { year: "", month: "", day: "" },
-  airTimeJST: { hour: "", minute: "" },
+  airingSeason: { season: SeasonEnum.Winter, year: 0 },
+  startDate: { year: 0, month: -1, day: 0 },
+  endDate: { year: 0, month: -1, day: 0 },
+  airTimeJST: { hour: 0, minute: 0 },
   formatType: "",
   source: "",
   countryOfOrigin: "",
-  duration: "",
-  numberOfEpisodes: "",
+  duration: 0,
+  numberOfEpisodes: 0,
   genres: [{ genreId: "" }],
   otherNames: [{ name: "" }],
   description: "",
@@ -138,12 +155,12 @@ const defaultList = {
   selfPublished: false,
   coverImage: "",
   coverBanner: "",
-  characterList: [{ characterId: "" }],
-  staffList: [{ staffId: "" }],
-  studioList: [{ studioId: "" }],
+  characterList: [],
+  staffList: [],
+  studioList: [],
   producerList: [{ producerId: "" }],
   licensorList: [{ licensorId: "" }],
-  relatedMediaList: [{ relatedMediaId: "" }],
+  relatedMediaList: [],
   externalLinks: [],
   submissionNotes: "",
   newCharactersList: [],
@@ -151,126 +168,69 @@ const defaultList = {
   newStudiosList: [],
 };
 
+const inputSpacingCommon = {
+  width: "20vw",
+  marginBottom: "3",
+  marginRight: "2",
+};
 const AddNewAnime = () => {
-  const inputSpacingCommon = {
-    width: "20vw",
-    marginBottom: "3",
-    marginRight: "2",
-  };
-
+  const methods = useForm<NewAnimeForm>({ defaultValues: defaultList });
   return (
-    <Box p="16">
-      <Formik
-        initialValues={}
-        onSubmit={(values, actions) => {
-          alert(JSON.stringify(values, null, 2));
-        }}
-      >
-        {({
-          values,
-          errors,
-          touched,
-          handleChange,
-          initialTouched,
-          handleSubmit,
-          setFieldValue,
-        }) => (
-          <>
-            <Tabs orientation="vertical" variant="unstyled">
-              <TabList w="30%">
-                <Tab _selected={{ borderRadius: "10px", bg: "teal.500" }}>
-                  General Info
-                </Tab>
-                <Tab _selected={{ borderRadius: "10px", bg: "teal.500" }}>
-                  Characters
-                </Tab>
-                <Tab _selected={{ borderRadius: "10px", bg: "teal.500" }}>
-                  Staff
-                </Tab>
-                <Tab _selected={{ borderRadius: "10px", bg: "teal.500" }}>
-                  Studios
-                </Tab>
-                <Tab _selected={{ borderRadius: "10px", bg: "teal.500" }}>
-                  Related
-                </Tab>
-                <Tab _selected={{ borderRadius: "10px", bg: "teal.500" }}>
-                  External Links
-                </Tab>
-              </TabList>
-              <TabPanels w="70%">
-                <TabPanel>
-                  <GeneralInfoTab
-                    inputSpacingCommon={inputSpacingCommon}
-                    values={values}
-                    errors={errors}
-                    touched={touched}
-                    handleChange={handleChange}
-                  />
-                </TabPanel>
-                <TabPanel>
-                  <CharacterTab
-                    inputSpacingCommon={inputSpacingCommon}
-                    values={values}
-                    errors={errors}
-                    touched={touched}
-                    handleChange={handleChange}
-                    setFieldValue={setFieldValue}
-                    push={undefined}
-                  />
-                </TabPanel>
-                <TabPanel>
-                  <StaffTab
-                    inputSpacingCommon={inputSpacingCommon}
-                    values={values}
-                    errors={errors}
-                    touched={touched}
-                    handleChange={handleChange}
-                    setFieldValue={setFieldValue}
-                    push={undefined}
-                  />
-                </TabPanel>
-                <TabPanel>
-                  <StudiosTab
-                    inputSpacingCommon={inputSpacingCommon}
-                    values={values}
-                    errors={errors}
-                    touched={touched}
-                    handleChange={handleChange}
-                    setFieldValue={setFieldValue}
-                    push={undefined}
-                  />
-                </TabPanel>
-                <TabPanel>
-                  <RelatedTab
-                    inputSpacingCommon={inputSpacingCommon}
-                    values={values}
-                    errors={errors}
-                    touched={touched}
-                    handleChange={handleChange}
-                    setFieldValue={setFieldValue}
-                    push={undefined}
-                  />
-                </TabPanel>
-                <TabPanel>
-                  <ExternalLinksTab
-                    inputSpacingCommon={inputSpacingCommon}
-                    values={values}
-                    errors={errors}
-                    touched={touched}
-                    handleChange={handleChange}
-                    setFieldValue={setFieldValue}
-                  />
-                </TabPanel>
-              </TabPanels>
-            </Tabs>
-            <Box>
-              <Button>Submit</Button>
-            </Box>
-            <Box>{JSON.stringify(values, null, 2)}</Box>
-          </>
-        )}
-      </Formik>
-    </Box>
+    <FormProvider {...methods}>
+      <Box p="16">
+        <Tabs orientation="vertical" variant="unstyled">
+          <TabList w="30%">
+            <Tab _selected={{ borderRadius: "10px", bg: "teal.500" }}>
+              General Info
+            </Tab>
+            <Tab _selected={{ borderRadius: "10px", bg: "teal.500" }}>
+              Characters
+            </Tab>
+            <Tab _selected={{ borderRadius: "10px", bg: "teal.500" }}>
+              Staff
+            </Tab>
+            <Tab _selected={{ borderRadius: "10px", bg: "teal.500" }}>
+              Studios
+            </Tab>
+            <Tab _selected={{ borderRadius: "10px", bg: "teal.500" }}>
+              Related
+            </Tab>
+            <Tab _selected={{ borderRadius: "10px", bg: "teal.500" }}>
+              External Links
+            </Tab>
+          </TabList>
+          <TabPanels w="70%">
+            <TabPanel>
+              <GeneralInfoTab inputSpacingCommon={inputSpacingCommon} />
+            </TabPanel>
+            <TabPanel>
+              <CharacterTab inputSpacingCommon={inputSpacingCommon} />
+            </TabPanel>
+            <TabPanel>
+              <StaffTab inputSpacingCommon={inputSpacingCommon} />
+            </TabPanel>
+            <TabPanel>
+              <StudiosTab inputSpacingCommon={inputSpacingCommon} />
+            </TabPanel>
+            <TabPanel>
+              <RelatedTab inputSpacingCommon={inputSpacingCommon} />
+            </TabPanel>
+            <TabPanel>
+              <ExternalLinksTab inputSpacingCommon={inputSpacingCommon} />
+            </TabPanel>
+          </TabPanels>
+        </Tabs>
+        <Box>
+          <Button
+            onClick={() => {
+              console.log(methods.getValues());
+            }}
+          >
+            Submit
+          </Button>
+        </Box>
+      </Box>
+    </FormProvider>
   );
 };
 
