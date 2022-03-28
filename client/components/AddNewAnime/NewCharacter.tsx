@@ -43,7 +43,7 @@ const NewCharacter = ({ append }) => {
     nativeNameSearchBar: "",
     altNamesSearchBar: [{ name: "" }],
     description: "",
-    image: "",
+    imageUrl: "",
   });
   const { isOpen, onOpen, onClose } = useDisclosure();
   const onDrop = useCallback((acceptedFiles) => {
@@ -113,14 +113,17 @@ const NewCharacter = ({ append }) => {
   };
 
   const onSave = () => {
-    append(altName);
+    append({
+      name: altName.givenNameSearchBar + " " + (altName.surnameSearchBar ?? ""),
+      ...altName,
+    });
     setAltName({
       givenNameSearchBar: "",
       surnameSearchBar: "",
       nativeNameSearchBar: "",
       altNamesSearchBar: [{ name: "" }],
       description: "",
-      image: "",
+      imageUrl: "",
     });
     onClose();
   };

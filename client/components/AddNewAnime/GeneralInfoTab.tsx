@@ -17,6 +17,7 @@ import {
   NumberInputStepper,
   Select,
   Text,
+  Textarea,
 } from "@chakra-ui/react";
 import { useFormContext, useFieldArray, Controller } from "react-hook-form";
 import { add, differenceInYears, getYear, set, subYears } from "date-fns";
@@ -49,94 +50,272 @@ const GeneralInfoTab = ({ inputSpacingCommon }) => {
   return (
     <>
       <Box>
-        <Heading>Titles</Heading>
-        <Box>
-          <Flex wrap="wrap">
-            <FormControl
-              id="titles.english"
-              isInvalid={errors.title?.english}
-              w={inputSpacingCommon.width}
-              mb={inputSpacingCommon.marginBottom}
-              mr={inputSpacingCommon.marginRight}
-            >
-              <FormLabel>English Title</FormLabel>
-              <Input
-                placeholder="English Title"
-                {...register("titles.english")}
-              />
-              <FormErrorMessage>{errors.titles?.english}</FormErrorMessage>
-            </FormControl>
+        <Heading>Anime Info</Heading>
+        <Flex wrap="wrap">
+          <Box>
+            <Heading size="md">Titles</Heading>
+            <Box>
+              <Flex wrap="wrap">
+                <FormControl
+                  id="titles.english"
+                  isInvalid={errors.title?.english}
+                  w={inputSpacingCommon.width}
+                  mb={inputSpacingCommon.marginBottom}
+                  mr={inputSpacingCommon.marginRight}
+                >
+                  <FormLabel>English Title</FormLabel>
+                  <Input
+                    placeholder="English Title"
+                    {...register("titles.english")}
+                  />
+                  <FormErrorMessage>{errors.titles?.english}</FormErrorMessage>
+                </FormControl>
 
-            <FormControl
-              id="titles.japanese"
-              isInvalid={errors.titles?.japanese}
-              w={inputSpacingCommon.width}
-              mb={inputSpacingCommon.marginBottom}
-              mr={inputSpacingCommon.marginRight}
-            >
-              <FormLabel>Japanese Title</FormLabel>
-              <Input
-                placeholder="Japanese Title"
-                {...register("titles.japanese")}
-              />
-              <FormErrorMessage>{errors.titles?.japanese}</FormErrorMessage>
-            </FormControl>
+                <FormControl
+                  id="titles.japanese"
+                  isInvalid={errors.titles?.japanese}
+                  w={inputSpacingCommon.width}
+                  mb={inputSpacingCommon.marginBottom}
+                  mr={inputSpacingCommon.marginRight}
+                >
+                  <FormLabel>Japanese Title</FormLabel>
+                  <Input
+                    placeholder="Japanese Title"
+                    {...register("titles.japanese")}
+                  />
+                  <FormErrorMessage>{errors.titles?.japanese}</FormErrorMessage>
+                </FormControl>
 
-            <FormControl
-              id="titles.romaji"
-              isInvalid={errors.titles?.romaji}
-              w={inputSpacingCommon.width}
-              mb={inputSpacingCommon.marginBottom}
-              mr={inputSpacingCommon.marginRight}
-            >
-              <FormLabel>Romaji Title</FormLabel>
-              <Input
-                placeholder="Romaji Title"
-                {...register("titles.romaji")}
-              />
-              <FormErrorMessage>{errors.titles?.romaji}</FormErrorMessage>
-            </FormControl>
-          </Flex>
-        </Box>
-        <Text fontSize="md" mb={inputSpacingCommon.marginBottom}>
-          Other Names
-        </Text>
+                <FormControl
+                  id="titles.romaji"
+                  isInvalid={errors.titles?.romaji}
+                  w={inputSpacingCommon.width}
+                  mb={inputSpacingCommon.marginBottom}
+                  mr={inputSpacingCommon.marginRight}
+                >
+                  <FormLabel>Romaji Title</FormLabel>
+                  <Input
+                    placeholder="Romaji Title"
+                    {...register("titles.romaji")}
+                  />
+                  <FormErrorMessage>{errors.titles?.romaji}</FormErrorMessage>
+                </FormControl>
+              </Flex>
+            </Box>
+            <Text fontSize="md" mb={inputSpacingCommon.marginBottom}>
+              Other Names
+            </Text>
+            <Flex>
+              {fields.map((field, nameIndex) => (
+                <FormControl
+                  isInvalid={errors.otherNames}
+                  w={inputSpacingCommon.width}
+                  mb={inputSpacingCommon.marginBottom}
+                  key={field.id}
+                  mr={inputSpacingCommon.marginRight}
+                >
+                  <InputGroup>
+                    <Input
+                      name={`otherNames[${nameIndex}].name`}
+                      placeholder="Other Names"
+                      {...register(`otherNames[${nameIndex}].name`)}
+                    />
+                    {fields.length > 1 ? (
+                      <InputRightElement
+                        children={
+                          <CloseButton
+                            color="red.500"
+                            onClick={() => remove(nameIndex)}
+                          />
+                        }
+                      />
+                    ) : null}
+                  </InputGroup>
+                  <FormErrorMessage>{errors.otherNames}</FormErrorMessage>
+                </FormControl>
+              ))}
+              <Button
+                onClick={() => append({ name: "", value: "" })}
+                mb={inputSpacingCommon.marginBottom}
+                alignSelf="flex-end"
+              >
+                Add
+              </Button>
+            </Flex>
+          </Box>
+          <Box>
+            <Flex wrap="wrap">
+              <FormControl
+                isInvalid={errors.numberOfEpisodes}
+                mr={inputSpacingCommon.marginRight}
+                mb={inputSpacingCommon.marginBottom}
+                min={0}
+                w={inputSpacingCommon.width}
+              >
+                <FormLabel>Number of Episodes</FormLabel>
+                <Controller
+                  name="numberOfEpisodes"
+                  render={({ field }) => (
+                    <NumberInput {...field} min={0}>
+                      <NumberInputField />
+                      <NumberInputStepper>
+                        <NumberIncrementStepper />
+                        <NumberDecrementStepper />
+                      </NumberInputStepper>
+                    </NumberInput>
+                  )}
+                />
 
-        {fields.map((field, nameIndex) => (
+                <FormErrorMessage>{errors.numberOfEpisodes}</FormErrorMessage>
+              </FormControl>
+              <FormControl
+                isInvalid={errors.duration}
+                mr={inputSpacingCommon.marginRight}
+                mb={inputSpacingCommon.marginBottom}
+                min={0}
+                w={inputSpacingCommon.width}
+              >
+                <FormLabel>Length (in minutes)</FormLabel>
+
+                <Controller
+                  name="duration"
+                  render={({ field }) => (
+                    <NumberInput {...field} min={0}>
+                      <NumberInputField />
+                      <NumberInputStepper>
+                        <NumberIncrementStepper />
+                        <NumberDecrementStepper />
+                      </NumberInputStepper>
+                    </NumberInput>
+                  )}
+                />
+                <FormErrorMessage>{errors.duration}</FormErrorMessage>
+              </FormControl>
+            </Flex>
+          </Box>
           <FormControl
-            isInvalid={errors.otherNames}
-            w={inputSpacingCommon.width}
+            id="description"
+            isInvalid={errors.description}
+            minW={inputSpacingCommon.width}
             mb={inputSpacingCommon.marginBottom}
-            key={field.id}
             mr={inputSpacingCommon.marginRight}
           >
-            <InputGroup>
-              <Input
-                name={`otherNames[${nameIndex}].name`}
-                placeholder="Other Names"
-                {...register(`otherNames[${nameIndex}].name`)}
-              />
-              {fields.length > 1 ? (
-                <InputRightElement
-                  children={
-                    <CloseButton
-                      color="red.500"
-                      onClick={() => remove(nameIndex)}
-                    />
-                  }
-                />
-              ) : null}
-            </InputGroup>
-            <FormErrorMessage>{errors.otherNames}</FormErrorMessage>
+            <FormLabel>Anime description</FormLabel>
+            <Textarea
+              placeholder="Anime description"
+              {...register("description")}
+              minW="400px"
+            />
+            <FormErrorMessage>{errors.youtubeTrailerId}</FormErrorMessage>
           </FormControl>
-        ))}
-        <Button
-          onClick={() => append({ name: "", value: "" })}
-          mb={inputSpacingCommon.marginBottom}
-          alignSelf="flex-end"
-        >
-          Add
-        </Button>
+          <FormControl
+            w={inputSpacingCommon.width}
+            mr={inputSpacingCommon.marginRight}
+            mb={inputSpacingCommon.marginBottom}
+          >
+            <FormLabel>Country of Origin</FormLabel>
+            <Select
+              name="countryOfOrigin"
+              {...register("countryOfOrigin")}
+              placeholder="Select Option"
+            >
+              <option value="japan">Japan</option>
+              <option value="south korea">South Korea</option>
+              <option value="china">China</option>
+              <option value="taiwan">Taiwan</option>
+              <option value="usa">USA</option>
+            </Select>
+            <FormErrorMessage>{errors.countryOfOrigin}</FormErrorMessage>
+          </FormControl>
+          <Box>
+            <Heading size="sm" mb={2}>
+              Genres
+            </Heading>
+            <Flex wrap="wrap">
+              <Flex wrap="wrap">
+                {fieldsGenres.map((field, genreIndex) => (
+                  <FormControl
+                    id="genres"
+                    isInvalid={errors.genres}
+                    w={inputSpacingCommon.width}
+                    mb={inputSpacingCommon.marginBottom}
+                    key={genreIndex}
+                    mr={2}
+                  >
+                    <Flex>
+                      <Select
+                        name={`genres[${genreIndex}].genreId`}
+                        placeholder="Select Option"
+                        {...register(`genres[${genreIndex}].genreId`)}
+                      >
+                        {genreQueryResult.data?.genres.nodes.map((genre) => (
+                          <option value={genre.id} key={genre.id}>
+                            {genre.genre}
+                          </option>
+                        ))}
+                      </Select>
+                      {fieldsGenres.length > 1 ? (
+                        <CloseButton
+                          alignSelf="center"
+                          color="red.500"
+                          onClick={() => removeGenre(genreIndex)}
+                        />
+                      ) : null}
+                      <FormErrorMessage>{errors.genres}</FormErrorMessage>
+                    </Flex>
+                  </FormControl>
+                ))}
+              </Flex>
+              <Button onClick={() => appendGenre({ genreId: "" })}>Add</Button>
+            </Flex>
+          </Box>
+          <FormControl
+            w={inputSpacingCommon.width}
+            mr={inputSpacingCommon.marginRight}
+            mb={inputSpacingCommon.marginBottom}
+          >
+            <FormLabel>Source</FormLabel>
+            <Select
+              name="source"
+              {...register("source")}
+              placeholder="Select Option"
+            >
+              <option value="original">Original</option>
+              <option value="manga">Manga</option>
+              <option value="anime">Anime</option>
+              <option value="light novel">Light Novel</option>
+              <option value="novel">Novel</option>
+              <option value="visual novel">Visual Novel</option>
+              <option value="web novel">Web Novel</option>
+              <option value="video game">Video Game</option>
+              <option value="doujinshi">Doujinshi</option>
+            </Select>
+            <FormErrorMessage>{errors.source}</FormErrorMessage>
+          </FormControl>
+          <Flex wrap="wrap">
+            <FormControl
+              w={inputSpacingCommon.width}
+              mr={inputSpacingCommon.marginRight}
+              mb={inputSpacingCommon.marginBottom}
+            >
+              <FormLabel>Format Type</FormLabel>
+              <Select
+                name="formatType"
+                {...register("formatType")}
+                placeholder="Select Option"
+              >
+                <option value="tv">TV</option>
+                <option value="tv short">TV Short</option>
+                <option value="movie">Movie</option>
+                <option value="special">Special</option>
+                <option value="ova">OVA</option>
+                <option value="ona">ONA</option>
+                <option value="music">Music</option>
+              </Select>
+              <FormErrorMessage>{errors.formatType}</FormErrorMessage>
+            </FormControl>
+          </Flex>
+        </Flex>
       </Box>
       <Box>
         <Heading>Release Info</Heading>
@@ -171,6 +350,7 @@ const GeneralInfoTab = ({ inputSpacingCommon }) => {
                   name="airingSeason.season"
                   {...register("airingSeason.season")}
                   placeholder="Select Option"
+                  minW={inputSpacingCommon.width}
                 >
                   {seasonList.map((season) => (
                     <option key={season} value={season.toLowerCase()}>
@@ -182,6 +362,7 @@ const GeneralInfoTab = ({ inputSpacingCommon }) => {
                   name="airingSeason.year"
                   {...register("airingSeason.year")}
                   placeholder="Select Option"
+                  minW={inputSpacingCommon.width}
                 >
                   {yearsList.map((year) => (
                     <option key={year} value={year}>
@@ -195,56 +376,7 @@ const GeneralInfoTab = ({ inputSpacingCommon }) => {
             </FormControl>
           </Flex>
         </Box>
-        <Box>
-          <Flex wrap="wrap">
-            <FormControl
-              isInvalid={errors.numberOfEpisodes}
-              mr={inputSpacingCommon.marginRight}
-              mb={inputSpacingCommon.marginBottom}
-              min={0}
-              w={inputSpacingCommon.width}
-            >
-              <FormLabel>Number of Episodes</FormLabel>
-              <Controller
-                name="numberOfEpisodes"
-                render={({ field }) => (
-                  <NumberInput {...field} min={0}>
-                    <NumberInputField />
-                    <NumberInputStepper>
-                      <NumberIncrementStepper />
-                      <NumberDecrementStepper />
-                    </NumberInputStepper>
-                  </NumberInput>
-                )}
-              />
 
-              <FormErrorMessage>{errors.numberOfEpisodes}</FormErrorMessage>
-            </FormControl>
-            <FormControl
-              isInvalid={errors.duration}
-              mr={inputSpacingCommon.marginRight}
-              mb={inputSpacingCommon.marginBottom}
-              min={0}
-              w={inputSpacingCommon.width}
-            >
-              <FormLabel>Length (in minutes)</FormLabel>
-
-              <Controller
-                name="duration"
-                render={({ field }) => (
-                  <NumberInput {...field} min={0}>
-                    <NumberInputField />
-                    <NumberInputStepper>
-                      <NumberIncrementStepper />
-                      <NumberDecrementStepper />
-                    </NumberInputStepper>
-                  </NumberInput>
-                )}
-              />
-              <FormErrorMessage>{errors.duration}</FormErrorMessage>
-            </FormControl>
-          </Flex>
-        </Box>
         <Box>
           <Heading size="sm">Start Date</Heading>
           <Flex wrap="wrap">
@@ -412,116 +544,72 @@ const GeneralInfoTab = ({ inputSpacingCommon }) => {
             </FormControl>
           </Flex>
         </Box>
-        <Box>
-          <Heading size="sm">Typings</Heading>
-          <Flex wrap="wrap">
-            <FormControl
-              w={inputSpacingCommon.width}
-              mr={inputSpacingCommon.marginRight}
-              mb={inputSpacingCommon.marginBottom}
-            >
-              <FormLabel>Format Type</FormLabel>
-              <Select
-                name="formatType"
-                {...register("formatType")}
-                placeholder="Select Option"
-              >
-                <option value="tv">TV</option>
-                <option value="tv short">TV Short</option>
-                <option value="movie">Movie</option>
-                <option value="special">Special</option>
-                <option value="ova">OVA</option>
-                <option value="ona">ONA</option>
-                <option value="music">Music</option>
-              </Select>
-              <FormErrorMessage>{errors.formatType}</FormErrorMessage>
-            </FormControl>
-            <FormControl
-              w={inputSpacingCommon.width}
-              mr={inputSpacingCommon.marginRight}
-              mb={inputSpacingCommon.marginBottom}
-            >
-              <FormLabel>Source</FormLabel>
-              <Select
-                name="source"
-                {...register("source")}
-                placeholder="Select Option"
-              >
-                <option value="original">Original</option>
-                <option value="manga">Manga</option>
-                <option value="anime">Anime</option>
-                <option value="light novel">Light Novel</option>
-                <option value="novel">Novel</option>
-                <option value="visual novel">Visual Novel</option>
-                <option value="web novel">Web Novel</option>
-                <option value="video game">Video Game</option>
-                <option value="doujinshi">Doujinshi</option>
-              </Select>
-              <FormErrorMessage>{errors.source}</FormErrorMessage>
-            </FormControl>
-            <FormControl
-              w={inputSpacingCommon.width}
-              mr={inputSpacingCommon.marginRight}
-              mb={inputSpacingCommon.marginBottom}
-            >
-              <FormLabel>Source</FormLabel>
-              <Select
-                name="countryOfOrigin"
-                {...register("countryOfOrigin")}
-                placeholder="Select Option"
-              >
-                <option value="japan">Japan</option>
-                <option value="south korea">South Korea</option>
-                <option value="china">China</option>
-                <option value="taiwan">Taiwan</option>
-                <option value="usa">USA</option>
-              </Select>
-              <FormErrorMessage>{errors.countryOfOrigin}</FormErrorMessage>
-            </FormControl>
-          </Flex>
-        </Box>
-        <Box>
-          <Heading size="sm" mb={2}>
-            Genres
-          </Heading>
-          <Flex wrap="wrap">
-            <Flex wrap="wrap">
-              {fieldsGenres.map((field, genreIndex) => (
-                <FormControl
-                  id="genres"
-                  isInvalid={errors.genres}
-                  w={inputSpacingCommon.width}
-                  mb={inputSpacingCommon.marginBottom}
-                  key={genreIndex}
-                  mr={2}
-                >
-                  <Flex>
-                    <Select
-                      name={`genres[${genreIndex}].genreId`}
-                      placeholder="Select Option"
-                      {...register(`genres[${genreIndex}].genreId`)}
-                    >
-                      {genreQueryResult.data?.genres.nodes.map((genre) => (
-                        <option value={genre.id} key={genre.id}>
-                          {genre.genre}
-                        </option>
-                      ))}
-                    </Select>
-                    {fieldsGenres.length > 1 ? (
-                      <CloseButton
-                        alignSelf="center"
-                        color="red.500"
-                        onClick={() => removeGenre(genreIndex)}
-                      />
-                    ) : null}
-                    <FormErrorMessage>{errors.genres}</FormErrorMessage>
-                  </Flex>
-                </FormControl>
-              ))}
-            </Flex>
-            <Button onClick={() => appendGenre({ genreId: "" })}>Add</Button>
-          </Flex>
-        </Box>
+      </Box>
+
+      <Box>
+        <Heading>Online Info</Heading>
+        <Flex wrap="wrap">
+          <FormControl
+            id="myAnimeListId"
+            isInvalid={errors.myAnimeListId}
+            w={inputSpacingCommon.width}
+            mb={inputSpacingCommon.marginBottom}
+            mr={inputSpacingCommon.marginRight}
+          >
+            <FormLabel>MyAnimeList Id</FormLabel>
+            <Input
+              placeholder="MyAnimeList Id"
+              {...register("myAnimeListId")}
+            />
+            <FormErrorMessage>{errors.myAnimeListId}</FormErrorMessage>
+          </FormControl>
+          <FormControl
+            id="youtubeTrailerId"
+            isInvalid={errors.youtubeTrailerId}
+            w={inputSpacingCommon.width}
+            mb={inputSpacingCommon.marginBottom}
+            mr={inputSpacingCommon.marginRight}
+          >
+            <FormLabel>Youtube Trailer Id</FormLabel>
+            <Input
+              placeholder="Youtube Trailer Id"
+              {...register("youtubeTrailerId")}
+            />
+            <FormErrorMessage>{errors.youtubeTrailerId}</FormErrorMessage>
+          </FormControl>
+          <FormControl
+            id="twitterHandle"
+            isInvalid={errors.twitterHandle}
+            w={inputSpacingCommon.width}
+            mb={inputSpacingCommon.marginBottom}
+            mr={inputSpacingCommon.marginRight}
+          >
+            <FormLabel>Twitter Handle</FormLabel>
+            <Input
+              placeholder="Twitter Handle"
+              {...register("twitterHandle")}
+            />
+            <FormErrorMessage>{errors.twitterHandle}</FormErrorMessage>
+          </FormControl>
+          <FormControl
+            id="officialWebsite"
+            isInvalid={errors.officialWebsite}
+            w={inputSpacingCommon.width}
+            mb={inputSpacingCommon.marginBottom}
+            mr={inputSpacingCommon.marginRight}
+          >
+            <FormLabel>Official Website</FormLabel>
+            <Input
+              placeholder="Official Website"
+              {...register("officialWebsite")}
+            />
+            <FormErrorMessage>{errors.officialWebsite}</FormErrorMessage>
+          </FormControl>
+        </Flex>
+      </Box>
+      <Box>
+        <Heading>Images</Heading>
+        <Text>Create Upload</Text>
       </Box>
     </>
   );

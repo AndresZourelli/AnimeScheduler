@@ -1,5 +1,5 @@
-import NewCharacter from "@/components/AddNewAnime/NewCharacter";
-import { useGetCharactersQuery } from "@/graphql";
+import NewLicensor from "@/components/AddNewAnime/NewLicensor";
+import { useGetLicensorsQuery } from "@/graphql";
 import { Search2Icon } from "@chakra-ui/icons";
 import {
   Box,
@@ -10,7 +10,6 @@ import {
   Popover,
   PopoverArrow,
   PopoverBody,
-  PopoverCloseButton,
   PopoverContent,
   PopoverHeader,
   PopoverTrigger,
@@ -23,20 +22,18 @@ import {
   useOutsideClick,
 } from "@chakra-ui/react";
 import { debounce } from "lodash";
-import NextLink from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
-import ImageLoader from "@/components/Common/ImageLoader";
 
-const CharacterSearchBar = ({
+const LicensorSearchBar = ({
   fields,
-  newCharacterAppend,
-  existingCharacterAppend,
+  newLicensorAppend,
+  existingLicensorAppend,
 }) => {
   const ref = useRef();
   const [searchQuery, setSearchQuery] = useState("");
   const [isOpenPopover, setIsOpenPopover] = useState(false);
 
-  const [queryResult, callQuery] = useGetCharactersQuery({
+  const [queryResult, callQuery] = useGetLicensorsQuery({
     variables: { like: `${searchQuery}%` },
     pause: true,
   });
@@ -62,8 +59,8 @@ const CharacterSearchBar = ({
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const delayedSearch = useCallback(debounce(updateQuery, 500), [searchQuery]);
 
-  const onClickExistingCharacter = (id, name, imageUrl) => {
-    existingCharacterAppend({ characterId: id, name, imageUrl });
+  const onClickExistingLicensor = (id, name) => {
+    existingLicensorAppend({ licensorId: id, name });
     setIsOpenPopover(false);
   };
 
@@ -73,6 +70,12 @@ const CharacterSearchBar = ({
     }
     return delayedSearch.cancel;
   }, [searchQuery, delayedSearch]);
+
+  useEffect(() => {
+    if (searchQuery === "") {
+      setIsOpenPopover(false);
+    }
+  }, [searchQuery]);
 
   return (
     <Box ref={ref}>
@@ -85,7 +88,7 @@ const CharacterSearchBar = ({
                 children={<Search2Icon color="gray.300" />}
               />
               <Input
-                placeholder={"Search For Existing Character"}
+                placeholder={"Search For Licensor"}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onFocus={() => {
@@ -98,7 +101,16 @@ const CharacterSearchBar = ({
           </PopoverTrigger>
           <PopoverContent>
             <PopoverHeader>
-              Search Results: {queryResult.data?.characters.nodes.length}
+              Search Results:{" "}
+              {
+                queryResult.data?.licensors.nodes.filter(
+                  (licensor) =>
+                    !fields.some(
+                      (existingSelectedLicensor) =>
+                        existingSelectedLicensor.licensorId === licensor.id
+                    )
+                ).length
+              }
             </PopoverHeader>
             <PopoverArrow />
             {queryResult.fetching ? (
@@ -109,36 +121,31 @@ const CharacterSearchBar = ({
               <PopoverBody maxH="400px" overflow="auto">
                 <Table>
                   <Tbody>
-                    {queryResult.data?.characters.nodes.map((item) => {
-                      return (
-                        <Tr
-                          key={item.id}
-                          _hover={{
-                            background: "blue.600",
-                            color: "blue.50",
-                          }}
-                          onClick={() =>
-                            onClickExistingCharacter(
-                              item.id,
-                              item.name,
-                              item.characterImage.url
-                            )
-                          }
-                        >
-                          <Td onClick={onPopoverClose}>{item.name}</Td>
-                          <Td display="relative">
-                            <Box w="70px" h="100px" position="relative">
-                              <ImageLoader
-                                image_url={item.characterImage.url}
-                                alt={item.name}
-                                maxW="70px"
-                                minH="100px"
-                              />
-                            </Box>
-                          </Td>
-                        </Tr>
-                      );
-                    })}
+                    {queryResult.data?.licensors.nodes
+                      .filter(
+                        (licensor) =>
+                          !fields.some(
+                            (existingSelectedLicensor) =>
+                              existingSelectedLicensor.licensorId ===
+                              licensor.id
+                          )
+                      )
+                      .map((item) => {
+                        return (
+                          <Tr
+                            key={item.id}
+                            _hover={{
+                              background: "blue.600",
+                              color: "blue.50",
+                            }}
+                            onClick={() =>
+                              onClickExistingLicensor(item.id, item.licensor)
+                            }
+                          >
+                            <Td onClick={onPopoverClose}>{item.licensor}</Td>
+                          </Tr>
+                        );
+                      })}
                   </Tbody>
                 </Table>
               </PopoverBody>
@@ -146,10 +153,10 @@ const CharacterSearchBar = ({
           </PopoverContent>
         </Popover>
         <Spacer />
-        <NewCharacter append={newCharacterAppend} />
+        <NewLicensor append={newLicensorAppend} />
       </Flex>
     </Box>
   );
 };
 
-export default CharacterSearchBar;
+export default LicensorSearchBar;

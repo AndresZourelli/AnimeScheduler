@@ -1,35 +1,31 @@
-import StudioSearchBar from "@/components/AddNewAnime/StudioSearchBar";
 import { Box, CloseButton, Flex, Heading, theme } from "@chakra-ui/react";
 import { transparentize } from "@chakra-ui/theme-tools";
 import { useFieldArray, useFormContext } from "react-hook-form";
+import LicensorSearchBar from "@/components/AddNewAnime/LicensorsSearchBar";
 
-const StudioTab = ({ inputSpacingCommon }) => {
-  const {
-    register,
-    formState: { errors },
-    control,
-  } = useFormContext();
+const LicensorTab = ({ inputSpacingCommon }) => {
   const { fields, append, remove } = useFieldArray({
-    name: "newStudiosList",
+    name: "newLicensorsList",
   });
   const {
-    fields: studioListFields,
-    append: appendStudioList,
-    remove: removeStudioList,
+    fields: licensorListFields,
+    append: appendLicensorList,
+    remove: removeLicensorList,
   } = useFieldArray({
-    name: "studioList",
+    name: "licensorList",
   });
   return (
     <>
-      <StudioSearchBar
-        newStudioAppend={append}
-        existingStudioAppend={appendStudioList}
+      <LicensorSearchBar
+        fields={licensorListFields}
+        newLicensorAppend={append}
+        existingLicensorAppend={appendLicensorList}
       />
-      <Heading>Added Studios</Heading>
+      <Heading>Added Licensors</Heading>
       <Flex wrap="wrap" gap={2}>
-        {fields.map((studio, studioIndex) => (
+        {fields.map((licensor, licensorIndex) => (
           <Flex
-            key={studioIndex}
+            key={licensorIndex}
             py="2"
             px="2"
             borderRadius={"md"}
@@ -39,14 +35,17 @@ const StudioTab = ({ inputSpacingCommon }) => {
             justifyContent="space-between"
           >
             {/*  @ts-ignore */}
-            {studio.studioName}
-            <CloseButton color="red.500" onClick={() => remove(studioIndex)} />
+            {licensor.name}
+            <CloseButton
+              color="red.500"
+              onClick={() => remove(licensorIndex)}
+            />
           </Flex>
         ))}
 
-        {studioListFields.map((studio, studioIndex) => (
+        {licensorListFields.map((licensor, licensorIndex) => (
           <Flex
-            key={studioIndex}
+            key={licensorIndex}
             py="2"
             px="2"
             borderRadius={"md"}
@@ -56,10 +55,10 @@ const StudioTab = ({ inputSpacingCommon }) => {
             justifyContent="space-between"
           >
             {/*  @ts-ignore */}
-            {studio.studioName}
+            {licensor.name}
             <CloseButton
               color="red.500"
-              onClick={() => removeStudioList(studioIndex)}
+              onClick={() => removeLicensorList(licensorIndex)}
             />
           </Flex>
         ))}
@@ -68,4 +67,4 @@ const StudioTab = ({ inputSpacingCommon }) => {
   );
 };
 
-export default StudioTab;
+export default LicensorTab;

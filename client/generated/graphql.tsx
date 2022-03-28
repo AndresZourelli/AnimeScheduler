@@ -382,8 +382,11 @@ export type Anime = Node & {
   __typename?: 'Anime';
   ageRatingType?: Maybe<AgeRatingTypes>;
   airingStatusType?: Maybe<AiringStatusTypes>;
+  allNamesString?: Maybe<Scalars['String']>;
   /** Reads and enables pagination through a set of `AlternateAnimeName`. */
   alternateAnimeNames: AlternateAnimeNamesConnection;
+  /** Reads and enables pagination through a set of `AlternateAnimeName`. */
+  alternateNames: AlternateAnimeNamesConnection;
   /** Reads and enables pagination through a set of `AnimeCharacter`. */
   animeCharacters: AnimeCharactersConnection;
   /** Reads and enables pagination through a set of `AnimeGenre`. */
@@ -450,6 +453,16 @@ export type AnimeAlternateAnimeNamesArgs = {
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<Array<AlternateAnimeNamesOrderBy>>;
+};
+
+
+export type AnimeAlternateNamesArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  filter?: InputMaybe<AlternateAnimeNameFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
 };
 
 
@@ -885,6 +898,8 @@ export type AnimeFilter = {
   ageRatingType?: InputMaybe<AgeRatingTypesFilter>;
   /** Filter by the object’s `airingStatusType` field. */
   airingStatusType?: InputMaybe<AiringStatusTypesFilter>;
+  /** Filter by the object’s `allNamesString` field. */
+  allNamesString?: InputMaybe<StringFilter>;
   /** Checks for all expressions in this list. */
   and?: InputMaybe<Array<AnimeFilter>>;
   /** Filter by the object’s `averageWatcherRating` field. */
@@ -12701,6 +12716,20 @@ export type GetRelatedMediaQueryVariables = Exact<{
 
 export type GetRelatedMediaQuery = { __typename?: 'Query', animes?: { __typename?: 'AnimeConnection', nodes: Array<{ __typename?: 'Anime', id: any, mediaType?: MediaTypes | null | undefined, title: string, coverImage?: string | null | undefined }> } | null | undefined };
 
+export type GetProducersQueryVariables = Exact<{
+  like?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type GetProducersQuery = { __typename?: 'Query', producers?: { __typename?: 'ProducersConnection', nodes: Array<{ __typename?: 'Producer', id: any, producer: string }> } | null | undefined };
+
+export type GetLicensorsQueryVariables = Exact<{
+  like?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type GetLicensorsQuery = { __typename?: 'Query', licensors?: { __typename?: 'LicensorsConnection', nodes: Array<{ __typename?: 'Licensor', id: any, licensor: string }> } | null | undefined };
+
 export type SearchAnimesQueryVariables = Exact<{
   after?: InputMaybe<Scalars['Cursor']>;
   first?: InputMaybe<Scalars['Int']>;
@@ -13358,7 +13387,7 @@ export function useGetStudiosQuery(options: Omit<Urql.UseQueryArgs<GetStudiosQue
 };
 export const GetRelatedMediaDocument = gql`
     query GetRelatedMedia($like: String) {
-  animes(first: 25, filter: {title: {likeInsensitive: $like}}) {
+  animes(first: 25, filter: {allNamesString: {likeInsensitive: $like}}) {
     nodes {
       id
       mediaType
@@ -13371,6 +13400,34 @@ export const GetRelatedMediaDocument = gql`
 
 export function useGetRelatedMediaQuery(options: Omit<Urql.UseQueryArgs<GetRelatedMediaQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<GetRelatedMediaQuery>({ query: GetRelatedMediaDocument, ...options });
+};
+export const GetProducersDocument = gql`
+    query GetProducers($like: String) {
+  producers(first: 25, filter: {producer: {likeInsensitive: $like}}) {
+    nodes {
+      id
+      producer
+    }
+  }
+}
+    `;
+
+export function useGetProducersQuery(options: Omit<Urql.UseQueryArgs<GetProducersQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<GetProducersQuery>({ query: GetProducersDocument, ...options });
+};
+export const GetLicensorsDocument = gql`
+    query GetLicensors($like: String) {
+  licensors(first: 25, filter: {licensor: {likeInsensitive: $like}}) {
+    nodes {
+      id
+      licensor
+    }
+  }
+}
+    `;
+
+export function useGetLicensorsQuery(options: Omit<Urql.UseQueryArgs<GetLicensorsQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<GetLicensorsQuery>({ query: GetLicensorsDocument, ...options });
 };
 export const SearchAnimesDocument = gql`
     query SearchAnimes($after: Cursor = null, $first: Int = null, $searchInput: String, $filter: SearchResultFilter = {}) {
@@ -13973,6 +14030,14 @@ export default {
             "args": []
           },
           {
+            "name": "allNamesString",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
             "name": "alternateAnimeNames",
             "type": {
               "kind": "NON_NULL",
@@ -14043,6 +14108,61 @@ export default {
                       "name": "Any"
                     }
                   }
+                }
+              }
+            ]
+          },
+          {
+            "name": "alternateNames",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "AlternateAnimeNamesConnection",
+                "ofType": null
+              }
+            },
+            "args": [
+              {
+                "name": "after",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "before",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "filter",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "first",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "last",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "offset",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
                 }
               }
             ]

@@ -33,7 +33,7 @@ const NewStaff = ({ append }) => {
     altNamesSearchBar: [{ name: "" }],
     description: "",
     language: "",
-    image: "",
+    imageUrl: "",
   });
 
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -107,14 +107,17 @@ const NewStaff = ({ append }) => {
   };
 
   const onSave = () => {
-    append(altName);
+    append({
+      name: altName.givenNameSearchBar + " " + (altName.surnameSearchBar ?? ""),
+      ...altName,
+    });
     setAltName({
       givenNameSearchBar: "",
       surnameSearchBar: "",
       nativeNameSearchBar: "",
       altNamesSearchBar: [{ name: "" }],
       description: "",
-      image: "",
+      imageUrl: "",
       language: "",
     });
     onClose();

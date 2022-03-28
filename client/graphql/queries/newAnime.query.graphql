@@ -51,12 +51,30 @@ query GetStudios($like: String) {
 }
 
 query GetRelatedMedia($like: String) {
-  animes(first: 25, filter: { title: { likeInsensitive: $like } }) {
+  animes(first: 25, filter: { allNamesString: { likeInsensitive: $like } }) {
     nodes {
       id
       mediaType
       title
       coverImage
+    }
+  }
+}
+
+query GetProducers($like: String) {
+  producers(first: 25, filter: { producer: { likeInsensitive: $like } }) {
+    nodes {
+      id
+      producer
+    }
+  }
+}
+
+query GetLicensors($like: String) {
+  licensors(first: 25, filter: { licensor: { likeInsensitive: $like } }) {
+    nodes {
+      id
+      licensor
     }
   }
 }

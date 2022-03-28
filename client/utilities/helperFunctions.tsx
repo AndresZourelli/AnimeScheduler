@@ -4,3 +4,11 @@ export const reorder = (list: any[], startIndex: number, endIndex: number) => {
   result.splice(endIndex, 0, removed);
   return result;
 };
+
+export const isStringNullOrEmpty = (value: string): boolean => {
+  return !value || !value.trim();
+};
+
+export const isStringNullOrUndefined = (value: string): boolean => {
+  return value === null || value === undefined;
+};

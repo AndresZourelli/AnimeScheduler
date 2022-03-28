@@ -1,8 +1,9 @@
 import { useState } from "react";
 import NextImage from "next/image";
 import { Skeleton, AspectRatio, Box } from "@chakra-ui/react";
+import { isStringNullOrEmpty } from "@/utilities/helperFunctions";
 
-const ImageLoader = ({ image_url, alt, maxW, ...props }) => {
+const ImageLoader = ({ image_url: imageUrl, alt, maxW, ...props }) => {
   const [loading, setLoading] = useState(true);
   return (
     <AspectRatio ratio={2 / 3} maxW={maxW}>
@@ -12,8 +13,9 @@ const ImageLoader = ({ image_url, alt, maxW, ...props }) => {
             <NextImage
               layout="fill"
               src={
-                image_url ??
-                "https://cdn.myanimelist.net/images/questionmark_23.gif"
+                !isStringNullOrEmpty(imageUrl)
+                  ? imageUrl
+                  : "https://cdn.myanimelist.net/images/questionmark_23.gif"
               }
               onLoad={() => {
                 setLoading(false);

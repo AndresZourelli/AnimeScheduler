@@ -1,7 +1,20 @@
 import CharacterTab from "@/components/AddNewAnime/CharacterTab";
 import ExternalLinksTab from "@/components/AddNewAnime/ExternalLinksTab";
 import GeneralInfoTab from "@/components/AddNewAnime/GeneralInfoTab";
+import LicensorTab from "@/components/AddNewAnime/LicensorTab";
+import NewCharacter from "@/components/AddNewAnime/NewCharacter";
+import NewLicensor from "@/components/AddNewAnime/NewLicensor";
+import NewProducer from "@/components/AddNewAnime/NewProducer";
+import NewStaff from "@/components/AddNewAnime/NewStaff";
+import NewStudio from "@/components/AddNewAnime/NewStudio";
+import ProducersTab from "@/components/AddNewAnime/ProducersTab";
 import RelatedTab from "@/components/AddNewAnime/RelatedTab";
+import SelectedCharactersTab from "@/components/AddNewAnime/SelectItemForm/SelectedCharactersTab";
+import SelectedLicensorTab from "@/components/AddNewAnime/SelectItemForm/SelectedLicensorTab";
+import SelectedProducerTab from "@/components/AddNewAnime/SelectItemForm/SelectedProducerTab";
+import SelectedRelatedMediaTab from "@/components/AddNewAnime/SelectItemForm/SelectedRelatedMediaTab";
+import SelectedStaffTab from "@/components/AddNewAnime/SelectItemForm/SelectedStaffTab";
+import SelectedStudioTab from "@/components/AddNewAnime/SelectItemForm/SelectedStudioTab";
 import StaffTab from "@/components/AddNewAnime/StaffTab";
 import StudiosTab from "@/components/AddNewAnime/StudiosTab";
 import {
@@ -31,8 +44,9 @@ interface NewAnimeForm {
   otherNames: AlternateName[];
   description: string;
   myAnimeListId: string;
-  youtubePreviewId: string;
-  twitterTag: string;
+  youtubeTrailerId: string;
+  twitterHandle: string;
+  officialWebsite: string;
   ageRating: string;
   selfPublished: false;
   coverImage: string;
@@ -48,6 +62,8 @@ interface NewAnimeForm {
   newCharactersList: NewPersonCharacter[];
   newStaffList: NewPersonCharacter[];
   newStudiosList: NewStudio[];
+  newLicensorsList: NewLicensor[];
+  newProducersList: NewProducer[];
 }
 
 enum SeasonEnum {
@@ -60,57 +76,56 @@ interface Season {
   season: SeasonEnum;
   year: number;
 }
-interface ExternalLinks {
-  title: string;
+interface ExternalLinks extends NewItems {
   url: string;
 }
 
-interface NewStudio {
-  studioName: string;
+interface NewLicensor extends NewItems {}
+interface NewProducer extends NewItems {}
+interface NewStudio extends NewItems {
   isPrimary: boolean;
   description: string;
 }
-interface NewPersonCharacter {
+
+interface NewItems {
+  itemId: string;
+  name: string;
+  imageUrl?: string;
+}
+
+interface NewPersonCharacter extends NewItems {
   givenName: string;
   surname: string;
   nativeName: string;
   altNames: AlternateName[];
   description: string;
-  image: string;
 }
 
 enum MediaType {
   Movie,
   Tv,
 }
-interface RelatedMedia {
+interface RelatedMedia extends NewItems {
   mediaId: string;
   type: MediaType;
-  name: string;
-  imageUrl: string;
 }
-interface Licensor {
+interface Licensor extends NewItems {
   licensorId: string;
 }
-interface Producer {
+interface Producer extends NewItems {
   producerId: string;
 }
 interface Genre {
   genreId: string;
 }
-interface Character {
+interface Character extends NewItems {
   characterId: string;
-  name: string;
-  imageUrl: string;
 }
-interface Staff {
+interface Staff extends NewItems {
   personId: string;
-  name: string;
-  imageUrl: string;
 }
-interface Studio {
+interface Studio extends NewItems {
   studioId: string;
-  studioName: string;
 }
 interface AlternateName {
   name: string;
@@ -145,12 +160,13 @@ const defaultList: NewAnimeForm = {
   countryOfOrigin: "",
   duration: 0,
   numberOfEpisodes: 0,
-  genres: [{ genreId: "" }],
+  genres: [],
   otherNames: [{ name: "" }],
   description: "",
   myAnimeListId: "",
-  youtubePreviewId: "",
-  twitterTag: "",
+  youtubeTrailerId: "",
+  twitterHandle: "",
+  officialWebsite: "",
   ageRating: "",
   selfPublished: false,
   coverImage: "",
@@ -158,14 +174,16 @@ const defaultList: NewAnimeForm = {
   characterList: [],
   staffList: [],
   studioList: [],
-  producerList: [{ producerId: "" }],
-  licensorList: [{ licensorId: "" }],
+  producerList: [],
+  licensorList: [],
   relatedMediaList: [],
   externalLinks: [],
   submissionNotes: "",
   newCharactersList: [],
   newStaffList: [],
   newStudiosList: [],
+  newProducersList: [],
+  newLicensorsList: [],
 };
 
 const inputSpacingCommon = {
@@ -193,6 +211,12 @@ const AddNewAnime = () => {
               Studios
             </Tab>
             <Tab _selected={{ borderRadius: "10px", bg: "teal.500" }}>
+              Producers
+            </Tab>
+            <Tab _selected={{ borderRadius: "10px", bg: "teal.500" }}>
+              Licensors
+            </Tab>
+            <Tab _selected={{ borderRadius: "10px", bg: "teal.500" }}>
               Related
             </Tab>
             <Tab _selected={{ borderRadius: "10px", bg: "teal.500" }}>
@@ -204,19 +228,59 @@ const AddNewAnime = () => {
               <GeneralInfoTab inputSpacingCommon={inputSpacingCommon} />
             </TabPanel>
             <TabPanel>
-              <CharacterTab inputSpacingCommon={inputSpacingCommon} />
+              <SelectedCharactersTab
+                addItemTitle="Character List"
+                placeholder="Search for character"
+                existingListName="characterList"
+                newItemComponent={NewCharacter}
+                newListName="newCharactersList"
+              />
             </TabPanel>
             <TabPanel>
-              <StaffTab inputSpacingCommon={inputSpacingCommon} />
+              <SelectedStaffTab
+                addItemTitle="Staff List"
+                placeholder="Search for staff"
+                existingListName="staffList"
+                newItemComponent={NewStaff}
+                newListName="newStaffList"
+              />
             </TabPanel>
             <TabPanel>
-              <StudiosTab inputSpacingCommon={inputSpacingCommon} />
+              <SelectedStudioTab
+                addItemTitle="Studio List"
+                placeholder="Search for studio"
+                existingListName="studioList"
+                newItemComponent={NewStudio}
+                newListName="newStudiosList"
+              />
             </TabPanel>
             <TabPanel>
-              <RelatedTab inputSpacingCommon={inputSpacingCommon} />
+              <SelectedProducerTab
+                addItemTitle="Producer List"
+                placeholder="Search for producer"
+                existingListName="producerList"
+                newItemComponent={NewProducer}
+                newListName="newProducersList"
+              />
             </TabPanel>
             <TabPanel>
-              <ExternalLinksTab inputSpacingCommon={inputSpacingCommon} />
+              <SelectedLicensorTab
+                addItemTitle="Licensor List"
+                placeholder="Search for licensor"
+                existingListName="licensorList"
+                newItemComponent={NewLicensor}
+                newListName="newLicensorsList"
+              />
+            </TabPanel>
+            <TabPanel>
+              <SelectedRelatedMediaTab
+                addItemTitle="Related Media List"
+                placeholder="Search for related media"
+                existingListName="relatedMediaList"
+              />
+            </TabPanel>
+            <TabPanel>
+              <ExternalLinksTab />
             </TabPanel>
           </TabPanels>
         </Tabs>

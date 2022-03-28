@@ -19,8 +19,8 @@ import { useState } from "react";
 
 const NewStudio = ({ append, ...props }) => {
   const [externalLinkData, setExternalLinkData] = useState({
-    linkUrl: "",
-    linkName: "",
+    url: "",
+    name: "",
   });
 
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -33,10 +33,10 @@ const NewStudio = ({ append, ...props }) => {
   };
 
   const onSave = () => {
-    append({ title: externalLinkData.linkName, url: externalLinkData.linkUrl });
+    append({ ...externalLinkData });
     setExternalLinkData({
-      linkUrl: "",
-      linkName: "",
+      url: "",
+      name: "",
     });
     onClose();
   };
@@ -62,16 +62,16 @@ const NewStudio = ({ append, ...props }) => {
                 <FormLabel>Link Name</FormLabel>
                 <Input
                   onChange={updateChange}
-                  name="linkName"
-                  value={externalLinkData.linkName}
+                  name="name"
+                  value={externalLinkData.name}
                 />
               </FormControl>
               <FormControl mb={3}>
                 <FormLabel>Link Url</FormLabel>
                 <Input
                   onChange={updateChange}
-                  name="linkUrl"
-                  value={externalLinkData.linkUrl}
+                  name="url"
+                  value={externalLinkData.url}
                 />
               </FormControl>
             </Flex>

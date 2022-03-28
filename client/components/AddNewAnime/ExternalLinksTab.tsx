@@ -4,7 +4,7 @@ import { transparentize } from "@chakra-ui/theme-tools";
 import { FieldArray } from "formik";
 import { useFieldArray } from "react-hook-form";
 
-const CharacterTab = ({ inputSpacingCommon }) => {
+const ExternalLinksTab = () => {
   const {
     fields: externalLinksListFields,
     append: appendExternalLinksList,
@@ -18,7 +18,7 @@ const CharacterTab = ({ inputSpacingCommon }) => {
         <Heading>Add External Links</Heading>
         <NewExternalLink append={appendExternalLinksList} />
       </Flex>
-      <Flex wrap="wrap">
+      <Flex wrap="wrap" gap={2}>
         {externalLinksListFields.map((externalLink, externalLinkIndex) => (
           <Flex
             key={externalLinkIndex}
@@ -31,7 +31,7 @@ const CharacterTab = ({ inputSpacingCommon }) => {
             px="2"
           >
             {/*  @ts-ignore */}
-            <Text>{externalLink.title}</Text>
+            <Text>{externalLink.name}</Text>
             <CloseButton
               color="red.500"
               onClick={() => removeExternalLinksList(externalLinkIndex)}
@@ -43,4 +43,4 @@ const CharacterTab = ({ inputSpacingCommon }) => {
   );
 };
 
-export default CharacterTab;
+export default ExternalLinksTab;

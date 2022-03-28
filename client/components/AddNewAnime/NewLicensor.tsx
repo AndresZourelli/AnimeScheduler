@@ -20,29 +20,21 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 
-const NewStudio = ({ append }) => {
-  const [studioData, setStudioData] = useState({
+const NewLicensor = ({ append }) => {
+  const [licensorData, setLicensorData] = useState({
     name: "",
-    isPrimary: false,
-    description: "",
   });
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const updateChange = (e) => {
-    setStudioData({ ...studioData, [e.target.name]: e.target.value });
-  };
-
-  const onChecked = (e) => {
-    setStudioData({ ...studioData, isPrimary: e.target.checked });
+    setLicensorData({ ...licensorData, [e.target.name]: e.target.value });
   };
 
   const onSave = () => {
-    append({ ...studioData });
-    setStudioData({
+    append(licensorData);
+    setLicensorData({
       name: "",
-      isPrimary: false,
-      description: "",
     });
     onClose();
   };
@@ -55,42 +47,35 @@ const NewStudio = ({ append }) => {
         colorScheme="teal"
         variant="solid"
       >
-        Create New Studio
+        Create New Licensor
       </Button>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Create New Studio</ModalHeader>
+          <ModalHeader>Create New Licensor</ModalHeader>
           <ModalCloseButton />
           <ModalBody pb={6}>
             <Flex wrap="wrap">
               <FormControl mb={3}>
-                <FormLabel>Studio Name</FormLabel>
+                <FormLabel>Licensor Name</FormLabel>
                 <Input
                   onChange={updateChange}
                   name="name"
-                  value={studioData.name}
+                  value={licensorData.name}
                 />
               </FormControl>
-              <FormControl mb={3}>
-                <FormLabel>Is Primary Studio?</FormLabel>
-                <Checkbox
-                  onChange={onChecked}
-                  name="isPrimary"
-                  value={studioData.isPrimary ? 1 : 0}
-                />
-              </FormControl>
-              <Box w="full" mb={3}>
+
+              {/* <Box w="full" mb={3}>
                 <Text fontSize="md" mb={2}>
                   Description
                 </Text>
                 <Textarea
                   name="description"
-                  value={studioData.description}
+                  value={producerData.description}
                   onChange={updateChange}
                   w="full"
                 />
-              </Box>
+              </Box> */}
             </Flex>
           </ModalBody>
 
@@ -106,4 +91,4 @@ const NewStudio = ({ append }) => {
   );
 };
 
-export default NewStudio;
+export default NewLicensor;
