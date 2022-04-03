@@ -105,7 +105,7 @@ const GeneralInfoTab = ({ inputSpacingCommon }) => {
             <Text fontSize="md" mb={inputSpacingCommon.marginBottom}>
               Other Names
             </Text>
-            <Flex>
+            <Flex wrap="wrap">
               {fields.map((field, nameIndex) => (
                 <FormControl
                   isInvalid={errors.otherNames}
@@ -227,48 +227,7 @@ const GeneralInfoTab = ({ inputSpacingCommon }) => {
             </Select>
             <FormErrorMessage>{errors.countryOfOrigin}</FormErrorMessage>
           </FormControl>
-          <Box>
-            <Heading size="sm" mb={2}>
-              Genres
-            </Heading>
-            <Flex wrap="wrap">
-              <Flex wrap="wrap">
-                {fieldsGenres.map((field, genreIndex) => (
-                  <FormControl
-                    id="genres"
-                    isInvalid={errors.genres}
-                    w={inputSpacingCommon.width}
-                    mb={inputSpacingCommon.marginBottom}
-                    key={genreIndex}
-                    mr={2}
-                  >
-                    <Flex>
-                      <Select
-                        name={`genres[${genreIndex}].genreId`}
-                        placeholder="Select Option"
-                        {...register(`genres[${genreIndex}].genreId`)}
-                      >
-                        {genreQueryResult.data?.genres.nodes.map((genre) => (
-                          <option value={genre.id} key={genre.id}>
-                            {genre.genre}
-                          </option>
-                        ))}
-                      </Select>
-                      {fieldsGenres.length > 1 ? (
-                        <CloseButton
-                          alignSelf="center"
-                          color="red.500"
-                          onClick={() => removeGenre(genreIndex)}
-                        />
-                      ) : null}
-                      <FormErrorMessage>{errors.genres}</FormErrorMessage>
-                    </Flex>
-                  </FormControl>
-                ))}
-              </Flex>
-              <Button onClick={() => appendGenre({ genreId: "" })}>Add</Button>
-            </Flex>
-          </Box>
+
           <FormControl
             w={inputSpacingCommon.width}
             mr={inputSpacingCommon.marginRight}
@@ -315,6 +274,46 @@ const GeneralInfoTab = ({ inputSpacingCommon }) => {
               <FormErrorMessage>{errors.formatType}</FormErrorMessage>
             </FormControl>
           </Flex>
+          <Box display={"inline-block"} minW={inputSpacingCommon.width}>
+            <Text fontSize="lg" mb={inputSpacingCommon.marginBottom}>
+              Genres
+            </Text>
+            <Flex wrap="wrap">
+              {fieldsGenres.map((field, genreIndex) => (
+                <FormControl
+                  id="genres"
+                  isInvalid={errors.genres}
+                  w={inputSpacingCommon.width}
+                  mb={inputSpacingCommon.marginBottom}
+                  key={field.id}
+                  mr={inputSpacingCommon.marginRight}
+                >
+                  <Flex gap={2} wrap="nowrap">
+                    <Select
+                      name={`genres[${genreIndex}].genreId`}
+                      placeholder="Select Option"
+                      {...register(`genres[${genreIndex}].genreId`)}
+                    >
+                      {genreQueryResult.data?.genres.nodes.map((genre) => (
+                        <option value={genre.id} key={genre.id}>
+                          {genre.genre}
+                        </option>
+                      ))}
+                    </Select>
+                    {fieldsGenres.length > 1 ? (
+                      <CloseButton
+                        alignSelf="center"
+                        color="red.500"
+                        onClick={() => removeGenre(genreIndex)}
+                      />
+                    ) : null}
+                    <FormErrorMessage>{errors.genres}</FormErrorMessage>
+                  </Flex>
+                </FormControl>
+              ))}
+            </Flex>
+            <Button onClick={() => appendGenre({ genreId: "" })}>Add</Button>
+          </Box>
         </Flex>
       </Box>
       <Box>

@@ -1,22 +1,16 @@
-import CharacterTab from "@/components/AddNewAnime/CharacterTab";
 import ExternalLinksTab from "@/components/AddNewAnime/ExternalLinksTab";
 import GeneralInfoTab from "@/components/AddNewAnime/GeneralInfoTab";
-import LicensorTab from "@/components/AddNewAnime/LicensorTab";
 import NewCharacter from "@/components/AddNewAnime/NewCharacter";
 import NewLicensor from "@/components/AddNewAnime/NewLicensor";
 import NewProducer from "@/components/AddNewAnime/NewProducer";
 import NewStaff from "@/components/AddNewAnime/NewStaff";
 import NewStudio from "@/components/AddNewAnime/NewStudio";
-import ProducersTab from "@/components/AddNewAnime/ProducersTab";
-import RelatedTab from "@/components/AddNewAnime/RelatedTab";
 import SelectedCharactersTab from "@/components/AddNewAnime/SelectItemForm/SelectedCharactersTab";
 import SelectedLicensorTab from "@/components/AddNewAnime/SelectItemForm/SelectedLicensorTab";
 import SelectedProducerTab from "@/components/AddNewAnime/SelectItemForm/SelectedProducerTab";
 import SelectedRelatedMediaTab from "@/components/AddNewAnime/SelectItemForm/SelectedRelatedMediaTab";
 import SelectedStaffTab from "@/components/AddNewAnime/SelectItemForm/SelectedStaffTab";
 import SelectedStudioTab from "@/components/AddNewAnime/SelectItemForm/SelectedStudioTab";
-import StaffTab from "@/components/AddNewAnime/StaffTab";
-import StudiosTab from "@/components/AddNewAnime/StudiosTab";
 import {
   Box,
   Button,
@@ -26,7 +20,7 @@ import {
   TabPanels,
   Tabs,
 } from "@chakra-ui/react";
-import { useForm, FormProvider } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 
 interface NewAnimeForm {
   titles: Titles;
@@ -49,8 +43,8 @@ interface NewAnimeForm {
   officialWebsite: string;
   ageRating: string;
   selfPublished: false;
-  coverImage: string;
-  coverBanner: string;
+  coverImage: File;
+  coverBanner: File;
   characterList: Character[];
   staffList: Staff[];
   studioList: Studio[];
@@ -99,6 +93,7 @@ interface NewPersonCharacter extends NewItems {
   nativeName: string;
   altNames: AlternateName[];
   description: string;
+  imageFile: File;
 }
 
 enum MediaType {
@@ -160,7 +155,7 @@ const defaultList: NewAnimeForm = {
   countryOfOrigin: "",
   duration: 0,
   numberOfEpisodes: 0,
-  genres: [],
+  genres: [{ genreId: null }],
   otherNames: [{ name: "" }],
   description: "",
   myAnimeListId: "",
@@ -169,8 +164,8 @@ const defaultList: NewAnimeForm = {
   officialWebsite: "",
   ageRating: "",
   selfPublished: false,
-  coverImage: "",
-  coverBanner: "",
+  coverImage: null,
+  coverBanner: null,
   characterList: [],
   staffList: [],
   studioList: [],

@@ -57,11 +57,11 @@ const DisplayItems = ({
               {/*  @ts-ignore */}
               <Text>{name.name}</Text>
               {/*  @ts-ignore */}
-              {!isStringNullOrUndefined(name.imageUrl) && (
+              {!isStringNullOrUndefined(name?.imageFile?.preview) && (
                 <Box w="70px" h="100px" position="relative">
                   <ImageLoader
                     // @ts-ignore
-                    image_url={name.imageUrl}
+                    image_url={name?.imageFile?.preview}
                     // @ts-ignore
                     alt={name.name}
                     maxW="70px"
