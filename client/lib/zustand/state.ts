@@ -27,3 +27,13 @@ export const useUrlSearchParams = create<UrlSearchParams>((set) => ({
       urlSearchParams: { ...searchParams },
     })),
 }));
+
+interface LoggedInState {
+  loggedIn: boolean;
+  setLoginState: (value: boolean) => void;
+}
+
+export const useIsLoggedIn = create<LoggedInState>((set) => ({
+  loggedIn: false,
+  setLoginState: (value) => set(() => ({ loggedIn: value })),
+}));

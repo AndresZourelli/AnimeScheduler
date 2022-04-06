@@ -24,8 +24,6 @@ import {
   Tbody,
   Td,
   Text,
-  Th,
-  Thead,
   Tr,
   useColorMode,
   useOutsideClick,
@@ -33,8 +31,11 @@ import {
 import debouce from "lodash";
 import NextLink from "next/link";
 import { useRouter } from "next/router";
-import { useCallback, useEffect, useState, useRef } from "react";
-
+import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  redirectToAuth,
+  signOut,
+} from "supertokens-auth-react/recipe/emailpassword";
 interface Search {
   variables?: Variable;
 }
@@ -66,20 +67,22 @@ const Nav = () => {
 
   const router = useRouter();
   const { colorMode, toggleColorMode } = useColorMode();
-  const { user, logoutUser } = useAuth();
+  const { user, removeUserInfo } = useAuth();
   const [signedIn, setSignedIn] = useState(false);
   const [searchBarVisible, setSearchBarVisible] = useState(true);
 
   const handleLoginClick = () => {
-    router.push("/login");
+    redirectToAuth({ show: "signin" });
   };
 
   const handleSignUpClick = () => {
-    router.push("/signup");
+    redirectToAuth({ show: "signup" });
   };
 
-  const hangleSignOutClick = () => {
-    logoutUser();
+  const hangleSignOutClick = async () => {
+    removeUserInfo();
+    await signOut();
+    router.push("/");
   };
 
   const buttons = signedIn ? (

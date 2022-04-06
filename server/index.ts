@@ -1,32 +1,25 @@
-import express, {
-  ErrorRequestHandler,
-  NextFunction,
-  Request,
-  RequestHandler,
-  Response,
-} from "express";
-import { postgraphile } from "postgraphile";
 import cookieParser from "cookie-parser";
 import cors from "cors";
-import morgan from "morgan";
-import ConnectionFilterPlugin from "postgraphile-plugin-connection-filter";
-import PgSimplifyInflectorPlugin from "@graphile-contrib/pg-simplify-inflector";
-// @ts-ignore
-import PgOrderByRelatedPlugin from "@graphile-contrib/pg-order-by-related";
-import { RemoveForeignKeyFieldsPlugin } from "postgraphile-remove-foreign-key-fields-plugin";
-import { PgMutationUpsertPlugin } from "postgraphile-upsert-plugin";
-import { isAuth } from "./middleware/isAuth.js";
 import dotenv from "dotenv";
-import { setAuthCookies, deleteAuthCookies } from "./utils/AuthHelpers.js";
+import express, { Request, RequestHandler, Response } from "express";
+import Knex from "knex";
+import morgan from "morgan";
+import { Model } from "objection";
+import { postgraphile } from "postgraphile";
+import supertokens, { deleteUser } from "supertokens-node";
+import { errorHandler, middleware } from "supertokens-node/framework/express";
+import { verifySession } from "supertokens-node/recipe/session/framework/express";
+import { knexConfig } from "./config/knex";
+import { postgraphileConfig } from "./config/postgraphile";
+import { supertokensConfig } from "./config/supertokens";
 dotenv.config();
 
-const app = express();
+supertokens.init(supertokensConfig);
 
-interface ISettings {
-  role?: string;
-  "jwt.claims.user_id"?: string;
-  "jwt.claims.role"?: string;
-}
+const knex = Knex(knexConfig["development"] as any);
+Model.knex(knex);
+
+let app = express();
 
 app.use(cookieParser());
 app.use(express.json() as RequestHandler);
@@ -35,108 +28,46 @@ app.use(morgan("dev") as RequestHandler);
 
 app.use(
   cors({
+    allowedHeaders: ["content-type", ...supertokens.getAllCORSHeaders()],
     credentials: true,
     origin: "http://localhost:3001",
   })
 );
-app.post("/login", async (req, res) => {
+
+app.use(middleware());
+
+app.use("/graphql", verifySession({ sessionRequired: false }));
+
+app.use(
+  postgraphile(
+    process.env.POSTGRES_DATABASE_URL,
+    "anime_app_public",
+    postgraphileConfig
+  ) as RequestHandler
+);
+
+app.delete("/user/:id", async (req: Request, res: Response) => {
+  let userId = req.params.id;
   try {
-    await setAuthCookies(req, res);
-  } catch (e) {
-    console.error(e);
-    return res
-      .status(500)
-      .json({ error: "An Unexpected Error Occured", success: false });
+    await deleteUser(userId);
+  } catch (error) {
+    return res.status(500).send({ error: error });
   }
-  return res.status(200).json({ success: true });
+  return res.status(204).send();
 });
 
-app.post("/logout", async (req, res) => {
-  try {
-    await deleteAuthCookies(req, res);
-  } catch (e) {
-    console.error(e);
-    return res
-      .status(500)
-      .json({ error: "An Unexpected Error Occured", success: false });
-  }
-  return res.status(200).json({ success: true });
-});
-app.post("/logout");
+// app.get("/users", async (req: Request, res: Response) => {
+//   try {
+//     const result = await User.query().withSchema("anime_app_private").debug();
+//     return res.status(204).send(result);
+//   } catch (error) {
+//     console.log(error);
+//     return res.status(500).send({ error: error });
+//   }
+// });
 
-app.use("/graphql", isAuth);
-app.use(
-  postgraphile(process.env.POSTGRES_DATABASE_URL, "anime_app_public", {
-    watchPg: true,
-    graphiql: true,
-    enhanceGraphiql: true,
-    dynamicJson: true,
-    ownerConnectionString: process.env.POSTGRES_DATABASE_URL_OWNER,
-    retryOnInitFail: false,
-    appendPlugins: [
-      ConnectionFilterPlugin,
-      PgSimplifyInflectorPlugin,
-      PgOrderByRelatedPlugin,
-      RemoveForeignKeyFieldsPlugin,
-      PgMutationUpsertPlugin,
-    ],
-    pgSettings: (req: any) => {
-      const settings: ISettings = {};
-      if (req.user) {
-        settings["jwt.claims.user_id"] = req.user.id;
-        settings["jwt.claims.role"] = req.user.role;
-        settings.role = req.user.role;
-      } else {
-        settings.role = "anime_default";
-      }
-      return settings as any;
-    },
-    subscriptions: true,
-    setofFunctionsContainNulls: false,
-    // ignoreRBAC: false,
-    // ignoreIndexes: false,
-    showErrorStack: "json",
-    extendedErrors: [
-      "severity",
-      "code",
-      "detail",
-      "hint",
-      "position",
-      "internalPosition",
-      "internalQuery",
-      "where",
-      "schema",
-      "table",
-      "column",
-      "dataType",
-      "constraint",
-      "file",
-      "line",
-      "routine",
-    ],
-    exportGqlSchemaPath: "schema.graphql",
-    allowExplain() {
-      return true;
-    },
-    enableQueryBatching: true,
-    legacyRelations: "omit",
-    graphileBuildOptions: {
-      connectionFilterAllowNullInput: true,
-      connectionFilterAllowEmptyObjectInput: true,
-    },
-  }) as RequestHandler
-);
-// eslint-disable-next-line no-unused-vars
-app.use(
-  (
-    err: ErrorRequestHandler,
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) => {
-    console.log(err);
-  }
-);
+app.use(errorHandler());
+
 app.listen({ port: 4000 }, () => {
   /* eslint-disable-next-line no-console */
   console.log(`🚀 Server ready at http://localhost:4000/graphiql`);

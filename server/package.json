@@ -8,8 +8,9 @@
     "start": "tsc",
     "dev:build": "tsc -w",
     "dev:run": "nodemon output/index.js",
+    "dev:tsnode": "ts-node-dev --respawn --transpile-only index.ts",
     "tsno": "nodemon ./index.ts",
-    "dev": "nodemon ./index.ts",
+    "dev": "yarn dev:tsnode",
     "test": "echo \"Error: no test specified\" && exit 1",
     "migrate_init": "yarn knex migrate:make --knexfile db/knexfile.js",
     "migrate_latest": "yarn knex migrate:latest --knexfile db/knexfile.js",
@@ -75,6 +76,7 @@
     "postgraphile-plugin-connection-filter": "^2.2.2",
     "postgraphile-remove-foreign-key-fields-plugin": "^1.2.0",
     "postgraphile-upsert-plugin": "^2.1.1",
+    "supertokens-node": "^9.1.1",
     "uuid": "^8.3.2",
     "yup": "^0.32.11"
   },
