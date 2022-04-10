@@ -1,0 +1,29 @@
+mutation NotificationRead($id: UUID!) {
+  updateUserNotification(
+    input: {
+      patch: { isRead: true }
+      id: $id
+      clientMutationId: "notification read"
+    }
+  ) {
+    clientMutationId
+    query {
+      userNotifications(
+        orderBy: CREATED_AT_DESC
+        condition: { isRead: false }
+      ) {
+        nodes {
+          createdAt
+          entityId
+          entityImage
+          id
+          isRead
+          message
+          nodeId
+          notificationType
+        }
+        totalCount
+      }
+    }
+  }
+}

@@ -357,6 +357,8 @@ export enum AlternateAnimeNamesOrderBy {
   AnimeByAnimeIdMediaTypeDesc = 'ANIME_BY_ANIME_ID__MEDIA_TYPE_DESC',
   AnimeByAnimeIdNumberOfEpisodesAsc = 'ANIME_BY_ANIME_ID__NUMBER_OF_EPISODES_ASC',
   AnimeByAnimeIdNumberOfEpisodesDesc = 'ANIME_BY_ANIME_ID__NUMBER_OF_EPISODES_DESC',
+  AnimeByAnimeIdOfficialWebsiteAsc = 'ANIME_BY_ANIME_ID__OFFICIAL_WEBSITE_ASC',
+  AnimeByAnimeIdOfficialWebsiteDesc = 'ANIME_BY_ANIME_ID__OFFICIAL_WEBSITE_DESC',
   AnimeByAnimeIdSeasonAsc = 'ANIME_BY_ANIME_ID__SEASON_ASC',
   AnimeByAnimeIdSeasonDesc = 'ANIME_BY_ANIME_ID__SEASON_DESC',
   AnimeByAnimeIdSeasonYearAsc = 'ANIME_BY_ANIME_ID__SEASON_YEAR_ASC',
@@ -367,6 +369,10 @@ export enum AlternateAnimeNamesOrderBy {
   AnimeByAnimeIdStartBroadcastDatetimeDesc = 'ANIME_BY_ANIME_ID__START_BROADCAST_DATETIME_DESC',
   AnimeByAnimeIdTitleAsc = 'ANIME_BY_ANIME_ID__TITLE_ASC',
   AnimeByAnimeIdTitleDesc = 'ANIME_BY_ANIME_ID__TITLE_DESC',
+  AnimeByAnimeIdTwitterHandleAsc = 'ANIME_BY_ANIME_ID__TWITTER_HANDLE_ASC',
+  AnimeByAnimeIdTwitterHandleDesc = 'ANIME_BY_ANIME_ID__TWITTER_HANDLE_DESC',
+  AnimeByAnimeIdYoutubeTrailerIdAsc = 'ANIME_BY_ANIME_ID__YOUTUBE_TRAILER_ID_ASC',
+  AnimeByAnimeIdYoutubeTrailerIdDesc = 'ANIME_BY_ANIME_ID__YOUTUBE_TRAILER_ID_DESC',
   AnimeIdAsc = 'ANIME_ID_ASC',
   AnimeIdDesc = 'ANIME_ID_DESC',
   IdAsc = 'ID_ASC',
@@ -422,6 +428,7 @@ export type Anime = Node & {
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID'];
   numberOfEpisodes?: Maybe<Scalars['Int']>;
+  officialWebsite?: Maybe<Scalars['String']>;
   /** Reads and enables pagination through a set of `Producer`. */
   producerList: ProducersConnection;
   season?: Maybe<Season>;
@@ -431,6 +438,7 @@ export type Anime = Node & {
   /** Reads and enables pagination through a set of `Studio`. */
   studioList: StudiosConnection;
   title: Scalars['String'];
+  twitterHandle?: Maybe<Scalars['String']>;
   /** Reads and enables pagination through a set of `UserAnimeList`. */
   userAnimeLists: UserAnimeListsConnection;
   /** Reads and enables pagination through a set of `UserAnime`. */
@@ -441,6 +449,7 @@ export type Anime = Node & {
   userWatchStatus?: Maybe<Scalars['String']>;
   /** Reads and enables pagination through a set of `UserWatchStatus`. */
   userWatchStatuses: UserWatchStatusesConnection;
+  youtubeTrailerId?: Maybe<Scalars['String']>;
 };
 
 
@@ -779,6 +788,8 @@ export enum AnimeCharactersOrderBy {
   AnimeByAnimeIdMediaTypeDesc = 'ANIME_BY_ANIME_ID__MEDIA_TYPE_DESC',
   AnimeByAnimeIdNumberOfEpisodesAsc = 'ANIME_BY_ANIME_ID__NUMBER_OF_EPISODES_ASC',
   AnimeByAnimeIdNumberOfEpisodesDesc = 'ANIME_BY_ANIME_ID__NUMBER_OF_EPISODES_DESC',
+  AnimeByAnimeIdOfficialWebsiteAsc = 'ANIME_BY_ANIME_ID__OFFICIAL_WEBSITE_ASC',
+  AnimeByAnimeIdOfficialWebsiteDesc = 'ANIME_BY_ANIME_ID__OFFICIAL_WEBSITE_DESC',
   AnimeByAnimeIdSeasonAsc = 'ANIME_BY_ANIME_ID__SEASON_ASC',
   AnimeByAnimeIdSeasonDesc = 'ANIME_BY_ANIME_ID__SEASON_DESC',
   AnimeByAnimeIdSeasonYearAsc = 'ANIME_BY_ANIME_ID__SEASON_YEAR_ASC',
@@ -789,6 +800,10 @@ export enum AnimeCharactersOrderBy {
   AnimeByAnimeIdStartBroadcastDatetimeDesc = 'ANIME_BY_ANIME_ID__START_BROADCAST_DATETIME_DESC',
   AnimeByAnimeIdTitleAsc = 'ANIME_BY_ANIME_ID__TITLE_ASC',
   AnimeByAnimeIdTitleDesc = 'ANIME_BY_ANIME_ID__TITLE_DESC',
+  AnimeByAnimeIdTwitterHandleAsc = 'ANIME_BY_ANIME_ID__TWITTER_HANDLE_ASC',
+  AnimeByAnimeIdTwitterHandleDesc = 'ANIME_BY_ANIME_ID__TWITTER_HANDLE_DESC',
+  AnimeByAnimeIdYoutubeTrailerIdAsc = 'ANIME_BY_ANIME_ID__YOUTUBE_TRAILER_ID_ASC',
+  AnimeByAnimeIdYoutubeTrailerIdDesc = 'ANIME_BY_ANIME_ID__YOUTUBE_TRAILER_ID_DESC',
   AnimeIdAsc = 'ANIME_ID_ASC',
   AnimeIdDesc = 'ANIME_ID_DESC',
   CharacterByCharacterIdCharacterImageIdAsc = 'CHARACTER_BY_CHARACTER_ID__CHARACTER_IMAGE_ID_ASC',
@@ -858,6 +873,8 @@ export type AnimeCondition = {
   mediaType?: InputMaybe<MediaTypes>;
   /** Checks for equality with the object’s `numberOfEpisodes` field. */
   numberOfEpisodes?: InputMaybe<Scalars['Int']>;
+  /** Checks for equality with the object’s `officialWebsite` field. */
+  officialWebsite?: InputMaybe<Scalars['String']>;
   /** Checks for equality with the object’s `season` field. */
   season?: InputMaybe<Season>;
   /** Checks for equality with the object’s `seasonYear` field. */
@@ -868,6 +885,10 @@ export type AnimeCondition = {
   startBroadcastDatetime?: InputMaybe<Scalars['Datetime']>;
   /** Checks for equality with the object’s `title` field. */
   title?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `twitterHandle` field. */
+  twitterHandle?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `youtubeTrailerId` field. */
+  youtubeTrailerId?: InputMaybe<Scalars['String']>;
 };
 
 /** A connection to a list of `Anime` values. */
@@ -922,6 +943,8 @@ export type AnimeFilter = {
   not?: InputMaybe<AnimeFilter>;
   /** Filter by the object’s `numberOfEpisodes` field. */
   numberOfEpisodes?: InputMaybe<IntFilter>;
+  /** Filter by the object’s `officialWebsite` field. */
+  officialWebsite?: InputMaybe<StringFilter>;
   /** Checks for any expressions in this list. */
   or?: InputMaybe<Array<AnimeFilter>>;
   /** Filter by the object’s `season` field. */
@@ -934,6 +957,8 @@ export type AnimeFilter = {
   startBroadcastDatetime?: InputMaybe<DatetimeFilter>;
   /** Filter by the object’s `title` field. */
   title?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `twitterHandle` field. */
+  twitterHandle?: InputMaybe<StringFilter>;
   /** Filter by the object’s `userEpisodeCount` field. */
   userEpisodeCount?: InputMaybe<BigFloatFilter>;
   /** Filter by the object’s `userLiked` field. */
@@ -942,6 +967,8 @@ export type AnimeFilter = {
   userRating?: InputMaybe<BigFloatFilter>;
   /** Filter by the object’s `userWatchStatus` field. */
   userWatchStatus?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `youtubeTrailerId` field. */
+  youtubeTrailerId?: InputMaybe<StringFilter>;
 };
 
 export type AnimeGenre = Node & {
@@ -1039,6 +1066,8 @@ export enum AnimeGenresOrderBy {
   AnimeByAnimeIdMediaTypeDesc = 'ANIME_BY_ANIME_ID__MEDIA_TYPE_DESC',
   AnimeByAnimeIdNumberOfEpisodesAsc = 'ANIME_BY_ANIME_ID__NUMBER_OF_EPISODES_ASC',
   AnimeByAnimeIdNumberOfEpisodesDesc = 'ANIME_BY_ANIME_ID__NUMBER_OF_EPISODES_DESC',
+  AnimeByAnimeIdOfficialWebsiteAsc = 'ANIME_BY_ANIME_ID__OFFICIAL_WEBSITE_ASC',
+  AnimeByAnimeIdOfficialWebsiteDesc = 'ANIME_BY_ANIME_ID__OFFICIAL_WEBSITE_DESC',
   AnimeByAnimeIdSeasonAsc = 'ANIME_BY_ANIME_ID__SEASON_ASC',
   AnimeByAnimeIdSeasonDesc = 'ANIME_BY_ANIME_ID__SEASON_DESC',
   AnimeByAnimeIdSeasonYearAsc = 'ANIME_BY_ANIME_ID__SEASON_YEAR_ASC',
@@ -1049,6 +1078,10 @@ export enum AnimeGenresOrderBy {
   AnimeByAnimeIdStartBroadcastDatetimeDesc = 'ANIME_BY_ANIME_ID__START_BROADCAST_DATETIME_DESC',
   AnimeByAnimeIdTitleAsc = 'ANIME_BY_ANIME_ID__TITLE_ASC',
   AnimeByAnimeIdTitleDesc = 'ANIME_BY_ANIME_ID__TITLE_DESC',
+  AnimeByAnimeIdTwitterHandleAsc = 'ANIME_BY_ANIME_ID__TWITTER_HANDLE_ASC',
+  AnimeByAnimeIdTwitterHandleDesc = 'ANIME_BY_ANIME_ID__TWITTER_HANDLE_DESC',
+  AnimeByAnimeIdYoutubeTrailerIdAsc = 'ANIME_BY_ANIME_ID__YOUTUBE_TRAILER_ID_ASC',
+  AnimeByAnimeIdYoutubeTrailerIdDesc = 'ANIME_BY_ANIME_ID__YOUTUBE_TRAILER_ID_DESC',
   AnimeIdAsc = 'ANIME_ID_ASC',
   AnimeIdDesc = 'ANIME_ID_DESC',
   GenreByGenreIdGenreAsc = 'GENRE_BY_GENRE_ID__GENRE_ASC',
@@ -1157,6 +1190,8 @@ export enum AnimeImagesOrderBy {
   AnimeByAnimeIdMediaTypeDesc = 'ANIME_BY_ANIME_ID__MEDIA_TYPE_DESC',
   AnimeByAnimeIdNumberOfEpisodesAsc = 'ANIME_BY_ANIME_ID__NUMBER_OF_EPISODES_ASC',
   AnimeByAnimeIdNumberOfEpisodesDesc = 'ANIME_BY_ANIME_ID__NUMBER_OF_EPISODES_DESC',
+  AnimeByAnimeIdOfficialWebsiteAsc = 'ANIME_BY_ANIME_ID__OFFICIAL_WEBSITE_ASC',
+  AnimeByAnimeIdOfficialWebsiteDesc = 'ANIME_BY_ANIME_ID__OFFICIAL_WEBSITE_DESC',
   AnimeByAnimeIdSeasonAsc = 'ANIME_BY_ANIME_ID__SEASON_ASC',
   AnimeByAnimeIdSeasonDesc = 'ANIME_BY_ANIME_ID__SEASON_DESC',
   AnimeByAnimeIdSeasonYearAsc = 'ANIME_BY_ANIME_ID__SEASON_YEAR_ASC',
@@ -1167,6 +1202,10 @@ export enum AnimeImagesOrderBy {
   AnimeByAnimeIdStartBroadcastDatetimeDesc = 'ANIME_BY_ANIME_ID__START_BROADCAST_DATETIME_DESC',
   AnimeByAnimeIdTitleAsc = 'ANIME_BY_ANIME_ID__TITLE_ASC',
   AnimeByAnimeIdTitleDesc = 'ANIME_BY_ANIME_ID__TITLE_DESC',
+  AnimeByAnimeIdTwitterHandleAsc = 'ANIME_BY_ANIME_ID__TWITTER_HANDLE_ASC',
+  AnimeByAnimeIdTwitterHandleDesc = 'ANIME_BY_ANIME_ID__TWITTER_HANDLE_DESC',
+  AnimeByAnimeIdYoutubeTrailerIdAsc = 'ANIME_BY_ANIME_ID__YOUTUBE_TRAILER_ID_ASC',
+  AnimeByAnimeIdYoutubeTrailerIdDesc = 'ANIME_BY_ANIME_ID__YOUTUBE_TRAILER_ID_DESC',
   AnimeIdAsc = 'ANIME_ID_ASC',
   AnimeIdDesc = 'ANIME_ID_DESC',
   ImageByImageIdIdAsc = 'IMAGE_BY_IMAGE_ID__ID_ASC',
@@ -1195,11 +1234,14 @@ export type AnimeInput = {
   malId?: InputMaybe<Scalars['Int']>;
   mediaType?: InputMaybe<MediaTypes>;
   numberOfEpisodes?: InputMaybe<Scalars['Int']>;
+  officialWebsite?: InputMaybe<Scalars['String']>;
   season?: InputMaybe<Season>;
   seasonYear?: InputMaybe<Scalars['Int']>;
   sourceMaterialType?: InputMaybe<SourceMaterialTypes>;
   startBroadcastDatetime?: InputMaybe<Scalars['Datetime']>;
   title: Scalars['String'];
+  twitterHandle?: InputMaybe<Scalars['String']>;
+  youtubeTrailerId?: InputMaybe<Scalars['String']>;
 };
 
 export type AnimeLicensor = Node & {
@@ -1297,6 +1339,8 @@ export enum AnimeLicensorsOrderBy {
   AnimeByAnimeIdMediaTypeDesc = 'ANIME_BY_ANIME_ID__MEDIA_TYPE_DESC',
   AnimeByAnimeIdNumberOfEpisodesAsc = 'ANIME_BY_ANIME_ID__NUMBER_OF_EPISODES_ASC',
   AnimeByAnimeIdNumberOfEpisodesDesc = 'ANIME_BY_ANIME_ID__NUMBER_OF_EPISODES_DESC',
+  AnimeByAnimeIdOfficialWebsiteAsc = 'ANIME_BY_ANIME_ID__OFFICIAL_WEBSITE_ASC',
+  AnimeByAnimeIdOfficialWebsiteDesc = 'ANIME_BY_ANIME_ID__OFFICIAL_WEBSITE_DESC',
   AnimeByAnimeIdSeasonAsc = 'ANIME_BY_ANIME_ID__SEASON_ASC',
   AnimeByAnimeIdSeasonDesc = 'ANIME_BY_ANIME_ID__SEASON_DESC',
   AnimeByAnimeIdSeasonYearAsc = 'ANIME_BY_ANIME_ID__SEASON_YEAR_ASC',
@@ -1307,6 +1351,10 @@ export enum AnimeLicensorsOrderBy {
   AnimeByAnimeIdStartBroadcastDatetimeDesc = 'ANIME_BY_ANIME_ID__START_BROADCAST_DATETIME_DESC',
   AnimeByAnimeIdTitleAsc = 'ANIME_BY_ANIME_ID__TITLE_ASC',
   AnimeByAnimeIdTitleDesc = 'ANIME_BY_ANIME_ID__TITLE_DESC',
+  AnimeByAnimeIdTwitterHandleAsc = 'ANIME_BY_ANIME_ID__TWITTER_HANDLE_ASC',
+  AnimeByAnimeIdTwitterHandleDesc = 'ANIME_BY_ANIME_ID__TWITTER_HANDLE_DESC',
+  AnimeByAnimeIdYoutubeTrailerIdAsc = 'ANIME_BY_ANIME_ID__YOUTUBE_TRAILER_ID_ASC',
+  AnimeByAnimeIdYoutubeTrailerIdDesc = 'ANIME_BY_ANIME_ID__YOUTUBE_TRAILER_ID_DESC',
   AnimeIdAsc = 'ANIME_ID_ASC',
   AnimeIdDesc = 'ANIME_ID_DESC',
   LicensorByLicensorIdIdAsc = 'LICENSOR_BY_LICENSOR_ID__ID_ASC',
@@ -1530,6 +1578,8 @@ export enum AnimeOrderBy {
   Natural = 'NATURAL',
   NumberOfEpisodesAsc = 'NUMBER_OF_EPISODES_ASC',
   NumberOfEpisodesDesc = 'NUMBER_OF_EPISODES_DESC',
+  OfficialWebsiteAsc = 'OFFICIAL_WEBSITE_ASC',
+  OfficialWebsiteDesc = 'OFFICIAL_WEBSITE_DESC',
   PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
   PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
   SeasonAsc = 'SEASON_ASC',
@@ -1542,12 +1592,16 @@ export enum AnimeOrderBy {
   StartBroadcastDatetimeDesc = 'START_BROADCAST_DATETIME_DESC',
   TitleAsc = 'TITLE_ASC',
   TitleDesc = 'TITLE_DESC',
+  TwitterHandleAsc = 'TWITTER_HANDLE_ASC',
+  TwitterHandleDesc = 'TWITTER_HANDLE_DESC',
   UserAnimeByAnimeIdCountAsc = 'USER_ANIME_BY_ANIME_ID__COUNT_ASC',
   UserAnimeByAnimeIdCountDesc = 'USER_ANIME_BY_ANIME_ID__COUNT_DESC',
   UserAnimeListsByAnimeIdCountAsc = 'USER_ANIME_LISTS_BY_ANIME_ID__COUNT_ASC',
   UserAnimeListsByAnimeIdCountDesc = 'USER_ANIME_LISTS_BY_ANIME_ID__COUNT_DESC',
   UserWatchStatusesByAnimeIdCountAsc = 'USER_WATCH_STATUSES_BY_ANIME_ID__COUNT_ASC',
-  UserWatchStatusesByAnimeIdCountDesc = 'USER_WATCH_STATUSES_BY_ANIME_ID__COUNT_DESC'
+  UserWatchStatusesByAnimeIdCountDesc = 'USER_WATCH_STATUSES_BY_ANIME_ID__COUNT_DESC',
+  YoutubeTrailerIdAsc = 'YOUTUBE_TRAILER_ID_ASC',
+  YoutubeTrailerIdDesc = 'YOUTUBE_TRAILER_ID_DESC'
 }
 
 /** Represents an update to a `Anime`. Fields that are set will be updated. */
@@ -1563,11 +1617,14 @@ export type AnimePatch = {
   malId?: InputMaybe<Scalars['Int']>;
   mediaType?: InputMaybe<MediaTypes>;
   numberOfEpisodes?: InputMaybe<Scalars['Int']>;
+  officialWebsite?: InputMaybe<Scalars['String']>;
   season?: InputMaybe<Season>;
   seasonYear?: InputMaybe<Scalars['Int']>;
   sourceMaterialType?: InputMaybe<SourceMaterialTypes>;
   startBroadcastDatetime?: InputMaybe<Scalars['Datetime']>;
   title?: InputMaybe<Scalars['String']>;
+  twitterHandle?: InputMaybe<Scalars['String']>;
+  youtubeTrailerId?: InputMaybe<Scalars['String']>;
 };
 
 export type AnimeProducer = Node & {
@@ -1665,6 +1722,8 @@ export enum AnimeProducersOrderBy {
   AnimeByAnimeIdMediaTypeDesc = 'ANIME_BY_ANIME_ID__MEDIA_TYPE_DESC',
   AnimeByAnimeIdNumberOfEpisodesAsc = 'ANIME_BY_ANIME_ID__NUMBER_OF_EPISODES_ASC',
   AnimeByAnimeIdNumberOfEpisodesDesc = 'ANIME_BY_ANIME_ID__NUMBER_OF_EPISODES_DESC',
+  AnimeByAnimeIdOfficialWebsiteAsc = 'ANIME_BY_ANIME_ID__OFFICIAL_WEBSITE_ASC',
+  AnimeByAnimeIdOfficialWebsiteDesc = 'ANIME_BY_ANIME_ID__OFFICIAL_WEBSITE_DESC',
   AnimeByAnimeIdSeasonAsc = 'ANIME_BY_ANIME_ID__SEASON_ASC',
   AnimeByAnimeIdSeasonDesc = 'ANIME_BY_ANIME_ID__SEASON_DESC',
   AnimeByAnimeIdSeasonYearAsc = 'ANIME_BY_ANIME_ID__SEASON_YEAR_ASC',
@@ -1675,6 +1734,10 @@ export enum AnimeProducersOrderBy {
   AnimeByAnimeIdStartBroadcastDatetimeDesc = 'ANIME_BY_ANIME_ID__START_BROADCAST_DATETIME_DESC',
   AnimeByAnimeIdTitleAsc = 'ANIME_BY_ANIME_ID__TITLE_ASC',
   AnimeByAnimeIdTitleDesc = 'ANIME_BY_ANIME_ID__TITLE_DESC',
+  AnimeByAnimeIdTwitterHandleAsc = 'ANIME_BY_ANIME_ID__TWITTER_HANDLE_ASC',
+  AnimeByAnimeIdTwitterHandleDesc = 'ANIME_BY_ANIME_ID__TWITTER_HANDLE_DESC',
+  AnimeByAnimeIdYoutubeTrailerIdAsc = 'ANIME_BY_ANIME_ID__YOUTUBE_TRAILER_ID_ASC',
+  AnimeByAnimeIdYoutubeTrailerIdDesc = 'ANIME_BY_ANIME_ID__YOUTUBE_TRAILER_ID_DESC',
   AnimeIdAsc = 'ANIME_ID_ASC',
   AnimeIdDesc = 'ANIME_ID_DESC',
   Natural = 'NATURAL',
@@ -1785,6 +1848,8 @@ export enum AnimeStaffOrderBy {
   AnimeByAnimeIdMediaTypeDesc = 'ANIME_BY_ANIME_ID__MEDIA_TYPE_DESC',
   AnimeByAnimeIdNumberOfEpisodesAsc = 'ANIME_BY_ANIME_ID__NUMBER_OF_EPISODES_ASC',
   AnimeByAnimeIdNumberOfEpisodesDesc = 'ANIME_BY_ANIME_ID__NUMBER_OF_EPISODES_DESC',
+  AnimeByAnimeIdOfficialWebsiteAsc = 'ANIME_BY_ANIME_ID__OFFICIAL_WEBSITE_ASC',
+  AnimeByAnimeIdOfficialWebsiteDesc = 'ANIME_BY_ANIME_ID__OFFICIAL_WEBSITE_DESC',
   AnimeByAnimeIdSeasonAsc = 'ANIME_BY_ANIME_ID__SEASON_ASC',
   AnimeByAnimeIdSeasonDesc = 'ANIME_BY_ANIME_ID__SEASON_DESC',
   AnimeByAnimeIdSeasonYearAsc = 'ANIME_BY_ANIME_ID__SEASON_YEAR_ASC',
@@ -1795,6 +1860,10 @@ export enum AnimeStaffOrderBy {
   AnimeByAnimeIdStartBroadcastDatetimeDesc = 'ANIME_BY_ANIME_ID__START_BROADCAST_DATETIME_DESC',
   AnimeByAnimeIdTitleAsc = 'ANIME_BY_ANIME_ID__TITLE_ASC',
   AnimeByAnimeIdTitleDesc = 'ANIME_BY_ANIME_ID__TITLE_DESC',
+  AnimeByAnimeIdTwitterHandleAsc = 'ANIME_BY_ANIME_ID__TWITTER_HANDLE_ASC',
+  AnimeByAnimeIdTwitterHandleDesc = 'ANIME_BY_ANIME_ID__TWITTER_HANDLE_DESC',
+  AnimeByAnimeIdYoutubeTrailerIdAsc = 'ANIME_BY_ANIME_ID__YOUTUBE_TRAILER_ID_ASC',
+  AnimeByAnimeIdYoutubeTrailerIdDesc = 'ANIME_BY_ANIME_ID__YOUTUBE_TRAILER_ID_DESC',
   AnimeIdAsc = 'ANIME_ID_ASC',
   AnimeIdDesc = 'ANIME_ID_DESC',
   Natural = 'NATURAL',
@@ -1933,6 +2002,8 @@ export enum AnimeStreamingOnsOrderBy {
   AnimeByAnimeIdMediaTypeDesc = 'ANIME_BY_ANIME_ID__MEDIA_TYPE_DESC',
   AnimeByAnimeIdNumberOfEpisodesAsc = 'ANIME_BY_ANIME_ID__NUMBER_OF_EPISODES_ASC',
   AnimeByAnimeIdNumberOfEpisodesDesc = 'ANIME_BY_ANIME_ID__NUMBER_OF_EPISODES_DESC',
+  AnimeByAnimeIdOfficialWebsiteAsc = 'ANIME_BY_ANIME_ID__OFFICIAL_WEBSITE_ASC',
+  AnimeByAnimeIdOfficialWebsiteDesc = 'ANIME_BY_ANIME_ID__OFFICIAL_WEBSITE_DESC',
   AnimeByAnimeIdSeasonAsc = 'ANIME_BY_ANIME_ID__SEASON_ASC',
   AnimeByAnimeIdSeasonDesc = 'ANIME_BY_ANIME_ID__SEASON_DESC',
   AnimeByAnimeIdSeasonYearAsc = 'ANIME_BY_ANIME_ID__SEASON_YEAR_ASC',
@@ -1943,6 +2014,10 @@ export enum AnimeStreamingOnsOrderBy {
   AnimeByAnimeIdStartBroadcastDatetimeDesc = 'ANIME_BY_ANIME_ID__START_BROADCAST_DATETIME_DESC',
   AnimeByAnimeIdTitleAsc = 'ANIME_BY_ANIME_ID__TITLE_ASC',
   AnimeByAnimeIdTitleDesc = 'ANIME_BY_ANIME_ID__TITLE_DESC',
+  AnimeByAnimeIdTwitterHandleAsc = 'ANIME_BY_ANIME_ID__TWITTER_HANDLE_ASC',
+  AnimeByAnimeIdTwitterHandleDesc = 'ANIME_BY_ANIME_ID__TWITTER_HANDLE_DESC',
+  AnimeByAnimeIdYoutubeTrailerIdAsc = 'ANIME_BY_ANIME_ID__YOUTUBE_TRAILER_ID_ASC',
+  AnimeByAnimeIdYoutubeTrailerIdDesc = 'ANIME_BY_ANIME_ID__YOUTUBE_TRAILER_ID_DESC',
   AnimeIdAsc = 'ANIME_ID_ASC',
   AnimeIdDesc = 'ANIME_ID_DESC',
   Natural = 'NATURAL',
@@ -2049,6 +2124,8 @@ export enum AnimeStudiosOrderBy {
   AnimeByAnimeIdMediaTypeDesc = 'ANIME_BY_ANIME_ID__MEDIA_TYPE_DESC',
   AnimeByAnimeIdNumberOfEpisodesAsc = 'ANIME_BY_ANIME_ID__NUMBER_OF_EPISODES_ASC',
   AnimeByAnimeIdNumberOfEpisodesDesc = 'ANIME_BY_ANIME_ID__NUMBER_OF_EPISODES_DESC',
+  AnimeByAnimeIdOfficialWebsiteAsc = 'ANIME_BY_ANIME_ID__OFFICIAL_WEBSITE_ASC',
+  AnimeByAnimeIdOfficialWebsiteDesc = 'ANIME_BY_ANIME_ID__OFFICIAL_WEBSITE_DESC',
   AnimeByAnimeIdSeasonAsc = 'ANIME_BY_ANIME_ID__SEASON_ASC',
   AnimeByAnimeIdSeasonDesc = 'ANIME_BY_ANIME_ID__SEASON_DESC',
   AnimeByAnimeIdSeasonYearAsc = 'ANIME_BY_ANIME_ID__SEASON_YEAR_ASC',
@@ -2059,6 +2136,10 @@ export enum AnimeStudiosOrderBy {
   AnimeByAnimeIdStartBroadcastDatetimeDesc = 'ANIME_BY_ANIME_ID__START_BROADCAST_DATETIME_DESC',
   AnimeByAnimeIdTitleAsc = 'ANIME_BY_ANIME_ID__TITLE_ASC',
   AnimeByAnimeIdTitleDesc = 'ANIME_BY_ANIME_ID__TITLE_DESC',
+  AnimeByAnimeIdTwitterHandleAsc = 'ANIME_BY_ANIME_ID__TWITTER_HANDLE_ASC',
+  AnimeByAnimeIdTwitterHandleDesc = 'ANIME_BY_ANIME_ID__TWITTER_HANDLE_DESC',
+  AnimeByAnimeIdYoutubeTrailerIdAsc = 'ANIME_BY_ANIME_ID__YOUTUBE_TRAILER_ID_ASC',
+  AnimeByAnimeIdYoutubeTrailerIdDesc = 'ANIME_BY_ANIME_ID__YOUTUBE_TRAILER_ID_DESC',
   AnimeIdAsc = 'ANIME_ID_ASC',
   AnimeIdDesc = 'ANIME_ID_DESC',
   Natural = 'NATURAL',
@@ -2174,6 +2255,8 @@ export enum AnimeUserScoresOrderBy {
   AnimeByAnimeIdMediaTypeDesc = 'ANIME_BY_ANIME_ID__MEDIA_TYPE_DESC',
   AnimeByAnimeIdNumberOfEpisodesAsc = 'ANIME_BY_ANIME_ID__NUMBER_OF_EPISODES_ASC',
   AnimeByAnimeIdNumberOfEpisodesDesc = 'ANIME_BY_ANIME_ID__NUMBER_OF_EPISODES_DESC',
+  AnimeByAnimeIdOfficialWebsiteAsc = 'ANIME_BY_ANIME_ID__OFFICIAL_WEBSITE_ASC',
+  AnimeByAnimeIdOfficialWebsiteDesc = 'ANIME_BY_ANIME_ID__OFFICIAL_WEBSITE_DESC',
   AnimeByAnimeIdSeasonAsc = 'ANIME_BY_ANIME_ID__SEASON_ASC',
   AnimeByAnimeIdSeasonDesc = 'ANIME_BY_ANIME_ID__SEASON_DESC',
   AnimeByAnimeIdSeasonYearAsc = 'ANIME_BY_ANIME_ID__SEASON_YEAR_ASC',
@@ -2184,6 +2267,10 @@ export enum AnimeUserScoresOrderBy {
   AnimeByAnimeIdStartBroadcastDatetimeDesc = 'ANIME_BY_ANIME_ID__START_BROADCAST_DATETIME_DESC',
   AnimeByAnimeIdTitleAsc = 'ANIME_BY_ANIME_ID__TITLE_ASC',
   AnimeByAnimeIdTitleDesc = 'ANIME_BY_ANIME_ID__TITLE_DESC',
+  AnimeByAnimeIdTwitterHandleAsc = 'ANIME_BY_ANIME_ID__TWITTER_HANDLE_ASC',
+  AnimeByAnimeIdTwitterHandleDesc = 'ANIME_BY_ANIME_ID__TWITTER_HANDLE_DESC',
+  AnimeByAnimeIdYoutubeTrailerIdAsc = 'ANIME_BY_ANIME_ID__YOUTUBE_TRAILER_ID_ASC',
+  AnimeByAnimeIdYoutubeTrailerIdDesc = 'ANIME_BY_ANIME_ID__YOUTUBE_TRAILER_ID_DESC',
   AnimeIdAsc = 'ANIME_ID_ASC',
   AnimeIdDesc = 'ANIME_ID_DESC',
   Natural = 'NATURAL',
@@ -3604,6 +3691,41 @@ export type CreateUserInput = {
   clientMutationId?: InputMaybe<Scalars['String']>;
   /** The `User` to be created by this mutation. */
   user: UserInput;
+};
+
+/** All input for the create `UserNotification` mutation. */
+export type CreateUserNotificationInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The `UserNotification` to be created by this mutation. */
+  userNotification: UserNotificationInput;
+};
+
+/** The output of our create `UserNotification` mutation. */
+export type CreateUserNotificationPayload = {
+  __typename?: 'CreateUserNotificationPayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** Reads a single `User` that is related to this `UserNotification`. */
+  user?: Maybe<User>;
+  /** The `UserNotification` that was created by this mutation. */
+  userNotification?: Maybe<UserNotification>;
+  /** An edge for our `UserNotification`. May be used by Relay 1. */
+  userNotificationEdge?: Maybe<UserNotificationsEdge>;
+};
+
+
+/** The output of our create `UserNotification` mutation. */
+export type CreateUserNotificationPayloadUserNotificationEdgeArgs = {
+  orderBy?: InputMaybe<Array<UserNotificationsOrderBy>>;
 };
 
 /** The output of our create `User` mutation. */
@@ -5044,6 +5166,52 @@ export type DeleteUserInput = {
   id: Scalars['String'];
 };
 
+/** All input for the `deleteUserNotificationByNodeId` mutation. */
+export type DeleteUserNotificationByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The globally unique `ID` which will identify a single `UserNotification` to be deleted. */
+  nodeId: Scalars['ID'];
+};
+
+/** All input for the `deleteUserNotification` mutation. */
+export type DeleteUserNotificationInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  id: Scalars['UUID'];
+};
+
+/** The output of our delete `UserNotification` mutation. */
+export type DeleteUserNotificationPayload = {
+  __typename?: 'DeleteUserNotificationPayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  deletedUserNotificationNodeId?: Maybe<Scalars['ID']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** Reads a single `User` that is related to this `UserNotification`. */
+  user?: Maybe<User>;
+  /** The `UserNotification` that was deleted by this mutation. */
+  userNotification?: Maybe<UserNotification>;
+  /** An edge for our `UserNotification`. May be used by Relay 1. */
+  userNotificationEdge?: Maybe<UserNotificationsEdge>;
+};
+
+
+/** The output of our delete `UserNotification` mutation. */
+export type DeleteUserNotificationPayloadUserNotificationEdgeArgs = {
+  orderBy?: InputMaybe<Array<UserNotificationsOrderBy>>;
+};
+
 /** The output of our delete `User` mutation. */
 export type DeleteUserPayload = {
   __typename?: 'DeleteUserPayload';
@@ -5763,6 +5931,8 @@ export type Mutation = {
   createUserAnime?: Maybe<CreateUserAnimePayload>;
   /** Creates a single `UserAnimeList`. */
   createUserAnimeList?: Maybe<CreateUserAnimeListPayload>;
+  /** Creates a single `UserNotification`. */
+  createUserNotification?: Maybe<CreateUserNotificationPayload>;
   /** Creates a single `UserWatchStatus`. */
   createUserWatchStatus?: Maybe<CreateUserWatchStatusPayload>;
   /** Deletes a single `AlternateAnimeName` using a unique key. */
@@ -5885,6 +6055,10 @@ export type Mutation = {
   deleteUserAnimeListByAnimeListIdAndAnimeId?: Maybe<DeleteUserAnimeListPayload>;
   /** Deletes a single `User` using its globally unique id. */
   deleteUserByNodeId?: Maybe<DeleteUserPayload>;
+  /** Deletes a single `UserNotification` using a unique key. */
+  deleteUserNotification?: Maybe<DeleteUserNotificationPayload>;
+  /** Deletes a single `UserNotification` using its globally unique id. */
+  deleteUserNotificationByNodeId?: Maybe<DeleteUserNotificationPayload>;
   /** Deletes a single `UserWatchStatus` using a unique key. */
   deleteUserWatchStatus?: Maybe<DeleteUserWatchStatusPayload>;
   /** Deletes a single `UserWatchStatus` using its globally unique id. */
@@ -6012,6 +6186,10 @@ export type Mutation = {
   updateUserAnimeListByAnimeListIdAndAnimeId?: Maybe<UpdateUserAnimeListPayload>;
   /** Updates a single `User` using its globally unique id and a patch. */
   updateUserByNodeId?: Maybe<UpdateUserPayload>;
+  /** Updates a single `UserNotification` using a unique key and a patch. */
+  updateUserNotification?: Maybe<UpdateUserNotificationPayload>;
+  /** Updates a single `UserNotification` using its globally unique id and a patch. */
+  updateUserNotificationByNodeId?: Maybe<UpdateUserNotificationPayload>;
   /** Updates a single `UserWatchStatus` using a unique key and a patch. */
   updateUserWatchStatus?: Maybe<UpdateUserWatchStatusPayload>;
   /** Updates a single `UserWatchStatus` using its globally unique id and a patch. */
@@ -6068,6 +6246,8 @@ export type Mutation = {
   upsertUserAnime?: Maybe<UpsertUserAnimePayload>;
   /** Upserts a single `UserAnimeList`. */
   upsertUserAnimeList?: Maybe<UpsertUserAnimeListPayload>;
+  /** Upserts a single `UserNotification`. */
+  upsertUserNotification?: Maybe<UpsertUserNotificationPayload>;
   /** Upserts a single `UserWatchStatus`. */
   upsertUserWatchStatus?: Maybe<UpsertUserWatchStatusPayload>;
 };
@@ -6238,6 +6418,12 @@ export type MutationCreateUserAnimeArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationCreateUserAnimeListArgs = {
   input: CreateUserAnimeListInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationCreateUserNotificationArgs = {
+  input: CreateUserNotificationInput;
 };
 
 
@@ -6604,6 +6790,18 @@ export type MutationDeleteUserAnimeListByAnimeListIdAndAnimeIdArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationDeleteUserByNodeIdArgs = {
   input: DeleteUserByNodeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteUserNotificationArgs = {
+  input: DeleteUserNotificationInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteUserNotificationByNodeIdArgs = {
+  input: DeleteUserNotificationByNodeIdInput;
 };
 
 
@@ -6998,6 +7196,18 @@ export type MutationUpdateUserByNodeIdArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateUserNotificationArgs = {
+  input: UpdateUserNotificationInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateUserNotificationByNodeIdArgs = {
+  input: UpdateUserNotificationByNodeIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpdateUserWatchStatusArgs = {
   input: UpdateUserWatchStatusInput;
 };
@@ -7192,6 +7402,13 @@ export type MutationUpsertUserAnimeListArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpsertUserNotificationArgs = {
+  input: UpsertUserNotificationInput;
+  where?: InputMaybe<UpsertUserNotificationWhere>;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpsertUserWatchStatusArgs = {
   input: UpsertUserWatchStatusInput;
   where?: InputMaybe<UpsertUserWatchStatusWhere>;
@@ -7201,6 +7418,43 @@ export type MutationUpsertUserWatchStatusArgs = {
 export type Node = {
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID'];
+};
+
+export type NotificationEvent = {
+  __typename?: 'NotificationEvent';
+  event?: Maybe<Scalars['String']>;
+  notification?: Maybe<UserNotification>;
+};
+
+export enum NotificationType {
+  /** an anime is airing a new episode */
+  Airing = 'AIRING'
+}
+
+/** A filter to be used against NotificationType fields. All fields are combined with a logical ‘and.’ */
+export type NotificationTypeFilter = {
+  /** Not equal to the specified value, treating null like an ordinary value. */
+  distinctFrom?: InputMaybe<NotificationType>;
+  /** Equal to the specified value. */
+  equalTo?: InputMaybe<NotificationType>;
+  /** Greater than the specified value. */
+  greaterThan?: InputMaybe<NotificationType>;
+  /** Greater than or equal to the specified value. */
+  greaterThanOrEqualTo?: InputMaybe<NotificationType>;
+  /** Included in the specified list. */
+  in?: InputMaybe<Array<NotificationType>>;
+  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
+  isNull?: InputMaybe<Scalars['Boolean']>;
+  /** Less than the specified value. */
+  lessThan?: InputMaybe<NotificationType>;
+  /** Less than or equal to the specified value. */
+  lessThanOrEqualTo?: InputMaybe<NotificationType>;
+  /** Equal to the specified value, treating null like an ordinary value. */
+  notDistinctFrom?: InputMaybe<NotificationType>;
+  /** Not equal to the specified value. */
+  notEqualTo?: InputMaybe<NotificationType>;
+  /** Not included in the specified list. */
+  notIn?: InputMaybe<Array<NotificationType>>;
 };
 
 /** Information about pagination in a connection. */
@@ -7769,6 +8023,11 @@ export type Query = Node & {
   userCustomAnimeList?: Maybe<CustomAnimeListsConnection>;
   /** Reads and enables pagination through a set of `UserCustomAnimeListByStatusType`. */
   userCustomAnimeListByStatus?: Maybe<UserCustomAnimeListByStatusTypesConnection>;
+  userNotification?: Maybe<UserNotification>;
+  /** Reads a single `UserNotification` using its globally unique `ID`. */
+  userNotificationByNodeId?: Maybe<UserNotification>;
+  /** Reads and enables pagination through a set of `UserNotification`. */
+  userNotifications?: Maybe<UserNotificationsConnection>;
   userWatchStatus?: Maybe<UserWatchStatus>;
   /** Reads a single `UserWatchStatus` using its globally unique `ID`. */
   userWatchStatusByNodeId?: Maybe<UserWatchStatus>;
@@ -8618,6 +8877,31 @@ export type QueryUserCustomAnimeListByStatusArgs = {
 
 
 /** The root query type which gives access points into the data universe. */
+export type QueryUserNotificationArgs = {
+  id: Scalars['UUID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryUserNotificationByNodeIdArgs = {
+  nodeId: Scalars['ID'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryUserNotificationsArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<UserNotificationCondition>;
+  filter?: InputMaybe<UserNotificationFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<UserNotificationsOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
 export type QueryUserWatchStatusArgs = {
   animeId: Scalars['UUID'];
   userId: Scalars['String'];
@@ -9328,6 +9612,12 @@ export enum StudiosOrderBy {
   StudioAsc = 'STUDIO_ASC',
   StudioDesc = 'STUDIO_DESC'
 }
+
+/** The root subscription type: contains realtime events you can subscribe to with the `subscription` operation. */
+export type Subscription = {
+  __typename?: 'Subscription';
+  notificationEvent?: Maybe<NotificationEvent>;
+};
 
 /** A filter to be used against UUID fields. All fields are combined with a logical ‘and.’ */
 export type UuidFilter = {
@@ -10731,6 +11021,55 @@ export type UpdateUserInput = {
   patch: UserPatch;
 };
 
+/** All input for the `updateUserNotificationByNodeId` mutation. */
+export type UpdateUserNotificationByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The globally unique `ID` which will identify a single `UserNotification` to be updated. */
+  nodeId: Scalars['ID'];
+  /** An object where the defined keys will be set on the `UserNotification` being updated. */
+  patch: UserNotificationPatch;
+};
+
+/** All input for the `updateUserNotification` mutation. */
+export type UpdateUserNotificationInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  id: Scalars['UUID'];
+  /** An object where the defined keys will be set on the `UserNotification` being updated. */
+  patch: UserNotificationPatch;
+};
+
+/** The output of our update `UserNotification` mutation. */
+export type UpdateUserNotificationPayload = {
+  __typename?: 'UpdateUserNotificationPayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** Reads a single `User` that is related to this `UserNotification`. */
+  user?: Maybe<User>;
+  /** The `UserNotification` that was updated by this mutation. */
+  userNotification?: Maybe<UserNotification>;
+  /** An edge for our `UserNotification`. May be used by Relay 1. */
+  userNotificationEdge?: Maybe<UserNotificationsEdge>;
+};
+
+
+/** The output of our update `UserNotification` mutation. */
+export type UpdateUserNotificationPayloadUserNotificationEdgeArgs = {
+  orderBy?: InputMaybe<Array<UserNotificationsOrderBy>>;
+};
+
 /** The output of our update `User` mutation. */
 export type UpdateUserPayload = {
   __typename?: 'UpdateUserPayload';
@@ -11703,6 +12042,40 @@ export type UpsertUserInput = {
   user: UserInput;
 };
 
+/** All input for the upsert `UserNotification` mutation. */
+export type UpsertUserNotificationInput = {
+  /** An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client. */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  /** The `UserNotification` to be upserted by this mutation. */
+  userNotification: UserNotificationInput;
+};
+
+/** The output of our upsert `UserNotification` mutation. */
+export type UpsertUserNotificationPayload = {
+  __typename?: 'UpsertUserNotificationPayload';
+  /** The exact same `clientMutationId` that was provided in the mutation input, unchanged and unused. May be used by a client to track mutations. */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** Reads a single `User` that is related to this `UserNotification`. */
+  user?: Maybe<User>;
+  /** The `UserNotification` that was upserted by this mutation. */
+  userNotification?: Maybe<UserNotification>;
+  /** An edge for our `UserNotification`. May be used by Relay 1. */
+  userNotificationEdge?: Maybe<UserNotificationsEdge>;
+};
+
+
+/** The output of our upsert `UserNotification` mutation. */
+export type UpsertUserNotificationPayloadUserNotificationEdgeArgs = {
+  orderBy?: InputMaybe<Array<UserNotificationsOrderBy>>;
+};
+
+/** Where conditions for the upsert `UserNotification` mutation. */
+export type UpsertUserNotificationWhere = {
+  id?: InputMaybe<Scalars['UUID']>;
+};
+
 /** The output of our upsert `User` mutation. */
 export type UpsertUserPayload = {
   __typename?: 'UpsertUserPayload';
@@ -11775,6 +12148,8 @@ export type User = Node & {
   nodeId: Scalars['ID'];
   /** Reads and enables pagination through a set of `UserAnime`. */
   userAnimes: UserAnimeConnection;
+  /** Reads and enables pagination through a set of `UserNotification`. */
+  userNotifications: UserNotificationsConnection;
   /** Reads and enables pagination through a set of `UserWatchStatus`. */
   userWatchStatuses: UserWatchStatusesConnection;
 };
@@ -11813,6 +12188,18 @@ export type UserUserAnimesArgs = {
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<Array<UserAnimeOrderBy>>;
+};
+
+
+export type UserUserNotificationsArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<UserNotificationCondition>;
+  filter?: InputMaybe<UserNotificationFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<UserNotificationsOrderBy>>;
 };
 
 
@@ -12044,6 +12431,8 @@ export enum UserAnimeListsOrderBy {
   AnimeByAnimeIdMediaTypeDesc = 'ANIME_BY_ANIME_ID__MEDIA_TYPE_DESC',
   AnimeByAnimeIdNumberOfEpisodesAsc = 'ANIME_BY_ANIME_ID__NUMBER_OF_EPISODES_ASC',
   AnimeByAnimeIdNumberOfEpisodesDesc = 'ANIME_BY_ANIME_ID__NUMBER_OF_EPISODES_DESC',
+  AnimeByAnimeIdOfficialWebsiteAsc = 'ANIME_BY_ANIME_ID__OFFICIAL_WEBSITE_ASC',
+  AnimeByAnimeIdOfficialWebsiteDesc = 'ANIME_BY_ANIME_ID__OFFICIAL_WEBSITE_DESC',
   AnimeByAnimeIdSeasonAsc = 'ANIME_BY_ANIME_ID__SEASON_ASC',
   AnimeByAnimeIdSeasonDesc = 'ANIME_BY_ANIME_ID__SEASON_DESC',
   AnimeByAnimeIdSeasonYearAsc = 'ANIME_BY_ANIME_ID__SEASON_YEAR_ASC',
@@ -12054,6 +12443,10 @@ export enum UserAnimeListsOrderBy {
   AnimeByAnimeIdStartBroadcastDatetimeDesc = 'ANIME_BY_ANIME_ID__START_BROADCAST_DATETIME_DESC',
   AnimeByAnimeIdTitleAsc = 'ANIME_BY_ANIME_ID__TITLE_ASC',
   AnimeByAnimeIdTitleDesc = 'ANIME_BY_ANIME_ID__TITLE_DESC',
+  AnimeByAnimeIdTwitterHandleAsc = 'ANIME_BY_ANIME_ID__TWITTER_HANDLE_ASC',
+  AnimeByAnimeIdTwitterHandleDesc = 'ANIME_BY_ANIME_ID__TWITTER_HANDLE_DESC',
+  AnimeByAnimeIdYoutubeTrailerIdAsc = 'ANIME_BY_ANIME_ID__YOUTUBE_TRAILER_ID_ASC',
+  AnimeByAnimeIdYoutubeTrailerIdDesc = 'ANIME_BY_ANIME_ID__YOUTUBE_TRAILER_ID_DESC',
   AnimeIdAsc = 'ANIME_ID_ASC',
   AnimeIdDesc = 'ANIME_ID_DESC',
   AnimeIndexAsc = 'ANIME_INDEX_ASC',
@@ -12099,6 +12492,8 @@ export enum UserAnimeOrderBy {
   AnimeByAnimeIdMediaTypeDesc = 'ANIME_BY_ANIME_ID__MEDIA_TYPE_DESC',
   AnimeByAnimeIdNumberOfEpisodesAsc = 'ANIME_BY_ANIME_ID__NUMBER_OF_EPISODES_ASC',
   AnimeByAnimeIdNumberOfEpisodesDesc = 'ANIME_BY_ANIME_ID__NUMBER_OF_EPISODES_DESC',
+  AnimeByAnimeIdOfficialWebsiteAsc = 'ANIME_BY_ANIME_ID__OFFICIAL_WEBSITE_ASC',
+  AnimeByAnimeIdOfficialWebsiteDesc = 'ANIME_BY_ANIME_ID__OFFICIAL_WEBSITE_DESC',
   AnimeByAnimeIdSeasonAsc = 'ANIME_BY_ANIME_ID__SEASON_ASC',
   AnimeByAnimeIdSeasonDesc = 'ANIME_BY_ANIME_ID__SEASON_DESC',
   AnimeByAnimeIdSeasonYearAsc = 'ANIME_BY_ANIME_ID__SEASON_YEAR_ASC',
@@ -12109,6 +12504,10 @@ export enum UserAnimeOrderBy {
   AnimeByAnimeIdStartBroadcastDatetimeDesc = 'ANIME_BY_ANIME_ID__START_BROADCAST_DATETIME_DESC',
   AnimeByAnimeIdTitleAsc = 'ANIME_BY_ANIME_ID__TITLE_ASC',
   AnimeByAnimeIdTitleDesc = 'ANIME_BY_ANIME_ID__TITLE_DESC',
+  AnimeByAnimeIdTwitterHandleAsc = 'ANIME_BY_ANIME_ID__TWITTER_HANDLE_ASC',
+  AnimeByAnimeIdTwitterHandleDesc = 'ANIME_BY_ANIME_ID__TWITTER_HANDLE_DESC',
+  AnimeByAnimeIdYoutubeTrailerIdAsc = 'ANIME_BY_ANIME_ID__YOUTUBE_TRAILER_ID_ASC',
+  AnimeByAnimeIdYoutubeTrailerIdDesc = 'ANIME_BY_ANIME_ID__YOUTUBE_TRAILER_ID_DESC',
   AnimeIdAsc = 'ANIME_ID_ASC',
   AnimeIdDesc = 'ANIME_ID_DESC',
   Natural = 'NATURAL',
@@ -12273,6 +12672,141 @@ export type UserListsEdge = {
   node: UserList;
 };
 
+export type UserNotification = Node & {
+  __typename?: 'UserNotification';
+  createdAt?: Maybe<Scalars['Datetime']>;
+  entityId: Scalars['UUID'];
+  entityImage?: Maybe<Scalars['String']>;
+  id: Scalars['UUID'];
+  isRead?: Maybe<Scalars['Boolean']>;
+  message?: Maybe<Scalars['String']>;
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  nodeId: Scalars['ID'];
+  notificationType: NotificationType;
+  /** Reads a single `User` that is related to this `UserNotification`. */
+  user?: Maybe<User>;
+};
+
+/**
+ * A condition to be used against `UserNotification` object types. All fields are
+ * tested for equality and combined with a logical ‘and.’
+ */
+export type UserNotificationCondition = {
+  /** Checks for equality with the object’s `createdAt` field. */
+  createdAt?: InputMaybe<Scalars['Datetime']>;
+  /** Checks for equality with the object’s `entityId` field. */
+  entityId?: InputMaybe<Scalars['UUID']>;
+  /** Checks for equality with the object’s `entityImage` field. */
+  entityImage?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `id` field. */
+  id?: InputMaybe<Scalars['UUID']>;
+  /** Checks for equality with the object’s `isRead` field. */
+  isRead?: InputMaybe<Scalars['Boolean']>;
+  /** Checks for equality with the object’s `message` field. */
+  message?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `notificationType` field. */
+  notificationType?: InputMaybe<NotificationType>;
+  /** Checks for equality with the object’s `userId` field. */
+  userId?: InputMaybe<Scalars['String']>;
+};
+
+/** A filter to be used against `UserNotification` object types. All fields are combined with a logical ‘and.’ */
+export type UserNotificationFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<UserNotificationFilter>>;
+  /** Filter by the object’s `createdAt` field. */
+  createdAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `entityId` field. */
+  entityId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `entityImage` field. */
+  entityImage?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `id` field. */
+  id?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `isRead` field. */
+  isRead?: InputMaybe<BooleanFilter>;
+  /** Filter by the object’s `message` field. */
+  message?: InputMaybe<StringFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<UserNotificationFilter>;
+  /** Filter by the object’s `notificationType` field. */
+  notificationType?: InputMaybe<NotificationTypeFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<UserNotificationFilter>>;
+  /** Filter by the object’s `userId` field. */
+  userId?: InputMaybe<StringFilter>;
+};
+
+/** An input for mutations affecting `UserNotification` */
+export type UserNotificationInput = {
+  createdAt?: InputMaybe<Scalars['Datetime']>;
+  entityId: Scalars['UUID'];
+  entityImage?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['UUID']>;
+  isRead?: InputMaybe<Scalars['Boolean']>;
+  message?: InputMaybe<Scalars['String']>;
+  notificationType: NotificationType;
+  userId: Scalars['String'];
+};
+
+/** Represents an update to a `UserNotification`. Fields that are set will be updated. */
+export type UserNotificationPatch = {
+  createdAt?: InputMaybe<Scalars['Datetime']>;
+  entityId?: InputMaybe<Scalars['UUID']>;
+  entityImage?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['UUID']>;
+  isRead?: InputMaybe<Scalars['Boolean']>;
+  message?: InputMaybe<Scalars['String']>;
+  notificationType?: InputMaybe<NotificationType>;
+  userId?: InputMaybe<Scalars['String']>;
+};
+
+/** A connection to a list of `UserNotification` values. */
+export type UserNotificationsConnection = {
+  __typename?: 'UserNotificationsConnection';
+  /** A list of edges which contains the `UserNotification` and cursor to aid in pagination. */
+  edges: Array<UserNotificationsEdge>;
+  /** A list of `UserNotification` objects. */
+  nodes: Array<UserNotification>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `UserNotification` you could get from the connection. */
+  totalCount: Scalars['Int'];
+};
+
+/** A `UserNotification` edge in the connection. */
+export type UserNotificationsEdge = {
+  __typename?: 'UserNotificationsEdge';
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>;
+  /** The `UserNotification` at the end of the edge. */
+  node: UserNotification;
+};
+
+/** Methods to use when ordering `UserNotification`. */
+export enum UserNotificationsOrderBy {
+  CreatedAtAsc = 'CREATED_AT_ASC',
+  CreatedAtDesc = 'CREATED_AT_DESC',
+  EntityIdAsc = 'ENTITY_ID_ASC',
+  EntityIdDesc = 'ENTITY_ID_DESC',
+  EntityImageAsc = 'ENTITY_IMAGE_ASC',
+  EntityImageDesc = 'ENTITY_IMAGE_DESC',
+  IdAsc = 'ID_ASC',
+  IdDesc = 'ID_DESC',
+  IsReadAsc = 'IS_READ_ASC',
+  IsReadDesc = 'IS_READ_DESC',
+  MessageAsc = 'MESSAGE_ASC',
+  MessageDesc = 'MESSAGE_DESC',
+  Natural = 'NATURAL',
+  NotificationTypeAsc = 'NOTIFICATION_TYPE_ASC',
+  NotificationTypeDesc = 'NOTIFICATION_TYPE_DESC',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  UserByUserIdIdAsc = 'USER_BY_USER_ID__ID_ASC',
+  UserByUserIdIdDesc = 'USER_BY_USER_ID__ID_DESC',
+  UserIdAsc = 'USER_ID_ASC',
+  UserIdDesc = 'USER_ID_DESC'
+}
+
 /** Represents an update to a `User`. Fields that are set will be updated. */
 export type UserPatch = {
   id?: InputMaybe<Scalars['String']>;
@@ -12387,6 +12921,8 @@ export enum UserWatchStatusesOrderBy {
   AnimeByAnimeIdMediaTypeDesc = 'ANIME_BY_ANIME_ID__MEDIA_TYPE_DESC',
   AnimeByAnimeIdNumberOfEpisodesAsc = 'ANIME_BY_ANIME_ID__NUMBER_OF_EPISODES_ASC',
   AnimeByAnimeIdNumberOfEpisodesDesc = 'ANIME_BY_ANIME_ID__NUMBER_OF_EPISODES_DESC',
+  AnimeByAnimeIdOfficialWebsiteAsc = 'ANIME_BY_ANIME_ID__OFFICIAL_WEBSITE_ASC',
+  AnimeByAnimeIdOfficialWebsiteDesc = 'ANIME_BY_ANIME_ID__OFFICIAL_WEBSITE_DESC',
   AnimeByAnimeIdSeasonAsc = 'ANIME_BY_ANIME_ID__SEASON_ASC',
   AnimeByAnimeIdSeasonDesc = 'ANIME_BY_ANIME_ID__SEASON_DESC',
   AnimeByAnimeIdSeasonYearAsc = 'ANIME_BY_ANIME_ID__SEASON_YEAR_ASC',
@@ -12397,6 +12933,10 @@ export enum UserWatchStatusesOrderBy {
   AnimeByAnimeIdStartBroadcastDatetimeDesc = 'ANIME_BY_ANIME_ID__START_BROADCAST_DATETIME_DESC',
   AnimeByAnimeIdTitleAsc = 'ANIME_BY_ANIME_ID__TITLE_ASC',
   AnimeByAnimeIdTitleDesc = 'ANIME_BY_ANIME_ID__TITLE_DESC',
+  AnimeByAnimeIdTwitterHandleAsc = 'ANIME_BY_ANIME_ID__TWITTER_HANDLE_ASC',
+  AnimeByAnimeIdTwitterHandleDesc = 'ANIME_BY_ANIME_ID__TWITTER_HANDLE_DESC',
+  AnimeByAnimeIdYoutubeTrailerIdAsc = 'ANIME_BY_ANIME_ID__YOUTUBE_TRAILER_ID_ASC',
+  AnimeByAnimeIdYoutubeTrailerIdDesc = 'ANIME_BY_ANIME_ID__YOUTUBE_TRAILER_ID_DESC',
   AnimeIdAsc = 'ANIME_ID_ASC',
   AnimeIdDesc = 'ANIME_ID_DESC',
   Natural = 'NATURAL',
@@ -12447,6 +12987,8 @@ export enum UsersOrderBy {
   PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
   UserAnimeByUserIdCountAsc = 'USER_ANIME_BY_USER_ID__COUNT_ASC',
   UserAnimeByUserIdCountDesc = 'USER_ANIME_BY_USER_ID__COUNT_DESC',
+  UserNotificationsByUserIdCountAsc = 'USER_NOTIFICATIONS_BY_USER_ID__COUNT_ASC',
+  UserNotificationsByUserIdCountDesc = 'USER_NOTIFICATIONS_BY_USER_ID__COUNT_DESC',
   UserWatchStatusesByUserIdCountAsc = 'USER_WATCH_STATUSES_BY_USER_ID__COUNT_ASC',
   UserWatchStatusesByUserIdCountDesc = 'USER_WATCH_STATUSES_BY_USER_ID__COUNT_DESC'
 }
@@ -12613,6 +13155,13 @@ export type UpdateUserAnimeListTitleMutationVariables = Exact<{
 
 export type UpdateUserAnimeListTitleMutation = { __typename?: 'Mutation', updateAnimeList?: { __typename?: 'UpdateAnimeListPayload', clientMutationId?: string | null | undefined, query?: { __typename?: 'Query', animeLists?: { __typename?: 'AnimeListsConnection', nodes: Array<{ __typename?: 'AnimeList', id: any, nodeId: string, privacy: AnimeListPrivacy, title: string }> } | null | undefined } | null | undefined } | null | undefined };
 
+export type NotificationReadMutationVariables = Exact<{
+  id: Scalars['UUID'];
+}>;
+
+
+export type NotificationReadMutation = { __typename?: 'Mutation', updateUserNotification?: { __typename?: 'UpdateUserNotificationPayload', clientMutationId?: string | null | undefined, query?: { __typename?: 'Query', userNotifications?: { __typename?: 'UserNotificationsConnection', totalCount: number, nodes: Array<{ __typename?: 'UserNotification', createdAt?: any | null | undefined, entityId: any, entityImage?: string | null | undefined, id: any, isRead?: boolean | null | undefined, message?: string | null | undefined, nodeId: string, notificationType: NotificationType }> } | null | undefined } | null | undefined } | null | undefined };
+
 export type CurrentlyAiringContinuedQueryVariables = Exact<{
   limit: Scalars['Int'];
   currentSeason: Season;
@@ -12761,6 +13310,16 @@ export type GetUserAnimeListsQueryVariables = Exact<{
 
 
 export type GetUserAnimeListsQuery = { __typename?: 'Query', getUserAnimeLists?: { __typename?: 'UserListsConnection', nodes: Array<{ __typename?: 'UserList', id?: any | null | undefined, title?: string | null | undefined, userId?: string | null | undefined, animes?: Array<{ __typename?: 'UserListAnime', id?: any | null | undefined, title?: string | null | undefined, coverImage?: string | null | undefined, averageWatcherRating?: any | null | undefined, airingStatusType?: string | null | undefined, numberOfEpisodes?: any | null | undefined, startBroadcastDatetime?: any | null | undefined, userEpisodeCount?: any | null | undefined, userLiked?: boolean | null | undefined, userRating?: any | null | undefined, userWatchStatus?: string | null | undefined } | null | undefined> | null | undefined }> } | null | undefined };
+
+export type UnreadUserNotificationsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type UnreadUserNotificationsQuery = { __typename?: 'Query', userNotifications?: { __typename?: 'UserNotificationsConnection', totalCount: number, nodes: Array<{ __typename?: 'UserNotification', createdAt?: any | null | undefined, entityId: any, entityImage?: string | null | undefined, id: any, isRead?: boolean | null | undefined, message?: string | null | undefined, nodeId: string, notificationType: NotificationType }> } | null | undefined };
+
+export type NotificationsSubscriptionVariables = Exact<{ [key: string]: never; }>;
+
+
+export type NotificationsSubscription = { __typename?: 'Subscription', notificationEvent?: { __typename?: 'NotificationEvent', event?: string | null | undefined, notification?: { __typename?: 'UserNotification', createdAt?: any | null | undefined, entityId: any, entityImage?: string | null | undefined, id: any, isRead?: boolean | null | undefined, message?: string | null | undefined, nodeId: string, notificationType: NotificationType } | null | undefined } | null | undefined };
 
 export const AnimeCardFragmentFragmentDoc = gql`
     fragment AnimeCardFragment on Anime {
@@ -13092,6 +13651,34 @@ export const UpdateUserAnimeListTitleDocument = gql`
 
 export function useUpdateUserAnimeListTitleMutation() {
   return Urql.useMutation<UpdateUserAnimeListTitleMutation, UpdateUserAnimeListTitleMutationVariables>(UpdateUserAnimeListTitleDocument);
+};
+export const NotificationReadDocument = gql`
+    mutation NotificationRead($id: UUID!) {
+  updateUserNotification(
+    input: {patch: {isRead: true}, id: $id, clientMutationId: "notification read"}
+  ) {
+    clientMutationId
+    query {
+      userNotifications(orderBy: CREATED_AT_DESC, condition: {isRead: false}) {
+        nodes {
+          createdAt
+          entityId
+          entityImage
+          id
+          isRead
+          message
+          nodeId
+          notificationType
+        }
+        totalCount
+      }
+    }
+  }
+}
+    `;
+
+export function useNotificationReadMutation() {
+  return Urql.useMutation<NotificationReadMutation, NotificationReadMutationVariables>(NotificationReadDocument);
 };
 export const CurrentlyAiringContinuedDocument = gql`
     query CurrentlyAiringContinued($limit: Int!, $currentSeason: Season!, $seasonYear: Int!) {
@@ -13554,6 +14141,48 @@ export const GetUserAnimeListsDocument = gql`
 export function useGetUserAnimeListsQuery(options: Omit<Urql.UseQueryArgs<GetUserAnimeListsQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<GetUserAnimeListsQuery>({ query: GetUserAnimeListsDocument, ...options });
 };
+export const UnreadUserNotificationsDocument = gql`
+    query UnreadUserNotifications {
+  userNotifications(orderBy: CREATED_AT_DESC, condition: {isRead: false}) {
+    nodes {
+      createdAt
+      entityId
+      entityImage
+      id
+      isRead
+      message
+      nodeId
+      notificationType
+    }
+    totalCount
+  }
+}
+    `;
+
+export function useUnreadUserNotificationsQuery(options: Omit<Urql.UseQueryArgs<UnreadUserNotificationsQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<UnreadUserNotificationsQuery>({ query: UnreadUserNotificationsDocument, ...options });
+};
+export const NotificationsDocument = gql`
+    subscription Notifications {
+  notificationEvent {
+    event
+    notification {
+      createdAt
+      entityId
+      entityImage
+      id
+      isRead
+      message
+      nodeId
+      notificationType
+    }
+  }
+}
+    `;
+
+export function useNotificationsSubscription<TData = NotificationsSubscription>(options: Omit<Urql.UseSubscriptionArgs<NotificationsSubscriptionVariables>, 'query'> = {}, handler?: Urql.SubscriptionHandler<NotificationsSubscription, TData>) {
+  return Urql.useSubscription<NotificationsSubscription, TData, NotificationsSubscriptionVariables>({ query: NotificationsDocument, ...options }, handler);
+};
 import { IntrospectionQuery } from 'graphql';
 export default {
   "__schema": {
@@ -13563,7 +14192,9 @@ export default {
     "mutationType": {
       "name": "Mutation"
     },
-    "subscriptionType": null,
+    "subscriptionType": {
+      "name": "Subscription"
+    },
     "types": [
       {
         "kind": "OBJECT",
@@ -15094,6 +15725,14 @@ export default {
             "args": []
           },
           {
+            "name": "officialWebsite",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
             "name": "producerList",
             "type": {
               "kind": "NON_NULL",
@@ -15243,6 +15882,14 @@ export default {
                 "kind": "SCALAR",
                 "name": "Any"
               }
+            },
+            "args": []
+          },
+          {
+            "name": "twitterHandle",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
             },
             "args": []
           },
@@ -15502,6 +16149,14 @@ export default {
                 }
               }
             ]
+          },
+          {
+            "name": "youtubeTrailerId",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
           }
         ],
         "interfaces": [
@@ -19891,6 +20546,71 @@ export default {
       },
       {
         "kind": "OBJECT",
+        "name": "CreateUserNotificationPayload",
+        "fields": [
+          {
+            "name": "clientMutationId",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "query",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Query",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "user",
+            "type": {
+              "kind": "OBJECT",
+              "name": "User",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "userNotification",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UserNotification",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "userNotificationEdge",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UserNotificationsEdge",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "orderBy",
+                "type": {
+                  "kind": "LIST",
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "Any"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
         "name": "CreateUserPayload",
         "fields": [
           {
@@ -22105,6 +22825,79 @@ export default {
       },
       {
         "kind": "OBJECT",
+        "name": "DeleteUserNotificationPayload",
+        "fields": [
+          {
+            "name": "clientMutationId",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "deletedUserNotificationNodeId",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "query",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Query",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "user",
+            "type": {
+              "kind": "OBJECT",
+              "name": "User",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "userNotification",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UserNotification",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "userNotificationEdge",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UserNotificationsEdge",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "orderBy",
+                "type": {
+                  "kind": "LIST",
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "Any"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
         "name": "DeleteUserPayload",
         "fields": [
           {
@@ -24059,6 +24852,26 @@ export default {
             ]
           },
           {
+            "name": "createUserNotification",
+            "type": {
+              "kind": "OBJECT",
+              "name": "CreateUserNotificationPayload",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "input",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              }
+            ]
+          },
+          {
             "name": "createUserWatchStatus",
             "type": {
               "kind": "OBJECT",
@@ -25263,6 +26076,46 @@ export default {
             "type": {
               "kind": "OBJECT",
               "name": "DeleteUserPayload",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "input",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "deleteUserNotification",
+            "type": {
+              "kind": "OBJECT",
+              "name": "DeleteUserNotificationPayload",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "input",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "deleteUserNotificationByNodeId",
+            "type": {
+              "kind": "OBJECT",
+              "name": "DeleteUserNotificationPayload",
               "ofType": null
             },
             "args": [
@@ -26579,6 +27432,46 @@ export default {
             ]
           },
           {
+            "name": "updateUserNotification",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UpdateUserNotificationPayload",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "input",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "updateUserNotificationByNodeId",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UpdateUserNotificationPayload",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "input",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              }
+            ]
+          },
+          {
             "name": "updateUserWatchStatus",
             "type": {
               "kind": "OBJECT",
@@ -27321,6 +28214,33 @@ export default {
             ]
           },
           {
+            "name": "upsertUserNotification",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UpsertUserNotificationPayload",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "input",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              },
+              {
+                "name": "where",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              }
+            ]
+          },
+          {
             "name": "upsertUserWatchStatus",
             "type": {
               "kind": "OBJECT",
@@ -27474,9 +28394,37 @@ export default {
           },
           {
             "kind": "OBJECT",
+            "name": "UserNotification"
+          },
+          {
+            "kind": "OBJECT",
             "name": "UserWatchStatus"
           }
         ]
+      },
+      {
+        "kind": "OBJECT",
+        "name": "NotificationEvent",
+        "fields": [
+          {
+            "name": "event",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "notification",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UserNotification",
+              "ofType": null
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
       },
       {
         "kind": "OBJECT",
@@ -32212,6 +33160,118 @@ export default {
             ]
           },
           {
+            "name": "userNotification",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UserNotification",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "id",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "userNotificationByNodeId",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UserNotification",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "nodeId",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "userNotifications",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UserNotificationsConnection",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "after",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "before",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "condition",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "filter",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "first",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "last",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "offset",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "orderBy",
+                "type": {
+                  "kind": "LIST",
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "Any"
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
             "name": "userWatchStatus",
             "type": {
               "kind": "OBJECT",
@@ -33494,6 +34554,22 @@ export default {
                 "name": "Studio",
                 "ofType": null
               }
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "Subscription",
+        "fields": [
+          {
+            "name": "notificationEvent",
+            "type": {
+              "kind": "OBJECT",
+              "name": "NotificationEvent",
+              "ofType": null
             },
             "args": []
           }
@@ -35167,6 +36243,71 @@ export default {
             "type": {
               "kind": "OBJECT",
               "name": "UserAnimeEdge",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "orderBy",
+                "type": {
+                  "kind": "LIST",
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "Any"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "UpdateUserNotificationPayload",
+        "fields": [
+          {
+            "name": "clientMutationId",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "query",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Query",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "user",
+            "type": {
+              "kind": "OBJECT",
+              "name": "User",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "userNotification",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UserNotification",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "userNotificationEdge",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UserNotificationsEdge",
               "ofType": null
             },
             "args": [
@@ -37008,6 +38149,71 @@ export default {
       },
       {
         "kind": "OBJECT",
+        "name": "UpsertUserNotificationPayload",
+        "fields": [
+          {
+            "name": "clientMutationId",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "query",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Query",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "user",
+            "type": {
+              "kind": "OBJECT",
+              "name": "User",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "userNotification",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UserNotification",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "userNotificationEdge",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UserNotificationsEdge",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "orderBy",
+                "type": {
+                  "kind": "LIST",
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "Any"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
         "name": "UpsertUserPayload",
         "fields": [
           {
@@ -37319,6 +38525,81 @@ export default {
               "ofType": {
                 "kind": "OBJECT",
                 "name": "UserAnimeConnection",
+                "ofType": null
+              }
+            },
+            "args": [
+              {
+                "name": "after",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "before",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "condition",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "filter",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "first",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "last",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "offset",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "orderBy",
+                "type": {
+                  "kind": "LIST",
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "Any"
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "userNotifications",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "UserNotificationsConnection",
                 "ofType": null
               }
             },
@@ -38298,6 +39579,196 @@ export default {
               "ofType": {
                 "kind": "OBJECT",
                 "name": "UserList",
+                "ofType": null
+              }
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "UserNotification",
+        "fields": [
+          {
+            "name": "createdAt",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "entityId",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "entityImage",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "id",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "isRead",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "message",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "nodeId",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "notificationType",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "user",
+            "type": {
+              "kind": "OBJECT",
+              "name": "User",
+              "ofType": null
+            },
+            "args": []
+          }
+        ],
+        "interfaces": [
+          {
+            "kind": "INTERFACE",
+            "name": "Node"
+          }
+        ]
+      },
+      {
+        "kind": "OBJECT",
+        "name": "UserNotificationsConnection",
+        "fields": [
+          {
+            "name": "edges",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "LIST",
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "UserNotificationsEdge",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "nodes",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "LIST",
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "UserNotification",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "pageInfo",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "PageInfo",
+                "ofType": null
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "totalCount",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "UserNotificationsEdge",
+        "fields": [
+          {
+            "name": "cursor",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "node",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "UserNotification",
                 "ofType": null
               }
             },

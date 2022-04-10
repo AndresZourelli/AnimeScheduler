@@ -1,0 +1,15 @@
+query UnreadUserNotifications {
+  userNotifications(orderBy: CREATED_AT_DESC, condition: { isRead: false }) {
+    nodes {
+      createdAt
+      entityId
+      entityImage
+      id
+      isRead
+      message
+      nodeId
+      notificationType
+    }
+    totalCount
+  }
+}

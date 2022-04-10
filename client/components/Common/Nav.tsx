@@ -36,6 +36,7 @@ import {
   redirectToAuth,
   signOut,
 } from "supertokens-auth-react/recipe/emailpassword";
+import NotificationMenu from "./Nav/NotificationMenu";
 interface Search {
   variables?: Variable;
 }
@@ -87,21 +88,13 @@ const Nav = () => {
 
   const buttons = signedIn ? (
     <>
-      <Text display="inline-flex" mr="3">
-        Welcome, {user?.username}
-      </Text>
-      <Button onClick={hangleSignOutClick} mr="3">
-        Sign out
-      </Button>
+      <Text alignSelf="center">Welcome, {user?.username}</Text>
+      <Button onClick={hangleSignOutClick}>Sign out</Button>
     </>
   ) : (
     <>
-      <Button mr="3" onClick={handleLoginClick}>
-        Login
-      </Button>{" "}
-      <Button mr="3" onClick={handleSignUpClick}>
-        Sign Up
-      </Button>
+      <Button onClick={handleLoginClick}>Login</Button>{" "}
+      <Button onClick={handleSignUpClick}>Sign Up</Button>
     </>
   );
 
@@ -254,14 +247,15 @@ const Nav = () => {
           </Box>
         ) : null}
 
-        <Box>
+        <Flex gap={3}>
           {buttons}
+          {signedIn ? <NotificationMenu /> : null}
           <IconButton
             aria-label="color mode button"
             onClick={toggleColorMode}
             icon={colorMode === "light" ? <MoonIcon /> : <SunIcon />}
           />
-        </Box>
+        </Flex>
       </Flex>
       <Flex
         layerStyle={colorMode === "light" ? "navbar_light" : "navbar_dark"}

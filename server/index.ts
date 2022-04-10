@@ -12,6 +12,7 @@ import { verifySession } from "supertokens-node/recipe/session/framework/express
 import { knexConfig } from "./config/knex";
 import { postgraphileConfig } from "./config/postgraphile";
 import { supertokensConfig } from "./config/supertokens";
+
 dotenv.config();
 
 supertokens.init(supertokensConfig);

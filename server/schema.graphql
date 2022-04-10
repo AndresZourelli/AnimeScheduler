@@ -1037,6 +1037,40 @@ type Query implements Node {
     filter: UserAnimeListFilter
   ): UserAnimeListsConnection
 
+  """Reads and enables pagination through a set of `UserNotification`."""
+  userNotifications(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `UserNotification`."""
+    orderBy: [UserNotificationsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: UserNotificationCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: UserNotificationFilter
+  ): UserNotificationsConnection
+
   """Reads and enables pagination through a set of `UserWatchStatus`."""
   userWatchStatuses(
     """Only read the first `n` values of the set."""
@@ -1138,6 +1172,7 @@ type Query implements Node {
   studioByStudio(studio: String!): Studio
   userAnime(animeId: UUID!, userId: String!): UserAnime
   userAnimeListByAnimeListIdAndAnimeId(animeListId: UUID!, animeId: UUID!): UserAnimeList
+  userNotification(id: UUID!): UserNotification
   userWatchStatus(userId: String!, animeId: UUID!): UserWatchStatus
   user(id: String!): User
 
@@ -1454,6 +1489,14 @@ type Query implements Node {
     """The globally unique `ID` to be used in selecting a single `UserAnime`."""
     nodeId: ID!
   ): UserAnime
+
+  """Reads a single `UserNotification` using its globally unique `ID`."""
+  userNotificationByNodeId(
+    """
+    The globally unique `ID` to be used in selecting a single `UserNotification`.
+    """
+    nodeId: ID!
+  ): UserNotification
 
   """Reads a single `UserWatchStatus` using its globally unique `ID`."""
   userWatchStatusByNodeId(
@@ -2759,6 +2802,40 @@ type User implements Node {
     """
     filter: UserWatchStatusFilter
   ): UserWatchStatusesConnection!
+
+  """Reads and enables pagination through a set of `UserNotification`."""
+  userNotifications(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `UserNotification`."""
+    orderBy: [UserNotificationsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: UserNotificationCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: UserNotificationFilter
+  ): UserNotificationsConnection!
 }
 
 """A connection to a list of `AnimeList` values."""
@@ -3569,6 +3646,191 @@ input WatchStatusTypesFilter {
 
   """Greater than or equal to the specified value."""
   greaterThanOrEqualTo: WatchStatusTypes
+}
+
+"""A connection to a list of `UserNotification` values."""
+type UserNotificationsConnection {
+  """A list of `UserNotification` objects."""
+  nodes: [UserNotification!]!
+
+  """
+  A list of edges which contains the `UserNotification` and cursor to aid in pagination.
+  """
+  edges: [UserNotificationsEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """
+  The count of *all* `UserNotification` you could get from the connection.
+  """
+  totalCount: Int!
+}
+
+type UserNotification implements Node {
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  nodeId: ID!
+  id: UUID!
+  isRead: Boolean
+  notificationType: NotificationType!
+  createdAt: Datetime
+  message: String
+  entityId: UUID!
+  entityImage: String
+
+  """Reads a single `User` that is related to this `UserNotification`."""
+  user: User
+}
+
+enum NotificationType {
+  """an anime is airing a new episode"""
+  AIRING
+}
+
+"""A `UserNotification` edge in the connection."""
+type UserNotificationsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `UserNotification` at the end of the edge."""
+  node: UserNotification!
+}
+
+"""Methods to use when ordering `UserNotification`."""
+enum UserNotificationsOrderBy {
+  NATURAL
+  ID_ASC
+  ID_DESC
+  USER_ID_ASC
+  USER_ID_DESC
+  IS_READ_ASC
+  IS_READ_DESC
+  NOTIFICATION_TYPE_ASC
+  NOTIFICATION_TYPE_DESC
+  CREATED_AT_ASC
+  CREATED_AT_DESC
+  MESSAGE_ASC
+  MESSAGE_DESC
+  ENTITY_ID_ASC
+  ENTITY_ID_DESC
+  ENTITY_IMAGE_ASC
+  ENTITY_IMAGE_DESC
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+  USER_BY_USER_ID__ID_ASC
+  USER_BY_USER_ID__ID_DESC
+}
+
+"""
+A condition to be used against `UserNotification` object types. All fields are
+tested for equality and combined with a logical ‘and.’
+"""
+input UserNotificationCondition {
+  """Checks for equality with the object’s `id` field."""
+  id: UUID
+
+  """Checks for equality with the object’s `userId` field."""
+  userId: String
+
+  """Checks for equality with the object’s `isRead` field."""
+  isRead: Boolean
+
+  """Checks for equality with the object’s `notificationType` field."""
+  notificationType: NotificationType
+
+  """Checks for equality with the object’s `createdAt` field."""
+  createdAt: Datetime
+
+  """Checks for equality with the object’s `message` field."""
+  message: String
+
+  """Checks for equality with the object’s `entityId` field."""
+  entityId: UUID
+
+  """Checks for equality with the object’s `entityImage` field."""
+  entityImage: String
+}
+
+"""
+A filter to be used against `UserNotification` object types. All fields are combined with a logical ‘and.’
+"""
+input UserNotificationFilter {
+  """Filter by the object’s `id` field."""
+  id: UUIDFilter
+
+  """Filter by the object’s `userId` field."""
+  userId: StringFilter
+
+  """Filter by the object’s `isRead` field."""
+  isRead: BooleanFilter
+
+  """Filter by the object’s `notificationType` field."""
+  notificationType: NotificationTypeFilter
+
+  """Filter by the object’s `createdAt` field."""
+  createdAt: DatetimeFilter
+
+  """Filter by the object’s `message` field."""
+  message: StringFilter
+
+  """Filter by the object’s `entityId` field."""
+  entityId: UUIDFilter
+
+  """Filter by the object’s `entityImage` field."""
+  entityImage: StringFilter
+
+  """Checks for all expressions in this list."""
+  and: [UserNotificationFilter!]
+
+  """Checks for any expressions in this list."""
+  or: [UserNotificationFilter!]
+
+  """Negates the expression."""
+  not: UserNotificationFilter
+}
+
+"""
+A filter to be used against NotificationType fields. All fields are combined with a logical ‘and.’
+"""
+input NotificationTypeFilter {
+  """
+  Is null (if `true` is specified) or is not null (if `false` is specified).
+  """
+  isNull: Boolean
+
+  """Equal to the specified value."""
+  equalTo: NotificationType
+
+  """Not equal to the specified value."""
+  notEqualTo: NotificationType
+
+  """
+  Not equal to the specified value, treating null like an ordinary value.
+  """
+  distinctFrom: NotificationType
+
+  """Equal to the specified value, treating null like an ordinary value."""
+  notDistinctFrom: NotificationType
+
+  """Included in the specified list."""
+  in: [NotificationType!]
+
+  """Not included in the specified list."""
+  notIn: [NotificationType!]
+
+  """Less than the specified value."""
+  lessThan: NotificationType
+
+  """Less than or equal to the specified value."""
+  lessThanOrEqualTo: NotificationType
+
+  """Greater than the specified value."""
+  greaterThan: NotificationType
+
+  """Greater than or equal to the specified value."""
+  greaterThanOrEqualTo: NotificationType
 }
 
 """Methods to use when ordering `UserAnimeList`."""
@@ -7363,6 +7625,8 @@ enum UsersOrderBy {
   USER_ANIME_BY_USER_ID__COUNT_DESC
   USER_WATCH_STATUSES_BY_USER_ID__COUNT_ASC
   USER_WATCH_STATUSES_BY_USER_ID__COUNT_DESC
+  USER_NOTIFICATIONS_BY_USER_ID__COUNT_ASC
+  USER_NOTIFICATIONS_BY_USER_ID__COUNT_DESC
 }
 
 """
@@ -8119,6 +8383,14 @@ type Mutation {
     input: CreateUserAnimeListInput!
   ): CreateUserAnimeListPayload
 
+  """Creates a single `UserNotification`."""
+  createUserNotification(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateUserNotificationInput!
+  ): CreateUserNotificationPayload
+
   """Creates a single `UserWatchStatus`."""
   createUserWatchStatus(
     """
@@ -8626,6 +8898,24 @@ type Mutation {
   ): UpdateUserAnimeListPayload
 
   """
+  Updates a single `UserNotification` using its globally unique id and a patch.
+  """
+  updateUserNotificationByNodeId(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateUserNotificationByNodeIdInput!
+  ): UpdateUserNotificationPayload
+
+  """Updates a single `UserNotification` using a unique key and a patch."""
+  updateUserNotification(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateUserNotificationInput!
+  ): UpdateUserNotificationPayload
+
+  """
   Updates a single `UserWatchStatus` using its globally unique id and a patch.
   """
   updateUserWatchStatusByNodeId(
@@ -9123,6 +9413,22 @@ type Mutation {
     input: DeleteUserAnimeListByAnimeListIdAndAnimeIdInput!
   ): DeleteUserAnimeListPayload
 
+  """Deletes a single `UserNotification` using its globally unique id."""
+  deleteUserNotificationByNodeId(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteUserNotificationByNodeIdInput!
+  ): DeleteUserNotificationPayload
+
+  """Deletes a single `UserNotification` using a unique key."""
+  deleteUserNotification(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteUserNotificationInput!
+  ): DeleteUserNotificationPayload
+
   """Deletes a single `UserWatchStatus` using its globally unique id."""
   deleteUserWatchStatusByNodeId(
     """
@@ -9434,6 +9740,16 @@ type Mutation {
     """
     input: UpsertUserAnimeListInput!
   ): UpsertUserAnimeListPayload
+
+  """Upserts a single `UserNotification`."""
+  upsertUserNotification(
+    where: UpsertUserNotificationWhere
+
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpsertUserNotificationInput!
+  ): UpsertUserNotificationPayload
 
   """Upserts a single `UserWatchStatus`."""
   upsertUserWatchStatus(
@@ -10616,6 +10932,56 @@ input UserAnimeListInput {
   animeListId: UUID!
   animeId: UUID!
   animeIndex: String
+}
+
+"""The output of our create `UserNotification` mutation."""
+type CreateUserNotificationPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `UserNotification` that was created by this mutation."""
+  userNotification: UserNotification
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """Reads a single `User` that is related to this `UserNotification`."""
+  user: User
+
+  """An edge for our `UserNotification`. May be used by Relay 1."""
+  userNotificationEdge(
+    """The method to use when ordering `UserNotification`."""
+    orderBy: [UserNotificationsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): UserNotificationsEdge
+}
+
+"""All input for the create `UserNotification` mutation."""
+input CreateUserNotificationInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The `UserNotification` to be created by this mutation."""
+  userNotification: UserNotificationInput!
+}
+
+"""An input for mutations affecting `UserNotification`"""
+input UserNotificationInput {
+  id: UUID
+  userId: String!
+  isRead: Boolean
+  notificationType: NotificationType!
+  createdAt: Datetime
+  message: String
+  entityId: UUID!
+  entityImage: String
 }
 
 """The output of our create `UserWatchStatus` mutation."""
@@ -12604,6 +12970,80 @@ input UserAnimeListPatch {
   animeIndex: String
 }
 
+"""The output of our update `UserNotification` mutation."""
+type UpdateUserNotificationPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `UserNotification` that was updated by this mutation."""
+  userNotification: UserNotification
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """Reads a single `User` that is related to this `UserNotification`."""
+  user: User
+
+  """An edge for our `UserNotification`. May be used by Relay 1."""
+  userNotificationEdge(
+    """The method to use when ordering `UserNotification`."""
+    orderBy: [UserNotificationsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): UserNotificationsEdge
+}
+
+"""All input for the `updateUserNotificationByNodeId` mutation."""
+input UpdateUserNotificationByNodeIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  The globally unique `ID` which will identify a single `UserNotification` to be updated.
+  """
+  nodeId: ID!
+
+  """
+  An object where the defined keys will be set on the `UserNotification` being updated.
+  """
+  patch: UserNotificationPatch!
+}
+
+"""
+Represents an update to a `UserNotification`. Fields that are set will be updated.
+"""
+input UserNotificationPatch {
+  id: UUID
+  userId: String
+  isRead: Boolean
+  notificationType: NotificationType
+  createdAt: Datetime
+  message: String
+  entityId: UUID
+  entityImage: String
+}
+
+"""All input for the `updateUserNotification` mutation."""
+input UpdateUserNotificationInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  An object where the defined keys will be set on the `UserNotification` being updated.
+  """
+  patch: UserNotificationPatch!
+  id: UUID!
+}
+
 """The output of our update `UserWatchStatus` mutation."""
 type UpdateUserWatchStatusPayload {
   """
@@ -14133,6 +14573,57 @@ input DeleteUserAnimeListByAnimeListIdAndAnimeIdInput {
   animeId: UUID!
 }
 
+"""The output of our delete `UserNotification` mutation."""
+type DeleteUserNotificationPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `UserNotification` that was deleted by this mutation."""
+  userNotification: UserNotification
+  deletedUserNotificationNodeId: ID
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """Reads a single `User` that is related to this `UserNotification`."""
+  user: User
+
+  """An edge for our `UserNotification`. May be used by Relay 1."""
+  userNotificationEdge(
+    """The method to use when ordering `UserNotification`."""
+    orderBy: [UserNotificationsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): UserNotificationsEdge
+}
+
+"""All input for the `deleteUserNotificationByNodeId` mutation."""
+input DeleteUserNotificationByNodeIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  The globally unique `ID` which will identify a single `UserNotification` to be deleted.
+  """
+  nodeId: ID!
+}
+
+"""All input for the `deleteUserNotification` mutation."""
+input DeleteUserNotificationInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  id: UUID!
+}
+
 """The output of our delete `UserWatchStatus` mutation."""
 type DeleteUserWatchStatusPayload {
   """
@@ -15493,6 +15984,47 @@ input UpsertUserAnimeListInput {
   userAnimeList: UserAnimeListInput!
 }
 
+"""The output of our upsert `UserNotification` mutation."""
+type UpsertUserNotificationPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input, unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `UserNotification` that was upserted by this mutation."""
+  userNotification: UserNotification
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """Reads a single `User` that is related to this `UserNotification`."""
+  user: User
+
+  """An edge for our `UserNotification`. May be used by Relay 1."""
+  userNotificationEdge(
+    """The method to use when ordering `UserNotification`."""
+    orderBy: [UserNotificationsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): UserNotificationsEdge
+}
+
+"""Where conditions for the upsert `UserNotification` mutation."""
+input UpsertUserNotificationWhere {
+  id: UUID
+}
+
+"""All input for the upsert `UserNotification` mutation."""
+input UpsertUserNotificationInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The `UserNotification` to be upserted by this mutation."""
+  userNotification: UserNotificationInput!
+}
+
 """The output of our upsert `UserWatchStatus` mutation."""
 type UpsertUserWatchStatusPayload {
   """
@@ -15574,4 +16106,16 @@ input UpsertUserInput {
 
   """The `User` to be upserted by this mutation."""
   user: UserInput!
+}
+
+"""
+The root subscription type: contains realtime events you can subscribe to with the `subscription` operation.
+"""
+type Subscription {
+  notificationEvent: NotificationEvent
+}
+
+type NotificationEvent {
+  event: String
+  notification: UserNotification
 }

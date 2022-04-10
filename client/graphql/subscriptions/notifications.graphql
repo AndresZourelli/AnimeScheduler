@@ -1,0 +1,15 @@
+subscription Notifications {
+  notificationEvent {
+    event
+    notification {
+      createdAt
+      entityId
+      entityImage
+      id
+      isRead
+      message
+      nodeId
+      notificationType
+    }
+  }
+}

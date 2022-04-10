@@ -44,6 +44,7 @@
   "dependencies": {
     "@graphile-contrib/pg-order-by-related": "^1.0.0-beta.6",
     "@graphile-contrib/pg-simplify-inflector": "^6.1.0",
+    "@graphile/pg-pubsub": "^4.12.2",
     "@urql/core": "^2.4.1",
     "apollo-server-express": "^2.19.2",
     "axios": "^0.21.1",

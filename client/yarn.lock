@@ -4937,6 +4937,7 @@ __metadata:
     graphql: ^15.8.0
     graphql-codegen: ^0.4.0
     graphql-tag: ^2.12.6
+    graphql-ws: ^5.7.0
     install-peers: ^1.0.3
     jwt-decode: ^3.1.2
     lodash: ^4.17.21
@@ -6836,6 +6837,15 @@ __metadata:
   peerDependencies:
     graphql: ">=0.11 <=16"
   checksum: 2a442f6133fb92a07869d299434cf66b8e69568cbc2c46c887af74167c59d0056778881ab8f0f8dd3b8be2819b3de0913b1012fc6f2a785fb00d7ef64a0b0dd7
+  languageName: node
+  linkType: hard
+
+"graphql-ws@npm:^5.7.0":
+  version: 5.7.0
+  resolution: "graphql-ws@npm:5.7.0"
+  peerDependencies:
+    graphql: ">=0.11 <=16"
+  checksum: 39f795abc48a79177e54f5ef47331424987ba7194361dcfe983fd17c10ef853102b41283b996ab763c4293ea4c1215ba1da36d571c2487f4ff54d2b67a1dc176
   languageName: node
   linkType: hard
 

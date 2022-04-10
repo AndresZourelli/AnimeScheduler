@@ -2,9 +2,14 @@ import { gql, makeOperation } from "@urql/core";
 import { devtoolsExchange } from "@urql/devtools";
 import { authExchange } from "@urql/exchange-auth";
 import { cacheExchange, Data } from "@urql/exchange-graphcache";
-import { createClient, dedupExchange, fetchExchange } from "urql";
+import {
+  createClient,
+  dedupExchange,
+  fetchExchange,
+  subscriptionExchange,
+} from "urql";
 import { relayPagination } from "@urql/exchange-graphcache/extras";
-
+import { createClient as createWSClient } from "graphql-ws";
 import { auth } from "../../firebase/firebaseInit";
 import { checkTokenExpiration } from "../../utilities/checkTokenExpiration";
 
@@ -18,6 +23,13 @@ interface ExtendedData extends Data {
   studio?: string;
   ageRatingType?: string;
 }
+
+const wsClient =
+  typeof window != "undefined"
+    ? createWSClient({
+        url: "ws://localhost:4000/graphql",
+      })
+    : null;
 
 const client = createClient({
   url: "http://localhost:4000/graphql",
@@ -46,6 +58,13 @@ const client = createClient({
         AgeRating: (data: ExtendedData) => data.ageRatingType,
         MeType: (data) => data.userId as string,
       },
+    }),
+    subscriptionExchange({
+      forwardSubscription: (operation) => ({
+        subscribe: (sink) => ({
+          unsubscribe: wsClient.subscribe(operation, sink),
+        }),
+      }),
     }),
     authExchange({
       getAuth: async ({ authState }) => {
