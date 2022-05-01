@@ -12,6 +12,7 @@ import { verifySession } from "supertokens-node/recipe/session/framework/express
 import { knexConfig } from "./config/knex";
 import { postgraphileConfig } from "./config/postgraphile";
 import { supertokensConfig } from "./config/supertokens";
+import { emailPasswordResetRouter } from "./routes/emailPasswordReset";
 
 dotenv.config();
 
@@ -38,6 +39,8 @@ app.use(
 app.use(middleware());
 
 app.use("/graphql", verifySession({ sessionRequired: false }));
+
+app.use("/auth", verifySession(), emailPasswordResetRouter);
 
 app.use(
   postgraphile(

@@ -8,9 +8,25 @@ mutation NotificationRead($id: UUID!) {
   ) {
     clientMutationId
     query {
-      userNotifications(
+      allNotifications: userNotifications(
         orderBy: CREATED_AT_DESC
         condition: { isRead: false }
+      ) {
+        nodes {
+          createdAt
+          entityId
+          entityImage
+          id
+          isRead
+          message
+          nodeId
+          notificationType
+        }
+        totalCount
+      }
+      airingNotifications: userNotifications(
+        orderBy: CREATED_AT_DESC
+        condition: { isRead: false, notificationType: AIRING }
       ) {
         nodes {
           createdAt

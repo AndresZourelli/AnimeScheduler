@@ -1203,7 +1203,6 @@ type Query implements Node {
   ): UserAnimeListTypesConnection
   currentRole: String
   currentUser: String
-  getUser(uId: String): MeType
 
   """Reads and enables pagination through a set of `UserList`."""
   getUserAnimeLists(
@@ -1232,6 +1231,7 @@ type Query implements Node {
     """
     filter: UserListFilter
   ): UserListsConnection
+  isUsernameTaken(usernameInput: String): Boolean
   me: MeType
 
   """Reads and enables pagination through a set of `SearchResult`."""
@@ -7723,12 +7723,6 @@ input UserAnimeListTypeFilter {
   not: UserAnimeListTypeFilter
 }
 
-type MeType {
-  userId: String
-  role: String
-  username: String
-}
-
 """A connection to a list of `UserList` values."""
 type UserListsConnection {
   """A list of `UserList` objects."""
@@ -7797,6 +7791,13 @@ input UserListFilter {
 
   """Negates the expression."""
   not: UserListFilter
+}
+
+type MeType {
+  userId: String
+  role: String
+  username: String
+  email: String
 }
 
 """A connection to a list of `SearchResult` values."""
@@ -9466,6 +9467,12 @@ type Mutation {
     """
     input: AddAnimeToListInput!
   ): AddAnimeToListPayload
+  changeUsername(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: ChangeUsernameInput!
+  ): ChangeUsernamePayload
   createNewListAddAnime(
     """
     The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
@@ -14763,6 +14770,31 @@ input AddAnimeToListInput {
   title: String
   privacy: AnimeListPrivacy
   watchStatus: String
+}
+
+"""The output of our `changeUsername` mutation."""
+type ChangeUsernamePayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+  string: String
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""All input for the `changeUsername` mutation."""
+input ChangeUsernameInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  usernameInput: String!
 }
 
 """The output of our `createNewListAddAnime` mutation."""

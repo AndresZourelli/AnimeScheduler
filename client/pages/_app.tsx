@@ -2,7 +2,7 @@ import Nav from "@/components/Common/Nav";
 import { AppAuthProvider } from "@/lib/Auth/FirebaseAuth";
 import client from "@/lib/Urql/urqlClient";
 import customTheme from "@/styles/theme";
-import { ChakraProvider } from "@chakra-ui/react";
+import { Box, ChakraProvider } from "@chakra-ui/react";
 import SuperTokens from "supertokens-auth-react";
 import EmailPassword from "supertokens-auth-react/recipe/emailpassword";
 import Session from "supertokens-auth-react/recipe/session";
@@ -42,10 +42,10 @@ function MyApp({ Component, pageProps }) {
     <ChakraProvider resetCSS theme={customTheme}>
       <Provider value={client}>
         <AppAuthProvider>
-          <>
+          <Box minH="100vh" display="flex" flexDirection="column">
             <Nav />
             <Component {...pageProps} />
-          </>
+          </Box>
         </AppAuthProvider>
       </Provider>
     </ChakraProvider>

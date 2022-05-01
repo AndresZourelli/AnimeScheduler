@@ -36,7 +36,7 @@ import {
   redirectToAuth,
   signOut,
 } from "supertokens-auth-react/recipe/emailpassword";
-import NotificationMenu from "./Nav/NotificationMenu";
+import NotificationMenu from "@/components/Common/Nav/NotificationMenu";
 interface Search {
   variables?: Variable;
 }

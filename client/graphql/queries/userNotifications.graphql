@@ -13,3 +13,56 @@ query UnreadUserNotifications {
     totalCount
   }
 }
+
+query UserNotifications {
+  allNotifications: userNotifications(
+    orderBy: CREATED_AT_DESC
+    condition: { isRead: false }
+  ) {
+    nodes {
+      createdAt
+      entityId
+      entityImage
+      id
+      isRead
+      message
+      nodeId
+      notificationType
+    }
+    totalCount
+  }
+  airingNotifications: userNotifications(
+    orderBy: CREATED_AT_DESC
+    condition: { isRead: false, notificationType: AIRING }
+  ) {
+    nodes {
+      createdAt
+      entityId
+      entityImage
+      id
+      isRead
+      message
+      nodeId
+      notificationType
+    }
+    totalCount
+  }
+}
+
+query FilterUserNotifications($equalTo: NotificationType = null) {
+  userNotifications(
+    orderBy: CREATED_AT_DESC
+    filter: { notificationType: { equalTo: $equalTo } }
+  ) {
+    nodes {
+      createdAt
+      entityId
+      entityImage
+      id
+      isRead
+      message
+      nodeId
+      notificationType
+    }
+  }
+}

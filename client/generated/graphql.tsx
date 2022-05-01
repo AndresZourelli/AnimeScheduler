@@ -2424,6 +2424,29 @@ export type BooleanFilter = {
   notIn?: InputMaybe<Array<Scalars['Boolean']>>;
 };
 
+/** All input for the `changeUsername` mutation. */
+export type ChangeUsernameInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  usernameInput: Scalars['String'];
+};
+
+/** The output of our `changeUsername` mutation. */
+export type ChangeUsernamePayload = {
+  __typename?: 'ChangeUsernamePayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  string?: Maybe<Scalars['String']>;
+};
+
 export type Character = Node & {
   __typename?: 'Character';
   /** Reads and enables pagination through a set of `AnimeCharacter`. */
@@ -5773,6 +5796,7 @@ export enum LicensorsOrderBy {
 
 export type MeType = {
   __typename?: 'MeType';
+  email?: Maybe<Scalars['String']>;
   role?: Maybe<Scalars['String']>;
   userId?: Maybe<Scalars['String']>;
   username?: Maybe<Scalars['String']>;
@@ -5878,6 +5902,7 @@ export type MediaTypesFilter = {
 export type Mutation = {
   __typename?: 'Mutation';
   addAnimeToList?: Maybe<AddAnimeToListPayload>;
+  changeUsername?: Maybe<ChangeUsernamePayload>;
   /** Creates a single `AlternateAnimeName`. */
   createAlternateAnimeName?: Maybe<CreateAlternateAnimeNamePayload>;
   /** Creates a single `Anime`. */
@@ -6256,6 +6281,12 @@ export type Mutation = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationAddAnimeToListArgs = {
   input: AddAnimeToListInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationChangeUsernameArgs = {
+  input: ChangeUsernameInput;
 };
 
 
@@ -7949,7 +7980,6 @@ export type Query = Node & {
   genreByNodeId?: Maybe<Genre>;
   /** Reads and enables pagination through a set of `Genre`. */
   genres?: Maybe<GenresConnection>;
-  getUser?: Maybe<MeType>;
   /** Reads and enables pagination through a set of `UserList`. */
   getUserAnimeLists?: Maybe<UserListsConnection>;
   image?: Maybe<Image>;
@@ -7957,6 +7987,7 @@ export type Query = Node & {
   imageByNodeId?: Maybe<Image>;
   /** Reads and enables pagination through a set of `Image`. */
   images?: Maybe<ImagesConnection>;
+  isUsernameTaken?: Maybe<Scalars['Boolean']>;
   licensor?: Maybe<Licensor>;
   licensorByLicensor?: Maybe<Licensor>;
   /** Reads a single `Licensor` using its globally unique `ID`. */
@@ -8527,12 +8558,6 @@ export type QueryGenresArgs = {
 
 
 /** The root query type which gives access points into the data universe. */
-export type QueryGetUserArgs = {
-  uId?: InputMaybe<Scalars['String']>;
-};
-
-
-/** The root query type which gives access points into the data universe. */
 export type QueryGetUserAnimeListsArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
@@ -8566,6 +8591,12 @@ export type QueryImagesArgs = {
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<Array<ImagesOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryIsUsernameTakenArgs = {
+  usernameInput?: InputMaybe<Scalars['String']>;
 };
 
 
@@ -13039,6 +13070,14 @@ export type CustomAnimeListFragmentFragment = { __typename?: 'CustomAnimeList', 
 
 export type UserListAnimeFragmentFragment = { __typename?: 'UserListAnime', id?: any | null | undefined, title?: string | null | undefined, coverImage?: string | null | undefined, averageWatcherRating?: any | null | undefined, airingStatusType?: string | null | undefined, numberOfEpisodes?: any | null | undefined, startBroadcastDatetime?: any | null | undefined, userEpisodeCount?: any | null | undefined, userLiked?: boolean | null | undefined, userRating?: any | null | undefined, userWatchStatus?: string | null | undefined };
 
+export type ChangeUsernameMutationVariables = Exact<{
+  usernameInput: Scalars['String'];
+  clientMutationId?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type ChangeUsernameMutation = { __typename?: 'Mutation', changeUsername?: { __typename?: 'ChangeUsernamePayload', query?: { __typename?: 'Query', me?: { __typename?: 'MeType', email?: string | null | undefined, role?: string | null | undefined, userId?: string | null | undefined, username?: string | null | undefined } | null | undefined } | null | undefined } | null | undefined };
+
 export type UpdateWatchStatusMutationVariables = Exact<{
   watchStatus: WatchStatusTypes;
   userId: Scalars['String'];
@@ -13160,7 +13199,14 @@ export type NotificationReadMutationVariables = Exact<{
 }>;
 
 
-export type NotificationReadMutation = { __typename?: 'Mutation', updateUserNotification?: { __typename?: 'UpdateUserNotificationPayload', clientMutationId?: string | null | undefined, query?: { __typename?: 'Query', userNotifications?: { __typename?: 'UserNotificationsConnection', totalCount: number, nodes: Array<{ __typename?: 'UserNotification', createdAt?: any | null | undefined, entityId: any, entityImage?: string | null | undefined, id: any, isRead?: boolean | null | undefined, message?: string | null | undefined, nodeId: string, notificationType: NotificationType }> } | null | undefined } | null | undefined } | null | undefined };
+export type NotificationReadMutation = { __typename?: 'Mutation', updateUserNotification?: { __typename?: 'UpdateUserNotificationPayload', clientMutationId?: string | null | undefined, query?: { __typename?: 'Query', allNotifications?: { __typename?: 'UserNotificationsConnection', totalCount: number, nodes: Array<{ __typename?: 'UserNotification', createdAt?: any | null | undefined, entityId: any, entityImage?: string | null | undefined, id: any, isRead?: boolean | null | undefined, message?: string | null | undefined, nodeId: string, notificationType: NotificationType }> } | null | undefined, airingNotifications?: { __typename?: 'UserNotificationsConnection', totalCount: number, nodes: Array<{ __typename?: 'UserNotification', createdAt?: any | null | undefined, entityId: any, entityImage?: string | null | undefined, id: any, isRead?: boolean | null | undefined, message?: string | null | undefined, nodeId: string, notificationType: NotificationType }> } | null | undefined } | null | undefined } | null | undefined };
+
+export type IsUsernameTakenQueryVariables = Exact<{
+  usernameInput: Scalars['String'];
+}>;
+
+
+export type IsUsernameTakenQuery = { __typename?: 'Query', isUsernameTaken?: boolean | null | undefined };
 
 export type CurrentlyAiringContinuedQueryVariables = Exact<{
   limit: Scalars['Int'];
@@ -13297,7 +13343,7 @@ export type AdvanceFilterDataQuery = { __typename?: 'Query', genres?: { __typena
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'MeType', userId?: string | null | undefined, username?: string | null | undefined, role?: string | null | undefined } | null | undefined };
+export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'MeType', userId?: string | null | undefined, username?: string | null | undefined, role?: string | null | undefined, email?: string | null | undefined } | null | undefined };
 
 export type UserAnimeListsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -13315,6 +13361,18 @@ export type UnreadUserNotificationsQueryVariables = Exact<{ [key: string]: never
 
 
 export type UnreadUserNotificationsQuery = { __typename?: 'Query', userNotifications?: { __typename?: 'UserNotificationsConnection', totalCount: number, nodes: Array<{ __typename?: 'UserNotification', createdAt?: any | null | undefined, entityId: any, entityImage?: string | null | undefined, id: any, isRead?: boolean | null | undefined, message?: string | null | undefined, nodeId: string, notificationType: NotificationType }> } | null | undefined };
+
+export type UserNotificationsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type UserNotificationsQuery = { __typename?: 'Query', allNotifications?: { __typename?: 'UserNotificationsConnection', totalCount: number, nodes: Array<{ __typename?: 'UserNotification', createdAt?: any | null | undefined, entityId: any, entityImage?: string | null | undefined, id: any, isRead?: boolean | null | undefined, message?: string | null | undefined, nodeId: string, notificationType: NotificationType }> } | null | undefined, airingNotifications?: { __typename?: 'UserNotificationsConnection', totalCount: number, nodes: Array<{ __typename?: 'UserNotification', createdAt?: any | null | undefined, entityId: any, entityImage?: string | null | undefined, id: any, isRead?: boolean | null | undefined, message?: string | null | undefined, nodeId: string, notificationType: NotificationType }> } | null | undefined };
+
+export type FilterUserNotificationsQueryVariables = Exact<{
+  equalTo?: InputMaybe<NotificationType>;
+}>;
+
+
+export type FilterUserNotificationsQuery = { __typename?: 'Query', userNotifications?: { __typename?: 'UserNotificationsConnection', nodes: Array<{ __typename?: 'UserNotification', createdAt?: any | null | undefined, entityId: any, entityImage?: string | null | undefined, id: any, isRead?: boolean | null | undefined, message?: string | null | undefined, nodeId: string, notificationType: NotificationType }> } | null | undefined };
 
 export type NotificationsSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
@@ -13399,6 +13457,26 @@ export const UserListAnimeFragmentFragmentDoc = gql`
   userWatchStatus
 }
     `;
+export const ChangeUsernameDocument = gql`
+    mutation ChangeUsername($usernameInput: String!, $clientMutationId: String = "username changed") {
+  changeUsername(
+    input: {usernameInput: $usernameInput, clientMutationId: $clientMutationId}
+  ) {
+    query {
+      me {
+        email
+        role
+        userId
+        username
+      }
+    }
+  }
+}
+    `;
+
+export function useChangeUsernameMutation() {
+  return Urql.useMutation<ChangeUsernameMutation, ChangeUsernameMutationVariables>(ChangeUsernameDocument);
+};
 export const UpdateWatchStatusDocument = gql`
     mutation UpdateWatchStatus($watchStatus: WatchStatusTypes!, $userId: String!, $animeId: UUID!) {
   updateUserWatchStatus(
@@ -13659,7 +13737,26 @@ export const NotificationReadDocument = gql`
   ) {
     clientMutationId
     query {
-      userNotifications(orderBy: CREATED_AT_DESC, condition: {isRead: false}) {
+      allNotifications: userNotifications(
+        orderBy: CREATED_AT_DESC
+        condition: {isRead: false}
+      ) {
+        nodes {
+          createdAt
+          entityId
+          entityImage
+          id
+          isRead
+          message
+          nodeId
+          notificationType
+        }
+        totalCount
+      }
+      airingNotifications: userNotifications(
+        orderBy: CREATED_AT_DESC
+        condition: {isRead: false, notificationType: AIRING}
+      ) {
         nodes {
           createdAt
           entityId
@@ -13679,6 +13776,15 @@ export const NotificationReadDocument = gql`
 
 export function useNotificationReadMutation() {
   return Urql.useMutation<NotificationReadMutation, NotificationReadMutationVariables>(NotificationReadDocument);
+};
+export const IsUsernameTakenDocument = gql`
+    query IsUsernameTaken($usernameInput: String!) {
+  isUsernameTaken(usernameInput: $usernameInput)
+}
+    `;
+
+export function useIsUsernameTakenQuery(options: Omit<Urql.UseQueryArgs<IsUsernameTakenQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<IsUsernameTakenQuery>({ query: IsUsernameTakenDocument, ...options });
 };
 export const CurrentlyAiringContinuedDocument = gql`
     query CurrentlyAiringContinued($limit: Int!, $currentSeason: Season!, $seasonYear: Int!) {
@@ -14098,6 +14204,7 @@ export const MeDocument = gql`
     userId
     username
     role
+    email
   }
 }
     `;
@@ -14161,6 +14268,69 @@ export const UnreadUserNotificationsDocument = gql`
 
 export function useUnreadUserNotificationsQuery(options: Omit<Urql.UseQueryArgs<UnreadUserNotificationsQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<UnreadUserNotificationsQuery>({ query: UnreadUserNotificationsDocument, ...options });
+};
+export const UserNotificationsDocument = gql`
+    query UserNotifications {
+  allNotifications: userNotifications(
+    orderBy: CREATED_AT_DESC
+    condition: {isRead: false}
+  ) {
+    nodes {
+      createdAt
+      entityId
+      entityImage
+      id
+      isRead
+      message
+      nodeId
+      notificationType
+    }
+    totalCount
+  }
+  airingNotifications: userNotifications(
+    orderBy: CREATED_AT_DESC
+    condition: {isRead: false, notificationType: AIRING}
+  ) {
+    nodes {
+      createdAt
+      entityId
+      entityImage
+      id
+      isRead
+      message
+      nodeId
+      notificationType
+    }
+    totalCount
+  }
+}
+    `;
+
+export function useUserNotificationsQuery(options: Omit<Urql.UseQueryArgs<UserNotificationsQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<UserNotificationsQuery>({ query: UserNotificationsDocument, ...options });
+};
+export const FilterUserNotificationsDocument = gql`
+    query FilterUserNotifications($equalTo: NotificationType = null) {
+  userNotifications(
+    orderBy: CREATED_AT_DESC
+    filter: {notificationType: {equalTo: $equalTo}}
+  ) {
+    nodes {
+      createdAt
+      entityId
+      entityImage
+      id
+      isRead
+      message
+      nodeId
+      notificationType
+    }
+  }
+}
+    `;
+
+export function useFilterUserNotificationsQuery(options: Omit<Urql.UseQueryArgs<FilterUserNotificationsQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<FilterUserNotificationsQuery>({ query: FilterUserNotificationsDocument, ...options });
 };
 export const NotificationsDocument = gql`
     subscription Notifications {
@@ -18103,6 +18273,38 @@ export default {
                 "name": "AvailableLanguage",
                 "ofType": null
               }
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "ChangeUsernamePayload",
+        "fields": [
+          {
+            "name": "clientMutationId",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "query",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Query",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "string",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
             },
             "args": []
           }
@@ -24145,6 +24347,14 @@ export default {
         "name": "MeType",
         "fields": [
           {
+            "name": "email",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
             "name": "role",
             "type": {
               "kind": "SCALAR",
@@ -24296,6 +24506,26 @@ export default {
             "type": {
               "kind": "OBJECT",
               "name": "AddAnimeToListPayload",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "input",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "changeUsername",
+            "type": {
+              "kind": "OBJECT",
+              "name": "ChangeUsernamePayload",
               "ofType": null
             },
             "args": [
@@ -31553,23 +31783,6 @@ export default {
             ]
           },
           {
-            "name": "getUser",
-            "type": {
-              "kind": "OBJECT",
-              "name": "MeType",
-              "ofType": null
-            },
-            "args": [
-              {
-                "name": "uId",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
-                }
-              }
-            ]
-          },
-          {
             "name": "getUserAnimeLists",
             "type": {
               "kind": "OBJECT",
@@ -31736,6 +31949,22 @@ export default {
                       "name": "Any"
                     }
                   }
+                }
+              }
+            ]
+          },
+          {
+            "name": "isUsernameTaken",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": [
+              {
+                "name": "usernameInput",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
                 }
               }
             ]

@@ -1,21 +1,34 @@
-import { UserNotification, useNotificationReadMutation } from "@/graphql";
+import { useNotificationReadMutation, UserNotification } from "@/graphql";
 import {
   Box,
-  Button,
-  CloseButton,
   Flex,
   Heading,
   HStack,
-  IconButton,
-  Link as ChakraLink,
-  MenuItem,
   Text,
+  Link as ChakraLink,
+  CloseButton,
 } from "@chakra-ui/react";
 import { formatDistanceToNow } from "date-fns";
 import Link from "next/link";
 import React from "react";
 
-const NotificationMenuItem = (props: UserNotification) => {
+interface NotificationMainItemProps {
+  createdAt: UserNotification["createdAt"];
+  entityId: UserNotification["entityId"];
+  id: UserNotification["id"];
+  isRead: UserNotification["isRead"];
+  message: UserNotification["message"];
+  [key: string]: any;
+}
+
+const NotificationMainItem = ({
+  createdAt,
+  entityId,
+  id,
+  isRead,
+  message,
+  ...props
+}: NotificationMainItemProps) => {
   const [notificationReadResult, notificationRead] =
     useNotificationReadMutation();
   const readMessage = (e: React.MouseEvent<HTMLButtonElement>, id: string) => {
@@ -23,7 +36,7 @@ const NotificationMenuItem = (props: UserNotification) => {
     notificationRead({ id });
   };
   return (
-    <MenuItem as="div">
+    <Box {...props}>
       <HStack w="full">
         <Box w="full">
           <Flex gap={3} justifyContent="space-between">
@@ -32,16 +45,16 @@ const NotificationMenuItem = (props: UserNotification) => {
             </Box>
             <Box>
               <Text fontSize="xs">
-                {formatDistanceToNow(new Date(props.createdAt), {
+                {formatDistanceToNow(new Date(createdAt), {
                   addSuffix: true,
                 })}
               </Text>
             </Box>
           </Flex>
-          <Box>
+          <Box align="start">
             <Text fontSize="sm">
-              <Link href={`/animes/${props.entityId}`} passHref>
-                <ChakraLink color="teal.500">{props.message}</ChakraLink>
+              <Link href={`/animes/${entityId}`} passHref>
+                <ChakraLink color="teal.500">{message}</ChakraLink>
               </Link>{" "}
               just aired.
             </Text>
@@ -52,11 +65,11 @@ const NotificationMenuItem = (props: UserNotification) => {
           size="sm"
           aria-label="mark notification as read"
           color="red"
-          onClick={(e) => readMessage(e, props.id)}
+          onClick={(e) => readMessage(e, id)}
         />
       </HStack>
-    </MenuItem>
+    </Box>
   );
 };
 
-export default NotificationMenuItem;
+export default NotificationMainItem;

@@ -15,6 +15,7 @@ import {
   HStack,
   Text,
   Circle,
+  Link as ChakraLink,
 } from "@chakra-ui/react";
 import {
   useNotificationsSubscription,
@@ -23,6 +24,7 @@ import {
 } from "@/graphql";
 import { compareDesc } from "date-fns";
 import NotificationMenuItem from "./NotificationMenuItem";
+import Link from "next/link";
 
 const compareCreateAt = (a: UserNotification, b: UserNotification) => {
   const convertA = new Date(a.createdAt);
@@ -57,7 +59,7 @@ const NotificationMenu = () => {
     }
   }, [notificationsSub]);
   return (
-    <Menu>
+    <Menu closeOnSelect={false}>
       <MenuButton
         as={IconButton}
         aria-label="notifications"
@@ -77,6 +79,11 @@ const NotificationMenu = () => {
         {notifications?.map((item) => (
           <NotificationMenuItem key={item.id} {...item} />
         ))}
+        <Text px="3" fontSize="sm" textAlign="right">
+          <Link href="/notifications" passHref>
+            <ChakraLink color="teal.500">Click to view all</ChakraLink>
+          </Link>
+        </Text>
       </MenuList>
     </Menu>
   );

@@ -9,6 +9,7 @@ export interface User {
   username?: string;
   userId?: string;
   loggedIn: boolean;
+  email?: string;
 }
 
 interface FirebaseAuthInterface {

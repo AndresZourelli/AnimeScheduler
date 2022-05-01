@@ -21,6 +21,7 @@
     "@fortawesome/free-regular-svg-icons": "^5.15.4",
     "@fortawesome/free-solid-svg-icons": "^5.15.4",
     "@fortawesome/react-fontawesome": "^0.1.16",
+    "@hookform/resolvers": "^2.8.8",
     "@types/react-beautiful-dnd": "^13.1.2",
     "@urql/core": "^2.3.6",
     "@urql/devtools": "^2.0.3",

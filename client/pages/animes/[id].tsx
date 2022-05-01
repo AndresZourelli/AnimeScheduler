@@ -1,10 +1,9 @@
-import { useRouter } from "next/router";
-import { Spinner, Box, Flex } from "@chakra-ui/react";
 import AnimePageInfoCol from "@/components/Home/AnimePageInfoCol";
 import AnimePageMain from "@/components/Home/AnimePageMain";
-import { useQuery } from "urql";
-import { useGetAnimeQuery, LanguageType } from "@/graphql";
-import { useState, useEffect } from "react";
+import { LanguageType, useGetAnimeQuery } from "@/graphql";
+import { Box, Flex, Spinner } from "@chakra-ui/react";
+import { useRouter } from "next/router";
+import { useState } from "react";
 
 const AnimePage = () => {
   const router = useRouter();
@@ -46,7 +45,7 @@ const AnimePage = () => {
   }
 
   return (
-    <Box position="relative">
+    <Box position="relative" h="100%">
       <Flex position="relative">
         <AnimePageInfoCol
           {...AnimeResult.data?.anime}

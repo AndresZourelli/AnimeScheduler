@@ -2,6 +2,12 @@ import { Model } from "objection";
 import { Role } from "./role";
 
 export class PrivateUser extends Model {
+  user_id?: string;
+  username?: string;
+  email?: string;
+  active?: boolean;
+  role?: string;
+
   static get tableName() {
     return "users";
   }

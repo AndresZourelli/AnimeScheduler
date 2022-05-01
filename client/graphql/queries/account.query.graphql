@@ -1,0 +1,3 @@
+query IsUsernameTaken($usernameInput: String!) {
+  isUsernameTaken(usernameInput: $usernameInput)
+}

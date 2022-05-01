@@ -1,0 +1,20 @@
+mutation ChangeUsername(
+  $usernameInput: String!
+  $clientMutationId: String = "username changed"
+) {
+  changeUsername(
+    input: {
+      usernameInput: $usernameInput
+      clientMutationId: $clientMutationId
+    }
+  ) {
+    query {
+      me {
+        email
+        role
+        userId
+        username
+      }
+    }
+  }
+}
