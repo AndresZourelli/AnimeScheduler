@@ -304,6 +304,7 @@ const useAnimeList = ({
         duration: 3000,
         isClosable: true,
         position: "bottom-right",
+        variant: "solid",
       });
       setNotification(notificationType.none);
     } else if (notification === notificationType.animeRemoved) {
@@ -314,6 +315,7 @@ const useAnimeList = ({
         duration: 3000,
         isClosable: true,
         position: "bottom-right",
+        variant: "solid",
       });
       setNotification(notificationType.none);
     } else if (notification === notificationType.animeExists) {
@@ -324,6 +326,7 @@ const useAnimeList = ({
         duration: 3000,
         isClosable: true,
         position: "bottom-right",
+        variant: "solid",
       });
       setNotification(notificationType.none);
     }

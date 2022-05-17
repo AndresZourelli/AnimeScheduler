@@ -165,7 +165,7 @@ const AnimeCard = ({
     >
       <PopoverTrigger>
         <Box
-          d="flex"
+          display="flex"
           alignItems="center"
           flexDirection="column"
           position="relative"
@@ -199,19 +199,7 @@ const AnimeCard = ({
             >
               {averageWatcherRating}
             </Tag>
-            {userLiked ? (
-              <Tag
-                zIndex="2"
-                position="absolute"
-                variant="solid"
-                mb={1}
-                mr={1}
-                bottom="0"
-                right="0"
-              >
-                <TagLeftIcon as={AiFillHeart} mr="0" color={"red.300"} />
-              </Tag>
-            ) : null}
+
             <Box>
               <Box
                 position="absolute"
@@ -228,7 +216,7 @@ const AnimeCard = ({
                 zIndex="3"
               >
                 <Box
-                  d="flex"
+                  display="flex"
                   w="full"
                   justifyContent="center"
                   alignContent="center"
@@ -242,7 +230,11 @@ const AnimeCard = ({
                     w="full"
                     bgGradient="linear(to-t, blackAlpha.50, blackAlpha.900)"
                   />
-                  <Box d="flex" justifyContent="flex-start" alignItems="center">
+                  <Box
+                    display="flex"
+                    justifyContent="flex-start"
+                    alignItems="center"
+                  >
                     <Tooltip label="Decrease your episode count">
                       <IconButton
                         colorScheme="teal"
@@ -357,7 +349,7 @@ const AnimeCard = ({
                   variant="solid"
                   mb={1}
                   mr={1}
-                  bottom="0"
+                  bottom="1"
                   right="0"
                 >
                   <TagLeftIcon as={AiFillHeart} mr="0" color={"red.300"} />
@@ -371,24 +363,11 @@ const AnimeCard = ({
                   background="teal.600"
                   mb={1}
                   mr={1}
-                  top="2"
+                  bottom="1"
                   left="2"
                 >
                   {airingTime}
                 </Tag>
-              )}
-              {countDown && (
-                <CountDownTag
-                  zIndex="2"
-                  position="absolute"
-                  variant="solid"
-                  background="red.600"
-                  mb={1}
-                  ml={1}
-                  bottom="0"
-                  left="0"
-                  startDate={startBroadcastDatetime}
-                />
               )}
             </Box>
           </Box>
@@ -421,17 +400,11 @@ const AnimeCard = ({
           )}
         </Box>
       </PopoverTrigger>
-      <PopoverContent
-        h="338px"
-        maxH="338px"
-        w="inherit"
-        eventListeners={false}
-        display="flex"
-      >
+      <PopoverContent h="338px" maxH="338px" w="inherit" display="flex">
         <PopoverHeader>
           {user.loggedIn ? (
             <>
-              <Box d="flex" w="full" justifyContent="space-between">
+              <Box display="flex" w="full" justifyContent="space-between">
                 <Box>
                   <Tooltip label="Choose your watch status">
                     <Select
