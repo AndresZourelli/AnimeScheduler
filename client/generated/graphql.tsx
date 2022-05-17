@@ -13060,7 +13060,7 @@ export type WatchStatusTypesFilter = {
   notIn?: InputMaybe<Array<WatchStatusTypes>>;
 };
 
-export type AnimeCardFragmentFragment = { __typename?: 'Anime', id: any, title: string, coverImage?: string | null | undefined, numberOfEpisodes?: number | null | undefined, averageWatcherRating?: any | null | undefined, userLiked?: boolean | null | undefined, userRating?: any | null | undefined, userWatchStatus?: string | null | undefined, userEpisodeCount?: any | null | undefined, startBroadcastDatetime?: any | null | undefined, airingStatusType?: AiringStatusTypes | null | undefined };
+export type AnimeCardFragmentFragment = { __typename?: 'Anime', id: any, title: string, coverImage?: string | null | undefined, numberOfEpisodes?: number | null | undefined, averageWatcherRating?: any | null | undefined, userLiked?: boolean | null | undefined, userRating?: any | null | undefined, userWatchStatus?: string | null | undefined, userEpisodeCount?: any | null | undefined, startBroadcastDatetime?: any | null | undefined, airingStatusType?: AiringStatusTypes | null | undefined, description?: string | null | undefined, mediaType?: MediaTypes | null | undefined, duration?: number | null | undefined, season?: Season | null | undefined, seasonYear?: number | null | undefined, studioList: { __typename?: 'StudiosConnection', nodes: Array<{ __typename?: 'Studio', id: any, studio: string }> }, genreList: { __typename?: 'GenresConnection', nodes: Array<{ __typename?: 'Genre', genre: string, id: any }> } };
 
 export type AnimeListFragmentFragment = { __typename?: 'AnimeList', id: any, nodeId: string, privacy: AnimeListPrivacy, title: string };
 
@@ -13085,7 +13085,7 @@ export type UpdateWatchStatusMutationVariables = Exact<{
 }>;
 
 
-export type UpdateWatchStatusMutation = { __typename?: 'Mutation', updateUserWatchStatus?: { __typename?: 'UpdateUserWatchStatusPayload', clientMutationId?: string | null | undefined, query?: { __typename?: 'Query', animes?: { __typename?: 'AnimeConnection', nodes: Array<{ __typename?: 'Anime', id: any, title: string, coverImage?: string | null | undefined, numberOfEpisodes?: number | null | undefined, averageWatcherRating?: any | null | undefined, userLiked?: boolean | null | undefined, userRating?: any | null | undefined, userWatchStatus?: string | null | undefined, userEpisodeCount?: any | null | undefined, startBroadcastDatetime?: any | null | undefined, airingStatusType?: AiringStatusTypes | null | undefined }> } | null | undefined } | null | undefined } | null | undefined };
+export type UpdateWatchStatusMutation = { __typename?: 'Mutation', updateUserWatchStatus?: { __typename?: 'UpdateUserWatchStatusPayload', clientMutationId?: string | null | undefined, query?: { __typename?: 'Query', animes?: { __typename?: 'AnimeConnection', nodes: Array<{ __typename?: 'Anime', id: any, title: string, coverImage?: string | null | undefined, numberOfEpisodes?: number | null | undefined, averageWatcherRating?: any | null | undefined, userLiked?: boolean | null | undefined, userRating?: any | null | undefined, userWatchStatus?: string | null | undefined, userEpisodeCount?: any | null | undefined, startBroadcastDatetime?: any | null | undefined, airingStatusType?: AiringStatusTypes | null | undefined, description?: string | null | undefined, mediaType?: MediaTypes | null | undefined, duration?: number | null | undefined, season?: Season | null | undefined, seasonYear?: number | null | undefined, studioList: { __typename?: 'StudiosConnection', nodes: Array<{ __typename?: 'Studio', id: any, studio: string }> }, genreList: { __typename?: 'GenresConnection', nodes: Array<{ __typename?: 'Genre', genre: string, id: any }> } }> } | null | undefined } | null | undefined } | null | undefined };
 
 export type UpdateUserAnimeScoreMutationVariables = Exact<{
   animeId: Scalars['UUID'];
@@ -13093,7 +13093,7 @@ export type UpdateUserAnimeScoreMutationVariables = Exact<{
 }>;
 
 
-export type UpdateUserAnimeScoreMutation = { __typename?: 'Mutation', insertOrUpdateAnimeUserScore?: { __typename?: 'InsertOrUpdateAnimeUserScorePayload', clientMutationId?: string | null | undefined, query?: { __typename?: 'Query', animes?: { __typename?: 'AnimeConnection', nodes: Array<{ __typename?: 'Anime', id: any, title: string, coverImage?: string | null | undefined, numberOfEpisodes?: number | null | undefined, averageWatcherRating?: any | null | undefined, userLiked?: boolean | null | undefined, userRating?: any | null | undefined, userWatchStatus?: string | null | undefined, userEpisodeCount?: any | null | undefined, startBroadcastDatetime?: any | null | undefined, airingStatusType?: AiringStatusTypes | null | undefined }> } | null | undefined } | null | undefined } | null | undefined };
+export type UpdateUserAnimeScoreMutation = { __typename?: 'Mutation', insertOrUpdateAnimeUserScore?: { __typename?: 'InsertOrUpdateAnimeUserScorePayload', clientMutationId?: string | null | undefined, query?: { __typename?: 'Query', animes?: { __typename?: 'AnimeConnection', nodes: Array<{ __typename?: 'Anime', id: any, title: string, coverImage?: string | null | undefined, numberOfEpisodes?: number | null | undefined, averageWatcherRating?: any | null | undefined, userLiked?: boolean | null | undefined, userRating?: any | null | undefined, userWatchStatus?: string | null | undefined, userEpisodeCount?: any | null | undefined, startBroadcastDatetime?: any | null | undefined, airingStatusType?: AiringStatusTypes | null | undefined, description?: string | null | undefined, mediaType?: MediaTypes | null | undefined, duration?: number | null | undefined, season?: Season | null | undefined, seasonYear?: number | null | undefined, studioList: { __typename?: 'StudiosConnection', nodes: Array<{ __typename?: 'Studio', id: any, studio: string }> }, genreList: { __typename?: 'GenresConnection', nodes: Array<{ __typename?: 'Genre', genre: string, id: any }> } }> } | null | undefined } | null | undefined } | null | undefined };
 
 export type UpdateUserEpisodeCountMutationVariables = Exact<{
   animeId: Scalars['UUID'];
@@ -13102,7 +13102,7 @@ export type UpdateUserEpisodeCountMutationVariables = Exact<{
 }>;
 
 
-export type UpdateUserEpisodeCountMutation = { __typename?: 'Mutation', updateUserWatchStatus?: { __typename?: 'UpdateUserWatchStatusPayload', clientMutationId?: string | null | undefined, query?: { __typename?: 'Query', animes?: { __typename?: 'AnimeConnection', nodes: Array<{ __typename?: 'Anime', id: any, title: string, coverImage?: string | null | undefined, numberOfEpisodes?: number | null | undefined, averageWatcherRating?: any | null | undefined, userLiked?: boolean | null | undefined, userRating?: any | null | undefined, userWatchStatus?: string | null | undefined, userEpisodeCount?: any | null | undefined, startBroadcastDatetime?: any | null | undefined, airingStatusType?: AiringStatusTypes | null | undefined }> } | null | undefined } | null | undefined } | null | undefined };
+export type UpdateUserEpisodeCountMutation = { __typename?: 'Mutation', updateUserWatchStatus?: { __typename?: 'UpdateUserWatchStatusPayload', clientMutationId?: string | null | undefined, query?: { __typename?: 'Query', animes?: { __typename?: 'AnimeConnection', nodes: Array<{ __typename?: 'Anime', id: any, title: string, coverImage?: string | null | undefined, numberOfEpisodes?: number | null | undefined, averageWatcherRating?: any | null | undefined, userLiked?: boolean | null | undefined, userRating?: any | null | undefined, userWatchStatus?: string | null | undefined, userEpisodeCount?: any | null | undefined, startBroadcastDatetime?: any | null | undefined, airingStatusType?: AiringStatusTypes | null | undefined, description?: string | null | undefined, mediaType?: MediaTypes | null | undefined, duration?: number | null | undefined, season?: Season | null | undefined, seasonYear?: number | null | undefined, studioList: { __typename?: 'StudiosConnection', nodes: Array<{ __typename?: 'Studio', id: any, studio: string }> }, genreList: { __typename?: 'GenresConnection', nodes: Array<{ __typename?: 'Genre', genre: string, id: any }> } }> } | null | undefined } | null | undefined } | null | undefined };
 
 export type AddAnimeToUserAnimeListMutationVariables = Exact<{
   animeListId: Scalars['UUID'];
@@ -13118,7 +13118,7 @@ export type DeleteAnimeFromListMutationVariables = Exact<{
 }>;
 
 
-export type DeleteAnimeFromListMutation = { __typename?: 'Mutation', deleteUserAnimeListByAnimeListIdAndAnimeId?: { __typename?: 'DeleteUserAnimeListPayload', clientMutationId?: string | null | undefined, deletedUserAnimeListNodeId?: string | null | undefined, query?: { __typename?: 'Query', animes?: { __typename?: 'AnimeConnection', nodes: Array<{ __typename?: 'Anime', id: any, title: string, coverImage?: string | null | undefined, numberOfEpisodes?: number | null | undefined, averageWatcherRating?: any | null | undefined, userLiked?: boolean | null | undefined, userRating?: any | null | undefined, userWatchStatus?: string | null | undefined, userEpisodeCount?: any | null | undefined, startBroadcastDatetime?: any | null | undefined, airingStatusType?: AiringStatusTypes | null | undefined }> } | null | undefined } | null | undefined } | null | undefined };
+export type DeleteAnimeFromListMutation = { __typename?: 'Mutation', deleteUserAnimeListByAnimeListIdAndAnimeId?: { __typename?: 'DeleteUserAnimeListPayload', clientMutationId?: string | null | undefined, deletedUserAnimeListNodeId?: string | null | undefined, query?: { __typename?: 'Query', animes?: { __typename?: 'AnimeConnection', nodes: Array<{ __typename?: 'Anime', id: any, title: string, coverImage?: string | null | undefined, numberOfEpisodes?: number | null | undefined, averageWatcherRating?: any | null | undefined, userLiked?: boolean | null | undefined, userRating?: any | null | undefined, userWatchStatus?: string | null | undefined, userEpisodeCount?: any | null | undefined, startBroadcastDatetime?: any | null | undefined, airingStatusType?: AiringStatusTypes | null | undefined, description?: string | null | undefined, mediaType?: MediaTypes | null | undefined, duration?: number | null | undefined, season?: Season | null | undefined, seasonYear?: number | null | undefined, studioList: { __typename?: 'StudiosConnection', nodes: Array<{ __typename?: 'Studio', id: any, studio: string }> }, genreList: { __typename?: 'GenresConnection', nodes: Array<{ __typename?: 'Genre', genre: string, id: any }> } }> } | null | undefined } | null | undefined } | null | undefined };
 
 export type AddAnimeToListMutationVariables = Exact<{
   inputAnimeId: Scalars['UUID'];
@@ -13127,7 +13127,7 @@ export type AddAnimeToListMutationVariables = Exact<{
 }>;
 
 
-export type AddAnimeToListMutation = { __typename?: 'Mutation', insertAnimeToUserList?: { __typename?: 'InsertAnimeToUserListPayload', clientMutationId?: string | null | undefined, query?: { __typename?: 'Query', animes?: { __typename?: 'AnimeConnection', nodes: Array<{ __typename?: 'Anime', id: any, title: string, coverImage?: string | null | undefined, numberOfEpisodes?: number | null | undefined, averageWatcherRating?: any | null | undefined, userLiked?: boolean | null | undefined, userRating?: any | null | undefined, userWatchStatus?: string | null | undefined, userEpisodeCount?: any | null | undefined, startBroadcastDatetime?: any | null | undefined, airingStatusType?: AiringStatusTypes | null | undefined }> } | null | undefined } | null | undefined } | null | undefined };
+export type AddAnimeToListMutation = { __typename?: 'Mutation', insertAnimeToUserList?: { __typename?: 'InsertAnimeToUserListPayload', clientMutationId?: string | null | undefined, query?: { __typename?: 'Query', animes?: { __typename?: 'AnimeConnection', nodes: Array<{ __typename?: 'Anime', id: any, title: string, coverImage?: string | null | undefined, numberOfEpisodes?: number | null | undefined, averageWatcherRating?: any | null | undefined, userLiked?: boolean | null | undefined, userRating?: any | null | undefined, userWatchStatus?: string | null | undefined, userEpisodeCount?: any | null | undefined, startBroadcastDatetime?: any | null | undefined, airingStatusType?: AiringStatusTypes | null | undefined, description?: string | null | undefined, mediaType?: MediaTypes | null | undefined, duration?: number | null | undefined, season?: Season | null | undefined, seasonYear?: number | null | undefined, studioList: { __typename?: 'StudiosConnection', nodes: Array<{ __typename?: 'Studio', id: any, studio: string }> }, genreList: { __typename?: 'GenresConnection', nodes: Array<{ __typename?: 'Genre', genre: string, id: any }> } }> } | null | undefined } | null | undefined } | null | undefined };
 
 export type CreateNewListMutationVariables = Exact<{
   userId: Scalars['String'];
@@ -13161,7 +13161,7 @@ export type UpsertUserWatchStatusMutationVariables = Exact<{
 }>;
 
 
-export type UpsertUserWatchStatusMutation = { __typename?: 'Mutation', upsertUserWatchStatus?: { __typename?: 'UpsertUserWatchStatusPayload', clientMutationId?: string | null | undefined, query?: { __typename?: 'Query', animes?: { __typename?: 'AnimeConnection', nodes: Array<{ __typename?: 'Anime', id: any, title: string, coverImage?: string | null | undefined, numberOfEpisodes?: number | null | undefined, averageWatcherRating?: any | null | undefined, userLiked?: boolean | null | undefined, userRating?: any | null | undefined, userWatchStatus?: string | null | undefined, userEpisodeCount?: any | null | undefined, startBroadcastDatetime?: any | null | undefined, airingStatusType?: AiringStatusTypes | null | undefined }> } | null | undefined } | null | undefined } | null | undefined };
+export type UpsertUserWatchStatusMutation = { __typename?: 'Mutation', upsertUserWatchStatus?: { __typename?: 'UpsertUserWatchStatusPayload', clientMutationId?: string | null | undefined, query?: { __typename?: 'Query', animes?: { __typename?: 'AnimeConnection', nodes: Array<{ __typename?: 'Anime', id: any, title: string, coverImage?: string | null | undefined, numberOfEpisodes?: number | null | undefined, averageWatcherRating?: any | null | undefined, userLiked?: boolean | null | undefined, userRating?: any | null | undefined, userWatchStatus?: string | null | undefined, userEpisodeCount?: any | null | undefined, startBroadcastDatetime?: any | null | undefined, airingStatusType?: AiringStatusTypes | null | undefined, description?: string | null | undefined, mediaType?: MediaTypes | null | undefined, duration?: number | null | undefined, season?: Season | null | undefined, seasonYear?: number | null | undefined, studioList: { __typename?: 'StudiosConnection', nodes: Array<{ __typename?: 'Studio', id: any, studio: string }> }, genreList: { __typename?: 'GenresConnection', nodes: Array<{ __typename?: 'Genre', genre: string, id: any }> } }> } | null | undefined } | null | undefined } | null | undefined };
 
 export type CreateNewListAddAnimeMutationVariables = Exact<{
   animeidinput: Scalars['UUID'];
@@ -13215,7 +13215,7 @@ export type CurrentlyAiringContinuedQueryVariables = Exact<{
 }>;
 
 
-export type CurrentlyAiringContinuedQuery = { __typename?: 'Query', animes?: { __typename?: 'AnimeConnection', nodes: Array<{ __typename?: 'Anime', id: any, title: string, coverImage?: string | null | undefined, numberOfEpisodes?: number | null | undefined, averageWatcherRating?: any | null | undefined, userLiked?: boolean | null | undefined, userRating?: any | null | undefined, userWatchStatus?: string | null | undefined, userEpisodeCount?: any | null | undefined, startBroadcastDatetime?: any | null | undefined, airingStatusType?: AiringStatusTypes | null | undefined }> } | null | undefined };
+export type CurrentlyAiringContinuedQuery = { __typename?: 'Query', animes?: { __typename?: 'AnimeConnection', nodes: Array<{ __typename?: 'Anime', id: any, title: string, coverImage?: string | null | undefined, numberOfEpisodes?: number | null | undefined, averageWatcherRating?: any | null | undefined, userLiked?: boolean | null | undefined, userRating?: any | null | undefined, userWatchStatus?: string | null | undefined, userEpisodeCount?: any | null | undefined, startBroadcastDatetime?: any | null | undefined, airingStatusType?: AiringStatusTypes | null | undefined, description?: string | null | undefined, mediaType?: MediaTypes | null | undefined, duration?: number | null | undefined, season?: Season | null | undefined, seasonYear?: number | null | undefined, studioList: { __typename?: 'StudiosConnection', nodes: Array<{ __typename?: 'Studio', id: any, studio: string }> }, genreList: { __typename?: 'GenresConnection', nodes: Array<{ __typename?: 'Genre', genre: string, id: any }> } }> } | null | undefined };
 
 export type CurrentlyAiringQueryVariables = Exact<{
   limit: Scalars['Int'];
@@ -13224,14 +13224,14 @@ export type CurrentlyAiringQueryVariables = Exact<{
 }>;
 
 
-export type CurrentlyAiringQuery = { __typename?: 'Query', animes?: { __typename?: 'AnimeConnection', nodes: Array<{ __typename?: 'Anime', id: any, title: string, coverImage?: string | null | undefined, numberOfEpisodes?: number | null | undefined, averageWatcherRating?: any | null | undefined, userLiked?: boolean | null | undefined, userRating?: any | null | undefined, userWatchStatus?: string | null | undefined, userEpisodeCount?: any | null | undefined, startBroadcastDatetime?: any | null | undefined, airingStatusType?: AiringStatusTypes | null | undefined }> } | null | undefined };
+export type CurrentlyAiringQuery = { __typename?: 'Query', animes?: { __typename?: 'AnimeConnection', nodes: Array<{ __typename?: 'Anime', id: any, title: string, coverImage?: string | null | undefined, numberOfEpisodes?: number | null | undefined, averageWatcherRating?: any | null | undefined, userLiked?: boolean | null | undefined, userRating?: any | null | undefined, userWatchStatus?: string | null | undefined, userEpisodeCount?: any | null | undefined, startBroadcastDatetime?: any | null | undefined, airingStatusType?: AiringStatusTypes | null | undefined, description?: string | null | undefined, mediaType?: MediaTypes | null | undefined, duration?: number | null | undefined, season?: Season | null | undefined, seasonYear?: number | null | undefined, studioList: { __typename?: 'StudiosConnection', nodes: Array<{ __typename?: 'Studio', id: any, studio: string }> }, genreList: { __typename?: 'GenresConnection', nodes: Array<{ __typename?: 'Genre', genre: string, id: any }> } }> } | null | undefined };
 
 export type HighestRatedAnimesQueryVariables = Exact<{
   limit: Scalars['Int'];
 }>;
 
 
-export type HighestRatedAnimesQuery = { __typename?: 'Query', animes?: { __typename?: 'AnimeConnection', nodes: Array<{ __typename?: 'Anime', id: any, title: string, coverImage?: string | null | undefined, numberOfEpisodes?: number | null | undefined, averageWatcherRating?: any | null | undefined, userLiked?: boolean | null | undefined, userRating?: any | null | undefined, userWatchStatus?: string | null | undefined, userEpisodeCount?: any | null | undefined, startBroadcastDatetime?: any | null | undefined, airingStatusType?: AiringStatusTypes | null | undefined }> } | null | undefined };
+export type HighestRatedAnimesQuery = { __typename?: 'Query', animes?: { __typename?: 'AnimeConnection', nodes: Array<{ __typename?: 'Anime', id: any, title: string, coverImage?: string | null | undefined, numberOfEpisodes?: number | null | undefined, averageWatcherRating?: any | null | undefined, userLiked?: boolean | null | undefined, userRating?: any | null | undefined, userWatchStatus?: string | null | undefined, userEpisodeCount?: any | null | undefined, startBroadcastDatetime?: any | null | undefined, airingStatusType?: AiringStatusTypes | null | undefined, description?: string | null | undefined, mediaType?: MediaTypes | null | undefined, duration?: number | null | undefined, season?: Season | null | undefined, seasonYear?: number | null | undefined, studioList: { __typename?: 'StudiosConnection', nodes: Array<{ __typename?: 'Studio', id: any, studio: string }> }, genreList: { __typename?: 'GenresConnection', nodes: Array<{ __typename?: 'Genre', genre: string, id: any }> } }> } | null | undefined };
 
 export type UserListsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -13243,7 +13243,7 @@ export type WeeklyAnimesQueryVariables = Exact<{
 }>;
 
 
-export type WeeklyAnimesQuery = { __typename?: 'Query', animes?: { __typename?: 'AnimeConnection', nodes: Array<{ __typename?: 'Anime', id: any, title: string, coverImage?: string | null | undefined, numberOfEpisodes?: number | null | undefined, averageWatcherRating?: any | null | undefined, userLiked?: boolean | null | undefined, userRating?: any | null | undefined, userWatchStatus?: string | null | undefined, userEpisodeCount?: any | null | undefined, startBroadcastDatetime?: any | null | undefined, airingStatusType?: AiringStatusTypes | null | undefined }> } | null | undefined };
+export type WeeklyAnimesQuery = { __typename?: 'Query', animes?: { __typename?: 'AnimeConnection', nodes: Array<{ __typename?: 'Anime', id: any, title: string, coverImage?: string | null | undefined, numberOfEpisodes?: number | null | undefined, averageWatcherRating?: any | null | undefined, userLiked?: boolean | null | undefined, userRating?: any | null | undefined, userWatchStatus?: string | null | undefined, userEpisodeCount?: any | null | undefined, startBroadcastDatetime?: any | null | undefined, airingStatusType?: AiringStatusTypes | null | undefined, description?: string | null | undefined, mediaType?: MediaTypes | null | undefined, duration?: number | null | undefined, season?: Season | null | undefined, seasonYear?: number | null | undefined, studioList: { __typename?: 'StudiosConnection', nodes: Array<{ __typename?: 'Studio', id: any, studio: string }> }, genreList: { __typename?: 'GenresConnection', nodes: Array<{ __typename?: 'Genre', genre: string, id: any }> } }> } | null | undefined };
 
 export type GetAnimeQueryVariables = Exact<{
   animeId: Scalars['UUID'];
@@ -13276,7 +13276,7 @@ export type UserCustomAnimeListByWatchStatusQueryVariables = Exact<{
 }>;
 
 
-export type UserCustomAnimeListByWatchStatusQuery = { __typename?: 'Query', animes?: { __typename?: 'AnimeConnection', nodes: Array<{ __typename?: 'Anime', id: any, title: string, coverImage?: string | null | undefined, numberOfEpisodes?: number | null | undefined, averageWatcherRating?: any | null | undefined, userLiked?: boolean | null | undefined, userRating?: any | null | undefined, userWatchStatus?: string | null | undefined, userEpisodeCount?: any | null | undefined, startBroadcastDatetime?: any | null | undefined, airingStatusType?: AiringStatusTypes | null | undefined }> } | null | undefined };
+export type UserCustomAnimeListByWatchStatusQuery = { __typename?: 'Query', animes?: { __typename?: 'AnimeConnection', nodes: Array<{ __typename?: 'Anime', id: any, title: string, coverImage?: string | null | undefined, numberOfEpisodes?: number | null | undefined, averageWatcherRating?: any | null | undefined, userLiked?: boolean | null | undefined, userRating?: any | null | undefined, userWatchStatus?: string | null | undefined, userEpisodeCount?: any | null | undefined, startBroadcastDatetime?: any | null | undefined, airingStatusType?: AiringStatusTypes | null | undefined, description?: string | null | undefined, mediaType?: MediaTypes | null | undefined, duration?: number | null | undefined, season?: Season | null | undefined, seasonYear?: number | null | undefined, studioList: { __typename?: 'StudiosConnection', nodes: Array<{ __typename?: 'Studio', id: any, studio: string }> }, genreList: { __typename?: 'GenresConnection', nodes: Array<{ __typename?: 'Genre', genre: string, id: any }> } }> } | null | undefined };
 
 export type GetGenresQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -13392,6 +13392,23 @@ export const AnimeCardFragmentFragmentDoc = gql`
   userEpisodeCount
   startBroadcastDatetime
   airingStatusType
+  description
+  mediaType
+  duration
+  season
+  seasonYear
+  studioList {
+    nodes {
+      id
+      studio
+    }
+  }
+  genreList {
+    nodes {
+      genre
+      id
+    }
+  }
 }
     `;
 export const AnimeListFragmentFragmentDoc = gql`

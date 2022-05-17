@@ -10,4 +10,22 @@ fragment AnimeCardFragment on Anime {
   userEpisodeCount
   startBroadcastDatetime
   airingStatusType
+  description
+  mediaType
+  duration
+  season
+  seasonYear
+  studioList {
+    nodes {
+      id
+      studio
+    }
+  }
+
+  genreList {
+    nodes {
+      genre
+      id
+    }
+  }
 }

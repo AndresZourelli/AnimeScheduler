@@ -1,4 +1,11 @@
-import { HStack, Box, Heading } from "@chakra-ui/react";
+import {
+  HStack,
+  Box,
+  Heading,
+  Text,
+  Skeleton,
+  SkeletonText,
+} from "@chakra-ui/react";
 import AnimeCard from "@/components/Home/AnimeCard";
 import { useRef } from "react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
@@ -11,9 +18,10 @@ import {
 type Anime = CurrentlyAiringContinuedQuery["animes"]["nodes"][0];
 interface HorizontalScrollInterface {
   animes: Anime[];
+  fetching: boolean;
 }
 
-const HorizontalScroll = ({ animes }: HorizontalScrollInterface) => {
+const HorizontalScroll = ({ animes, fetching }: HorizontalScrollInterface) => {
   const currentRef = useRef(null);
 
   const prevSlide = () => {
@@ -64,15 +72,33 @@ const HorizontalScroll = ({ animes }: HorizontalScrollInterface) => {
         <HStack
           width="full"
           overflow="hidden"
-          spacing="15px"
+          spacing="8px"
           ref={currentRef}
           sx={{ scrollBehavior: "smooth" }}
         >
-          {display.length == 0 ? (
-            <Heading size="sm">No Animes Found</Heading>
+          {display.length == 0 && !fetching ? (
+            <Text fontWeight="semibold">No Animes Found</Text>
           ) : (
             display
           )}
+          {fetching ? (
+            <>
+              {Array(6)
+                .fill(1)
+                .map((value, i) => (
+                  <Box
+                    key={i}
+                    h="395px"
+                    w="225px"
+                    minW="225px"
+                    overflow="hidden"
+                  >
+                    <Skeleton h="337px" borderRadius="md" />
+                    <SkeletonText pt="3" />
+                  </Box>
+                ))}
+            </>
+          ) : null}
         </HStack>
       </Box>
     </>

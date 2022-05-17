@@ -163,13 +163,15 @@ const Nav = () => {
           <ImageLoader
             image_url="/coffee_jelly3.svg"
             alt="Coffee Jelly Logo"
+            w="40px"
+            h="40px"
             maxW="40px"
             minH="40px"
           />
         </Box>
         <Box>
-          <Heading size="md" mr="4" textStyle="h2">
-            <NextLink href="/">animé café</NextLink>
+          <Heading mr="4" color="accent_color">
+            <NextLink href="/">AniCafé</NextLink>
           </Heading>
         </Box>
         <Spacer />

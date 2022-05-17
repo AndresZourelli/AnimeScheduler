@@ -1,6 +1,6 @@
 import HorizontalScroll from "@/components/Home/HorizontalScroll";
 import { useCurrentlyAiringContinuedQuery, Season } from "@/graphql";
-import { Box, Heading } from "@chakra-ui/react";
+import { Box, Heading, Text } from "@chakra-ui/react";
 
 const CurrentlyAiringContinue = () => {
   const seasons = {
@@ -40,11 +40,14 @@ const CurrentlyAiringContinue = () => {
     });
 
   return (
-    <Box>
+    <Box minH="500px">
       <Heading mt="25px" ml="50px">
         Continuing This Season
       </Heading>
-      <HorizontalScroll animes={currentAiringContResult?.data?.animes?.nodes} />
+      <HorizontalScroll
+        animes={currentAiringContResult?.data?.animes?.nodes}
+        fetching={currentAiringContResult.fetching}
+      />
     </Box>
   );
 };

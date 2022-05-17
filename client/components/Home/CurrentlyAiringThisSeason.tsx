@@ -39,11 +39,14 @@ const CurrentlyAiringThisSeason = () => {
     },
   });
   return (
-    <Box>
+    <Box minH="500px">
       <Heading mt="25px" ml="50px">
         Currently Airing {currentSeason}
       </Heading>
-      <HorizontalScroll animes={currentAiringResult?.data?.animes?.nodes} />
+      <HorizontalScroll
+        animes={currentAiringResult?.data?.animes?.nodes}
+        fetching={currentAiringResult.fetching}
+      />
     </Box>
   );
 };

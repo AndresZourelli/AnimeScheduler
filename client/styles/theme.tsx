@@ -18,29 +18,34 @@ const customTheme = extendTheme({
         display: "flex",
         flexDirection: "column",
         minHeight: "100vh",
-        bg: mode("light_grey", "darkish_grey")(props),
-        color: mode("desaturated_rose", "baby_pink")(props),
+        bg: mode("light_grey", "dark_grey")(props),
+        color: mode("dark_grey", "accent_color")(props),
       },
     }),
   },
   colors: {
-    baby_pink: "#FEDCE8",
-    dusty_rose: "#CC9BA0",
-    desaturated_rose: "#4D1C30",
-    dark_grey: "#371C29",
-    darkish_grey: "#604C4E",
-    mid_dark_grey: "#51363C",
-    light_grey: "#F2F0F2",
-    lightish_grey: "#CDC4C4",
-    mid_light_grey: "#DEDADA",
+    mid_dark_grey: "#333333",
+    light_grey: "#9E9E9E",
+    lightish_grey: "#8C8C8C",
+    mid_light_grey: "#757373",
+
+    dark_grey: "#1C1C1C",
+    main_color: "#EA95B9",
+    accent_color: "#FDDDE8",
   },
   fonts: {
-    body: "'Source Sans Pro'",
-    heading: "'Balsamiq Sans'",
+    body: "'Barlow'",
+    heading: "'Barlow'",
   },
-  textStyles: {
-    h2: {
-      fontSize: "24pt",
+  components: {
+    Heading: {
+      baseStyle: {
+        color: "main_color",
+        fontWeight: "semibold",
+      },
+    },
+    Text: {
+      color: "accent_color",
     },
   },
   ...header,
