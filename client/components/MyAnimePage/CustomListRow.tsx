@@ -12,16 +12,27 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import NextImage from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useDrag, useDrop } from "react-dnd";
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 import { MdDragHandle } from "react-icons/md";
 import useAnimeList from "../Hooks/useAnimeList";
+import { Identifier, XYCoord } from "dnd-core";
 
 interface AnimeItemInterface extends CustomAnimeList {
   animeIndex?: string;
   index?: number;
-  dragProvided?: any;
-  dragSnapshot?: any;
+  moveListItem: (id: string, atIndex: number) => void;
+  updatePosition: (id: string, atIndex: number) => void;
+  animeList: any[];
+  findCard: (id: string) => any;
+}
+
+interface DragItem {
+  originalIndex: number;
+  id: string;
+  type: string;
+  name: string;
 }
 
 const CustomListRow = ({
@@ -35,9 +46,11 @@ const CustomListRow = ({
   watchStatus,
   userScore,
   averageWatcherRating,
-  dragProvided,
   animeId,
-  dragSnapshot,
+  moveListItem,
+  animeList,
+  findCard,
+  updatePosition,
 }: AnimeItemInterface) => {
   const [imageLoaded, setImageLoaded] = useState(false);
   const {
@@ -57,6 +70,50 @@ const CustomListRow = ({
   const imagedLoading = () => {
     setImageLoaded(true);
   };
+  const originalIndex = findCard(animeId).index;
+  const [{ isDragging }, drag, dragPreview] = useDrag(
+    () => ({
+      // "type" is required. It is used by the "accept" specification of drop targets.
+      type: "UserAnimeListItem",
+      // The collect function utilizes a "monitor" instance (see the Overview for what this is)
+      // to pull important pieces of state from the DnD system.
+      collect: (monitor) => ({
+        isDragging: monitor.isDragging(),
+      }),
+      item: () => ({ id: animeId, originalIndex, name: title }),
+      end: (item, monitor) => {
+        const { id: droppedId, originalIndex } = item;
+        const didDrop = monitor.didDrop();
+        if (!didDrop) {
+          moveListItem(droppedId, originalIndex);
+        } else {
+          updatePosition(droppedId, originalIndex);
+        }
+      },
+    }),
+    [index, animeId, title]
+  );
+
+  const ref = useRef(null);
+
+  const [{ handlerId }, drop] = useDrop<
+    DragItem,
+    void,
+    { handlerId: Identifier | null }
+  >(
+    () => ({
+      accept: "UserAnimeListItem",
+      collect: (monitor) => ({ handlerId: monitor.getHandlerId() }),
+      hover: (item: DragItem, monitor) => {
+        if (item.id !== animeId) {
+          const { index: overIndex } = findCard(animeId);
+          moveListItem(item.id, overIndex);
+        }
+      },
+    }),
+    [index, ref, moveListItem]
+  );
+
   useEffect(() => {
     if (watchStatus) {
       setUserAnimeWatchStatus(watchStatus);
@@ -74,15 +131,19 @@ const CustomListRow = ({
       setUserEpisodeCount(userEpisodesWatched);
     }
   }, [userEpisodesWatched, setUserEpisodeCount]);
+  drag(drop(ref));
   return (
     <Tr
       key={id}
-      ref={dragProvided.innerRef}
-      {...dragProvided.draggableProps}
-      isDragging={dragSnapshot.isDragging && !dragSnapshot.isDropAnimating}
+      ref={ref}
+      role="Handle"
+      style={{ opacity: isDragging ? 0 : 1 }}
+      data-handler-id={handlerId}
+      h="100px"
+      maxH="100px"
     >
       <Td>
-        <Box {...dragProvided.dragHandleProps}>
+        <Box>
           <Icon as={MdDragHandle} boxSize="7" />
         </Box>
       </Td>
@@ -101,7 +162,7 @@ const CustomListRow = ({
       <Td w="250px">{title}</Td>
       <Td w="250px">{mediaType}</Td>
       <Td w="250px">
-        <Box d="flex" justifyContent="flex-start" alignItems="center">
+        <Box display="flex" justifyContent="flex-start" alignItems="center">
           <Tooltip label="Decrease your episode count">
             <IconButton
               colorScheme="gray"

@@ -27,7 +27,7 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { Formik, Field } from "formik";
-import moment from "moment-timezone";
+import { format } from "date-fns";
 
 interface AddToListRowInterface {
   animeId: string;
@@ -43,7 +43,7 @@ const AddToListRow = ({ animeId }: AddToListRowInterface) => {
     watchStatus: WatchStatusTypes.PlanToWatch,
     userScore: 0,
     episodesWatched: 0,
-    startDate: moment().local(true).format("YYYY-MM-DD"),
+    startDate: format(new Date(), "YYYY-MM-DD"),
     endDate: "",
     totalRewatched: 0,
   };
@@ -93,7 +93,7 @@ const AddToListRow = ({ animeId }: AddToListRowInterface) => {
   const submitStatusWatch = () => {
     runUpdateAnimeWatchStatus({
       animeId: animeId,
-      userId: user?.uid,
+      userId: user?.userId,
       watchStatus: selectWatchStatus,
     });
   };

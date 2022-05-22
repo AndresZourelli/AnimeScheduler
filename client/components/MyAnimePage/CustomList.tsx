@@ -1,35 +1,29 @@
 import {
   CustomAnimeList,
-  useUpdateListIndexMutation,
-  useUserCustomAnimeListQuery,
   useDeleteUserAnimeListMutation,
+  useUpdateListIndexMutation,
   useUpdateUserAnimeListTitleMutation,
+  useUserCustomAnimeListQuery,
 } from "@/graphql";
-import { reorder } from "@/utilities/helperFunctions";
+// import { reorder } from "@/utilities/helperFunctions";
 import { Lexico } from "@/utilities/lexicoHelperFunctions";
 import {
   Box,
+  Button,
+  Flex,
   Heading,
+  IconButton,
+  Input,
   Table,
   Tbody,
   Th,
   Thead,
   Tr,
-  Button,
-  Flex,
   useToast,
-  IconButton,
-  Input,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import {
-  DragDropContext,
-  Draggable,
-  Droppable,
-  DropResult,
-} from "react-beautiful-dnd";
+import { FiEdit, FiSave, FiXSquare } from "react-icons/fi";
 import CustomListRow from "./CustomListRow";
-import { FiEdit, FiXSquare, FiSave } from "react-icons/fi";
 
 interface CustomListInterface {
   listId: string;
@@ -48,42 +42,55 @@ const CustomList = ({ listId, listTitle }: CustomListInterface) => {
   const [, mutationDeleteUserList] = useDeleteUserAnimeListMutation();
   const [, mutationUpdateUserListTitle] = useUpdateUserAnimeListTitleMutation();
   const toast = useToast();
-  const onDragEnd = (result: DropResult) => {
-    if (!result.destination) {
-      return;
-    }
+
+  const reorder = (list: any[], startIndex: number, endIndex: number) => {
+    const result = Array.from(list);
+    const [removed] = result.splice(startIndex, 1);
+    result.splice(endIndex, 0, removed);
+    return result;
+  };
+
+  const moveListItem = (id: string, newIndex: number) => {
+    const { card, index: prevIndex } = findCard(id);
+    console.log("prev:", prevIndex, "new:", newIndex);
     const newItems: CustomAnimeList[] = reorder(
       animeItems,
-      result.source.index,
-      result.destination.index
+      prevIndex,
+      newIndex
     );
-    if (result.destination.index === 0) {
-      newItems[result.destination.index].animeIndex = Lexico.positionBefore(
-        animeItems[result.destination.index].animeIndex as string
+    if (newIndex === 0) {
+      newItems[newIndex].animeIndex = Lexico.positionBefore(
+        animeItems[newIndex].animeIndex as string
       );
-    } else if (result.destination.index === newItems.length - 1) {
-      newItems[result.destination.index].animeIndex = Lexico.positionAfter(
-        animeItems[result.destination.index].animeIndex as string
+    } else if (newIndex === newItems.length - 1) {
+      newItems[newIndex].animeIndex = Lexico.positionAfter(
+        animeItems[newIndex].animeIndex as string
       );
     } else {
-      if (result.source.index < result.destination.index) {
-        newItems[result.destination.index].animeIndex = Lexico.positionBetween(
-          animeItems[result.destination.index].animeIndex as string,
-          animeItems[result.destination.index + 1].animeIndex as string
+      if (prevIndex < newIndex) {
+        newItems[newIndex].animeIndex = Lexico.positionBetween(
+          animeItems[newIndex].animeIndex as string,
+          animeItems[newIndex + 1].animeIndex as string
         );
       } else {
-        newItems[result.destination.index].animeIndex = Lexico.positionBetween(
-          animeItems[result.destination.index - 1].animeIndex as string,
-          animeItems[result.destination.index].animeIndex as string
+        newItems[newIndex].animeIndex = Lexico.positionBetween(
+          animeItems[newIndex - 1].animeIndex as string,
+          animeItems[newIndex].animeIndex as string
         );
       }
     }
-    mutationUpdateCustomListIndex({
-      animeId: animeItems[result.source.index].animeId,
-      animeListId: listId,
-      animeIndex: newItems[result.destination.index].animeIndex,
-    });
+
     setAnimeItems(newItems);
+  };
+
+  const updatePosition = (id: string, prevIndex: number) => {
+    const { card, index: currentIndex } = findCard(id);
+
+    mutationUpdateCustomListIndex({
+      animeId: animeItems[currentIndex].animeId,
+      animeListId: listId,
+      animeIndex: animeItems[currentIndex].animeIndex,
+    });
   };
 
   const deleteUserList = async () => {
@@ -156,6 +163,14 @@ const CustomList = ({ listId, listTitle }: CustomListInterface) => {
     }
   };
 
+  const findCard = (id: string) => {
+    const card = animeItems.filter((c) => `${c.animeId}` === id)[0];
+    return {
+      card,
+      index: animeItems.indexOf(card),
+    };
+  };
+
   useEffect(() => {
     if (!userCustomListResult.fetching && userCustomListResult.data) {
       let tempList: CustomAnimeList[] = [
@@ -222,48 +237,35 @@ const CustomList = ({ listId, listTitle }: CustomListInterface) => {
         )}
       </Flex>
       <Box>
-        <DragDropContext onDragEnd={onDragEnd}>
-          <Table>
-            <Thead>
-              <Tr>
-                <Th />
-                <Th />
-                <Th />
-                <Th>Title</Th>
-                <Th>Media</Th>
-                <Th>Episodes Watched</Th>
-                <Th>Watch Status</Th>
-                <Th>User Score</Th>
-                <Th>Average Rating</Th>
-              </Tr>
-            </Thead>
-            <Droppable droppableId="droppable">
-              {(provided, snapshot) => (
-                <>
-                  <Tbody ref={provided.innerRef} {...provided.droppableProps}>
-                    {animeItems.map((anime, index) => (
-                      <Draggable
-                        key={anime.id}
-                        draggableId={anime.id}
-                        index={index}
-                      >
-                        {(drag_provided, drag_snapshot) => (
-                          <CustomListRow
-                            dragProvided={drag_provided}
-                            {...anime}
-                            index={index}
-                            dragSnapshot={drag_snapshot}
-                          />
-                        )}
-                      </Draggable>
-                    ))}
-                    {provided.placeholder}
-                  </Tbody>
-                </>
-              )}
-            </Droppable>
-          </Table>
-        </DragDropContext>
+        <Table>
+          <Thead>
+            <Tr>
+              <Th />
+              <Th />
+              <Th />
+              <Th>Title</Th>
+              <Th>Media</Th>
+              <Th>Episodes Watched</Th>
+              <Th>Watch Status</Th>
+              <Th>User Score</Th>
+              <Th>Average Rating</Th>
+            </Tr>
+          </Thead>
+
+          <Tbody>
+            {animeItems.map((anime, index) => (
+              <CustomListRow
+                key={anime.animeId + "-" + anime.id}
+                {...anime}
+                index={index}
+                moveListItem={moveListItem}
+                animeList={animeItems}
+                findCard={findCard}
+                updatePosition={updatePosition}
+              />
+            ))}
+          </Tbody>
+        </Table>
       </Box>
     </Box>
   );

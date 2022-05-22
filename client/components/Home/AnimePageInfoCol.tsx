@@ -16,7 +16,6 @@ import {
   StatNumber,
   Text,
 } from "@chakra-ui/react";
-import moment from "moment-timezone";
 import { useEffect, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import {
@@ -34,6 +33,8 @@ import {
   SourceMaterialTypes,
   GetAnimeQuery,
 } from "@/graphql";
+import { add, format } from "date-fns";
+import { formatInTimeZone } from "date-fns-tz";
 
 type AltAnimeNameType = GetAnimeQuery["anime"]["alternateAnimeNames"];
 type GenreListType = GetAnimeQuery["anime"]["genreList"];
@@ -88,12 +89,6 @@ const AnimePageInfoCol = ({
 
   let internal = useRef();
 
-  useEffect(() => {
-    if (fetching === false && title) {
-      getCountDown(startBroadcastDatetime);
-    }
-  }, [fetching, startBroadcastDatetime, title]);
-
   // if (!type || fetching) {
   //   return (
   //     <Box>
@@ -102,56 +97,8 @@ const AnimePageInfoCol = ({
   //   );
   // }
 
-  const getCountDown = (start) => {
-    const airDate = moment(start);
-    let today = moment();
-    while (airDate < today) {
-      airDate.add(1, "week");
-    }
-
-    const timer = setInterval(() => {
-      today = moment();
-      const diff = airDate.diff(today);
-      const day = Math.trunc(moment.duration(diff).asDays())?.toLocaleString(
-        "en-US",
-        {
-          minimumIntegerDigits: 2,
-          useGrouping: false,
-        }
-      );
-
-      const hour = (
-        Math.trunc(moment.duration(diff).asHours()) % 24
-      )?.toLocaleString("en-US", {
-        minimumIntegerDigits: 2,
-        useGrouping: false,
-      });
-      const minute = (
-        Math.trunc(moment.duration(diff).asMinutes()) % 60
-      )?.toLocaleString("en-US", {
-        minimumIntegerDigits: 2,
-        useGrouping: false,
-      });
-      const second = (
-        Math.trunc(moment.duration(diff).asSeconds()) % 60
-      )?.toLocaleString("en-US", {
-        minimumIntegerDigits: 2,
-        useGrouping: false,
-      });
-
-      if (diff < 0) {
-        clearInterval(internal.current);
-      } else {
-        setTimerDays(day);
-        setTimerHours(hour);
-        setTimerMinutes(minute);
-        setTimerSeconds(second);
-      }
-    }, 1000);
-  };
-
   const momentObj: string = startBroadcastDatetime
-    ? moment.utc(startBroadcastDatetime).local().format("dddd, h:mm a")
+    ? format(new Date(startBroadcastDatetime), "EEEE, p")
     : "???";
 
   const air_date = startBroadcastDatetime
@@ -161,7 +108,7 @@ const AnimePageInfoCol = ({
     ? new Date(endBroadcastDatetime).toLocaleDateString()
     : "???";
 
-  const broadcast_time_jst = moment.utc(startBroadcastDatetime);
+  const broadcast_time_jst = new Date(startBroadcastDatetime);
   return (
     <Box m="8" w="md">
       <Box width="225px">
@@ -169,7 +116,7 @@ const AnimePageInfoCol = ({
           <ImageLoader image_url={coverImage} alt={title} maxW="225px" />
         </Box>
         <ButtonGroup my="4" isAttached w="100%">
-          <Button isFullWidth>Add to List</Button>
+          <Button w="full">Add to List</Button>
           <Menu>
             <MenuButton as={IconButton} icon={<ChevronDownIcon />} />
             <MenuList>
@@ -190,7 +137,13 @@ const AnimePageInfoCol = ({
       <Divider my="3" />
       <Box>
         <Heading size="sm">Broadcast Time</Heading>
-        <Text>{broadcast_time_jst.tz("Asia/Tokyo").format("HH:mm z")}</Text>
+        <Text>
+          {formatInTimeZone(
+            broadcast_time_jst,
+            "Asia/Tokyo",
+            "yyyy-MM-dd HH:mm:ss"
+          )}
+        </Text>
         <Heading size="sm" mt="3">
           Broadcast Time (Local Time)
         </Heading>
