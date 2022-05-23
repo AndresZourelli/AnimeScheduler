@@ -1,7 +1,7 @@
 import ChangeEmailField from "@/components/Account/ChangeEmailField";
 import ChangePasswordField from "@/components/Account/ChangePasswordField";
 import ChangeUsernameField from "@/components/Account/ChangeUsernameField";
-import { useAuth } from "@/lib/Auth/FirebaseAuth";
+import { useAuth } from "@/lib/Auth/Auth";
 import {
   Box,
   Heading,

@@ -1,6 +1,6 @@
 import ImageLoader from "@/components/Common/ImageLoader";
 import { useSearchAnimesQuery } from "@/graphql";
-import { useAuth } from "@/lib/Auth/FirebaseAuth";
+import { useAuth } from "@/lib/Auth/Auth";
 import { MoonIcon, Search2Icon, SunIcon } from "@chakra-ui/icons";
 import {
   Box,

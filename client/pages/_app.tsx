@@ -1,5 +1,5 @@
 import Nav from "@/components/Common/Nav";
-import { AppAuthProvider } from "@/lib/Auth/FirebaseAuth";
+import { AppAuthProvider } from "@/lib/Auth/Auth";
 import client from "@/lib/Urql/urqlClient";
 import customTheme from "@/styles/theme";
 import { Box, ChakraProvider } from "@chakra-ui/react";

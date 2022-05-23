@@ -14,7 +14,7 @@ import {
   GetLastItemInCustomListDocument,
   WatchStatusTypes,
 } from "@/graphql";
-import { useAuth, User } from "@/lib/Auth/FirebaseAuth";
+import { useAuth, User } from "@/lib/Auth/Auth";
 import { useToast } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useClient, UseMutationState } from "urql";

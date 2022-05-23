@@ -3,8 +3,7 @@ import CustomList from "@/components/MyAnimePage/CustomList";
 import MyAnimePageList from "@/components/MyAnimePage/MyAnimePageList";
 import CurrentlyAiringTab from "@/components/MyAnimePage/CurrentlyAiringTab";
 import { WatchStatusTypes } from "@/graphql";
-import { useAuth } from "@/lib/Auth/FirebaseAuth";
-import { withAuthPrivate } from "@/lib/Auth/withAuth";
+import { useAuth } from "@/lib/Auth/Auth";
 import {
   Box,
   Heading,
@@ -141,4 +140,4 @@ const MyAnimes = (props) => {
   );
 };
 
-export default withAuthPrivate(MyAnimes);
+export default MyAnimes;

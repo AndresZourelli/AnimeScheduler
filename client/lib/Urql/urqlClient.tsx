@@ -10,8 +10,8 @@ import {
 } from "urql";
 import { relayPagination } from "@urql/exchange-graphcache/extras";
 import { createClient as createWSClient } from "graphql-ws";
-import { auth } from "../../firebase/firebaseInit";
 import { checkTokenExpiration } from "../../utilities/checkTokenExpiration";
+import { doesSessionExist } from "supertokens-auth-react/recipe/session";
 
 interface ExtendedData extends Data {
   nodeId: string;
@@ -65,49 +65,6 @@ const client = createClient({
           unsubscribe: wsClient.subscribe(operation, sink),
         }),
       }),
-    }),
-    authExchange({
-      getAuth: async ({ authState }) => {
-        const user = auth.currentUser;
-        if (!authState) {
-          if (!user) {
-            return null;
-          }
-
-          const token = await user.getIdToken();
-          return { token };
-        }
-
-        const token = await user.getIdToken();
-
-        if (token) {
-          return { token };
-        }
-        return null;
-      },
-      addAuthToOperation: ({ authState, operation }) => {
-        const fetchOptions =
-          typeof operation.context.fetchOptions === "function"
-            ? operation.context.fetchOptions()
-            : operation.context.fetchOptions || {};
-
-        return makeOperation(operation.kind, operation, {
-          ...operation.context,
-          fetchOptions: {
-            ...fetchOptions,
-            headers: {
-              ...fetchOptions.headers,
-            },
-            credentials: "include",
-          },
-        });
-      },
-      willAuthError: ({ authState }) => {
-        if (!authState || checkTokenExpiration((authState as any).token)) {
-          return true;
-        }
-        return false;
-      },
     }),
     fetchExchange,
   ],

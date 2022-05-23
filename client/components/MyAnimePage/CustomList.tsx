@@ -52,7 +52,6 @@ const CustomList = ({ listId, listTitle }: CustomListInterface) => {
 
   const moveListItem = (id: string, newIndex: number) => {
     const { card, index: prevIndex } = findCard(id);
-    console.log("prev:", prevIndex, "new:", newIndex);
     const newItems: CustomAnimeList[] = reorder(
       animeItems,
       prevIndex,

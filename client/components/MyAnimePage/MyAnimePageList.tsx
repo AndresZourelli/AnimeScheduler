@@ -4,7 +4,7 @@ import {
   WatchStatusTypes,
   useUserCustomAnimeListByWatchStatusQuery,
 } from "@/graphql";
-import { useAuth } from "@/lib/Auth/FirebaseAuth";
+import { useAuth } from "@/lib/Auth/Auth";
 import { Box, Button, Grid, Heading, Text } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 

@@ -28,13 +28,11 @@ export const supertokensConfig: TypeInput = {
               }
 
               let response = await originalImplementation.signUpPOST(input);
-              console.log(response);
               if (response.status === "OK") {
                 let { id, email } = response.user;
                 let username = input.formFields.find(
                   (inputField: any) => inputField.id === "username"
                 )?.value;
-                console.log(input.formFields);
 
                 try {
                   const returnValue = await User.transaction(async (trx) => {
