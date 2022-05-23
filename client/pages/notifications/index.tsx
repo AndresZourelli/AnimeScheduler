@@ -7,6 +7,7 @@ import {
   useUserNotificationsQuery,
 } from "@/graphql";
 import AllNotificationsMain from "@/components/Notification/AllNotificationsMain";
+import { EmailPasswordAuthNoSSR } from "@/components/Common/ThirdPartyEmailPasswordAuthNoSSR";
 
 export enum AllNotifications {
   All = "ALL",
@@ -37,16 +38,18 @@ const NotificaitonsPage = () => {
   const [notificationsResult, fetchNotifications] = useUserNotificationsQuery();
 
   return (
-    <Flex minH="full" h="full" bg="gray.600" flexGrow="1">
-      <NotificationSideBar
-        selectedMenu={notificationType}
-        setSelectedMenu={setNotificationType}
-      />
-      {component(
-        notificationType,
-        notificationsResult.data?.airingNotifications.nodes
-      )}
-    </Flex>
+    <EmailPasswordAuthNoSSR>
+      <Flex minH="full" h="full" bg="gray.600" flexGrow="1">
+        <NotificationSideBar
+          selectedMenu={notificationType}
+          setSelectedMenu={setNotificationType}
+        />
+        {component(
+          notificationType,
+          notificationsResult.data?.airingNotifications.nodes
+        )}
+      </Flex>
+    </EmailPasswordAuthNoSSR>
   );
 };
 
