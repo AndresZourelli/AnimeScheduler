@@ -1,7 +1,7 @@
 import ChangeEmailField from "@/components/Account/ChangeEmailField";
 import ChangePasswordField from "@/components/Account/ChangePasswordField";
 import ChangeUsernameField from "@/components/Account/ChangeUsernameField";
-import { EmailPasswordAuthNoSSR } from "@/components/Common/ThirdPartyEmailPasswordAuthNoSSR";
+import { EmailPasswordAuthNoSSR } from "@/components/Common/EmailPasswordAuthNoSSR";
 import { useAuth } from "@/lib/Auth/Auth";
 import {
   Box,

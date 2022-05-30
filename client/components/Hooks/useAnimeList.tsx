@@ -13,6 +13,7 @@ import {
   useUpdateUserEpisodeCountMutation,
   GetLastItemInCustomListDocument,
   WatchStatusTypes,
+  UserListsQuery,
 } from "@/graphql";
 import { useAuth, User } from "@/lib/Auth/Auth";
 import { useToast } from "@chakra-ui/react";
@@ -53,7 +54,7 @@ interface UserAnimeListHook {
   >;
   user: User;
   error: boolean;
-  userAnimeLists: UserAnimeListInterface[];
+  userAnimeLists: IUserAnimeList[];
   updateWatchStatus: (animeId: String, watchStatus: WatchStatusTypes) => void;
   updateAnimeScore: (animeId: string, userScore: number) => void;
   updateEpisodeCount: (animeId: string, userEpisodesWatched: number) => void;
@@ -92,6 +93,8 @@ interface UseAnimeListInterface {
   animeTitle?: string | null;
 }
 
+type IUserAnimeList = UserListsQuery["animeLists"]["nodes"][0];
+
 const useAnimeList = ({
   inputAnimeId = null,
   animeTitle = null,
@@ -99,9 +102,7 @@ const useAnimeList = ({
   const client = useClient();
   const { user } = useAuth();
   const toast = useToast();
-  const [userAnimeLists, setUserAnimeLists] = useState<
-    UserAnimeListInterface[]
-  >([]);
+  const [userAnimeLists, setUserAnimeLists] = useState<IUserAnimeList[]>([]);
   const [error, setError] = useState(false);
   const [notification, setNotification] = useState<notificationType>(
     notificationType.none

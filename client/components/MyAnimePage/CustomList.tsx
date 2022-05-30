@@ -15,6 +15,7 @@ import {
   IconButton,
   Input,
   Table,
+  TableContainer,
   Tbody,
   Th,
   Thead,
@@ -42,7 +43,6 @@ const CustomList = ({ listId, listTitle }: CustomListInterface) => {
   const [, mutationDeleteUserList] = useDeleteUserAnimeListMutation();
   const [, mutationUpdateUserListTitle] = useUpdateUserAnimeListTitleMutation();
   const toast = useToast();
-
   const reorder = (list: any[], startIndex: number, endIndex: number) => {
     const result = Array.from(list);
     const [removed] = result.splice(startIndex, 1);
@@ -236,35 +236,37 @@ const CustomList = ({ listId, listTitle }: CustomListInterface) => {
         )}
       </Flex>
       <Box>
-        <Table>
-          <Thead>
-            <Tr>
-              <Th />
-              <Th />
-              <Th />
-              <Th>Title</Th>
-              <Th>Media</Th>
-              <Th>Episodes Watched</Th>
-              <Th>Watch Status</Th>
-              <Th>User Score</Th>
-              <Th>Average Rating</Th>
-            </Tr>
-          </Thead>
+        <TableContainer overflowX="hidden">
+          <Table>
+            <Thead>
+              <Tr>
+                <Th />
+                <Th />
+                <Th />
+                <Th>Title</Th>
+                <Th>Media</Th>
+                <Th>Episodes Watched</Th>
+                <Th>Watch Status</Th>
+                <Th>User Score</Th>
+                <Th>Average Rating</Th>
+              </Tr>
+            </Thead>
 
-          <Tbody>
-            {animeItems.map((anime, index) => (
-              <CustomListRow
-                key={anime.animeId + "-" + anime.id}
-                {...anime}
-                index={index}
-                moveListItem={moveListItem}
-                animeList={animeItems}
-                findCard={findCard}
-                updatePosition={updatePosition}
-              />
-            ))}
-          </Tbody>
-        </Table>
+            <Tbody>
+              {animeItems.map((anime, index) => (
+                <CustomListRow
+                  key={anime.animeId + "-" + anime.id}
+                  {...anime}
+                  index={index}
+                  moveListItem={moveListItem}
+                  animeList={animeItems}
+                  findCard={findCard}
+                  updatePosition={updatePosition}
+                />
+              ))}
+            </Tbody>
+          </Table>
+        </TableContainer>
       </Box>
     </Box>
   );

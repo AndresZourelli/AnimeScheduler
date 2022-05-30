@@ -7,7 +7,7 @@ import {
   useUserNotificationsQuery,
 } from "@/graphql";
 import AllNotificationsMain from "@/components/Notification/AllNotificationsMain";
-import { EmailPasswordAuthNoSSR } from "@/components/Common/ThirdPartyEmailPasswordAuthNoSSR";
+import { EmailPasswordAuthNoSSR } from "@/components/Common/EmailPasswordAuthNoSSR";
 
 export enum AllNotifications {
   All = "ALL",

@@ -82,12 +82,14 @@ const CustomListRow = ({
       }),
       item: () => ({ id: animeId, originalIndex, name: title }),
       end: (item, monitor) => {
-        const { id: droppedId, originalIndex } = item;
-        const didDrop = monitor.didDrop();
-        if (!didDrop) {
-          moveListItem(droppedId, originalIndex);
-        } else {
-          updatePosition(droppedId, originalIndex);
+        if (animeId !== item.id) {
+          const { id: droppedId, originalIndex } = item;
+          const didDrop = monitor.didDrop();
+          if (!didDrop) {
+            moveListItem(droppedId, originalIndex);
+          } else {
+            updatePosition(droppedId, originalIndex);
+          }
         }
       },
     }),
@@ -148,7 +150,7 @@ const CustomListRow = ({
         </Box>
       </Td>
       <Td>{index + 1}</Td>
-      <Td w="150px">
+      <Td w="150px" minWidth="150px">
         <Skeleton isLoaded={imageLoaded} maxW="50px">
           <AspectRatio ratio={2 / 3} maxW="50px">
             <NextImage
@@ -159,7 +161,11 @@ const CustomListRow = ({
           </AspectRatio>
         </Skeleton>
       </Td>
-      <Td w="250px">{title}</Td>
+      <Td w="250px" maxW="250px">
+        <Text whiteSpace="normal" noOfLines={2}>
+          {title}
+        </Text>
+      </Td>
       <Td w="250px">{mediaType}</Td>
       <Td w="250px">
         <Box display="flex" justifyContent="flex-start" alignItems="center">

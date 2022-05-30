@@ -48,6 +48,9 @@ const customTheme = extendTheme({
       color: "accent_color",
     },
   },
+  semanticTokens: {
+    background: { active: "accent_color" },
+  },
   ...header,
 });
 

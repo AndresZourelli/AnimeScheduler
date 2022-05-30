@@ -45,7 +45,15 @@ function MyApp({ Component, pageProps }) {
       <Provider value={client}>
         <AppAuthProvider>
           <DndProvider debugMode={true} backend={HTML5Backend}>
-            <Box minH="100vh" display="flex" flexDirection="column">
+            <Box
+              minH="100vh"
+              maxW="100vw"
+              w="100vw"
+              h="100vh"
+              display="flex"
+              flexDirection="column"
+              overflow="auto"
+            >
               <Nav />
               <Component {...pageProps} />
             </Box>

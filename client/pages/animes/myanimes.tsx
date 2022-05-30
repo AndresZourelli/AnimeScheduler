@@ -13,17 +13,41 @@ import {
   TabPanels,
   Tabs,
   Divider,
+  useDisclosure,
+  Icon,
+  Collapse,
+  Flex,
+  IconButton,
+  Drawer,
+  DrawerBody,
+  DrawerContent,
+  DrawerHeader,
+  DrawerOverlay,
+  DrawerCloseButton,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
-import { EmailPasswordAuthNoSSR } from "@/components/Common/ThirdPartyEmailPasswordAuthNoSSR";
+import { EmailPasswordAuthNoSSR } from "@/components/Common/EmailPasswordAuthNoSSR";
+import { MdKeyboardArrowRight } from "react-icons/md";
+import MyAnimePageSidebar from "@/components/Common/Sidebar/MyAnimePageSidebar";
+import {
+  DisplayMenu,
+  useMyAnimePageStore,
+} from "@/lib/zustand/myAnimePageState";
+import { HamburgerIcon } from "@chakra-ui/icons";
 
 const MyAnimes = (props) => {
   const { user } = useAuth();
   const router = useRouter();
   const { tabIndex } = router.query;
   const { userAnimeLists } = useAnimeList({});
-  const [getTab, setGetTab] = useState<number>(0);
+  const [getTab, setTab] = useState(0);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { resetState, displayedMenu } = useMyAnimePageStore();
+
+  const changeSelectedTab = (e) => {
+    console.log(e.target);
+  };
 
   const onChangeTabs = (index: number) => {
     router.push(
@@ -31,116 +55,80 @@ const MyAnimes = (props) => {
       undefined,
       { shallow: true }
     );
-    setGetTab(index);
+    setTab(index);
   };
 
   useEffect(() => {
-    setGetTab(parseInt(tabIndex as string) || 0);
+    setTab(parseInt(tabIndex as string) || 0);
   }, [tabIndex]);
+
+  useEffect(() => {
+    resetState();
+  }, [resetState]);
+
+  const mainPage = () => {
+    if (
+      Object.values(DisplayMenu).includes(displayedMenu.menuName as DisplayMenu)
+    ) {
+      return (
+        <Box m={5} flexGrow={1}>
+          <Heading>{displayedMenu.menuName}</Heading>
+          <MyAnimePageList watchingStatus={displayedMenu.watchStatus} />
+          {/* "You aren't watching any anime currently..." */}
+        </Box>
+      );
+    } else {
+      return userAnimeLists
+        .filter((item) => displayedMenu.menuName === item.id)
+        .map((list) => (
+          <Box m={5} key={list.id} flexGrow={1}>
+            <CustomList listId={list.id} listTitle={list.title} />
+          </Box>
+        ));
+    }
+  };
+
   return (
     <EmailPasswordAuthNoSSR>
-      <Box>
-        <Tabs
-          orientation="vertical"
-          isLazy
-          onChange={onChangeTabs}
-          index={getTab}
-        >
-          <TabList>
-            <Tab>Currently Airing</Tab>
-            <Tab>Not Watched</Tab>
-            <Tab>Planning to watch</Tab>
-            <Tab>Watching</Tab>
-            <Tab>Paused</Tab>
-            <Tab>Completed</Tab>
-            <Tab>Rewatching</Tab>
-            <Tab>Dropped</Tab>
-            <Box fontSize="md" textAlign="center" px="2" py="3" mt="5">
-              <Heading size="sm">Custom Lists</Heading>
-            </Box>
-            <Divider ml={2} />
-            {userAnimeLists
-              .sort((a, b) => {
-                if (a.title === "default") {
-                  return -1;
-                } else if (b.title === "default") {
-                  return 1;
-                }
-                return 0;
-              })
-              .map((list, idx) => (
-                <Tab key={list.id}>{list.title}</Tab>
-              ))}
-          </TabList>
-          <TabPanels>
-            <TabPanel>
-              <CurrentlyAiringTab />
-            </TabPanel>
-            <TabPanel>
-              <Box m={5}>
-                <Heading>Not Watched</Heading>
-                <MyAnimePageList watchingStatus={WatchStatusTypes.NotWatched} />
-                {/* "You aren't watching any anime currently..." */}
-              </Box>
-            </TabPanel>
-            <TabPanel>
-              <Box m={5}>
-                <Heading>Planning to Watch</Heading>
-
-                {/* "You aren't planning to watch any anime..." */}
-                <MyAnimePageList
-                  watchingStatus={WatchStatusTypes.PlanToWatch}
-                />
-              </Box>
-            </TabPanel>
-            <TabPanel>
-              <Box m={5}>
-                <Heading>Watching</Heading>
-                <MyAnimePageList watchingStatus={WatchStatusTypes.Watching} />
-                {/* "You aren't watching any anime currently..." */}
-              </Box>
-            </TabPanel>
-            <TabPanel>
-              <Box m={5}>
-                <Heading>Paused</Heading>
-                <MyAnimePageList watchingStatus={WatchStatusTypes.Paused} />
-                {/* "You aren't watching any anime currently..." */}
-              </Box>
-            </TabPanel>
-            <TabPanel>
-              <Box m={5}>
-                <Heading>Completed</Heading>
-
-                {/* "You don't have any completed anime..." */}
-
-                <MyAnimePageList watchingStatus={WatchStatusTypes.Completed} />
-              </Box>
-            </TabPanel>
-            <TabPanel>
-              <Box m={5}>
-                <Heading>Rewatching</Heading>
-                <MyAnimePageList watchingStatus={WatchStatusTypes.Rewatching} />
-                {/* "You aren't watching any anime currently..." */}
-              </Box>
-            </TabPanel>
-            <TabPanel>
-              <Box m={5}>
-                <Heading>Dropped</Heading>
-                <MyAnimePageList watchingStatus={WatchStatusTypes.Dropped} />
-                {/* "You aren't watching any anime currently..." */}
-              </Box>
-            </TabPanel>
-
-            {userAnimeLists.map((list) => (
-              <TabPanel key={list.id}>
-                <Box m={5}>
-                  <CustomList listId={list.id} listTitle={list.title} />
-                </Box>
-              </TabPanel>
-            ))}
-          </TabPanels>
-        </Tabs>
-      </Box>
+      <IconButton
+        borderRadius="full"
+        aria-label="Anime Lists"
+        icon={<HamburgerIcon boxSize="6" />}
+        onClick={onOpen}
+        display={{ base: "block", md: "none" }}
+        position="absolute"
+        bottom="4"
+        right="4"
+        size="lg"
+        colorScheme="teal"
+        zIndex="docked"
+      />
+      <Drawer
+        placement={"left"}
+        size="full"
+        onClose={onClose}
+        isOpen={isOpen}
+        isFullHeight
+      >
+        <DrawerOverlay />
+        <DrawerContent>
+          <DrawerCloseButton />
+          <DrawerHeader borderBottomWidth="1px" as="h2" fontSize="2xl">
+            My Anime Lists
+          </DrawerHeader>
+          <DrawerBody>
+            <MyAnimePageSidebar w="full" fontSize="xl" />
+          </DrawerBody>
+        </DrawerContent>
+      </Drawer>
+      <Flex maxW="full" overflow="auto">
+        <MyAnimePageSidebar
+          minW="40"
+          w="40"
+          display={{ base: "none", md: "block" }}
+        />
+        {mainPage()}
+      </Flex>
     </EmailPasswordAuthNoSSR>
   );
 };

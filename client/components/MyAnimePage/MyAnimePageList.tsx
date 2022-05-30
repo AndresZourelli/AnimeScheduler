@@ -5,7 +5,15 @@ import {
   useUserCustomAnimeListByWatchStatusQuery,
 } from "@/graphql";
 import { useAuth } from "@/lib/Auth/Auth";
-import { Box, Button, Grid, Heading, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Flex,
+  Grid,
+  Heading,
+  Spinner,
+  Text,
+} from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 
 interface MyAnimePageListInterface {
@@ -49,6 +57,15 @@ const MyAnimePageList = ({ watchingStatus }: MyAnimePageListInterface) => {
       setDataLoaded(true);
     }
   }, [animesResult, animeLists, dataLoaded]);
+
+  if (animesResult.fetching) {
+    return (
+      <Flex w="full" justifyContent="center">
+        <Spinner size="xl" />
+      </Flex>
+    );
+  }
+
   return (
     <Box position="relative" justifySelf="end" mt="8" mx="3">
       <Grid templateColumns={"repeat(auto-fit, minmax(225px, 225px))"} gap={3}>
