@@ -51,7 +51,7 @@ const NotificationMainItem = ({
               </Text>
             </Box>
           </Flex>
-          <Box align="start">
+          <Box alignContent="start">
             <Text fontSize="sm">
               <Link href={`/animes/${entityId}`} passHref>
                 <ChakraLink color="teal.500">{message}</ChakraLink>

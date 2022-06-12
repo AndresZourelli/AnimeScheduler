@@ -9,7 +9,7 @@ const StaffCard: React.FC<AnimeStaffType> = ({ person, staffRole }) => {
   return (
     <Box
       overflow="hidden"
-      d="flex"
+      display="flex"
       alignItems="center"
       flexDirection="column"
       position="relative"
@@ -22,7 +22,7 @@ const StaffCard: React.FC<AnimeStaffType> = ({ person, staffRole }) => {
         <Box
           m="auto"
           position="relative"
-          d="flex"
+          display="flex"
           flexDirection="column"
           alignItems="center"
           cursor="pointer"

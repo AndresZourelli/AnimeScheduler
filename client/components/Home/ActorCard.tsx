@@ -8,7 +8,7 @@ const ActorCard = ({
   <Box
     mb="4"
     overflow="hidden"
-    d="flex"
+    display="flex"
     alignItems="center"
     flexDirection="column"
     position="relative"
@@ -20,7 +20,7 @@ const ActorCard = ({
       <Box
         m="auto"
         position="relative"
-        d="flex"
+        display="flex"
         flexDirection="column"
         alignItems="center"
         cursor="pointer"

@@ -74,10 +74,9 @@ const PopupMenuButton = ({
             <PopoverArrow />
             <PopoverHeader>Add to List:</PopoverHeader>
             <PopoverBody px="0">
-              <List>
+              <List styleType="none">
                 <ListItem
                   _hover={{ bg: "gray.600" }}
-                  styleType="none"
                   px="4"
                   py="2"
                   cursor="pointer"
@@ -92,7 +91,6 @@ const PopupMenuButton = ({
                         onClick={(e) => buttonAddToExistingList(e, list.id)}
                         cursor="pointer"
                         _hover={{ bg: "gray.600" }}
-                        styleType="none"
                         px="4"
                         py="2"
                       >

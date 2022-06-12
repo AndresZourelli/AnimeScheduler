@@ -48,7 +48,9 @@ const MultiSelect = (props: MultiSelectProps) => {
   useOutsideClick({ ref: ref, handler: () => onMultiElementClickOut() });
   const toggleItem = (e: React.MouseEvent<HTMLDivElement>, value: Options) => {
     e.stopPropagation();
+    // @ts-ignore
     if (fields.find((item) => (item.name as any) === value.name)) {
+      // @ts-ignore
       remove(fields.findIndex((item) => item.name === value.name));
     } else {
       append(value);
@@ -60,11 +62,13 @@ const MultiSelect = (props: MultiSelectProps) => {
   };
   return (
     <Box position="relative" ref={ref}>
+      {/*  @ts-ignore */}
       <Box id="item" __css={styles.field} {...rest}>
         <Flex alignContent="center" w="full" height="full">
           <HStack maxW="full" alignItems="center">
             {fields?.length > 0 ? (
               <Tag size="lg" onClick={onOpen} cursor="pointer">
+                {/*  @ts-ignore */}
                 <TagLabel>{fields[0].name}</TagLabel>
                 <TagCloseButton onClick={() => remove(0)} />
               </Tag>
@@ -136,6 +140,7 @@ const MultiSelect = (props: MultiSelectProps) => {
                 >
                   <HStack px="3" spacing="4">
                     {fields.find(
+                      //  @ts-ignore
                       (existingItem) => existingItem.name === item.name
                     ) ? (
                       <Icon as={AiFillCheckCircle} color="green.200" />

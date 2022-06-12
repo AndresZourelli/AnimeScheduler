@@ -45,7 +45,7 @@ const ImageDropZone = ({ file, setFile }) => {
   } = useDropzone({
     onDrop,
     maxFiles: 1,
-    accept: "image/png, image/jpeg",
+    accept: { "image/jpeg": [".jpeg", ".png"] },
     validator: (files) => {
       if (files.size > 8000000) {
         return {
@@ -115,13 +115,13 @@ const ImageDropZone = ({ file, setFile }) => {
         </Text>
       </Box>
       {fileRejections.length == 0 && file && error.message == "" ? (
-        <Box d="flex" alignItems="center" flexDirection="column">
+        <Box display="flex" alignItems="center" flexDirection="column">
           <Text p={3}>{file.name}</Text>
           <Image
             src={file.preview}
             alt={file.name}
-            minw={file.width}
-            minh={file.height}
+            minW={file.width}
+            minH={file.height}
           />
         </Box>
       ) : (

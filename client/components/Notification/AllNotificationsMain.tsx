@@ -11,7 +11,7 @@ const AllNotificationsMain = ({
   notifications = [],
 }: AllNotificationsMenuProps) => {
   return (
-    <Box w="full" px="15" py="10" align="center">
+    <Box w="full" px="15" py="10" alignContent="center">
       {notifications.map((notification) => (
         <NotificationMainItem
           key={notification.id}

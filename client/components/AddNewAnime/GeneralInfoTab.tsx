@@ -149,7 +149,6 @@ const GeneralInfoTab = ({ inputSpacingCommon }) => {
                 isInvalid={errors.numberOfEpisodes}
                 mr={inputSpacingCommon.marginRight}
                 mb={inputSpacingCommon.marginBottom}
-                min={0}
                 w={inputSpacingCommon.width}
               >
                 <FormLabel>Number of Episodes</FormLabel>
@@ -172,7 +171,6 @@ const GeneralInfoTab = ({ inputSpacingCommon }) => {
                 isInvalid={errors.duration}
                 mr={inputSpacingCommon.marginRight}
                 mb={inputSpacingCommon.marginBottom}
-                min={0}
                 w={inputSpacingCommon.width}
               >
                 <FormLabel>Length (in minutes)</FormLabel>

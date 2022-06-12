@@ -59,8 +59,8 @@ interface AnimeCard {
   countDown?: boolean;
   description?: string;
   genreList?: Generes;
-  mediaType?: MediaTypes;
-  season?: Season;
+  mediaType?: MediaTypes | string;
+  season?: Season | string;
   seasonYear?: number;
 }
 
@@ -485,7 +485,8 @@ const AnimeCard = ({
               </Text>
             ) : (
               <Text mb="2" fontSize={"xs"}>
-                {getMediaTypeString(mediaType)} - {numberOfEpisodes} episodes
+                {getMediaTypeString(mediaType as MediaTypes)} -{" "}
+                {numberOfEpisodes} episodes
               </Text>
             )}
           </Box>
