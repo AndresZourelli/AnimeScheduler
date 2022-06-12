@@ -12,4 +12,4 @@ RUN yarn build
 
 EXPOSE 4000
 
-CMD ["node", "build/index.js"]
+CMD ["node", "index.js"]
