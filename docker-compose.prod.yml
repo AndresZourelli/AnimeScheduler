@@ -1,0 +1,51 @@
+version: "3.8"
+services:
+  db:
+    image: "postgres"
+    container_name: "anime-postgres"
+    restart: always
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: anime
+    ports:
+      - "5433:5432"
+    volumes:
+      - ./pg-data:/var/lib/postgresql/data
+
+  supertokens:
+    image: "registry.supertokens.io/supertokens/supertokens-postgresql"
+    container_name: "supertokens"
+    restart: always
+    ports:
+      - "3567:3567"
+    environment:
+      POSTGRESQL_USER: admin
+      POSTGRESQL_HOST: db
+      POSTGRESQL_PORT: 5432
+      POSTGRESQL_PASSWORD: admin
+
+  web:
+    build: ./client
+    ports:
+      - 3000:3000
+
+  api:
+    build: ./server
+    ports:
+      - 4000:4000
+
+  nginx:
+    image: nginx:1.21.6-alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./data/nginx:/etc/nginx/conf.d
+      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot
+  certbot:
+    image: certbot/certbot
+    volumes:
+      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot

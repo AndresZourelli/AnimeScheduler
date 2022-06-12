@@ -1,5 +1,9 @@
 import AnimeCard from "@/components/Home/AnimeCard";
-import { useWeeklyAnimesQuery, WeeklyAnimesQuery } from "@/graphql";
+import {
+  StringFilter,
+  useWeeklyAnimesQuery,
+  WeeklyAnimesQuery,
+} from "@/graphql";
 import {
   Box,
   Flex,
@@ -23,17 +27,27 @@ import { useState } from "react";
 
 type Anime = WeeklyAnimesQuery["animes"]["nodes"][0];
 
+const enum AnimeDropdown {
+  ShowAllAnime,
+  ShowMyAnime,
+}
+
 const Weekly = () => {
-  const [filterByUserAnimes, setFilterByUserAnimes] = useState(false);
+  const [filterByUserAnimes, setFilterByUserAnimes] =
+    useState<StringFilter | null>(null);
   const [animeResults, fetchAnimes] = useWeeklyAnimesQuery({
-    variables: { isNull: filterByUserAnimes },
+    variables: { userWatchStatus: filterByUserAnimes },
   });
   const animeSortedByWeekday = sortToWeekday(
     animeResults.data?.animes.nodes ?? []
   );
 
   const onSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setFilterByUserAnimes(e.target.value ? null : false);
+    if (Number(e.target.value) === AnimeDropdown.ShowAllAnime) {
+      setFilterByUserAnimes(null);
+    } else {
+      setFilterByUserAnimes({ isNull: false });
+    }
   };
 
   return (
@@ -41,8 +55,8 @@ const Weekly = () => {
       <Flex float="right" w="15%" alignItems="center">
         Show:
         <Select onChange={onSelectChange} ml="2">
-          <option value={1}>All Animes</option>
-          <option value={0}>My Animes</option>
+          <option value={AnimeDropdown.ShowAllAnime}>All Animes</option>
+          <option value={AnimeDropdown.ShowMyAnime}>My Animes</option>
         </Select>
       </Flex>
       <Stack spacing="10">
@@ -77,7 +91,7 @@ const Weekly = () => {
                       );
                     })
                 ) : (
-                  <Box>No New Animes</Box>
+                  <Box h="395px">No New Animes</Box>
                 )}
               </Grid>
             </Box>

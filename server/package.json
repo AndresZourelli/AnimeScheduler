@@ -17,7 +17,8 @@
     "migrate_rollback": "yarn knex migrate:rollback --knexfile db/knexfile.js",
     "migrate_up": "yarn knex migrate:up --knexfile db/knexfile.js",
     "migrate_down": "yarn knex migrate:down --knexfile db/knexfile.js",
-    "migrate_list": "yarn knex migrate:lit --knexfile db/knexfile.js"
+    "migrate_list": "yarn knex migrate:lit --knexfile db/knexfile.js",
+    "build": "tsc"
   },
   "keywords": [],
   "author": "",
