@@ -1,7 +1,6 @@
 import NewExternalLink from "@/components/AddNewAnime/NewExternalLink";
 import { Box, CloseButton, Flex, Heading, Text, theme } from "@chakra-ui/react";
 import { transparentize } from "@chakra-ui/theme-tools";
-import { FieldArray } from "formik";
 import { useFieldArray } from "react-hook-form";
 
 const ExternalLinksTab = () => {
