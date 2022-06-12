@@ -46,6 +46,7 @@ export const postgraphileConfig: PostGraphileOptions<Request, Response> = {
     const userId = req.session?.getUserId();
     if (userId) {
       const roles = await PrivateUser.relatedQuery("role")
+        // @ts-ignore
         .for(userId)
         .withSchema("anime_app_private");
       settings["session.user_id"] = userId;
