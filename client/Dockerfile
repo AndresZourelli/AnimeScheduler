@@ -23,7 +23,7 @@ RUN yarn build
 FROM node:18-alpine3.16 AS runner
 WORKDIR /usr/src/app
 
-ENV NODE_ENV production
+ENV NODE_ENV=production
 # Uncomment the following line in case you want to disable telemetry during runtime.
 # ENV NEXT_TELEMETRY_DISABLED 1
 
